@@ -18,15 +18,14 @@ const Store = ({ children }) => {
       setIsLoading(true);
 
       /* We initialize Magic in `useEffect` so it has access to the global `window` object inside the browser */
-      let m = new Magic(process.env.NEXT_PUBLIC_MAGIC_PUBLISHABLE_KEY);
+      let m = new Magic(process.env.NEXT_PUBLIC_MAGIC_PUBLISHABLE_KEY, {
+        network: "ropsten",
+      });
       await setMagic(m);
 
-      /* On page refresh, send a request to /api/user to see if there's a valid user session */
-      let res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/user`);
-      let data = await res.json();
-
       /* If the user has a valid session with our server, it will return {authorized: true, user: user} */
-      let loggedIn = data.authorized ? data.user : false;
+      let loggedIn =
+        magic && magic.user && magic.user.isLoggedIn ? magic.user : false;
 
       /* If db returns {authorized: false}, there is no valid session, so log user out of their session with Magic if it exists */
       !loggedIn && magic && magic.user.logout();
@@ -41,8 +40,10 @@ const Store = ({ children }) => {
     <LoggedInContext.Provider value={[loggedIn, setLoggedIn]}>
       <MagicContext.Provider value={[magic]}>
         <LoadingContext.Provider value={[isLoading, setIsLoading]}>
-          <Layout />
-          {children}
+          <div className="flex flex-row">
+            <Layout />
+            {children}
+          </div>
         </LoadingContext.Provider>
       </MagicContext.Provider>
     </LoggedInContext.Provider>

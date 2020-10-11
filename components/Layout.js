@@ -12,48 +12,51 @@ const Layout = () => {
    * Log the user out of their session with Magic
    */
   const handleLogout = async () => {
-    await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/user/logout`, {
-      method: "GET"
-    });
     setLoggedIn(false);
     await magic.user.logout();
   };
 
   return (
     <>
-      <Head>
-        <title>Next Magic Todo</title>
-      </Head>
-      <nav className="nav">
-        <div>
-          <img src="/magic-horizontal-color-white.png" className="nav-logo" alt="Logo" />
-        </div>
-        {/* If a user is logged in, show our Welcome message and Logout button */}
-        {loggedIn ? (
-          <>
-            <div className="nav-user">Welcome, {loggedIn}</div>
-            <div className="logout-btn">
-              <a
-                onClick={e => {
-                  e.preventDefault();
-                  handleLogout();
-                }}
-              >
-                Logout
-              </a>
+      {!loggedIn ? (
+        <></>
+      ) : (
+        <>
+          <Head>
+            <title>DistributedTown</title>
+          </Head>
+          <nav className="flex flex-col max-w-sm">
+            <div>
+              <img src="/dito-logo.svg" alt="Logo" />
             </div>
-          </>
-        ) : (
-          // Else, show the Login button
-          <>
-            <Link href="/login">
-              <div className="login-btn">
-                <a>Log in</a>
-              </div>
-            </Link>
-          </>
-        )}
-      </nav>
+            {/* If a user is logged in, show our Welcome message and Logout button */}
+            {loggedIn ? (
+              <>
+                <div className="nav-user">Welcome, {loggedIn}</div>
+                <div className="logout-btn">
+                  <a
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleLogout();
+                    }}
+                  >
+                    Logout
+                  </a>
+                </div>
+              </>
+            ) : (
+              // Else, show the Login button
+              <>
+                <Link href="/login">
+                  <div className="login-btn">
+                    <a>Log in</a>
+                  </div>
+                </Link>
+              </>
+            )}
+          </nav>
+        </>
+      )}
     </>
   );
 };

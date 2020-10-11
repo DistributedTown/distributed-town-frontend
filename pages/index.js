@@ -1,12 +1,100 @@
-import TodoList from "../components/todos/TodoList";
 import Store from "../components/Store";
 
-const TodoView = () => {
+import SkillPill from "../components/SkillPill";
+
+import { useContext, useState } from "react";
+import {
+  MagicContext,
+  LoggedInContext,
+  LoadingContext,
+} from "../components/Store";
+
+const skills = [
+  { text: "Management" },
+  { text: "Network Design" },
+  { text: "Training & Sport" },
+  { text: "Web Development" },
+  { text: "DeFi" },
+  { text: "Tokenomics" },
+  { text: "Painting" },
+  { text: "Consensus" },
+  { text: "Mobile Dev" },
+  { text: "Architecture" },
+  { text: "Frontend Dev" },
+  { text: "Governance" },
+  { text: "Teaching" },
+  { text: "Game Theory" },
+  { text: "Video Making" },
+  { text: "Photography" },
+  { text: "Smart Contracts" },
+  { text: "Gardening" },
+  { text: "Backend Dev" },
+  { text: "Householding" },
+  { text: "Legal" },
+  { text: "Blockchain" },
+  { text: "Community" },
+];
+
+const Index = () => {
+  const [loggedIn, setLoggedIn] = useContext(LoggedInContext);
+  const [magic] = useContext(MagicContext);
+
+  const [selectedPill, setSelectedPill] = useState(-1);
+
+  async function handleCreateAccountClick() {
+    try {
+      let res = await magic.auth.loginWithMagicLink({
+        email: "lorenzo.bersano@gmail.com",
+      });
+      console.log(res);
+
+      let result = await fetch("http://3.250.29.111:3005/api/user/login", {
+        method: "POST",
+      });
+      console.log(result);
+
+      setLoggedIn(true);
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
   return (
-    <Store>
-      <TodoList />
-    </Store>
+    <div className="h-screen w-full">
+      <nav className="w-full flex justify-between items-center">
+        <div className="flex items-center space-x-4">
+          <img src="/dito-logo.svg" alt="DiTo Logo" />
+          <h1>DistributedTown</h1>
+        </div>
+        <p>What's this about?</p>
+      </nav>
+      <div className="w-full h-full flex flex-col items-center space-y-8">
+        <div className="border-blue-600 border-2 p-8 text-center max-w-sm">
+          <h1>Incredibly inspiring text</h1>
+        </div>
+        <p>Dito dito dito dito dito</p>
+        <div className="border-blue-600 border-2 p-8 text-center w-3/4 grid grid-flow-row grid-cols-5 gap-4">
+          {skills.map((skill, i) => {
+            return (
+              <SkillPill
+                onClick={() => setSelectedPill(i)}
+                key={i}
+                text={skill.text}
+                selected={selectedPill === i}
+              />
+            );
+          })}
+        </div>
+        {selectedPill >= 0 ? (
+          <button onClick={handleCreateAccountClick} type="button">
+            Create account
+          </button>
+        ) : (
+          <></>
+        )}
+      </div>
+    </div>
   );
 };
 
-export default TodoView;
+export default Index;
