@@ -1,7 +1,7 @@
 import SkillPill from "../components/SkillPill";
 
 import { useContext, useState } from "react";
-import {
+import Store, {
   MagicContext,
   LoggedInContext,
   LoadingContext,
@@ -62,47 +62,49 @@ const Index = () => {
 
       setLoggedIn(true);
 
-      router.push("/SignupPhaseOne");
+      router.push("/SignupCompleted");
     } catch (err) {
       console.error(err);
     }
   }
 
   return (
-    <div className="h-screen w-full">
-      <nav className="w-full flex justify-between items-center">
-        <div className="flex items-center space-x-4">
-          <img src="/dito-logo.svg" alt="DiTo Logo" />
-          <h1>DistributedTown</h1>
+    <Store>
+      <div className="h-screen w-full">
+        <nav className="w-full flex justify-between items-center">
+          <div className="flex items-center space-x-4">
+            <img src="/dito-logo.svg" alt="DiTo Logo" />
+            <h1>DistributedTown</h1>
+          </div>
+          <p>What's this about?</p>
+        </nav>
+        <div className="w-full h-full flex flex-col items-center space-y-8">
+          <div className="border-blue-600 border-2 p-8 text-center max-w-sm">
+            <h1>Incredibly inspiring text</h1>
+          </div>
+          <p>Dito dito dito dito dito</p>
+          <div className="border-blue-600 border-2 p-8 text-center w-3/4 grid grid-flow-row grid-cols-5 gap-4">
+            {skills.map((skill, i) => {
+              return (
+                <SkillPill
+                  onClick={() => setSelectedPill(i)}
+                  key={i}
+                  text={skill.text}
+                  selected={selectedPill === i}
+                />
+              );
+            })}
+          </div>
+          {selectedPill >= 0 ? (
+            <button onClick={handleCreateAccountClick} type="button">
+              Create account
+            </button>
+          ) : (
+            <></>
+          )}
         </div>
-        <p>What's this about?</p>
-      </nav>
-      <div className="w-full h-full flex flex-col items-center space-y-8">
-        <div className="border-blue-600 border-2 p-8 text-center max-w-sm">
-          <h1>Incredibly inspiring text</h1>
-        </div>
-        <p>Dito dito dito dito dito</p>
-        <div className="border-blue-600 border-2 p-8 text-center w-3/4 grid grid-flow-row grid-cols-5 gap-4">
-          {skills.map((skill, i) => {
-            return (
-              <SkillPill
-                onClick={() => setSelectedPill(i)}
-                key={i}
-                text={skill.text}
-                selected={selectedPill === i}
-              />
-            );
-          })}
-        </div>
-        {selectedPill >= 0 ? (
-          <button onClick={handleCreateAccountClick} type="button">
-            Create account
-          </button>
-        ) : (
-          <></>
-        )}
       </div>
-    </div>
+    </Store>
   );
 };
 

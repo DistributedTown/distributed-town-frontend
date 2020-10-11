@@ -49,10 +49,14 @@ const Store = ({ children }) => {
     <LoggedInContext.Provider value={[loggedIn, setLoggedIn]}>
       <MagicContext.Provider value={[magic]}>
         <LoadingContext.Provider value={[isLoading, setIsLoading]}>
-          <div className="flex flex-row">
-            <Layout />
-            {children}
-          </div>
+          {!isLoading ? (
+            <div className="flex flex-row">
+              <Layout />
+              {children}
+            </div>
+          ) : (
+            <div>Loading...</div>
+          )}
         </LoadingContext.Provider>
       </MagicContext.Provider>
     </LoggedInContext.Provider>

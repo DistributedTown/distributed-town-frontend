@@ -23,45 +23,39 @@ const Layout = () => {
 
   return (
     <>
-      {!loggedIn ? (
-        <></>
-      ) : (
-        <>
-          <Head>
-            <title>DistributedTown</title>
-          </Head>
-          <nav className="flex flex-col max-w-sm">
-            <div>
-              <img src="/dito-logo.svg" alt="Logo" />
+      <Head>
+        <title>DistributedTown</title>
+      </Head>
+      <nav className="flex flex-col max-w-sm">
+        <div>
+          <img src="/dito-logo.svg" alt="Logo" />
+        </div>
+        {/* If a user is logged in, show our Welcome message and Logout button */}
+        {loggedIn ? (
+          <>
+            <div className="nav-user">Welcome, {loggedIn}</div>
+            <div className="logout-btn">
+              <a
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleLogout();
+                }}
+              >
+                Logout
+              </a>
             </div>
-            {/* If a user is logged in, show our Welcome message and Logout button */}
-            {loggedIn ? (
-              <>
-                <div className="nav-user">Welcome, {loggedIn}</div>
-                <div className="logout-btn">
-                  <a
-                    onClick={(e) => {
-                      e.preventDefault();
-                      handleLogout();
-                    }}
-                  >
-                    Logout
-                  </a>
-                </div>
-              </>
-            ) : (
-              // Else, show the Login button
-              <>
-                <Link href="/login">
-                  <div className="login-btn">
-                    <a>Log in</a>
-                  </div>
-                </Link>
-              </>
-            )}
-          </nav>
-        </>
-      )}
+          </>
+        ) : (
+          // Else, show the Login button
+          <>
+            <Link href="/login">
+              <div className="login-btn">
+                <a>Log in</a>
+              </div>
+            </Link>
+          </>
+        )}
+      </nav>
     </>
   );
 };

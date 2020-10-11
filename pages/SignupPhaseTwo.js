@@ -10,6 +10,7 @@ import CommunityCard from "../components/CommunityCard";
 import communityContractAbi from "../utils/communityContractAbi.json";
 
 import { ethers } from "ethers";
+import { useRouter } from "next/router";
 
 const communities = [
   { name: "Bruh", members: 22, isAccepting: true, scarcityScore: 69 },
@@ -18,6 +19,8 @@ const communities = [
 function SignupPhaseTwo() {
   const [loggedIn, setLoggedIn] = useContext(LoggedInContext);
   const [magic] = useContext(MagicContext);
+
+  const router = useRouter();
 
   async function joinCommunity() {
     const provider = new ethers.providers.Web3Provider(magic.rpcProvider);
@@ -28,15 +31,10 @@ function SignupPhaseTwo() {
       // Get user's Ethereum public address
       const address = await signer.getAddress();
 
-      console.log(address);
-
       // Get user's balance in ether
       const balance = ethers.utils.formatEther(
         await provider.getBalance(address) // Balance is in wei
       );
-
-      console.log(balance);
-      console.log(communityContractAbi);
 
       const contractABI = communityContractAbi;
       const contractAddress = "0x790697f595Aa4F9294566be0d262f71b44b5039c";
@@ -52,7 +50,7 @@ function SignupPhaseTwo() {
       // Wait for transaction to finish
       const receipt = await tx.wait();
 
-      console.log(receipt);
+      router.push("/SignupCompleted");
     } catch (err) {
       console.error(err);
     }
