@@ -1,5 +1,3 @@
-import Store from "../components/Store";
-
 import SkillPill from "../components/SkillPill";
 
 import { useContext, useState } from "react";
@@ -48,9 +46,15 @@ const Index = () => {
       });
       console.log(res);
 
-      let result = await fetch("http://3.250.29.111:3005/api/user/login", {
-        method: "POST",
-      });
+      let result = await fetch(
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/user/login`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${res}`,
+          },
+        }
+      );
       console.log(result);
 
       setLoggedIn(true);

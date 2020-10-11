@@ -14,26 +14,34 @@ const Store = ({ children }) => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    setIsLoading(true);
+
+    /* We initialize Magic in `useEffect` so it has access to the global `window` object inside the browser */
+    let m = new Magic(process.env.NEXT_PUBLIC_MAGIC_PUBLISHABLE_KEY, {
+      network: "ropsten",
+    });
+    setMagic(m);
+  }, []);
+
+  useEffect(() => {
     (async () => {
-      setIsLoading(true);
-
-      /* We initialize Magic in `useEffect` so it has access to the global `window` object inside the browser */
-      let m = new Magic(process.env.NEXT_PUBLIC_MAGIC_PUBLISHABLE_KEY, {
-        network: "ropsten",
-      });
-      await setMagic(m);
-
       /* If the user has a valid session with our server, it will return {authorized: true, user: user} */
-      let loggedIn =
-        magic && magic.user && magic.user.isLoggedIn ? magic.user : false;
+      let loggedIn = false;
+      if (magic && magic.user) {
+        loggedIn = await magic.user.isLoggedIn();
+      }
 
       /* If db returns {authorized: false}, there is no valid session, so log user out of their session with Magic if it exists */
-      !loggedIn && magic && magic.user.logout();
+      // if (!loggedIn) {
+      //   await magic.user.logout();
+      // }
 
-      await setLoggedIn(loggedIn.email);
+      console.log(loggedIn);
+
+      setLoggedIn(loggedIn.email);
       setIsLoading(false);
     })();
-  }, []);
+  }, [magic]);
 
   return (
     // `children` (passed as props in this file) represents the component nested inside <Store /> in `/pages/index.js` and `/pages/login.js`
