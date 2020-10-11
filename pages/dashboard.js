@@ -10,6 +10,7 @@ import { BigNumber, ethers } from "ethers";
 import Button from "../components/Button";
 
 import communityContractAbi from "../utils/communityContractAbi.json";
+import { Router, useRouter } from "next/router";
 
 function Dashboard() {
   const [loggedIn, setLoggedIn] = useContext(LoggedInContext);
@@ -54,13 +55,15 @@ function Dashboard() {
     })();
   }, []);
 
+  const router = useRouter();
+
   return (
     <div className="w-full h-screen flex">
       <div className="flex flex-col flex-grow space-y-8 px-8 py-4">
         <h1>Community Dashboard</h1>
         <h2>Administration</h2>
         <Button>Community Treasury</Button>
-        <Button>Open Gigs</Button>
+        <Button onClick={() => router.push("/gigs")}>Open Gigs</Button>
         <Button>Projects & Proposals</Button>
       </div>
       <div className="bg-blue-100 flex flex-grow justify-center items-center">
