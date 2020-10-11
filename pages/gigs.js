@@ -17,6 +17,8 @@ function Gigs() {
 
   const [openGigs, setOpenGigs] = useState([]);
 
+  const router = useRouter();
+
   useEffect(() => {
     setOpenGigs([
       {
@@ -57,7 +59,11 @@ function Gigs() {
         })}
       </div>
       <div className="flex justify-between mt-8">
-        <button type="button" className="p-4 border-2 border-blue-600">
+        <button
+          type="button"
+          className="p-4 border-2 border-blue-600"
+          onClick={() => router.push("/createGig")}
+        >
           Create new gig
         </button>
         <div className="flex flex-col p-4 border-2 border-blue-600">
