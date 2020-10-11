@@ -1,7 +1,7 @@
 import Head from "next/head";
 import { useContext, useEffect } from "react";
 import { LoggedInContext, MagicContext } from "./Store";
-import Link from "next/link";
+
 import NavLink from "./NavLink";
 
 const Layout = () => {
@@ -17,15 +17,13 @@ const Layout = () => {
     await magic.user.logout();
   };
 
-  useEffect(() => {
-    console.log("IN LAYOUT");
-    console.log(loggedIn);
-  }, [loggedIn]);
-
   return (
     <>
+      <Head>
+        <title>DistributedTown</title>
+      </Head>
       {loggedIn ? (
-        <nav className="flex flex-col h-screen max-w-sm p-4 border-l-2 border-blue-600">
+        <nav className="flex flex-col h-screen max-w-sm p-4 border-r-2 border-blue-600">
           <div>
             <img src="/dito-logo.svg" alt="Logo" />
           </div>

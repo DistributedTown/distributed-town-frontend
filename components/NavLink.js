@@ -4,7 +4,7 @@ function NavLink(props) {
   return (
     <li>
       <Link href={props.href}>
-        <a className="px-2 py-8">{props.children}</a>
+        <a className="">{props.children}</a>
       </Link>
     </li>
   );

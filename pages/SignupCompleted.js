@@ -63,7 +63,7 @@ function SignupCompleted() {
             : `${ditoBalance} DiTo`}
         </p>
       </div>
-      <div className="w-full flex justify-center absolute bottom-0 border-2 border-gray-400">
+      <div className="w-full flex justify-center absolute bottom-0 right-0 border-2 border-gray-400">
         <button
           type="button"
           onClick={() => router.push("/skillWallet")}
