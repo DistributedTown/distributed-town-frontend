@@ -2,6 +2,7 @@ import Head from "next/head";
 import { useContext, useEffect } from "react";
 import { LoggedInContext, MagicContext } from "./Store";
 import Link from "next/link";
+import NavLink from "./NavLink";
 
 const Layout = () => {
   const [loggedIn, setLoggedIn] = useContext(LoggedInContext);
@@ -23,39 +24,22 @@ const Layout = () => {
 
   return (
     <>
-      <Head>
-        <title>DistributedTown</title>
-      </Head>
-      <nav className="flex flex-col max-w-sm">
-        <div>
-          <img src="/dito-logo.svg" alt="Logo" />
-        </div>
-        {/* If a user is logged in, show our Welcome message and Logout button */}
-        {loggedIn ? (
-          <>
-            <div className="nav-user">Welcome, {loggedIn}</div>
-            <div className="logout-btn">
-              <a
-                onClick={(e) => {
-                  e.preventDefault();
-                  handleLogout();
-                }}
-              >
-                Logout
-              </a>
-            </div>
-          </>
-        ) : (
-          // Else, show the Login button
-          <>
-            <Link href="/login">
-              <div className="login-btn">
-                <a>Log in</a>
-              </div>
-            </Link>
-          </>
-        )}
-      </nav>
+      {loggedIn ? (
+        <nav className="flex flex-col h-screen max-w-sm p-4 border-l-2 border-blue-600">
+          <div>
+            <img src="/dito-logo.svg" alt="Logo" />
+          </div>
+          <ul className="flex flex-col w-full mt-8">
+            <NavLink href="/skillWallet">SkillWallet</NavLink>
+            <NavLink href="/dashboard">Dashboard</NavLink>
+            <NavLink href="#">Notifications</NavLink>
+            <NavLink href="#">Settings</NavLink>
+            <NavLink href="#">Log off</NavLink>
+          </ul>
+        </nav>
+      ) : (
+        <></>
+      )}
     </>
   );
 };
