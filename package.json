@@ -12,6 +12,7 @@
     "@magic-sdk/admin": "^1.2.2",
     "@zeit/next-css": "^1.0.1",
     "cookie": "^0.4.1",
+    "ethers": "^5.0.17",
     "magic-sdk": "^2.0.2",
     "mongoose": "^5.9.18",
     "next": "9.4.4",
