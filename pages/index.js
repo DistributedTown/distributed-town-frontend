@@ -6,6 +6,7 @@ import {
   LoggedInContext,
   LoadingContext,
 } from "../components/Store";
+import { useRouter } from "next/router";
 
 const skills = [
   { text: "Management" },
@@ -39,6 +40,8 @@ const Index = () => {
 
   const [selectedPill, setSelectedPill] = useState(-1);
 
+  const router = useRouter();
+
   async function handleCreateAccountClick() {
     try {
       let res = await magic.auth.loginWithMagicLink({
@@ -58,6 +61,8 @@ const Index = () => {
       console.log(result);
 
       setLoggedIn(true);
+
+      router.push("/SignupPhaseOne");
     } catch (err) {
       console.error(err);
     }

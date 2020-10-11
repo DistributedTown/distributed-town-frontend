@@ -36,6 +36,7 @@ const Store = ({ children }) => {
       //   await magic.user.logout();
       // }
 
+      console.log("LOGGEDIN");
       console.log(loggedIn);
 
       setLoggedIn(loggedIn.email);

@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { LoggedInContext, MagicContext } from "./Store";
 import Link from "next/link";
 
@@ -15,6 +15,11 @@ const Layout = () => {
     setLoggedIn(false);
     await magic.user.logout();
   };
+
+  useEffect(() => {
+    console.log("IN LAYOUT");
+    console.log(loggedIn);
+  }, [loggedIn]);
 
   return (
     <>
