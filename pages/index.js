@@ -45,7 +45,7 @@ const Index = () => {
   async function handleCreateAccountClick() {
     try {
       let res = await magic.auth.loginWithMagicLink({
-        email: "lorenzo.bersano@gmail.com",
+        email: "mimonova13@gmail.com",
       });
       console.log(res);
 
