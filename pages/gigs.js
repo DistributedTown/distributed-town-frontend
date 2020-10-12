@@ -1,7 +1,7 @@
 import {
   MagicContext,
   LoggedInContext,
-  LoadingContext,
+  TokenContext,
 } from "../components/Store";
 
 import { useContext, useState, useEffect } from "react";
@@ -16,12 +16,14 @@ function Gigs() {
   const [magic] = useContext(MagicContext);
 
   const [openGigs, setOpenGigs] = useState([]);
+  const [token, setToken] = useContext(TokenContext);
 
   const router = useRouter();
 
   useEffect(() => {
     setOpenGigs([
       {
+        _id: '01emd4t27a7emmz1e8twr8dr33', 
         title: "gig1",
         offeredDitos: 24,
         description: "lorem ipsum blabla",
@@ -29,6 +31,19 @@ function Gigs() {
       },
     ]);
   }, []);
+
+  const takeGig = async () => {
+    let result = await fetch(
+      `http://3.250.29.111:3005/api/gig/${openGigs[0]._id}/accept`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: token,
+          'Content-Type': 'application/json'
+        },
+      }
+    );
+  }
 
   return (
     <div className="w-full h-screen p-8">
@@ -51,7 +66,7 @@ function Gigs() {
                   <span>{`#${skill}`}</span>
                 ))}
               </div>
-              <button type="button" className="bg-red-600 text-white w-full">
+              <button type="button" className="bg-red-600 text-white w-full" onClick={takeGig}>
                 Take this gig!
               </button>
             </div>
