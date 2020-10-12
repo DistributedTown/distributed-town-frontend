@@ -6,12 +6,14 @@ import Layout from "./Layout";
 export const MagicContext = createContext();
 export const LoggedInContext = createContext();
 export const LoadingContext = createContext();
+export const UserInfoContext = createContext();
 
 /* this function wraps our entire app within our context APIs so they all have access to their values */
 const Store = ({ children }) => {
   const [magic, setMagic] = useState();
   const [loggedIn, setLoggedIn] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [userInfo, setUserInfo] = useState({ nickname: "", skills: [] });
 
   useEffect(() => {
     setIsLoading(true);
@@ -55,14 +57,16 @@ const Store = ({ children }) => {
     <LoggedInContext.Provider value={[loggedIn, setLoggedIn]}>
       <MagicContext.Provider value={[magic]}>
         <LoadingContext.Provider value={[isLoading, setIsLoading]}>
-          {!isLoading ? (
-            <div className="flex flex-row">
-              <Layout />
-              {children}
-            </div>
-          ) : (
-            <div>Loading...</div>
-          )}
+          <UserInfoContext.Provider value={[userInfo, setUserInfo]}>
+            {!isLoading ? (
+              <div className="flex flex-row">
+                <Layout />
+                {children}
+              </div>
+            ) : (
+              <div>Loading...</div>
+            )}
+          </UserInfoContext.Provider>
         </LoadingContext.Provider>
       </MagicContext.Provider>
     </LoggedInContext.Provider>
