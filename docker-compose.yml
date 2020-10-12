@@ -1,0 +1,11 @@
+version: '3.4'
+
+services:
+  distributed-town-web:
+    # image: freshrangeregistry.azurecr.io/supplychainmanagerweb
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '3000:3000'
+
