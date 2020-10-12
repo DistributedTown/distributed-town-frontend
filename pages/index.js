@@ -5,6 +5,7 @@ import Store, {
   MagicContext,
   LoggedInContext,
   LoadingContext,
+  TokenContext,
 } from "../components/Store";
 import { useRouter } from "next/router";
 
@@ -35,6 +36,7 @@ const skills = [
 ];
 
 const Index = () => {
+  const [token, setToken] = useContext(TokenContext);
   const [loggedIn, setLoggedIn] = useContext(LoggedInContext);
   const [magic] = useContext(MagicContext);
 
@@ -48,6 +50,8 @@ const Index = () => {
         email: "mimonova13@gmail.com",
       });
       console.log(res);
+
+      setToken(res);
 
       let result = await fetch(
         `${process.env.NEXT_PUBLIC_SERVER_URL}/api/user/login`,

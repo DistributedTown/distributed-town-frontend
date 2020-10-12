@@ -7,6 +7,7 @@ export const MagicContext = createContext();
 export const LoggedInContext = createContext();
 export const LoadingContext = createContext();
 export const UserInfoContext = createContext();
+export const TokenContext = createContext();
 
 /* this function wraps our entire app within our context APIs so they all have access to their values */
 const Store = ({ children }) => {
@@ -14,6 +15,7 @@ const Store = ({ children }) => {
   const [loggedIn, setLoggedIn] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [userInfo, setUserInfo] = useState({ nickname: "", skills: [] });
+  const [token, setToken] = useState("");
 
   useEffect(() => {
     setIsLoading(true);
@@ -58,14 +60,16 @@ const Store = ({ children }) => {
       <MagicContext.Provider value={[magic]}>
         <LoadingContext.Provider value={[isLoading, setIsLoading]}>
           <UserInfoContext.Provider value={[userInfo, setUserInfo]}>
-            {!isLoading ? (
-              <div className="flex flex-row">
-                <Layout />
-                {children}
-              </div>
-            ) : (
-              <div>Loading...</div>
-            )}
+            <TokenContext.Provider value={[token, setToken]}>
+              {!isLoading ? (
+                <div className="flex flex-row">
+                  <Layout />
+                  {children}
+                </div>
+              ) : (
+                <div>Loading...</div>
+              )}
+            </TokenContext.Provider>
           </UserInfoContext.Provider>
         </LoadingContext.Provider>
       </MagicContext.Provider>
