@@ -1,6 +1,7 @@
 import {
   MagicContext,
   LoggedInContext,
+  TokenContext
 } from "../components/Store";
 
 import { useContext, useState } from "react";
@@ -10,6 +11,7 @@ import { router, useRouter } from "next/router";
 
 function CreateGig() {
   const [loggedIn, setLoggedIn] = useContext(LoggedInContext);
+  const [token, setToken] = useContext(TokenContext);
   const [magic] = useContext(MagicContext);
  
   const [gig, setGig] = useState({
@@ -23,28 +25,25 @@ function CreateGig() {
 
 
   const handleChange = (event) => {
-    console.log(event.target.id);
     gig[event.target.id] = event.target.value;
     setGig(gig);
   }
   const onSkillsChange = (event) => {
-    console.log(event.target);
     if(event.target.checked) {
       gig.skills = [...gig.skills, event.target.id]
-      console.log(gig);
       setGig(gig);
     } 
   }
   async function handleClick() {
     try {
-
-      console.log(gig);
+       
+      console.log(magic);
       let result = await fetch(
         `http://3.250.29.111:3005/api/gig`,
         {
           method: "POST",
           headers: {
-            Authorization: `Bearer WyIweDQ5YTNhZmRhZmZmNTcyMzIyNTRlNTYyZjcxNWE4MGNlNWJkYWMwOTJkNWRmNWEzNDQwNTc3MDRkZGRiZDlkNWY2ODIyOTMyYWEzNmNjODQ0ODZkZGU0ZjU3NDBjMzRkNmFlZTIxYzY0MjcwYzUxNzhlNDExNjEwNDYzNzQ3NGVmMWMiLCJ7XCJpYXRcIjoxNjAyNDczOTM3LFwiZXh0XCI6MTYwMjQ3NDgzNyxcImlzc1wiOlwiZGlkOmV0aHI6MHgzZjEzQUEzNzhFYzA3ZjVENDMyZGVmMjg5YWZlQTU1ZERiYUJFM0Q0XCIsXCJzdWJcIjpcIjFNaDdPM2NmRXU0bGN6am9lYkw3YWNxVVZiU2NRNXRkSU0wV1pWa3B6Mk09XCIsXCJhdWRcIjpcImRpZDptYWdpYzo3MzhkYWVlYS1hMWJiLTRkYjUtODY2MS1lMWNkNDEyOTEyZjRcIixcIm5iZlwiOjE2MDI0NzM5MzcsXCJ0aWRcIjpcIjBlNTMxODNlLWVjNWUtNGI3Ni05NjE3LTY1NmJkMWQ4MjA3MlwiLFwiYWRkXCI6XCIweGUwODY3YWUwNDBjNzI0ZDVlYjU4NGM2MDQ4MjU0NDMxZjBmODFlYmNjZGFhNTlhYWQwNmFkMDhkNzg1YjgyM2Q3YTlmZjdhOGM0OWJkZmI3NjU4ZjM1Y2Q4NGRhYmFhMjI5MTBiODBlOGYwYTFjMjViYjVhZDAxMDdkODRjYzQwMWJcIn0iXQ==`,
+            Authorization: token,
             'Content-Type': 'application/json'
           },
           body: JSON.stringify({
@@ -55,7 +54,8 @@ function CreateGig() {
           })
         }
       );
-      console.log(result);
+      router.push("/gigs")
+
     } catch (err) {
       console.error(err);
     }
