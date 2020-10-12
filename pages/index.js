@@ -62,7 +62,7 @@ const Index = () => {
 
       setLoggedIn(true);
 
-      router.push("/SignupCompleted");
+      router.push("/SignupPhaseTwo");
     } catch (err) {
       console.error(err);
     }

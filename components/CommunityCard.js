@@ -1,9 +1,24 @@
-function CommunityCard({ name, isAccepting, members, scarcityScore }) {
+function CommunityCard({
+  name,
+  members,
+  scarcityScore,
+  selectCommunity,
+  selected,
+}) {
+  function getCardState() {
+    if (members == 24) return "Not accepting";
+    if (!selected) return "Can join";
+    if (selected) return "Joined!";
+  }
+
   return (
-    <div className="flex flex-col border-2 border-blue-600 bg-white">
+    <div
+      className="flex flex-col border-2 border-blue-600 bg-white cursor-pointer"
+      onClick={selectCommunity}
+    >
       <div className="grid grid-cols-2 p-4 border-b-2 border-blue-600">
         <h2>{name}</h2>
-        <p>{isAccepting ? "Not accepting" : "Selected!"}</p>
+        <p>{getCardState()}</p>
       </div>
       <div className="grid grid-cols-2 p-4">
         <p>Members</p>

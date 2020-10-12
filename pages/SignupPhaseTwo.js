@@ -2,9 +2,10 @@ import {
   MagicContext,
   LoggedInContext,
   LoadingContext,
+  UserInfoContext,
 } from "../components/Store";
 
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import CommunityCard from "../components/CommunityCard";
 
 import communityContractAbi from "../utils/communityContractAbi.json";
@@ -12,15 +13,14 @@ import communityContractAbi from "../utils/communityContractAbi.json";
 import { ethers } from "ethers";
 import { useRouter } from "next/router";
 
-const communities = [
-  { name: "Bruh", members: 22, isAccepting: true, scarcityScore: 69 },
-];
-
 function SignupPhaseTwo() {
   const [loggedIn, setLoggedIn] = useContext(LoggedInContext);
+  const [userInfo, setUserInfo] = useContext(UserInfoContext);
   const [magic] = useContext(MagicContext);
 
   const router = useRouter();
+
+  const [communities, setCommunities] = useState([]);
 
   async function joinCommunity() {
     const provider = new ethers.providers.Web3Provider(magic.rpcProvider);
@@ -56,13 +56,67 @@ function SignupPhaseTwo() {
     }
   }
 
+  useEffect(() => {
+    (async () => {
+      try {
+        console.log(userInfo);
+
+        let communitiesToAdd = new Map();
+        for await (let { skill } of userInfo.skills) {
+          let communities = await fetch(
+            `http://3.250.29.111:3005/api/community?skill=${skill}`,
+            {
+              method: "GET",
+            }
+          );
+          communities = await communities.json();
+
+          communities.map((community) => {
+            return { ...community, selected: false };
+          });
+
+          for (let community of communities) {
+            if (!communitiesToAdd.has(community.address)) {
+              communitiesToAdd.set(community.address, {
+                ...community,
+                selected: false,
+              });
+            }
+          }
+        }
+
+        let arrCommunitiesToAdd = [];
+        let i = 1;
+        for (let community of communitiesToAdd.values()) {
+          arrCommunitiesToAdd.push({ ...community, name: `DiTO #${i}` });
+        }
+
+        setCommunities(arrCommunitiesToAdd);
+      } catch (err) {
+        console.error(err.message);
+      }
+    })();
+  }, []);
+
+  function selectCommunity(commIndex) {
+    setCommunities((communities) =>
+      communities.map((comm, i) => {
+        return { ...community, selected: i === commIndex };
+      })
+    );
+  }
+
   return (
     <div className="flex flex-col">
       <div className="flex flex-row">
         <div className="flex flex-col space-y-8 container mx-auto bg-blue-100 p-8 h-screen">
           <h1>Here's a few communities for you!</h1>
           {communities.map((community, i) => (
-            <CommunityCard key={i} {...community} />
+            <CommunityCard
+              key={i}
+              {...community}
+              selectCommunity={() => selectCommunity(i)}
+            />
           ))}
         </div>
         <div className="flex flex-col justify-between space-y-8 w-full flex-grow p-8 h-screen">
