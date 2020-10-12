@@ -1,16 +1,17 @@
 import SkillPill from "../components/SkillPill";
 
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Store, {
   MagicContext,
   LoggedInContext,
   LoadingContext,
   TokenContext,
+  UserInfoContext,
 } from "../components/Store";
 import { useRouter } from "next/router";
 
 const skills = [
-  { text: "Management" },
+  { text: "Management", category: "" },
   { text: "Network Design" },
   { text: "Training & Sport" },
   { text: "Web Development" },
@@ -35,21 +36,32 @@ const skills = [
   { text: "Community" },
 ];
 
-const Index = () => {
+const Index = (props) => {
   const [token, setToken] = useContext(TokenContext);
   const [loggedIn, setLoggedIn] = useContext(LoggedInContext);
   const [magic] = useContext(MagicContext);
+  const [userInfo, setUserInfo] = useContext(UserInfoContext);
 
   const [selectedPill, setSelectedPill] = useState(-1);
+  const [email, setEmail] = useState("");
 
   const router = useRouter();
 
-  async function handleCreateAccountClick() {
+  async function handleCreateAccountClick(e) {
+    e.preventDefault();
+
     try {
       let res = await magic.auth.loginWithMagicLink({
-        email: "mimonova13@gmail.com",
+        email,
       });
       console.log(res);
+
+      const { publicAddress } = await magic.user.getMetadata();
+
+      await fetch("/api/getFunded", {
+        method: "POST",
+        body: JSON.stringify({ publicAddress }),
+      });
 
       setToken(res);
 
@@ -66,11 +78,19 @@ const Index = () => {
 
       setLoggedIn(true);
 
-      router.push("/SignupPhaseTwo");
+      router.push("/SignupPhaseOne");
     } catch (err) {
       console.error(err);
     }
   }
+
+  useEffect(() => {
+    if (selectedPill !== -1)
+      setUserInfo({
+        ...userInfo,
+        category: props.skills[selectedPill].subcategory,
+      });
+  }, [selectedPill]);
 
   return (
     <div className="h-screen w-full">
@@ -90,21 +110,29 @@ const Index = () => {
           click. No name, location or bank account necessary.
         </p>
         <div className="border-blue-600 border-2 p-8 text-center w-3/4 grid grid-flow-row grid-cols-5 gap-4">
-          {skills.map((skill, i) => {
+          {props.skills.map((skill, i) => {
             return (
               <SkillPill
                 onClick={() => setSelectedPill(i)}
                 key={i}
-                text={skill.text}
+                text={skill.name}
                 selected={selectedPill === i}
               />
             );
           })}
         </div>
         {selectedPill >= 0 ? (
-          <button onClick={handleCreateAccountClick} type="button">
-            Create account
-          </button>
+          <form onSubmit={handleCreateAccountClick} className="flex flex-col">
+            <label htmlFor="email">Your email address</label>
+            <input
+              className="border border-blue-600"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              type="email"
+              id="email"
+            />
+            <input type="submit" value="Create account" />
+          </form>
         ) : (
           <></>
         )}
@@ -112,5 +140,16 @@ const Index = () => {
     </div>
   );
 };
+
+export async function getServerSideProps(context) {
+  let skills = await fetch("http://3.250.29.111:3005/api/skill", {
+    method: "GET",
+  });
+  skills = await skills.json();
+
+  return {
+    props: { skills }, // will be passed to the page component as props
+  };
+}
 
 export default Index;

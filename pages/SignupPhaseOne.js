@@ -71,7 +71,8 @@ function SignupPhaseOne(props) {
 
         let categories = [];
         for (let [name, { ditoMultFactor, skills }] of skillsByCats.entries()) {
-          categories.push({ name, ditoMultFactor, skills });
+          if (userInfo.category === name)
+            categories.push({ name, ditoMultFactor, skills });
         }
 
         setCategories(categories);
