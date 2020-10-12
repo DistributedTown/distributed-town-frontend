@@ -50,7 +50,7 @@ const Index = () => {
       console.log(res);
 
       let result = await fetch(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/user/login`,
+        `${process.env.NEXT_PUBLIC_SERVER_URL}api/user/login`,
         {
           method: "POST",
           headers: {

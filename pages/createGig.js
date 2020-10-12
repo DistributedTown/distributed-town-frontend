@@ -11,7 +11,7 @@ import { router, useRouter } from "next/router";
 function CreateGig() {
   const [loggedIn, setLoggedIn] = useContext(LoggedInContext);
   const [magic] = useContext(MagicContext);
-
+ 
   const [gig, setGig] = useState({
       title: "",
       description: "",
@@ -28,9 +28,11 @@ function CreateGig() {
     setGig(gig);
   }
   const onSkillsChange = (event) => {
+    console.log(event.target);
     if(event.target.checked) {
-      console.log(event.target.value)
-      setGigs([event.target.value]);
+      gig.skills = [...gig.skills, event.target.id]
+      console.log(gig);
+      setGig(gig);
     } 
   }
   async function handleClick() {
@@ -42,9 +44,15 @@ function CreateGig() {
         {
           method: "POST",
           headers: {
-            Authorization: `Bearer WyIweDg0M2M4ZWUyNmRlMjU3NGY5YzdlZWRiNTRhZTM5YzZiNzkzMDNjMzJhOWViMjM4NzYwZjNkOTFjY2E2ZTUyOTM0NDA3NzUzMTc3OGRlYzI2Y2NmMWI2MmRlNDIxOWQ3ZWY4NmIyNzI5MWNlOTgxMzRlMzRmOWQyYTg4ZmM0MGNmMWIiLCJ7XCJpYXRcIjoxNjAyNDcwMjA3LFwiZXh0XCI6MTYwMjQ3MTEwNyxcImlzc1wiOlwiZGlkOmV0aHI6MHgzZjEzQUEzNzhFYzA3ZjVENDMyZGVmMjg5YWZlQTU1ZERiYUJFM0Q0XCIsXCJzdWJcIjpcIjFNaDdPM2NmRXU0bGN6am9lYkw3YWNxVVZiU2NRNXRkSU0wV1pWa3B6Mk09XCIsXCJhdWRcIjpcImRpZDptYWdpYzoxYjAzZDUwNS1iOTE3LTRjNDUtYTE2ZC02Y2IxY2EyZWRjOGJcIixcIm5iZlwiOjE2MDI0NzAyMDcsXCJ0aWRcIjpcIjI1Zjc4NGE5LTRlNTUtNDdkNS1hY2Y3LWIzMDJlZWY3YmFkMlwiLFwiYWRkXCI6XCIweGUwODY3YWUwNDBjNzI0ZDVlYjU4NGM2MDQ4MjU0NDMxZjBmODFlYmNjZGFhNTlhYWQwNmFkMDhkNzg1YjgyM2Q3YTlmZjdhOGM0OWJkZmI3NjU4ZjM1Y2Q4NGRhYmFhMjI5MTBiODBlOGYwYTFjMjViYjVhZDAxMDdkODRjYzQwMWJcIn0iXQ==`,
+            Authorization: `Bearer WyIweDQ5YTNhZmRhZmZmNTcyMzIyNTRlNTYyZjcxNWE4MGNlNWJkYWMwOTJkNWRmNWEzNDQwNTc3MDRkZGRiZDlkNWY2ODIyOTMyYWEzNmNjODQ0ODZkZGU0ZjU3NDBjMzRkNmFlZTIxYzY0MjcwYzUxNzhlNDExNjEwNDYzNzQ3NGVmMWMiLCJ7XCJpYXRcIjoxNjAyNDczOTM3LFwiZXh0XCI6MTYwMjQ3NDgzNyxcImlzc1wiOlwiZGlkOmV0aHI6MHgzZjEzQUEzNzhFYzA3ZjVENDMyZGVmMjg5YWZlQTU1ZERiYUJFM0Q0XCIsXCJzdWJcIjpcIjFNaDdPM2NmRXU0bGN6am9lYkw3YWNxVVZiU2NRNXRkSU0wV1pWa3B6Mk09XCIsXCJhdWRcIjpcImRpZDptYWdpYzo3MzhkYWVlYS1hMWJiLTRkYjUtODY2MS1lMWNkNDEyOTEyZjRcIixcIm5iZlwiOjE2MDI0NzM5MzcsXCJ0aWRcIjpcIjBlNTMxODNlLWVjNWUtNGI3Ni05NjE3LTY1NmJkMWQ4MjA3MlwiLFwiYWRkXCI6XCIweGUwODY3YWUwNDBjNzI0ZDVlYjU4NGM2MDQ4MjU0NDMxZjBmODFlYmNjZGFhNTlhYWQwNmFkMDhkNzg1YjgyM2Q3YTlmZjdhOGM0OWJkZmI3NjU4ZjM1Y2Q4NGRhYmFhMjI5MTBiODBlOGYwYTFjMjViYjVhZDAxMDdkODRjYzQwMWJcIn0iXQ==`,
+            'Content-Type': 'application/json'
           },
-          body: gig
+          body: JSON.stringify({
+            title: gig.title, 
+            description: gig.description, 
+            skills: gig.skills,
+            creditsOffered: parseInt(gig.creditsOffered)
+          })
         }
       );
       console.log(result);
@@ -90,20 +98,20 @@ function CreateGig() {
         </h2>
           <div className="grid grid-cols">
             <div className="flex flex-row items-start" >
-              <input type="checkbox" />
-              <div className="flex flex-col" onChange={onSkillsChange}>
+              <input type="checkbox" key={'Blockchain & DLT'} id="Blockchain & DLT" onChange={onSkillsChange}/>
+              <div className="flex flex-col" >
                 <p>Blockchain & DLT</p>
               </div>
             </div>
             <div className="flex flex-row items-start" >
-              <input type="checkbox" />
-              <div className="flex flex-col" onChange={onSkillsChange}>
+              <input type="checkbox" key={'Tech'} id="Tech" onChange={onSkillsChange} />
+              <div className="flex flex-col">
                 <p>Tech</p>
               </div>
             </div>
             <div className="flex flex-row items-start">
-              <input type="checkbox" />
-              <div className="flex flex-col" onChange={onSkillsChange}>
+              <input type="checkbox" key={'Protocol'} id="Protocol" onChange={onSkillsChange}/>
+              <div className="flex flex-col">
                 <p>Protocol</p>
               </div>
             </div>
@@ -133,7 +141,7 @@ function CreateGig() {
         </h2>
           <div className="grid grid-cols">
             <div className="flex flex-row items-start">
-              <input className="border border-blue-200" id="creditsOffered" onChange={handleChange}/>
+              <input className="border border-blue-200" id="creditsOffered" type='number' onChange={handleChange}/>
               <div className="flex flex-col">
               </div>
             </div>
