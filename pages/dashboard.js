@@ -64,7 +64,7 @@ function Dashboard() {
       <div className="flex flex-col flex-grow space-y-8 px-8 py-4">
         <h1>Community Dashboard</h1>
         <h2>Administration</h2>
-        <Button>Community Treasury</Button>
+        <Button onClick={() => router.push("/CommunityTreasury")}>Community Treasury</Button>
         <Button onClick={() => router.push("/gigs")}>Open Gigs</Button>
         <Button>Projects & Proposals</Button>
       </div>
