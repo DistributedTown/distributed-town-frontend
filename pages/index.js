@@ -79,9 +79,12 @@ const Index = () => {
       </nav>
       <div className="w-full h-full flex flex-col items-center space-y-8">
         <div className="border-blue-600 border-2 p-8 text-center max-w-sm">
-          <h1>Incredibly inspiring text</h1>
+          <h1>Have you ever thought, “I would like to contribute, but …” </h1>
         </div>
-        <p>Dito dito dito dito dito</p>
+        <p>
+          Distributed Town (DiTo) lets you create or join a community with one
+          click. No name, location or bank account necessary.
+        </p>
         <div className="border-blue-600 border-2 p-8 text-center w-3/4 grid grid-flow-row grid-cols-5 gap-4">
           {skills.map((skill, i) => {
             return (

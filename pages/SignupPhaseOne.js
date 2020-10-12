@@ -17,88 +17,22 @@ function SignupPhaseOne(props) {
 
   const [selectedSkillsIndexes, setSelectedSkillsIndexes] = useState([]);
 
-  const categories1 = [
-    {
-      name: "Blockchain & DLT",
-      skills: [
-        { name: "DeFi", selected: false, disabled: false, level: 60 },
-        { name: "Architecture", selected: false, disabled: false, level: 60 },
-        {
-          name: "Smart Contracts",
-          selected: false,
-          disabled: false,
-          level: 60,
-        },
-        {
-          name: "Blockchain Infrastructure",
-          selected: false,
-          disabled: false,
-          level: 60,
-        },
-      ],
-    },
-    {
-      name: "Tech",
-      skills: [
-        { name: "Backend", selected: false, disabled: false, level: 60 },
-        { name: "Mobile Dev", selected: false, disabled: false, level: 60 },
-        { name: "Web Dev", selected: false, disabled: false, level: 60 },
-        { name: "Frontend", selected: false, disabled: false, level: 60 },
-      ],
-    },
-    {
-      name: "Protocol",
-      skills: [
-        { name: "Network Design", selected: false, disabled: false, level: 60 },
-        {
-          name: "Governance & Consensus",
-          selected: false,
-          disabled: false,
-          level: 60,
-        },
-        { name: "Game Theory", selected: false, disabled: false, level: 60 },
-        { name: "Tokenomics", selected: false, disabled: false, level: 60 },
-      ],
-    },
-  ];
-  const categories2 = [
-    {
-      name: "Creative Arts",
-      skills: ["Music", "Painting", "Photography", "Video-making"],
-    },
-    {
-      name: "Lifestyle",
-      skills: ["Training & Sport", "Hiking", "Biking", "Writing"],
-    },
-    {
-      name: "Activities",
-      skills: [
-        "Performance & Theather",
-        "Project Management",
-        "Production",
-        "Gaming",
-      ],
-    },
-  ];
-  const categories3 = [
-    {
-      name: "Community Life",
-      skills: [
-        "Fun & Entertainment",
-        "Administration & Management",
-        "Community Life",
-        "Leadership & Public Speaking",
-      ],
-    },
-    {
-      name: "Professional",
-      skills: ["Teaching", "Art, Music & Creativity", "Accounting", "Legal"],
-    },
-    {
-      name: "At Home",
-      skills: ["Cooking", "Gardening", "Householding", "Company"],
-    },
-  ];
+  function getDitoMultFactor(category) {
+    let mult = 0;
+    switch (category) {
+      case "At Home":
+        mult = 6;
+        break;
+      case "Community":
+        mult = 12;
+        break;
+      case "Professional":
+        mult = 12;
+        break;
+    }
+
+    return mult;
+  }
 
   useEffect(() => {
     fetch("http://3.250.29.111:3005/api/skill", { method: "GET" })
@@ -109,6 +43,7 @@ function SignupPhaseOne(props) {
           if (skillsByCats.has(skill.subcategory)) {
             let subCategory = skillsByCats.get(skill.subcategory);
             skillsByCats.set(skill.subcategory, {
+              ditoMultFactor: getDitoMultFactor(skill.subcategory),
               skills: [
                 ...subCategory.skills,
                 {
@@ -121,6 +56,7 @@ function SignupPhaseOne(props) {
             });
           } else {
             skillsByCats.set(skill.subcategory, {
+              ditoMultFactor: getDitoMultFactor(skill.subcategory),
               skills: [
                 {
                   name: skill.name,
@@ -134,8 +70,8 @@ function SignupPhaseOne(props) {
         }
 
         let categories = [];
-        for (let [name, { skills }] of skillsByCats.entries()) {
-          categories.push({ name, skills });
+        for (let [name, { ditoMultFactor, skills }] of skillsByCats.entries()) {
+          categories.push({ name, ditoMultFactor, skills });
         }
 
         setCategories(categories);
@@ -296,10 +232,15 @@ function SignupPhaseOne(props) {
 
   function setUserSkills() {
     let skills = [];
+
     for (let category of categories) {
       for (let skill of category.skills) {
         if (skill.selected)
-          skills.push({ skill: skill.name, level: skill.level / 10 });
+          skills.push({
+            skill: skill.name,
+            level: skill.level / 10,
+            redeemableDitos: (skill.level / 10) * category.ditoMultFactor,
+          });
       }
     }
 
@@ -322,8 +263,8 @@ function SignupPhaseOne(props) {
         <div className="flex flex-col space-y-8 p-8 flex-grow-0 bg-blue-100 h-full">
           <h1>Welcome to Distributed Town!</h1>
           <p>
-            This will be a “congrats” message + summary / story about
-            Distributed Town, the reasons and benefits in joining it etc.
+            This is the first step to join a global community of local people -
+            or the other way around :)
           </p>
 
           <div>
@@ -340,7 +281,8 @@ function SignupPhaseOne(props) {
         </div>
         <div className="flex flex-col space-y-8 p-8 flex-grow">
           <h1>Tell us about you!</h1>
-          <p>Pick your Skills (between 1 and 3) Description of the process</p>
+          <p>Pick your Skills (between 1 and 3)</p>
+          <p>Select what you’re the best at, and receive Credits for it.</p>
           {categories.map((category, i) => {
             return (
               <SkillsCard

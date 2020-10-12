@@ -20,9 +20,13 @@ function SignupPhaseTwo() {
 
   const router = useRouter();
 
+  const [isJoining, setIsJoining] = useState(false);
+
   const [communities, setCommunities] = useState([]);
 
   async function joinCommunity() {
+    setIsJoining(true);
+
     const provider = new ethers.providers.Web3Provider(magic.rpcProvider);
 
     try {
@@ -31,28 +35,41 @@ function SignupPhaseTwo() {
       // Get user's Ethereum public address
       const address = await signer.getAddress();
 
-      // Get user's balance in ether
-      const balance = ethers.utils.formatEther(
-        await provider.getBalance(address) // Balance is in wei
-      );
+      let community = communities.filter((community) => community.selected)[0];
 
       const contractABI = communityContractAbi;
-      const contractAddress = "0x790697f595Aa4F9294566be0d262f71b44b5039c";
+      const contractAddress = community.address;
       const contract = new ethers.Contract(
         contractAddress,
         contractABI,
         signer
       );
 
+      setUserInfo({
+        ...userInfo,
+        communityContract: { address: contractAddress, name: community.name },
+      });
+
+      let amountOfRedeemableDitos = 0;
+      for (let { redeemableDitos } of userInfo.skills) {
+        amountOfRedeemableDitos += redeemableDitos;
+      }
+
+      console.log(amountOfRedeemableDitos);
+
       // Send transaction to smart contract to update message and wait to finish
-      const tx = await contract.join(30);
+      const tx = await contract.join(amountOfRedeemableDitos);
 
       // Wait for transaction to finish
       const receipt = await tx.wait();
 
+      console.log(receipt);
+
       router.push("/SignupCompleted");
     } catch (err) {
       console.error(err);
+    } finally {
+      setIsJoining(false);
     }
   }
 
@@ -100,7 +117,7 @@ function SignupPhaseTwo() {
 
   function selectCommunity(commIndex) {
     setCommunities((communities) =>
-      communities.map((comm, i) => {
+      communities.map((community, i) => {
         return { ...community, selected: i === commIndex };
       })
     );
@@ -121,33 +138,32 @@ function SignupPhaseTwo() {
         </div>
         <div className="flex flex-col justify-between space-y-8 w-full flex-grow p-8 h-screen">
           <h1>The credit you will earn with your skills</h1>
-          <p>Description of the process</p>
+          <p>
+            Your skills are your main asset. And the only thing that matters.
+            The more rare they are, the more credits you’ll get!
+          </p>
           <div className="border-2 border-blue-600 p-4 flex flex-col space-y-4">
-            <div className="grid grid-cols-2">
-              <div className="flex flex-col">
-                <p>Skill A</p>
-                <p>60%</p>
-              </div>
-              <div className="flex space-x-2">
-                <img src="/dito-tokens.svg" />
-                <p>54 DiTo</p>
-              </div>
-            </div>
-            <div className="grid grid-cols-2">
-              <div className="flex flex-col">
-                <p>Skill B</p>
-                <p>40%</p>
-              </div>
-              <div className="flex space-x-2">
-                <img src="/dito-tokens.svg" />
-                <p>32 DiTo</p>
-              </div>
-            </div>
+            {userInfo.skills.map((skill, i) => {
+              return (
+                <div className="grid grid-cols-2">
+                  <div className="flex flex-col">
+                    <p>{skill.skill}</p>
+                    <p>{skill.level.toString().padEnd(2, "0")}%</p>
+                  </div>
+                  <div className="flex space-x-2">
+                    <img src="/dito-tokens.svg" />
+                    <p>{skill.redeemableDitos} DiTo</p>
+                  </div>
+                </div>
+              );
+            })}
           </div>
 
           <div className="w-full border-2 border-gray-400">
             <button type="button" onClick={joinCommunity}>
-              Join and get your credits!
+              {isJoining
+                ? "Joining the community, please wait"
+                : "Join and get your credits!"}
             </button>
           </div>
         </div>

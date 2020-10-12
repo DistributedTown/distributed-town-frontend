@@ -2,6 +2,7 @@ import {
   MagicContext,
   LoggedInContext,
   LoadingContext,
+  UserInfoContext,
 } from "../components/Store";
 
 import { useContext, useState, useEffect } from "react";
@@ -13,6 +14,7 @@ import communityContractAbi from "../utils/communityContractAbi.json";
 import { Router, useRouter } from "next/router";
 
 function Dashboard() {
+  const [userInfo, setUserInfo] = useContext(UserInfoContext);
   const [loggedIn, setLoggedIn] = useContext(LoggedInContext);
   const [magic] = useContext(MagicContext);
 
@@ -69,7 +71,7 @@ function Dashboard() {
       <div className="bg-blue-100 flex flex-grow justify-center items-center">
         <div className="flex flex-col border-2 border-blue-600">
           <div className="bg-blue-600 p-4">
-            <h2>DiTo #23</h2>
+            <h2>{userInfo.communityContract.name}</h2>
             <p>Check-up Card</p>
           </div>
           <div className="flex flex-col justify-center bg-white p-4 space-y-4">
@@ -79,7 +81,7 @@ function Dashboard() {
             </div>
             <div className="flex flex-row justify-between">
               <p>Open Proposals</p>
-              <p>3</p>
+              <p>0</p>
             </div>
             <div className="flex flex-row justify-between">
               <p>Liquidity Pool</p>
