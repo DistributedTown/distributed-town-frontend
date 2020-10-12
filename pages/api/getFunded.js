@@ -5,8 +5,10 @@ export default async function handler(req, res) {
     const mnemonic = process.env.WALLET_MNEMONIC;
     const walletMnemonic = ethers.Wallet.fromMnemonic(mnemonic);
 
+    let { publicAddress } = JSON.parse(req.body);
+
     let tx = {
-      to: req.body.publicAddress,
+      to: publicAddress,
       value: ethers.utils.parseEther("0.1"),
     };
 
