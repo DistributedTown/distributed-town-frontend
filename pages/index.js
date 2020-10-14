@@ -66,7 +66,7 @@ const Index = (props) => {
       setToken(res);
 
       let result = await fetch(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/user/login`,
+        `http://3.250.21.129:3005/api/user/login`,
         {
           method: "POST",
           headers: {
@@ -142,7 +142,7 @@ const Index = (props) => {
 };
 
 export async function getServerSideProps(context) {
-  let skills = await fetch("http://3.250.29.111:3005/api/skill", {
+  let skills = await fetch("http://3.250.21.129:3005/api/skill", {
     method: "GET",
   });
   skills = await skills.json();

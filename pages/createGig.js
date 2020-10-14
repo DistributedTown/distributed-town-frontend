@@ -39,7 +39,7 @@ function CreateGig() {
        
       console.log(magic);
       let result = await fetch(
-        `http://3.250.29.111:3005/api/gig`,
+        `http://3.250.21.129:3005/api/gig`,
         {
           method: "POST",
           headers: {

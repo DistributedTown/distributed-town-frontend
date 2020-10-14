@@ -22,7 +22,7 @@ function Gigs() {
   useEffect(() => {
     async function effect() {
       let resp = await fetch(
-        `http://3.250.29.111:3005/api/gig?isOpen=false`,
+        `http://3.250.21.129:3005/api/gig?isOpen=false`,
         {
           method: "GET",
           headers: {
@@ -38,7 +38,7 @@ function Gigs() {
 
 const takeGig = (gigID) => {
   let result = fetch(
-    `http://3.250.29.111:3005/api/gig/${gigID}/accept`,
+    `http://3.250.21.129:3005//api/gig/${gigID}/accept`,
     {
       method: "POST",
       headers: {

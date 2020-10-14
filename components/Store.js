@@ -21,7 +21,7 @@ const Store = ({ children }) => {
     setIsLoading(true);
 
     /* We initialize Magic in `useEffect` so it has access to the global `window` object inside the browser */
-    let m = new Magic(process.env.NEXT_PUBLIC_MAGIC_PUBLISHABLE_KEY, {
+    let m = new Magic(pk_test_1C5A2BC69B7C18E5, {
       network: "ropsten",
     });
     setMagic(m);

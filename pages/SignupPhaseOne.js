@@ -35,7 +35,7 @@ function SignupPhaseOne(props) {
   }
 
   useEffect(() => {
-    fetch("http://3.250.29.111:3005/api/skill", { method: "GET" })
+    fetch("http://3.250.21.129:3005/api/skill", { method: "GET" })
       .then((response) => response.json())
       .then((skills) => {
         let skillsByCats = new Map();

@@ -81,7 +81,7 @@ function SignupPhaseTwo() {
         let communitiesToAdd = new Map();
         for await (let { skill } of userInfo.skills) {
           let communities = await fetch(
-            `http://3.250.29.111:3005/api/community?skill=${skill}`,
+            `http://3.250.21.129:3005/api/community?skill=${skill}`,
             {
               method: "GET",
             }
