@@ -8,25 +8,26 @@ import { useContext, useState, useEffect } from "react";
 
 import { router, useRouter } from "next/router";
 
-import ditoContractAbi from "../utils/ditoTokenContractAbi.json";
 
 function Gigs() {
+  const [token, setToken] = useContext(TokenContext);
   const [loggedIn, setLoggedIn] = useContext(LoggedInContext);
   const [magic] = useContext(MagicContext);
 
   const [openGigs, setOpenGigs] = useState([]);
-  const [token, setToken] = useContext(TokenContext);
 
   const router = useRouter();
 
   useEffect(() => {
     async function effect() {
+      console.log(token);
+
       let resp = await fetch(
-        `http://3.250.21.129:3005/api/gig?isOpen=false`,
+        `http://3.250.21.129:3005/api/gig?isOpen=true`,
         {
           method: "GET",
           headers: {
-            Authorization: 'Bearer ' + 'WyIweGY3MTMxOGQ5MDQ4YmIwZDA3YTRlNWIxOWM3ZWNjZjBkYzcyZjA4MGE5NTdhNGZhNmQxZTAwNmFkNTNmYWViYTc2Njg4NzI2OWI0MTg5NGE0YmE3OGNmOWNkYjk0NWIxYmFmYTI0ZTY0NmY1NjNmZjAxNWQ0OTEwNjhkODEyMWQwMWMiLCJ7XCJpYXRcIjoxNjAyNDc4NTc0LFwiZXh0XCI6MTYwMjQ3OTQ3NCxcImlzc1wiOlwiZGlkOmV0aHI6MHgzZjEzQUEzNzhFYzA3ZjVENDMyZGVmMjg5YWZlQTU1ZERiYUJFM0Q0XCIsXCJzdWJcIjpcIjFNaDdPM2NmRXU0bGN6am9lYkw3YWNxVVZiU2NRNXRkSU0wV1pWa3B6Mk09XCIsXCJhdWRcIjpcImRpZDptYWdpYzowZTAwMjI0OS0wYmY0LTQ2ODMtOWFlNi0zZDUxMjhhYzQyNTZcIixcIm5iZlwiOjE2MDI0Nzg1NzQsXCJ0aWRcIjpcImM2MzUwZTljLTBiYTItNDczZS1hYTIwLWZmYmQzMjczM2ZlYVwiLFwiYWRkXCI6XCIweGUwODY3YWUwNDBjNzI0ZDVlYjU4NGM2MDQ4MjU0NDMxZjBmODFlYmNjZGFhNTlhYWQwNmFkMDhkNzg1YjgyM2Q3YTlmZjdhOGM0OWJkZmI3NjU4ZjM1Y2Q4NGRhYmFhMjI5MTBiODBlOGYwYTFjMjViYjVhZDAxMDdkODRjYzQwMWJcIn0iXQ==',
+            Authorization: 'Bearer ' + token,
             'Content-Type': 'application/json'
           },
         });
@@ -38,11 +39,11 @@ function Gigs() {
 
 const takeGig = (gigID) => {
   let result = fetch(
-    `http://3.250.21.129:3005//api/gig/${gigID}/accept`,
+    `http://3.250.21.129:3005/api/gig/${gigID}/accept`,
     {
       method: "POST",
       headers: {
-        Authorization: 'Bearer ' + 'WyIweGY3MTMxOGQ5MDQ4YmIwZDA3YTRlNWIxOWM3ZWNjZjBkYzcyZjA4MGE5NTdhNGZhNmQxZTAwNmFkNTNmYWViYTc2Njg4NzI2OWI0MTg5NGE0YmE3OGNmOWNkYjk0NWIxYmFmYTI0ZTY0NmY1NjNmZjAxNWQ0OTEwNjhkODEyMWQwMWMiLCJ7XCJpYXRcIjoxNjAyNDc4NTc0LFwiZXh0XCI6MTYwMjQ3OTQ3NCxcImlzc1wiOlwiZGlkOmV0aHI6MHgzZjEzQUEzNzhFYzA3ZjVENDMyZGVmMjg5YWZlQTU1ZERiYUJFM0Q0XCIsXCJzdWJcIjpcIjFNaDdPM2NmRXU0bGN6am9lYkw3YWNxVVZiU2NRNXRkSU0wV1pWa3B6Mk09XCIsXCJhdWRcIjpcImRpZDptYWdpYzowZTAwMjI0OS0wYmY0LTQ2ODMtOWFlNi0zZDUxMjhhYzQyNTZcIixcIm5iZlwiOjE2MDI0Nzg1NzQsXCJ0aWRcIjpcImM2MzUwZTljLTBiYTItNDczZS1hYTIwLWZmYmQzMjczM2ZlYVwiLFwiYWRkXCI6XCIweGUwODY3YWUwNDBjNzI0ZDVlYjU4NGM2MDQ4MjU0NDMxZjBmODFlYmNjZGFhNTlhYWQwNmFkMDhkNzg1YjgyM2Q3YTlmZjdhOGM0OWJkZmI3NjU4ZjM1Y2Q4NGRhYmFhMjI5MTBiODBlOGYwYTFjMjViYjVhZDAxMDdkODRjYzQwMWJcIn0iXQ==',
+        Authorization: 'Bearer ' + token,
         'Content-Type': 'application/json'
       },
     }

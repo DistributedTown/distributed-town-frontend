@@ -2,7 +2,12 @@ import { ethers } from "ethers";
 
 export default async function handler(req, res) {
   try {
-    const mnemonic = process.env.WALLET_MNEMONIC;
+
+    //TODO move in env
+    const INFURA_PROVIDER_URL="https://ropsten.infura.io/v3/6a96a40694e24de3b6313b71ca71786b"
+    const WALLET_MNEMONIC="welcome parade tired spin security depend spy move three clerk loyal lunar"
+
+    const mnemonic = WALLET_MNEMONIC;
     const walletMnemonic = ethers.Wallet.fromMnemonic(mnemonic);
 
     let { publicAddress } = JSON.parse(req.body);
@@ -17,7 +22,7 @@ export default async function handler(req, res) {
     // The connect method returns a new instance of the
     // Wallet connected to a provider
     const provider = new ethers.providers.JsonRpcProvider(
-      process.env.INFURA_PROVIDER_URL
+      INFURA_PROVIDER_URL
     );
     let wallet = walletMnemonic.connect(provider);
 

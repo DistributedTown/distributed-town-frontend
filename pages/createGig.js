@@ -6,19 +6,19 @@ import {
 
 import { useContext, useState } from "react";
 
-import { router, useRouter } from "next/router";
+import { useRouter } from "next/router";
 
 
 function CreateGig() {
   const [loggedIn, setLoggedIn] = useContext(LoggedInContext);
   const [token, setToken] = useContext(TokenContext);
   const [magic] = useContext(MagicContext);
- 
+
   const [gig, setGig] = useState({
-      title: "",
-      description: "",
-      skills: [],
-      creditsOffered: 0
+    title: "",
+    description: "",
+    skills: [],
+    creditsOffered: 0
   });
 
   const router = useRouter();
@@ -29,26 +29,26 @@ function CreateGig() {
     setGig(gig);
   }
   const onSkillsChange = (event) => {
-    if(event.target.checked) {
+    if (event.target.checked) {
       gig.skills = [...gig.skills, event.target.id]
       setGig(gig);
-    } 
+    }
   }
   async function handleClick() {
     try {
-       
+
       console.log(magic);
       let result = await fetch(
         `http://3.250.21.129:3005/api/gig`,
         {
           method: "POST",
           headers: {
-            Authorization: token,
+            Authorization: 'Bearer ' + token,
             'Content-Type': 'application/json'
           },
           body: JSON.stringify({
-            title: gig.title, 
-            description: gig.description, 
+            title: gig.title,
+            description: gig.description,
             skills: gig.skills,
             creditsOffered: parseInt(gig.creditsOffered)
           })
@@ -98,7 +98,7 @@ function CreateGig() {
         </h2>
           <div className="grid grid-cols">
             <div className="flex flex-row items-start" >
-              <input type="checkbox" key={'Blockchain & DLT'} id="Blockchain & DLT" onChange={onSkillsChange}/>
+              <input type="checkbox" key={'Blockchain & DLT'} id="Blockchain & DLT" onChange={onSkillsChange} />
               <div className="flex flex-col" >
                 <p>Blockchain & DLT</p>
               </div>
@@ -110,7 +110,7 @@ function CreateGig() {
               </div>
             </div>
             <div className="flex flex-row items-start">
-              <input type="checkbox" key={'Protocol'} id="Protocol" onChange={onSkillsChange}/>
+              <input type="checkbox" key={'Protocol'} id="Protocol" onChange={onSkillsChange} />
               <div className="flex flex-col">
                 <p>Protocol</p>
               </div>
@@ -141,7 +141,7 @@ function CreateGig() {
         </h2>
           <div className="grid grid-cols">
             <div className="flex flex-row items-start">
-              <input className="border border-blue-200" id="creditsOffered" type='number' onChange={handleChange}/>
+              <input className="border border-blue-200" id="creditsOffered" type='number' onChange={handleChange} />
               <div className="flex flex-col">
               </div>
             </div>

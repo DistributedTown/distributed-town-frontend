@@ -105,7 +105,7 @@ function SignupPhaseTwo() {
         let arrCommunitiesToAdd = [];
         let i = 1;
         for (let community of communitiesToAdd.values()) {
-          arrCommunitiesToAdd.push({ ...community, name: `DiTO #${i}` });
+          arrCommunitiesToAdd.push({ ...community, name: `DiTO #2060` });
         }
 
         setCommunities(arrCommunitiesToAdd);

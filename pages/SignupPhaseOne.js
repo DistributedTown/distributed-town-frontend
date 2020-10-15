@@ -2,6 +2,7 @@ import {
   MagicContext,
   LoggedInContext,
   UserInfoContext,
+  TokenContext
 } from "../components/Store";
 
 import { useContext, useState, useEffect } from "react";
@@ -14,9 +15,9 @@ function SignupPhaseOne(props) {
   const [loggedIn, setLoggedIn] = useContext(LoggedInContext);
   const [userInfo, setUserInfo] = useContext(UserInfoContext);
   const [categories, setCategories] = useState([]);
+  const [token, setToken] = useContext(TokenContext);
 
   const [selectedSkillsIndexes, setSelectedSkillsIndexes] = useState([]);
-
   function getDitoMultFactor(category) {
     let mult = 0;
     switch (category) {
@@ -79,71 +80,6 @@ function SignupPhaseOne(props) {
       })
       .catch((error) => console.error(error.message));
   }, []);
-
-  // useEffect(() => {
-  //   if (categories.length > 0) {
-  //     let newCategories = categories;
-
-  //     for (let { cat: catIndex, skill: skillIndex } of selectedSkillsIndexes) {
-  //       newCategories = newCategories.map((category, categoryIndex) => {
-  //         if (categoryIndex === catIndex) {
-  //           return {
-  //             ...category,
-  //             skills: category.skills.map((skill, skIndex) => {
-  //               if (skIndex === skillIndex) {
-  //                 return { ...skill, selected: true };
-  //               }
-
-  //               return {
-  //                 ...skill,
-  //                 selected: false,
-  //                 disabled:
-  //                   !skill.selected && selectedSkillsIndexes.length === 3,
-  //               };
-  //             }),
-  //           };
-  //         }
-
-  //         return {
-  //           ...category,
-  //           skills: category.skills.map((skill) => {
-  //             return {
-  //               ...skill,
-  //               disabled: !skill.selected && selectedSkillsIndexes.length === 3,
-  //             };
-  //           }),
-  //         };
-  //       });
-  //     }
-
-  //     setCategories(newCategories);
-  //   }
-  // }, [selectedSkillsIndexes.length]);
-
-  // function selectSkill(categoryIndex, skillIndex) {
-  //   let wasChkSelected =
-  //     selectedSkillsIndexes.filter(
-  //       ({ cat, skill }) => cat === categoryIndex && skill === skillIndex
-  //     ).length === 0;
-
-  //   console.log(wasChkSelected);
-
-  //   if (wasChkSelected)
-  //     setSelectedSkillsIndexes((selectedSkillsIndexes) =>
-  //       [
-  //         ...selectedSkillsIndexes,
-  //         { cat: categoryIndex, skill: skillIndex },
-  //       ].sort((a, b) => a.cat - b.cat)
-  //     );
-  //   else
-  //     setSelectedSkillsIndexes((selectedSkillsIndexes) =>
-  //       selectedSkillsIndexes
-  //         .filter(
-  //           ({ cat, skill }) => cat !== categoryIndex && skill !== skillIndex
-  //         )
-  //         .sort((a, b) => a.cat - b.cat)
-  //     );
-  // }
 
   function selectSkill(catIndex, skillIndex) {
     setCategories((categories) =>
