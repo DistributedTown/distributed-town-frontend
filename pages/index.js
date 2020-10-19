@@ -15,32 +15,6 @@ import TheNav from "../components/TheNav";
 import bgImages from '../utils/bgImages.js';
 import { get } from "mongoose";
 
-const skills = [
-  { text: "Management", category: "" },
-  { text: "Network Design" },
-  { text: "Training & Sport" },
-  { text: "Web Development" },
-  { text: "DeFi" },
-  { text: "Tokenomics" },
-  { text: "Painting" },
-  { text: "Consensus" },
-  { text: "Mobile Dev" },
-  { text: "Architecture" },
-  { text: "Frontend Dev" },
-  { text: "Governance" },
-  { text: "Teaching" },
-  { text: "Game Theory" },
-  { text: "Video Making" },
-  { text: "Photography" },
-  { text: "Smart Contracts" },
-  { text: "Gardening" },
-  { text: "Backend Dev" },
-  { text: "Householding" },
-  { text: "Legal" },
-  { text: "Blockchain" },
-  { text: "Community" },
-];
-
 const Index = (props) => {
   const [token, setToken] = useContext(TokenContext);
   const [loggedIn, setLoggedIn] = useContext(LoggedInContext);
@@ -67,7 +41,21 @@ const Index = (props) => {
   };
 
   const showRegisterModal = () => {setSelectedPill(-1); return toggleModal()};
-
+ 
+  async function fetchSkillsJSON(res) {
+    const skillsRes = await fetch( 
+      `http://3.250.21.129:3005/api/skill`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${res}`,
+        },
+      }
+    );
+    const skills = await skillsRes.json();
+    return skills;
+  }
+   
   async function handleCreateAccountClick(e) {
     e.preventDefault();
 
@@ -95,11 +83,20 @@ const Index = (props) => {
           },
         }
       );
-      console.log(result);
-
       setLoggedIn(true);
-
-      router.push("/SignupPhaseOne");
+      
+      const skills = await fetchSkillsJSON(res);
+      const haSkills = Array.isArray(skills) && skills.length > 0;
+      console.log('skills response type', typeof(skills));
+      console.log('array has data', Array.isArray(skills));
+      console.log('hassSkills', haSkills);
+      console.log('is logged in', loggedIn);
+      if(haSkills && loggedIn){
+        console.log('going to the dashboard');
+        router.push("/dashboard");
+      }  else {
+        router.push("/SignupPhaseOne");
+      }
     } catch (err) {
       console.error(err);
     }
@@ -129,9 +126,6 @@ const Index = (props) => {
         <div className="w-full h-full flex flex-col items-center space-y-8 px-4">
             <Quote 
               quote="Have you ever thought, 'I would like to contribute, but …'"
-              company="MRA Consulting"
-              avatarUrl="/quoteimg.jpg" 
-              name="Alessandro Perico"
             />
           <p className="w-1/3 text-gray-500">
             Distributed Town (DiTo) lets you create or join a community with one

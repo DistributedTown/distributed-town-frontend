@@ -25,13 +25,16 @@ const RegistrationForm = ({cta, onSubmit,setEmail, title, subtitle, placeholderT
     </div>
   </div>
 </div>
-  
 )
 
 RegistrationForm.propTypes = {
     cta: PropTypes.string,
     onSubmit: PropTypes.func,
     setEmail: PropTypes.func,
+    email: PropTypes.string,
+    subtitle: PropTypes.string,
+    title: PropTypes.string,
+    placeholderText: PropTypes.string,
    };
 
 export default RegistrationForm;

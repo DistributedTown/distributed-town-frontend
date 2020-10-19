@@ -212,6 +212,7 @@ function SignupPhaseOne(props) {
                title="Welcome to Distributed Town!"
                subtitle="This is the first step to join a global community of local people or the other way around :)"
                placeholderText = "Please choose a nickname"
+               userInfo = {userInfo}
             />
         </div>
         <div className="flex flex-col space-y-8 p-8 flex-grow">
