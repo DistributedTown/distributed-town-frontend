@@ -42,13 +42,13 @@ const Index = (props) => {
 
   const showRegisterModal = () => {setSelectedPill(-1); return toggleModal()};
  
-  async function fetchSkillsJSON(res) {
+  async function fetchSkillsJSON(authToken) {
     const skillsRes = await fetch( 
       `http://3.250.21.129:3005/api/skill`,
       {
         method: "GET",
         headers: {
-          Authorization: `Bearer ${res}`,
+          Authorization: `Bearer ${authToken}`,
         },
       }
     );

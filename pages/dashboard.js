@@ -17,7 +17,7 @@ function Dashboard() {
   const [userInfo, setUserInfo] = useContext(UserInfoContext);
   const [loggedIn, setLoggedIn] = useContext(LoggedInContext);
   const [magic] = useContext(MagicContext);
-
+  console.log('userinfo',userInfo);
   const [numOfMembers, setNumOfMembers] = useState(-1);
   const [liquidityPoolBalance, setLiquidityPoolBalance] = useState(-1);
 
@@ -71,7 +71,7 @@ function Dashboard() {
       <div className="bg-blue-100 flex flex-grow justify-center items-center">
         <div className="flex flex-col border-2 border-blue-600">
           <div className="bg-blue-600 p-4">
-            <h2>{userInfo.communityContract.name}</h2>
+            <h2>{userInfo.communityId}</h2>
             <p>Check-up Card</p>
           </div>
           <div className="flex flex-col justify-center bg-white p-4 space-y-4">
