@@ -1,4 +1,6 @@
 import SkillPill from "../components/SkillPill";
+import Quote from "../components/Quote";
+import RegistrationForm from '../components/RegistrationForm';
 
 import { useContext, useEffect, useState } from "react";
 import Store, {
@@ -9,6 +11,9 @@ import Store, {
   UserInfoContext,
 } from "../components/Store";
 import { useRouter } from "next/router";
+import TheNav from "../components/TheNav";
+import bgImages from '../utils/bgImages.js';
+import { get } from "mongoose";
 
 const skills = [
   { text: "Management", category: "" },
@@ -41,11 +46,27 @@ const Index = (props) => {
   const [loggedIn, setLoggedIn] = useContext(LoggedInContext);
   const [magic] = useContext(MagicContext);
   const [userInfo, setUserInfo] = useContext(UserInfoContext);
+  const [modalState, setModalState] = useState(false);
 
   const [selectedPill, setSelectedPill] = useState(-1);
   const [email, setEmail] = useState("");
 
   const router = useRouter();
+
+  const getCommunityBgImg = (selectedCommunity) => {
+    return typeof(selectedCommunity !== 'undefined') && selectedCommunity >= 0 ? bgImages[props.skills[selectedCommunity].name.toLowerCase()] : bgImages['default'];
+  };
+
+  const getSelectedSkillName = (selectedPill) => {
+    return typeof(selectedPill !== 'undefined') && selectedPill >= 0 ?
+                        ` ${props.skills[selectedPill].name}` : `${props.skills[0].name}`
+  };
+  
+  const toggleModal = () => {
+    setModalState(!modalState);
+  };
+
+  const showRegisterModal = () => {setSelectedPill(-1); return toggleModal()};
 
   async function handleCreateAccountClick(e) {
     e.preventDefault();
@@ -89,53 +110,83 @@ const Index = (props) => {
       setUserInfo({
         ...userInfo,
         category: props.skills[selectedPill].subcategory,
+        background:getCommunityBgImg(selectedPill),
       });
   }, [selectedPill]);
 
   return (
+
     <div className="h-screen w-full">
-      <nav className="w-full flex justify-between items-center">
-        <div className="flex items-center space-x-4">
-          <img src="/dito-logo.svg" alt="DiTo Logo" />
-          <h1>DistributedTown</h1>
-        </div>
-        <p>What's this about?</p>
-      </nav>
-      <div className="w-full h-full flex flex-col items-center space-y-8">
-        <div className="border-blue-600 border-2 p-8 text-center max-w-sm">
-          <h1>Have you ever thought, “I would like to contribute, but …” </h1>
-        </div>
-        <p>
-          Distributed Town (DiTo) lets you create or join a community with one
-          click. No name, location or bank account necessary.
-        </p>
-        <div className="border-blue-600 border-2 p-8 text-center w-3/4 grid grid-flow-row grid-cols-5 gap-4">
-          {props.skills.map((skill, i) => {
-            return (
-              <SkillPill
-                onClick={() => setSelectedPill(i)}
-                key={i}
-                text={skill.name}
-                selected={selectedPill === i}
-              />
-            );
-          })}
-        </div>
-        {selectedPill >= 0 ? (
-          <form onSubmit={handleCreateAccountClick} className="flex flex-col">
-            <label htmlFor="email">Your email address</label>
-            <input
-              className="border border-blue-600"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              type="email"
-              id="email"
+          <div className="firstPage">
+        <TheNav 
+           logoUrl="/dito-logo.svg"
+           slogan="Distributed Town"
+           helpCta="What is it about?"
+           helpUrl="#"
+           links = {[{text:'Docs',url: '#'}, {text:'Blog', url:'#'}]}
+        
+        />
+        <div className="w-full h-full flex flex-col items-center space-y-8 px-4">
+            <Quote 
+              quote="Have you ever thought, 'I would like to contribute, but …'"
+              company="MRA Consulting"
+              avatarUrl="/quoteimg.jpg" 
+              name="Alessandro Perico"
             />
-            <input type="submit" value="Create account" />
-          </form>
-        ) : (
-          <></>
-        )}
+          <p className="w-1/3 text-gray-500">
+            Distributed Town (DiTo) lets you create or join a community with one
+            click. No name, location or bank account necessary.
+          </p>
+          <div className="p-8 text-center w-3/4 grid grid-flow-row grid-cols-5 gap-4">
+            {props.skills.map((skill, i) => {
+              return (
+                <SkillPill
+                  onClick={() => {setSelectedPill(i); toggleModal()}}
+                  key={i}
+                  text={skill.name}
+                  selected={selectedPill === i}
+                />
+              );
+            })}
+          </div>
+        </div>
+      </div>
+      <div className={`modalBackground modalVisible-${modalState} bg-white`}>
+        <div className="modalWrapper">
+          <div className="flex flex-col">
+            <div className="flex flex-row">
+              <div className="flex flex-col space-y-8 container mx-auto h-screen">
+                <img src={getCommunityBgImg(selectedPill)}/>
+               </div>
+             <div className="flex flex-col justify-between items-center space-y-8 w-full bg-white flex-grow p-8 h-screen">
+              
+                <div className="p-4 flex flex-col flex-row space-y-4">
+                    {selectedPill >= 0 ? (
+                      <div className="flex flex-col justify-center mt-6 items-center">
+                        <RegistrationForm 
+                          onSubmit={handleCreateAccountClick}
+                          setEmail={setEmail}
+                          title="Welcome to Dito"
+                          email = {email}
+                          subtitle= {`You will be joining a ${getSelectedSkillName(selectedPill)} community`}
+                          cta="Create Account"
+                          placeholderText="Please enter your email" 
+                        />
+                        <a onClick={showRegisterModal} href="#" className=" pt-2 text-gray-500 underline">I wan to change my community</a>
+                      </div>
+                      
+                    ) : (
+                      <></>
+                    )}
+                 
+                </div>
+                <div className="w-full">
+                  <h4 className="text-gray-500"> DiTo © 2020</h4>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

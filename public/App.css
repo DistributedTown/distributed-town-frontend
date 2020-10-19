@@ -1,0 +1,48 @@
+
+
+.modalBackground {
+    text-align: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease-in-out;
+    position: fixed;
+    left:0;
+    right:0;
+    top:0;
+    bottom:0;
+    width: 100vw;
+    height: 100vh;
+}
+
+.modalClose {
+    cursor: pointer;
+    text-align: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease-in-out;
+    position: fixed;
+    border-radius: 23px;
+    background-color: gray;
+    left:0;
+    right:0;
+    top:0;
+    bottom:0;
+    width: 100vw;
+    height: 100vh;
+
+  }
+
+.modalVisible-true {
+    opacity: 1;
+    pointer-events: auto;
+}
+.indexVisible-true{
+    display:none;
+}
+.indexVisible-false{
+    display:block;
+}
+
+.firstPage-true{
+    pointer-events:none;
+}

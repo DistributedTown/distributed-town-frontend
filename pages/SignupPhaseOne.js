@@ -10,14 +10,21 @@ import SkillsCard from "../components/SkillsCard";
 
 import Button from "../components/Button";
 import { useRouter } from "next/router";
+import NicknameSelection from "../components/NicknameSelection";
 
 function SignupPhaseOne(props) {
   const [loggedIn, setLoggedIn] = useContext(LoggedInContext);
   const [userInfo, setUserInfo] = useContext(UserInfoContext);
   const [categories, setCategories] = useState([]);
   const [token, setToken] = useContext(TokenContext);
-
   const [selectedSkillsIndexes, setSelectedSkillsIndexes] = useState([]);
+  const backgroundImageStyle = {
+    backgroundImage: `url(${userInfo.background})`,
+    //filter: 'blur(8px)',
+   // WebkitFilter: 'blur(8px)',
+   
+   
+  };
   function getDitoMultFactor(category) {
     let mult = 0;
     switch (category) {
@@ -34,6 +41,7 @@ function SignupPhaseOne(props) {
 
     return mult;
   }
+
 
   useEffect(() => {
     fetch("http://3.250.21.129:3005/api/skill", { method: "GET" })
@@ -197,24 +205,14 @@ function SignupPhaseOne(props) {
   return (
     <div className="flex flex-col">
       <div className="flex flex-row min-h-screen">
-        <div className="flex flex-col space-y-8 p-8 flex-grow-0 bg-blue-100 h-full">
-          <h1>Welcome to Distributed Town!</h1>
-          <p>
-            This is the first step to join a global community of local people -
-            or the other way around :)
-          </p>
-
-          <div>
-            <label htmlFor="nickname">nickname</label>
-            <input
-              value={userInfo.nickname}
-              onChange={(e) =>
-                setUserInfo({ ...userInfo, nickname: e.target.value })
-              }
-              className="border border-green-600 ml-2"
-              id="nickname"
+        <div style={backgroundImageStyle} className="flex flex-col w-1/2 space-y-8 p-8 flex-grow-0  h-full">
+            <NicknameSelection 
+               setUserInfo={setUserInfo}
+               value={userInfo.nickname}
+               title="Welcome to Distributed Town!"
+               subtitle="This is the first step to join a global community of local people or the other way around :)"
+               placeholderText = "Please choose a nickname"
             />
-          </div>
         </div>
         <div className="flex flex-col space-y-8 p-8 flex-grow">
           <h1>Tell us about you!</h1>

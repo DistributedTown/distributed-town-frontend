@@ -8,9 +8,9 @@ function SkillsCard({ title, skills, selectSkill, setSkillLevel }) {
             <div className="flex flex-row items-start" key={i}>
               <input
                 type="checkbox"
-                checked={skill.selected}
                 onClick={() => selectSkill(i)}
                 disabled={skill.disabled}
+                defaultChecked={i === -1}
               />
               <div className="flex flex-col">
                 <p>{skill.name}</p>
@@ -30,3 +30,4 @@ function SkillsCard({ title, skills, selectSkill, setSkillLevel }) {
 }
 
 export default SkillsCard;
+
