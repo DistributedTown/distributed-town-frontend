@@ -15,6 +15,7 @@ const RegistrationForm = ({cta, onSubmit,setEmail, title, subtitle, placeholderT
         id="email" type="email" value = {email}
         placeholder={placeholderText} 
         onChange={(e) => setEmail(e.target.value)}
+        required 
       />
       <button 
         className="bg-denim hover:bg-blue-700 text-white font-bold w-full py-2 px-4 rounded focus:outline-none focus:shadow-outline" 

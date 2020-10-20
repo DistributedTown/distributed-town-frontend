@@ -96,6 +96,7 @@ const Login = () => {
     });
     
     let data = await res.json();
+    console.log(data);
 
     /* If the user is authorized, return an object containing the user properties (issuer, publicAddress, email) */
     /* Else, the login was not successful and return false */

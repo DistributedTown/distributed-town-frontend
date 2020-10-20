@@ -35,11 +35,34 @@ function SkillWallet() {
       }
     );
       const gigs = await response.json();
-      return gigs;
+      setPastGigs(gigs);
+      //return gigs;
     } catch(err){
       console.log(err);
     }
 
+  }
+
+  async function fetchCurrentUser(authToken){
+    try{
+        const response = await fetch(`http://3.250.21.129:3005/api/user`,
+        {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${authToken}`
+          }
+        });
+        const userData = await response.json();
+        setUserInfo({ 
+          ...userInfo,
+          username: userData.username,
+          email: userData.email,
+        })
+        console.log('userInfo', userInfo);
+        //return userData;
+    } catch(err){
+      console.log(err);
+    }
   }
    
   useEffect(() => {
@@ -80,10 +103,9 @@ function SkillWallet() {
         } 
 
         //change to false to get the closed after user with closed is ready.
-        const theGigs = await fetchOpenCloseGigs(token, true);
-        console.log(theGigs)
-        setPastGigs(theGigs);
-
+        await fetchOpenCloseGigs(token, true);
+        await fetchCurrentUser(token);
+        
       } catch (err) {
         console.error(err);
       }
@@ -111,19 +133,19 @@ function SkillWallet() {
                   </div>
                   <div className="flex flex-col w-2/3 items-left   justify-start">
                     <h3 className="font-bold">{userInfo.username}</h3>
-                    <h3>nickname@example.com</h3>  
+                    <h3>{userInfo.email}</h3>  
                   </div>
                 </div>
                {/*  <!--COMMUNITIES--> */}
                 <div className="h-1/4 flex px-3 py-4 mb-4 flex-col items-center justify-center border border-denim">
-                  <h1 className="text-3xl font-bold ">My Community</h1>
+                  <h1 className="lg:text-3xl text-xl font-bold ">My Community</h1>
                   <div className="bg-denim py-3 w-1/2 text-white text-center">
                     <p>DITO #23</p>
                   </div>
                 </div>
                {/*  <!--QR-CODE--> */}
                 <div className="flex h-1/4 p-4 items-center justify-center border border-denim">
-                  <p>Show <a href="#" className="underline text-blue-600"> Wallet's QR-Code</a> to help a different community.</p> 
+                  <p>Show <a href="#" className="underline text-denim"> Wallet's QR-Code</a> to help a different community.</p> 
                 </div>
                 {/*  <!--BALANCE--> */}
                  <div className="flex h-1/4 p-3 mb-3">
@@ -165,16 +187,16 @@ function SkillWallet() {
               </div>
             </div>
             <div className="flex flex-row w-1/3">
-              <div className="p-3 w-full"><p className="pr-4">Badges will appear here once you validate your skills. Check the <a className="text-blue-600 underline" href="#">Open Gigs</a> and validate your Skills now!
+              <div className="p-3 w-full"><p className="pr-4">Badges will appear here once you validate your skills. Check the <a className="text-denim underline" href="#">Open Gigs</a> and validate your Skills now!
               </p> </div>
             </div> 
           </div>
         </div>
 
      {/*  <!--PAST GIGS --> */}
-      <div className="flex flex-col m-3 ">
+      <div className="flex flex-col ">
         <h1 className="w-1/3 text-center text-black p-3 border border-denim ">Past Gigs</h1>
-        <div className="flex flex-row flex-wrap justify-start py-3" >
+        <div className="flex flex-row flex-wrap justify-start  py-2 mr-5">
         { Array.isArray(pastGigs) ? pastGigs.map((gig, i) => {
             return(
        
@@ -184,19 +206,19 @@ function SkillWallet() {
                   <h3>{gig.title}</h3>
                    <p className="text-xs">{gig.description}</p>
                   <h3>Skills Used</h3>
-                   <ul className="text-xs">
-                   {gig.skills.map((skill, j) => (
-                     <span className="p-1">{`#${skill}`}</span>
+                   <div className="flex flex-col flex-wrap text-xs">
+                   {gig.skills.map((skill, index) => (
+                     <span key={index} className="p-1">{`#${skill}`}</span>
                      ))}
-                   </ul>
+                   </div>
               </div>
               <div className="flex flex-col w-1/2 h-full p-2">
                <div className="flex flex-col h-1/2 h-full">
-                  <h3 className="font-bold text-orange-500">Rate Received</h3>
+                  <h3 className="font-bold text-xs lg:text-base text-carrot">Rate Received</h3>
                   <h3 className="text-black">7/10</h3>
                 </div>
                 <div className="flex flex-col h-1/2 h-full">
-                  <h3 className="font-bold text-orange-500">Credits Received</h3>
+                  <h3 className="font-bold text-xs lg:text-base text-carrot">Credits Received</h3>
                   <h3 className="text-black">6 Dito</h3>
                 </div>
               

@@ -13,7 +13,7 @@ import Store, {
 import { useRouter } from "next/router";
 import TheNav from "../components/TheNav";
 import bgImages from '../utils/bgImages.js';
-import { get } from "mongoose";
+import { get, set } from "mongoose";
 
 
 import communityContractAbi from "../utils/communityContractAbi.json";
@@ -45,8 +45,10 @@ const Index = (props) => {
     setModalState(!modalState);
   };
 
+  const showRegisterModal = () => {setSelectedPill(-1); return toggleModal()};
+
   async function getCommunityById(id){
-    const response = await fectch (`http://{{API_URL}}/api/community/${id}`,  {
+    const response = await fectch (`http://3.250.21.129:3005/api/community/${id}`,  {
       method: "POST",
       headers: {
         Authorization: `Bearer ${res}`,
@@ -81,9 +83,7 @@ const Index = (props) => {
         console.log(err);
       }
     }
-
-  const showRegisterModal = () => {setSelectedPill(-1); return toggleModal()};
- 
+    
   async function fetchSkillsJSON(authToken) {
     const skillsRes = await fetch( 
       `http://3.250.21.129:3005/api/skill`,
@@ -97,15 +97,28 @@ const Index = (props) => {
     const skills = await skillsRes.json();
     return skills;
   }
+
+  async function getDidToken(){
+    const response = await magic.user.getIdToken();
+    const didToken = await response;
+    setToken(didToken);
+    return didToken
+  }
    
   async function handleCreateAccountClick(e) {
     e.preventDefault();
-
+    let didToken = '';
     try {
-      let res = await magic.auth.loginWithMagicLink({
+      if (await magic.user.isLoggedIn())  {
+        didToken= await getDidToken();
+        console.log('didToken',didToken);
+      } else {
+
+     
+      didToken = await magic.auth.loginWithMagicLink({
         email,
       });
-      console.log(res);
+      console.log('didToken',didToken);
 
       const { publicAddress } = await magic.user.getMetadata();
 
@@ -114,27 +127,28 @@ const Index = (props) => {
         body: JSON.stringify({ publicAddress }),
       });
 
-      setToken(res);
+      setToken(didToken);
 
       let result = await fetch(
         `http://3.250.21.129:3005/api/user/login`,
         {
           method: "POST",
           headers: {
-            Authorization: `Bearer ${res}`,
+            Authorization: `Bearer ${didToken}`,
           },
         }
       );
+      }  
       setLoggedIn(true);
       
-      const skills = await fetchSkillsJSON(res);
+      const skills = await fetchSkillsJSON(didToken);
       const haSkills = Array.isArray(skills) && skills.length > 0;
-      console.log('skills response type', typeof(skills));
-      console.log('array has data', Array.isArray(skills));
-      console.log('hassSkills', haSkills);
-      console.log('is logged in', loggedIn);
+      //console.log('skills response type', typeof(skills));
+      //console.log('array has data', Array.isArray(skills));
+      //console.log('hassSkills', haSkills);
+      //console.log('is logged in', loggedIn);
       if(haSkills && loggedIn){
-        console.log('going to the dashboard');
+        //console.log('going to the dashboard');
          await saveCommunityContractToUserContext()
         router.push("/dashboard");
       }  else {
@@ -144,6 +158,10 @@ const Index = (props) => {
       console.error(err);
     }
   }
+
+  useEffect(() => {
+    getDidToken();
+  }, []);
 
   useEffect(() => {
     if (selectedPill !== -1)
