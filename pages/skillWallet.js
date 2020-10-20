@@ -97,6 +97,7 @@ function SkillWallet() {
         let ditoBalanceStr = BigNumber.from(ditoBalance).toString();
         ditoBalanceStr = ditoBalanceStr.slice(0, ditoBalanceStr.length - 18);
 
+        console.log('dashboard token',token);
         setDitoBalance(ditoBalanceStr);
         if(typeof(token) !== 'String' && token.length < 10){
           console.log('dashboard token',token);
@@ -124,27 +125,27 @@ function SkillWallet() {
        
       <div className="w-full flex flex-row space-y-8">
       {/* <!-- WALLET CARD --> */}
-        <div className="flex flex-col w-1/3 p-3 border border-denim m-3">              
+        <div className="flex flex-col w-2/7 p-3 rounded-lg border border-denim m-3">              
               <div className="flex flex-col">  
                 {/* <!--PROFILE--> */}
-                <div className="flex h-1/4 text-white bg-black rounded p-3 mb-3">
+                <div className="flex h-3/8 text-white bg-black rounded p-3 mb-3">
                   <div className="flex w-1/3 items-center justify-center">
                     <p className="text-4xl">👨</p>
                   </div>
-                  <div className="flex flex-col w-2/3 items-left   justify-start">
+                  <div className="flex flex-col w-1/8 items-left   justify-start">
                     <h3 className="font-bold">{userInfo.username}</h3>
                     <h3>{userInfo.email}</h3>  
                   </div>
                 </div>
                {/*  <!--COMMUNITIES--> */}
-                <div className="h-1/4 flex px-3 py-4 mb-4 flex-col items-center justify-center border border-denim">
-                  <h1 className="lg:text-3xl text-xl font-bold ">My Community</h1>
-                  <div className="bg-denim py-3 w-1/2 text-white text-center">
+                <div className="h-2/8 flex px-3 py-4 mb-4 flex-col items-center justify-center border border-denim">
+                  <h1 className="lg:text-3xl text-xl w-3/4 font-bold ">My Community</h1>
+                  <div className="bg-denim py-3 w-3/4 text-white text-center">
                     <p>DITO #23</p>
                   </div>
                 </div>
                {/*  <!--QR-CODE--> */}
-                <div className="flex h-1/4 p-4 items-center justify-center border border-denim">
+                <div className="flex h-2/8 p-4 items-center justify-center border border-denim">
                   <p>Show <a href="#" className="underline text-denim"> Wallet's QR-Code</a> to help a different community.</p> 
                 </div>
                 {/*  <!--BALANCE--> */}
@@ -162,7 +163,7 @@ function SkillWallet() {
               </div>
         </div>
       {/* BADGES AND PAST GIGS */} 
-    <div className="flex flex-col w-2/3 space-y-8">
+    <div className="flex flex-col w-5/7 space-y-8">
        {/*  <!--BADGES --> */}
         <div className="flex flex-col">
           <h1 className="w-1/3 text-center text-black p-3 border border-denim ">By Badges</h1>
