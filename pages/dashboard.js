@@ -3,6 +3,7 @@ import {
   LoggedInContext,
   LoadingContext,
   UserInfoContext,
+  TokenContext,
 } from "../components/Store";
 
 import { useContext, useState, useEffect } from "react";
@@ -17,9 +18,23 @@ function Dashboard() {
   const [userInfo, setUserInfo] = useContext(UserInfoContext);
   const [loggedIn, setLoggedIn] = useContext(LoggedInContext);
   const [magic] = useContext(MagicContext);
-  console.log('userinfo',userInfo);
+  const [token, setToken] = useContext(TokenContext);
   const [numOfMembers, setNumOfMembers] = useState(-1);
   const [liquidityPoolBalance, setLiquidityPoolBalance] = useState(-1);
+  
+  async function fetchUserInfo(authToken, username){
+    const response = await fetch(
+      `http://3.250.21.129:3005/api/user/`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      }
+    );
+    const user = await response.json();
+    return user;
+  }
 
   async function getCommunityInfo() {
     const provider = new ethers.providers.Web3Provider(magic.rpcProvider);
@@ -37,7 +52,11 @@ function Dashboard() {
         contractABI,
         signer
       );
-
+      console.log(await fetchUserInfo(token, userInfo.username));
+      setUserInfo({
+        ...userInfo,
+        communityContract: { address: contractAddress },
+      });
       // Send transaction to smart contract to update message and wait to finish
       const [nUsers, investedBalance] = await Promise.all([
         contract.numberOfMembers(),
@@ -46,6 +65,7 @@ function Dashboard() {
 
       setNumOfMembers(BigNumber.from(nUsers).toNumber());
       setLiquidityPoolBalance(BigNumber.from(investedBalance).toNumber());
+    
     } catch (err) {
       console.error(err);
     }

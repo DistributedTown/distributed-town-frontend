@@ -24,7 +24,7 @@ const Layout = () => {
         <title>DistributedTown</title>
       </Head>
       {loggedIn && userInfo.communityContract ? (
-        <nav className="flex flex-col h-screen max-w-sm p-4 border-r-2 border-blue-600">
+        <nav className="flex flex-col h-screen max-w-sm p-4 border-r-2 border-denim">
           <div>
             <img src="/dito-logo.svg" alt="Logo" />
           </div>

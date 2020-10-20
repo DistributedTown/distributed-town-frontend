@@ -3,6 +3,7 @@ import {
   LoggedInContext,
   LoadingContext,
   UserInfoContext,
+  TokenContext,
 } from "../components/Store";
 
 import { useContext, useState, useEffect } from "react";
@@ -17,9 +18,30 @@ function SkillWallet() {
   const [userInfo, setUserInfo] = useContext(UserInfoContext);
   const [loggedIn, setLoggedIn] = useContext(LoggedInContext);
   const [magic] = useContext(MagicContext);
-
+  const [token, setToken] = useContext(TokenContext);
+  const [pastGigs, setPastGigs] = useState([]);
   const [ditoBalance, setDitoBalance] = useState(-1);
 
+
+  async function fetchOpenCloseGigs(authToken, isOpen) {
+    try {
+      const response= await fetch(`http://3.250.21.129:3005/api/gig?isOpen=${isOpen}`, 
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+          'Content-Type': 'application/json'
+        },
+      }
+    );
+      const gigs = await response.json();
+      return gigs;
+    } catch(err){
+      console.log(err);
+    }
+
+  }
+   
   useEffect(() => {
     (async () => {
       const provider = new ethers.providers.Web3Provider(magic.rpcProvider);
@@ -31,9 +53,7 @@ function SkillWallet() {
         const address = await signer.getAddress();
 
         const communityContractABI = communityContractAbi;
-        const communityContractAddress =
-          userInfo.communityContract.address ||
-          "0x759A224E15B12357b4DB2d3aa20ef84aDAf28bE7";
+        const communityContractAddress = "0x759A224E15B12357b4DB2d3aa20ef84aDAf28bE7";
         const communityContract = new ethers.Contract(
           communityContractAddress,
           communityContractABI,
@@ -55,6 +75,15 @@ function SkillWallet() {
         ditoBalanceStr = ditoBalanceStr.slice(0, ditoBalanceStr.length - 18);
 
         setDitoBalance(ditoBalanceStr);
+        if(typeof(token) !== 'String' && token.length < 10){
+          console.log('dashboard token',token);
+        } 
+
+        //change to false to get the closed after user with closed is ready.
+        const theGigs = await fetchOpenCloseGigs(token, true);
+        console.log(theGigs)
+        setPastGigs(theGigs);
+
       } catch (err) {
         console.error(err);
       }
@@ -73,27 +102,27 @@ function SkillWallet() {
        
       <div className="w-full flex flex-row space-y-8">
       {/* <!-- WALLET CARD --> */}
-        <div className="flex flex-col w-1/3 p-3 border border-blue-600 m-3">              
+        <div className="flex flex-col w-1/3 p-3 border border-denim m-3">              
               <div className="flex flex-col">  
                 {/* <!--PROFILE--> */}
                 <div className="flex h-1/4 text-white bg-black rounded p-3 mb-3">
-                  <div className="flex w-1/2 items-center justify-center">
+                  <div className="flex w-1/3 items-center justify-center">
                     <p className="text-4xl">👨</p>
                   </div>
-                  <div className="flex flex-col w-1/2 items-left   justify-start">
-                    <h3 className="font-bold">Nickname</h3>
+                  <div className="flex flex-col w-2/3 items-left   justify-start">
+                    <h3 className="font-bold">{userInfo.username}</h3>
                     <h3>nickname@example.com</h3>  
                   </div>
                 </div>
                {/*  <!--COMMUNITIES--> */}
-                <div className="h-1/4 flex px-3 py-4 mb-4 flex-col items-center justify-center border border-blue-600">
+                <div className="h-1/4 flex px-3 py-4 mb-4 flex-col items-center justify-center border border-denim">
                   <h1 className="text-3xl font-bold ">My Community</h1>
-                  <div className="bg-blue-600 py-3 w-1/2 text-white text-center">
+                  <div className="bg-denim py-3 w-1/2 text-white text-center">
                     <p>DITO #23</p>
                   </div>
                 </div>
                {/*  <!--QR-CODE--> */}
-                <div className="flex h-1/4 py-4 items-center justify-center border border-blue-600">
+                <div className="flex h-1/4 p-4 items-center justify-center border border-denim">
                   <p>Show <a href="#" className="underline text-blue-600"> Wallet's QR-Code</a> to help a different community.</p> 
                 </div>
                 {/*  <!--BALANCE--> */}
@@ -114,19 +143,25 @@ function SkillWallet() {
     <div className="flex flex-col w-2/3 space-y-8">
        {/*  <!--BADGES --> */}
         <div className="flex flex-col">
-          <h1 className="w-1/3 text-center text-black p-3 border border-blue-600 ">By Badges</h1>
+          <h1 className="w-1/3 text-center text-black p-3 border border-denim ">By Badges</h1>
          
           <div className="flex flex-row">
             <div className="flex flex-row justify-around p-3 w-2/3"> 
              {/*  <!--BADGE--> */}
               <div className="flex w-16 h-16 sm:text-xl md:text-2xl lg:text-5xl lg:w-32 lg:h-32">
-                <div className="rounded-full bg-gray-500 m-2 w-full flex justify-center items-center">🏆 </div>
+                <div className="m-2 w-full flex justify-center items-center"> 
+                <img src="Badge1.svg"/>
+                </div>
               </div>
               <div className="flex w-16 h-16 sm:text-xl md:text-2xl lg:text-5xl lg:w-32 lg:h-32">
-                <div className="rounded-full bg-gray-500 m-2 w-full flex justify-center items-center">🏅 </div>
+                <div className="m-2 w-full flex justify-center items-center">
+                  <img src="Badge2.svg"/>
+                </div>
               </div>
               <div className="flex w-16 h-16 sm:text-xl md:text-2xl lg:text-5xl lg:h-32 lg:w-32 ">
-                <div className="flex rounded-full items-center justify-center w-full bg-gray-500 m-2 flex justify-center items-center">👍</div>
+                <div className="flex items-center justify-center w-full m-2 flex justify-center items-center">
+                   <img src="Badge3.svg"/> 
+                </div>
               </div>
             </div>
             <div className="flex flex-row w-1/3">
@@ -138,18 +173,21 @@ function SkillWallet() {
 
      {/*  <!--PAST GIGS --> */}
       <div className="flex flex-col m-3 ">
-        <h1 className="w-1/3 text-center text-black p-3 border border-blue-600 ">Past Gigs</h1>
-        <div className="flex flex-row flex-wrap justify-around py-3" >
-          <div className="flex w-1/3 h-1/2">
-            <div className="flex-row border border-blue-600 m-1 w-full flex justify-center items-center">
-             {/*  <!--GIG--> */}
+        <h1 className="w-1/3 text-center text-black p-3 border border-denim ">Past Gigs</h1>
+        <div className="flex flex-row flex-wrap justify-start py-3" >
+        { Array.isArray(pastGigs) ? pastGigs.map((gig, i) => {
+            return(
+       
+          <div key={i} className="flex w-1/3 h-1/2">
+            <div className="flex-row border border-denim m-1 w-full flex justify-center items-center">
               <div className="flex flex-col h-full p-2 w-1/2">
-                  <h3>Mockup gig #1</h3>
-                  <p className="text-xs">Random description ...</p>
+                  <h3>{gig.title}</h3>
+                   <p className="text-xs">{gig.description}</p>
                   <h3>Skills Used</h3>
                    <ul className="text-xs">
-                     <li>#House-holding</li>
-                     <li>#Gardening</li>
+                   {gig.skills.map((skill, j) => (
+                     <span className="p-1">{`#${skill}`}</span>
+                     ))}
                    </ul>
               </div>
               <div className="flex flex-col w-1/2 h-full p-2">
@@ -161,17 +199,12 @@ function SkillWallet() {
                   <h3 className="font-bold text-orange-500">Credits Received</h3>
                   <h3 className="text-black">6 Dito</h3>
                 </div>
-                
+              
               </div>
-
             </div>
-          </div>
-          <div className="flex w-1/3 h-1/2">
-            <div className="border border-blue-600 m-1 w-full flex justify-center items-center">gig </div>
-          </div>
-          <div className="flex w-1/3 h-1/2">
-            <div className="border border-blue-600 m-1 w-full flex justify-center items-center">gig </div>
-          </div>
+          </div>    
+             );
+            }) : <></>}
          </div>    
       </div>
     </div>

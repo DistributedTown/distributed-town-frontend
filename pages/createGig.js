@@ -65,7 +65,7 @@ function CreateGig() {
   return (
     <div className="w-full h-screen p-8">
       <h1>Create New Gig</h1>
-      <form className="border-l-2 border-blue-600 flex flex-col pl-4">
+      <form className="border-l-2 border-denim flex flex-col pl-4">
         <div className="flex flex-col">
           <div className="flex justify-between">
             <label htmlFor="gigTitle">Gig title</label>

@@ -13,10 +13,10 @@ function CommunityCard({
 
   return (
     <div
-      className="flex flex-col border-2 border-blue-600 bg-white cursor-pointer"
+      className="flex flex-col border-2 border-denim bg-white cursor-pointer"
       onClick={selectCommunity}
     >
-      <div className="grid grid-cols-2 p-4 border-b-2 border-blue-600">
+      <div className="grid grid-cols-2 p-4 border-b-2 border-denim">
         <h2>{name}</h2>
         <p>{getCardState()}</p>
       </div>

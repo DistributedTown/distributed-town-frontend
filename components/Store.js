@@ -16,6 +16,34 @@ const Store = ({ children }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [userInfo, setUserInfo] = useState({ nickname: "", skills: [] });
   const [token, setToken] = useState("");
+  
+  
+  async function saveCommunityContractToUserContext() {
+    const provider = new ethers.providers.Web3Provider(magic.rpcProvider);
+
+    try {
+      const signer = provider.getSigner();
+
+      // Get user's Ethereum public address
+      const address = await signer.getAddress();
+
+      const contractABI = communityContractAbi;
+      const contractAddress = "0x790697f595Aa4F9294566be0d262f71b44b5039c";
+      const contract = new ethers.Contract(
+        contractAddress,
+        contractABI,
+        signer
+      );
+      setUserInfo({
+        ...userInfo,
+        communityContract: { address: contractAddress },
+      });
+
+    }catch(err){
+        console.log(err);
+      }
+    }
+
 
   useEffect(() => {
     setIsLoading(true);

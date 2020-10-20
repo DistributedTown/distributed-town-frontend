@@ -19,6 +19,7 @@ function Gigs() {
   const router = useRouter();
 
   useEffect(() => {
+    try{
     async function effect() {
       console.log(token);
 
@@ -33,11 +34,17 @@ function Gigs() {
         });
       const openGigsResp = await resp.json();
       return openGigsResp;
+      }
+      effect().then(openGigsResp => setOpenGigs(openGigsResp));
+      console.log(err);
+    }catch(err){
+      console.log(err);
     }
-    effect().then(openGigsResp => setOpenGigs(openGigsResp));
   }, []);
 
+
 const takeGig = (gigID) => {
+  try{
   let result = fetch(
     `http://3.250.21.129:3005/api/gig/${gigID}/accept`,
     {
@@ -47,7 +54,10 @@ const takeGig = (gigID) => {
         'Content-Type': 'application/json'
       },
     }
-  );
+    );
+  }catch(err){
+    console.log(err);
+  }
 }
 
 return (

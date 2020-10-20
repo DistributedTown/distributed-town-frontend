@@ -15,6 +15,11 @@ import TheNav from "../components/TheNav";
 import bgImages from '../utils/bgImages.js';
 import { get } from "mongoose";
 
+
+import communityContractAbi from "../utils/communityContractAbi.json";
+
+import { ethers } from "ethers";
+
 const Index = (props) => {
   const [token, setToken] = useContext(TokenContext);
   const [loggedIn, setLoggedIn] = useContext(LoggedInContext);
@@ -39,6 +44,43 @@ const Index = (props) => {
   const toggleModal = () => {
     setModalState(!modalState);
   };
+
+  async function getCommunityById(id){
+    const response = await fectch (`http://{{API_URL}}/api/community/${id}`,  {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${res}`,
+      },
+    });
+    const community = await response.json();
+    return community;
+  }
+
+  async function saveCommunityContractToUserContext() {
+    const provider = new ethers.providers.Web3Provider(magic.rpcProvider);
+
+    try {
+      const signer = provider.getSigner();
+
+      // Get user's Ethereum public address
+      const address = await signer.getAddress();
+
+      const contractABI = communityContractAbi;
+      const contractAddress = "0x790697f595Aa4F9294566be0d262f71b44b5039c";
+      const contract = new ethers.Contract(
+        contractAddress,
+        contractABI,
+        signer
+      );
+      setUserInfo({
+        ...userInfo,
+        communityContract: { address: contractAddress },
+      });
+
+    }catch(err){
+        console.log(err);
+      }
+    }
 
   const showRegisterModal = () => {setSelectedPill(-1); return toggleModal()};
  
@@ -93,6 +135,7 @@ const Index = (props) => {
       console.log('is logged in', loggedIn);
       if(haSkills && loggedIn){
         console.log('going to the dashboard');
+         await saveCommunityContractToUserContext()
         router.push("/dashboard");
       }  else {
         router.push("/SignupPhaseOne");
@@ -166,7 +209,7 @@ const Index = (props) => {
                           cta="Create Account"
                           placeholderText="Please enter your email" 
                         />
-                        <a onClick={showRegisterModal} href="#" className=" pt-2 text-gray-500 underline">I wan to change my community</a>
+                        <a onClick={showRegisterModal} href="#" className=" pt-2 text-gray-500 underline">Select a different community</a>
                       </div>
                       
                     ) : (

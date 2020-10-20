@@ -5,7 +5,16 @@ module.exports = {
   },
   purge: [],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        'denim': '#146EAA',
+        'royal-blue':'#2680EB',
+        'alizarin': '#E63229',
+        'carrot': '#F08C28',
+        'rain-forest':'#00825B',
+        'deove-gray':'#707070'
+      }
+    },
   },
   variants: {},
   plugins: [],
