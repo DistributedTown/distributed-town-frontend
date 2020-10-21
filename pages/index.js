@@ -33,12 +33,12 @@ const Index = (props) => {
   const router = useRouter();
 
   const getCommunityBgImg = (selectedCommunity) => {
-    return typeof(selectedCommunity !== 'undefined') && selectedCommunity >= 0 ? bgImages[props.skills[selectedCommunity].name.toLowerCase()] : bgImages['default'];
+    return typeof(selectedCommunity !== 'undefined') && selectedCommunity >= 0 ? bgImages[props.skills[selectedCommunity].toLowerCase()] : bgImages['default'];
   };
 
   const getSelectedSkillName = (selectedPill) => {
     return typeof(selectedPill !== 'undefined') && selectedPill >= 0 ?
-                        ` ${props.skills[selectedPill].name}` : `${props.skills[0].name}`
+                        ` ${props.skills[selectedPill]}` : `${props.skills[0]}`
   };
   
   const toggleModal = () => {
@@ -145,9 +145,10 @@ const Index = (props) => {
 
   useEffect(() => {
     if (selectedPill !== -1)
+      
       setUserInfo({
         ...userInfo,
-        category: props.skills[selectedPill].subcategory,
+        category: props.skills[selectedPill],
         background:getCommunityBgImg(selectedPill),
       });
   }, [selectedPill]);
@@ -178,7 +179,7 @@ const Index = (props) => {
                 <SkillPill
                   onClick={() => {setSelectedPill(i); toggleModal()}}
                   key={i}
-                  text={skill.name}
+                  text={skill}
                   selected={selectedPill === i}
                 />
               );

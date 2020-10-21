@@ -16,6 +16,7 @@ function SignupPhaseOne(props) {
   const [loggedIn, setLoggedIn] = useContext(LoggedInContext);
   const [userInfo, setUserInfo] = useContext(UserInfoContext);
   const [categories, setCategories] = useState([]);
+  const [skillTree, setSkillTree] = useState ([]);
   const [token, setToken] = useContext(TokenContext);
   const [selectedSkillsIndexes, setSelectedSkillsIndexes] = useState([]);
   const backgroundImageStyle = {
@@ -25,101 +26,55 @@ function SignupPhaseOne(props) {
    
    
   };
-  function getDitoMultFactor(category) {
-    let mult = 0;
-    switch (category) {
-      case "At Home":
-        mult = 6;
-        break;
-      case "Community":
-        mult = 12;
-        break;
-      case "Professional":
-        mult = 12;
-        break;
-    }
-
-    return mult;
-  }
 
 
   useEffect(() => {
-    fetch("http://localhost:3005/api/skill", { method: "GET" })
-      .then((response) => response.json())
-      .then((skills) => {
-        let skillsByCats = new Map();
-        for (let skill of skills) {
-          if (skillsByCats.has(skill.subcategory)) {
-            let subCategory = skillsByCats.get(skill.subcategory);
-            skillsByCats.set(skill.subcategory, {
-              ditoMultFactor: getDitoMultFactor(skill.subcategory),
-              skills: [
-                ...subCategory.skills,
-                {
-                  name: skill.name,
-                  selected: false,
-                  disabled: false,
-                  level: 60,
-                },
-              ],
-            });
-          } else {
-            skillsByCats.set(skill.subcategory, {
-              ditoMultFactor: getDitoMultFactor(skill.subcategory),
-              skills: [
-                {
-                  name: skill.name,
-                  selected: false,
-                  disabled: false,
-                  level: 60,
-                },
-              ],
-            });
+   
+    const getSkillTree = async () => {
+      try{
+      
+      const response = await fetch(`http://localhost:3005/api/skill?skill=${userInfo.category}`, { method: "GET" });
+      const skillTree = await response.json();
+      const skillTreeCategories = skillTree.categories;
+      setSkillTree(skillTreeCategories);
+      
+      } catch(err) {
+          console.log(err);
+      }
+    }
+    getSkillTree();
+
+
+  } , []);
+
+  function selectSkill(categoryIndex, selectedSkillIndex) {
+     
+         const  updateSkills = (category) => category.skills.map((skill, skillIndex) => {
+           if (skillIndex === selectedSkillIndex) {
+              return [ ...skill, !skill.selected ];
+          } 
+            return [...skill];
+          });
+      
+        const copySkills = (category) => category.skills.map((skill) => {
+            return [...skill]
+        ;});
+    
+
+       const  updateSkilltree = (_skillTree) => _skillTree.map((category,i) => {
+         if(i === categoryIndex){
+         return{...category,
+             skills: updateSkills(category)
+              };
           }
-        }
-
-        let categories = [];
-        for (let [name, { ditoMultFactor, skills }] of skillsByCats.entries()) {
-          if (userInfo.category === name)
-            categories.push({ name, ditoMultFactor, skills });
-        }
-
-        setCategories(categories);
-      })
-      .catch((error) => console.error(error.message));
-  }, []);
-
-  function selectSkill(catIndex, skillIndex) {
-    setCategories((categories) =>
-      categories.map((category, categoryIndex) => {
-        if (categoryIndex === catIndex) {
           return {
             ...category,
-            skills: category.skills.map((skill, skIndex) => {
-              if (skIndex === skillIndex) {
-                return { ...skill, selected: !skill.selected };
-              }
-
-              return {
-                ...skill,
-                // disabled: !skill.selected && selectedSkillsIndexes.length === 3,
-              };
-            }),
-          };
-        }
-
-        return {
-          ...category,
-          skills: category.skills.map((skill) => {
-            return {
-              ...skill,
-              // disabled: !skill.selected && selectedSkillsIndexes.length === 3,
+               skills: copySkills(category)
             };
-          }),
-        };
-      })
-    );
-  }
+          });
+        
+      setSkillTree(updateSkilltree(skillTree));
+    }
 
   function setSkillLevel(catIndex, skillIndex, level) {
     setCategories((categories) =>
@@ -218,17 +173,18 @@ function SignupPhaseOne(props) {
                userInfo = {userInfo}
             />
         </div>
-        <div className="flex flex-col space-y-8 p-8 flex-grow">
+        <div className="flex flex-col space-y-1 p-8 flex-grow">
           <h1>Tell us about you!</h1>
           <p>Pick your Skills (between 1 and 3)</p>
           <p>Select what you’re the best at, and receive Credits for it.</p>
-          {categories.map((category, i) => {
+          {skillTree.map((category, i) => {
+         
             return (
               <SkillsCard
                 key={i}
-                title={category.name}
+                title={category.subCat}
                 skills={category.skills}
-                selectSkill={(skillIndex) => selectSkill(i, skillIndex)}
+                selectSkill={(skillSelectedIndex) => selectSkill(i, skillSelectedIndex)}
                 setSkillLevel={(skillIndex, skillLevel) =>
                   setSkillLevel(i, skillIndex, skillLevel)
                 }
