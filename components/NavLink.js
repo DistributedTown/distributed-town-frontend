@@ -4,7 +4,7 @@ function NavLink(props) {
   return (
     <li>
       <Link href={props.href}>
-        <a className="">{props.children}</a>
+        <a onClick={props.onClick} className="">{props.children}</a>
       </Link>
     </li>
   );

@@ -48,7 +48,7 @@ const Index = (props) => {
   const showRegisterModal = () => {setSelectedPill(-1); return toggleModal()};
 
   async function getCommunityById(id){
-    const response = await fectch (`http://3.250.21.129:3005/api/community/${id}`,  {
+    const response = await fectch (`http://localhost:3005/api/community/${id}`,  {
       method: "POST",
       headers: {
         Authorization: `Bearer ${res}`,
@@ -84,74 +84,57 @@ const Index = (props) => {
       }
     }
     
-  async function fetchSkillsJSON(authToken) {
+  async function fetchUserSkillsJSON(authToken) {
     const skillsRes = await fetch( 
-      `http://3.250.21.129:3005/api/skill`,
+      `http://localhost:3005/api/user`,
       {
         method: "GET",
-        headers: {
-          Authorization: `Bearer ${authToken}`,
-        },
+        headers: {Authorization: `Bearer ${authToken}`},
       }
     );
-    const skills = await skillsRes.json();
-    return skills;
+    const userSkills = await skillsRes.json();
+    return userSkills;
   }
 
-  async function getDidToken(){
-    const response = await magic.user.getIdToken();
-    const didToken = await response;
-    setToken(didToken);
-    return didToken
-  }
    
   async function handleCreateAccountClick(e) {
     e.preventDefault();
-    let didToken = '';
-    try {
-      if (await magic.user.isLoggedIn())  {
-        didToken= await getDidToken();
+    try {     
+        const didToken = await magic.auth.loginWithMagicLink({
+          email,
+        });
         console.log('didToken',didToken);
-      } else {
 
-     
-      didToken = await magic.auth.loginWithMagicLink({
-        email,
-      });
-      console.log('didToken',didToken);
+        const { publicAddress } = await magic.user.getMetadata();
 
-      const { publicAddress } = await magic.user.getMetadata();
-
-      await fetch("/api/getFunded", {
-        method: "POST",
-        body: JSON.stringify({ publicAddress }),
-      });
-
-      setToken(didToken);
-
-      let result = await fetch(
-        `http://3.250.21.129:3005/api/user/login`,
-        {
+        await fetch("/api/getFunded", {
           method: "POST",
-          headers: {
-            Authorization: `Bearer ${didToken}`,
-          },
-        }
-      );
-      }  
-      setLoggedIn(true);
+          body: JSON.stringify({ publicAddress }),
+        });
+
+        setToken(didToken);
+
+        let result = await fetch(
+          `http://localhost:3005/api/user/login`,
+          {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${didToken}`,
+            },
+          }
+        ); 
       
-      const skills = await fetchSkillsJSON(didToken);
-      const haSkills = Array.isArray(skills) && skills.length > 0;
-      //console.log('skills response type', typeof(skills));
-      //console.log('array has data', Array.isArray(skills));
-      //console.log('hassSkills', haSkills);
-      //console.log('is logged in', loggedIn);
+      setLoggedIn(true);
+
+      const userSkills = await fetchUserSkillsJSON(didToken);
+      const haSkills = userSkills[0].skills && Array.isArray(userSkills[0].skills)  && userSkills[0].skills.length > 0;
       if(haSkills && loggedIn){
-        //console.log('going to the dashboard');
+        setUserInfo({...setUserInfo, userSkills: userSkills.skills});
+        console.log('going to the dashboard');
          await saveCommunityContractToUserContext()
-        router.push("/dashboard");
+        router.push("/skillWallet");
       }  else {
+        console.log('starting signup flow');
         router.push("/SignupPhaseOne");
       }
     } catch (err) {
@@ -159,9 +142,6 @@ const Index = (props) => {
     }
   }
 
-  useEffect(() => {
-    getDidToken();
-  }, []);
 
   useEffect(() => {
     if (selectedPill !== -1)
@@ -248,7 +228,7 @@ const Index = (props) => {
 };
 
 export async function getServerSideProps(context) {
-  let skills = await fetch("http://3.250.21.129:3005/api/skill", {
+  let skills = await fetch(`http://localhost:3005/api/skill`, {
     method: "GET",
   });
   skills = await skills.json();

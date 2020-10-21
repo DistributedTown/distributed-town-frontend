@@ -44,7 +44,7 @@ function SignupPhaseOne(props) {
 
 
   useEffect(() => {
-    fetch("http://3.250.21.129:3005/api/skill", { method: "GET" })
+    fetch("http://localhost:3005/api/skill", { method: "GET" })
       .then((response) => response.json())
       .then((skills) => {
         let skillsByCats = new Map();
@@ -189,15 +189,18 @@ function SignupPhaseOne(props) {
       }
     }
 
+    console.log(userInfo)
     setUserInfo((userInfo) => {
       return { ...userInfo, skills };
     });
+    
   }
 
   const router = useRouter();
 
   useEffect(() => {
     if (userInfo.skills.length > 0) {
+      
       router.push("/SignupPhaseTwo");
     }
   }, [userInfo.skills.length]);

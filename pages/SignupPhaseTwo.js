@@ -38,7 +38,7 @@ function SignupPhaseTwo() {
       let community = communities.filter((community) => community.selected)[0];
 
       const contractABI = communityContractAbi;
-      const contractAddress = community.address;
+      const contractAddress = community.address || "0x790697f595Aa4F9294566be0d262f71b44b5039c";;
       const contract = new ethers.Contract(
         contractAddress,
         contractABI,
@@ -81,7 +81,7 @@ function SignupPhaseTwo() {
         let communitiesToAdd = new Map();
         for await (let { skill } of userInfo.skills) {
           let communities = await fetch(
-            `http://3.250.21.129:3005/api/community?skill=${skill}`,
+            `http://localhost:3005/api/community?skill=${skill}`,
             {
               method: "GET",
             }

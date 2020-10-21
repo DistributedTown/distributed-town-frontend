@@ -13,10 +13,22 @@ const Layout = () => {
    * Log user out of of the session with our app (clears the `auth` cookie)
    * Log the user out of their session with Magic
    */
-  const handleLogout = async () => {
+
+  const logout = (e) =>{
+    e.preventDefault();
     setLoggedIn(false);
-    await magic.user.logout();
-  };
+    console.log('logged?', loggedIn);
+  }
+
+  /* const handleLogout = async () => {
+    
+    try {
+      await m.user.logout();
+      console.log(await magic.user.isLoggedIn()); // => `false`
+    } catch(err) {
+      console.log(err);
+    }
+  }; */
 
   return (
     <>
@@ -26,14 +38,14 @@ const Layout = () => {
       {loggedIn && userInfo.communityContract ? (
         <nav className="flex flex-col h-screen max-w-sm p-4 border-r-2 border-denim">
           <div>
-            <img src="/dito-logo.svg" alt="Logo" />
+            <img src="/isologo.svg" alt="Logo" />
           </div>
           <ul className="flex flex-col w-full mt-8">
             <NavLink href="/skillWallet">SkillWallet</NavLink>
             <NavLink href="/dashboard">Dashboard</NavLink>
             <NavLink href="#">Notifications</NavLink>
             <NavLink href="#">Settings</NavLink>
-            <NavLink href="#">Log off</NavLink>
+            <NavLink href="#" onClick={logout}>Logout</NavLink>
           </ul>
         </nav>
       ) : (

@@ -13,6 +13,7 @@ import { router, useRouter } from "next/router";
 
 import ditoContractAbi from "../utils/ditoTokenContractAbi.json";
 import communityContractAbi from "../utils/communityContractAbi.json";
+import { set } from "mongoose";
 
 function SkillWallet() {
   const [userInfo, setUserInfo] = useContext(UserInfoContext);
@@ -25,7 +26,7 @@ function SkillWallet() {
 
   async function fetchOpenCloseGigs(authToken, isOpen) {
     try {
-      const response= await fetch(`http://3.250.21.129:3005/api/gig?isOpen=${isOpen}`, 
+      const response= await fetch(`http://localhost:3005/api/gig?isOpen=${isOpen}`, 
       {
         method: "GET",
         headers: {
@@ -45,7 +46,7 @@ function SkillWallet() {
 
   async function fetchCurrentUser(authToken){
     try{
-        const response = await fetch(`http://3.250.21.129:3005/api/user`,
+        const response = await fetch(`http://localhost:3005/api/user`,
         {
           method: 'GET',
           headers: {
@@ -58,8 +59,6 @@ function SkillWallet() {
           username: userData.username,
           email: userData.email,
         })
-        console.log('userInfo', userInfo);
-        //return userData;
     } catch(err){
       console.log(err);
     }
@@ -96,13 +95,18 @@ function SkillWallet() {
 
         let ditoBalanceStr = BigNumber.from(ditoBalance).toString();
         ditoBalanceStr = ditoBalanceStr.slice(0, ditoBalanceStr.length - 18);
-
-        console.log('dashboard token',token);
         setDitoBalance(ditoBalanceStr);
-        if(typeof(token) !== 'String' && token.length < 10){
-          console.log('dashboard token',token);
-        } 
 
+        
+        const currentToken =  await magic.user.getIdToken();
+        console.log('currentToken', currentToken);
+        const storedToken = token;
+        console.log('storedToken', storedToken);
+        const currentTokenisNotStoredToken = currentToken !== storedToken;
+        console.log("token needs refresh??", currentTokenisNotStoredToken);
+        if(loggedIn && currentTokenisNotStoredToken ){
+            setToken(currentToken);
+        }
         //change to false to get the closed after user with closed is ready.
         await fetchOpenCloseGigs(token, true);
         await fetchCurrentUser(token);
@@ -139,7 +143,7 @@ function SkillWallet() {
                 </div>
                {/*  <!--COMMUNITIES--> */}
                 <div className="h-2/8 flex px-3 py-4 mb-4 flex-col items-center justify-center border border-denim">
-                  <h1 className="lg:text-3xl text-xl w-3/4 font-bold ">My Community</h1>
+                  <h1 className="lg:text-3xl xs:text-xs text-xl w-3/4 font-bold ">My Community</h1>
                   <div className="bg-denim py-3 w-3/4 text-white text-center">
                     <p>DITO #23</p>
                   </div>
@@ -171,17 +175,17 @@ function SkillWallet() {
           <div className="flex flex-row">
             <div className="flex flex-row justify-around p-3 w-2/3"> 
              {/*  <!--BADGE--> */}
-              <div className="flex w-16 h-16 sm:text-xl md:text-2xl lg:text-5xl lg:w-32 lg:h-32">
+              <div className="flex w-16 h-16 sm:text-2xl md:text-3xl lg:text-5xl lg:w-32 lg:h-32">
                 <div className="m-2 w-full flex justify-center items-center"> 
                 <img src="Badge1.svg"/>
                 </div>
               </div>
-              <div className="flex w-16 h-16 sm:text-xl md:text-2xl lg:text-5xl lg:w-32 lg:h-32">
+              <div className="flex w-16 h-16 sm:text-2xl md:text-3xl lg:text-5xl lg:w-32 lg:h-32">
                 <div className="m-2 w-full flex justify-center items-center">
                   <img src="Badge2.svg"/>
                 </div>
               </div>
-              <div className="flex w-16 h-16 sm:text-xl md:text-2xl lg:text-5xl lg:h-32 lg:w-32 ">
+              <div className="flex w-16 h-16 sm:text-2xl md:text-3xl lg:text-5xl lg:h-32 lg:w-32 ">
                 <div className="flex items-center justify-center w-full m-2 flex justify-center items-center">
                    <img src="Badge3.svg"/> 
                 </div>
@@ -227,7 +231,7 @@ function SkillWallet() {
             </div>
           </div>    
              );
-            }) : <></>}
+            }) : <h1 className="text-black">Past Gigs Loading...</h1>}
          </div>    
       </div>
     </div>
