@@ -3,12 +3,14 @@ import { useContext, useEffect } from "react";
 import { LoggedInContext, MagicContext, UserInfoContext } from "./Store";
 
 import NavLink from "./NavLink";
+import { useRouter } from "next/router";
 
 const Layout = () => {
   const [loggedIn, setLoggedIn] = useContext(LoggedInContext);
   const [magic] = useContext(MagicContext);
   const [userInfo, setUserInfo] = useContext(UserInfoContext);
 
+   const router = useRouter();
   /**
    * Log user out of of the session with our app (clears the `auth` cookie)
    * Log the user out of their session with Magic
@@ -17,6 +19,7 @@ const Layout = () => {
   const logout = (e) =>{
     e.preventDefault();
     setLoggedIn(false);
+    router.push("/");
     console.log('logged?', loggedIn);
   }
 

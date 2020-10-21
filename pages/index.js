@@ -129,7 +129,7 @@ const Index = (props) => {
       const userSkills = await fetchUserSkillsJSON(didToken);
       const haSkills = userSkills[0].skills && Array.isArray(userSkills[0].skills)  && userSkills[0].skills.length > 0;
       if(haSkills && loggedIn){
-        setUserInfo({...setUserInfo, userSkills: userSkills.skills});
+        setUserInfo({...setUserInfo, skills: userSkills[0].skills});
         console.log('going to the dashboard');
          await saveCommunityContractToUserContext()
         router.push("/skillWallet");

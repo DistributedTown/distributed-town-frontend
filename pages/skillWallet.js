@@ -109,7 +109,7 @@ function SkillWallet() {
         }
         //change to false to get the closed after user with closed is ready.
         await fetchOpenCloseGigs(token, true);
-        await fetchCurrentUser(token);
+        // await fetchCurrentUser(token);
         
       } catch (err) {
         console.error(err);
@@ -137,7 +137,7 @@ function SkillWallet() {
                     <p className="text-4xl">👨</p>
                   </div>
                   <div className="flex flex-col w-1/8 items-left   justify-start">
-                    <h3 className="font-bold">{userInfo.username}</h3>
+                    <h3 className="font-bold">{userInfo.nickname}</h3>
                     <h3>{userInfo.email}</h3>  
                   </div>
                 </div>

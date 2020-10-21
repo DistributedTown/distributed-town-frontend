@@ -57,7 +57,7 @@ function Gigs() {
           }, { signal: signal });
           const info = await resFetchUser.json();
           console.log(info);
-          setUserInfo ({...userInfo, userSkills: info[0].skills});
+          setUserInfo ({...userInfo, skills: info[0].skills});
       }
        return  openGigsResp;
       }
@@ -146,7 +146,7 @@ return (
             <h2 className="text-bold underline">Your skills</h2>
             <div className="flex border-t-2 border-gray-400 p-2">
              {/*userInfo && Array.isArray(userInfo.userSkills) !== null ?
-              userInfo.userSkills.map((skill, i) => {  return (
+              userInfo.skills.map((skill, i) => {  return (
                  <div
                  key={i}
                  >

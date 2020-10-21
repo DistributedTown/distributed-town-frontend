@@ -12,7 +12,7 @@ module.exports = {
         'alizarin': '#E63229',
         'carrot': '#F08C28',
         'rain-forest':'#00825B',
-        'deove-gray':'#707070'
+        'dove-gray':'#707070'
       }
     },
   },
