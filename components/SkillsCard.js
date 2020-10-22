@@ -1,6 +1,6 @@
 function SkillsCard({ title, skills, selectSkill, setSkillLevel }) {
   return (
-    <div className="flex flex-col border border-blue-600">
+    <div className="flex flex-col border border-denim px-3 py-2 text-xs">
       <h2>{title}</h2>
       <div className="grid grid-cols-1">
         {skills.map((skill, i) => {
@@ -9,16 +9,16 @@ function SkillsCard({ title, skills, selectSkill, setSkillLevel }) {
               <input
                 type="checkbox"
                 onClick={() => selectSkill(i)}
-                disabled={skill.disabled}
                 defaultChecked={i === -1}
               />
               <div className="flex flex-col">
-                <p>{skill.name}</p>
+               
+          <p></p>
                 <input
                   type="range"
-                  value={skill.selected ? skill.level : 0}
+                  value={typeof skill ==='string' ? 0 : skill.selected ? skill.level : 0}
                   onChange={(e) => setSkillLevel(i, e.target.value)}
-                  disabled={!skill.selected}
+                  disabled={typeof skill.selected === 'undefined' && !skill.selected}
                 />
               </div>
             </div>

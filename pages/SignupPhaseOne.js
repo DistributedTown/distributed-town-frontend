@@ -15,7 +15,7 @@ import NicknameSelection from "../components/NicknameSelection";
 function SignupPhaseOne(props) {
   const [loggedIn, setLoggedIn] = useContext(LoggedInContext);
   const [userInfo, setUserInfo] = useContext(UserInfoContext);
-  const [categories, setCategories] = useState([]);
+  //const [categories, setCategories] = useState([]);
   const [skillTree, setSkillTree] = useState ([]);
   const [token, setToken] = useContext(TokenContext);
   const [selectedSkillsIndexes, setSelectedSkillsIndexes] = useState([]);
@@ -47,104 +47,108 @@ function SignupPhaseOne(props) {
 
   } , []);
 
-  function selectSkill(categoryIndex, selectedSkillIndex) {
+  const  selectSkill = (categoryIndex, selectedSkillIndex) => {
      
-         const  updateSkills = (category) => category.skills.map((skill, skillIndex) => {
-           if (skillIndex === selectedSkillIndex) {
-              return [ ...skill, !skill.selected ];
-          } 
-            return [...skill];
-          });
-      
-        const copySkills = (category) => category.skills.map((skill) => {
-            return [...skill]
-        ;});
-    
-
-       const  updateSkilltree = (_skillTree) => _skillTree.map((category,i) => {
-         if(i === categoryIndex){
-         return{...category,
-             skills: updateSkills(category)
-              };
-          }
-          return {
-            ...category,
-               skills: copySkills(category)
-            };
-          });
+    const  updateSkills = (category) => category.skills.map((skill, skillIndex) => {
+      if (skillIndex === selectedSkillIndex) {
+        const newSkill = typeof skill === 'string'  ?  {skill, selected: !skill.selected} : {...skill, selected: !skill.selected};
+        return {...newSkill}
+     } 
         
-      setSkillTree(updateSkilltree(skillTree));
+        return typeof skill==='string' ? {skill}: {...skill};
+     });
+ 
+   const copySkills = (category) => category.skills.map((skill) => {
+       return typeof skill ==='string' ? {skill} : {...skill};
+   ;});
+
+
+  const  updateSkillTree = (_skillTree) => _skillTree.map((category,i) => {
+    if(i === categoryIndex){
+    return{...category,
+        skills: updateSkills(category)
+         };
+     }
+     return {
+       ...category,
+          skills: copySkills(category)
+       };
+     });
+   
+     setSkillTree(updateSkillTree(skillTree));
     }
 
+
   function setSkillLevel(catIndex, skillIndex, level) {
-    setCategories((categories) =>
-      categories.map((category, categoryIndex) => {
-        if (categoryIndex === catIndex) {
-          return {
-            ...category,
-            skills: category.skills.map((skill, skIndex) => {
-              if (skIndex === skillIndex) {
-                return { ...skill, level };
+          const updateSkills = (category) => category.skills.map((skill, skIndex) => {
+            if (skIndex === skillIndex) {
+              return {skill, level };
+            }
+            return {skill};
+          });
+
+          const copySkills = (category) => category.skills.map((skill) => {
+            return {skill}
+          })
+  
+            const updateSkillTree = (_skillTree) =>
+                _skillTree.map((category, categoryIndex) => {
+              if (categoryIndex === catIndex) {
+                return {
+                  ...category,
+                  skills: updateSkills(category),
+                };
               }
-
-              return {
-                ...skill,
-                // disabled: !skill.selected && selectedSkillsIndexes.length === 3,
-              };
-            }),
-          };
-        }
-
-        return {
-          ...category,
-          skills: category.skills.map((skill) => {
-            return {
-              ...skill,
-              // disabled: !skill.selected && selectedSkillsIndexes.length === 3,
-            };
-          }),
-        };
-      })
-    );
-  }
+                return {
+                ...category,
+                  skills: copySkills(category)
+                };
+            })
+       setSkillTree(updateSkillTree(skillTree));
+    }
 
   function getSelectedSkills() {
     let skills = [];
 
-    if (categories.length === 0) return <></>;
+    if (skillTree.length === 0) return <></>;
 
-    for (let category of categories) {
+    for (let category of skillTree) {
       for (let skill of category.skills) {
-        if (skill.selected)
-          skills.push({ skill: skill.name, level: skill.level });
-      }
+        if (skill){
+          if(typeof skill.selected !== 'undefined' && skill.selected){
+          skills.push({ skill: skill.skill, level: typeof skill.level === 'undefined' ? 0 : skill.level });
+            } 
+          }
+        }
     }
 
-    return skills.map(({ skill, level }, i) => {
+    console.log('los skills',skills);
+
+    return (skills.length > 0 ? skills.map(({ skill, level }, i) => {
+      
       return (
         <div className="flex justify-between" key={i}>
-          <p>{skill}</p>
-          <p>{level}</p>
+          <p>{skill ? skill.skill : ''}</p>
+          <p>{skill ? skill.level : ''}</p>
         </div>
       );
-    });
+    }) : <></>)
   }
 
   function setUserSkills() {
     let skills = [];
 
-    for (let category of categories) {
+    for (let category of skillTree ) {
       for (let skill of category.skills) {
-        if (skill.selected)
+        if (skill[1])
           skills.push({
-            skill: skill.name,
-            level: skill.level / 10,
-            redeemableDitos: (skill.level / 10) * category.ditoMultFactor,
+            skill: skill,
+            level: skill[2] / 10,
+            redeemableDitos: (skill[2] / 10) * category.ditoMultFactor,
           });
       }
     }
 
-    console.log(userInfo)
     setUserInfo((userInfo) => {
       return { ...userInfo, skills };
     });
