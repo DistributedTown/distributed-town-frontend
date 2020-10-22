@@ -1,19 +1,18 @@
 function SkillsCard({ title, skills, selectSkill, setSkillLevel }) {
   return (
     <div className="flex flex-col border border-denim px-3 py-2 text-xs">
-      <h2>{title}</h2>
-      <div className="grid grid-cols-1">
+      <h2 className="text-center font-bold pb-1">{title}</h2>
+      <div className="flex flex-wrap">
         {skills.map((skill, i) => {
           return (
-            <div className="flex flex-row items-start" key={i}>
+            <div className="flex flex-row w-1/2 h-1/2" key={i}>
               <input
                 type="checkbox"
                 onClick={() => selectSkill(i)}
                 defaultChecked={i === -1}
               />
-              <div className="flex flex-col">
-               
-                 <p></p>
+              <div className="flex flex-col p-2">
+                <p>{typeof skill=== 'string' ? skill : skill.skill}</p>
                 <input
                   type="range"
                   value={typeof skill ==='string' ? 0 : skill.selected ? skill.level : 0}

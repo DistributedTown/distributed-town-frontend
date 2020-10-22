@@ -180,9 +180,9 @@ function SignupPhaseOne(props) {
                userInfo = {userInfo}
             />
         </div>
-        <div className="flex flex-col space-y-1 p-8 flex-grow">
-          <h1>Tell us about you!</h1>
-          <p>Pick your Skills (between 1 and 3)</p>
+        <div className="flex flex-col text-center space-y-1 p-8 flex-grow">
+          <h1 class="font-bold text-xl">Tell us about you!</h1>
+          <p>Pick your Skills (<span className="underline">between 1 and 3</span>)</p>
           <p>Select what you’re the best at, and receive Credits for it.</p>
           {skillTree.map((category, i) => {
          
