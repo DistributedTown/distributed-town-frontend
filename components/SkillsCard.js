@@ -1,7 +1,7 @@
 function SkillsCard({ title, skills, selectSkill, setSkillLevel }) {
   return (
     <div className="flex flex-col border border-denim px-3 py-2 text-xs">
-      <h2 className="text-center font-bold pb-1">{title}</h2>
+      <h2 className="text-center font-bold pb-2">{title}</h2>
       <div className="flex flex-wrap">
         {skills.map((skill, i) => {
           return (
