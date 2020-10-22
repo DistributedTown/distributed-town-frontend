@@ -124,11 +124,11 @@ function SignupPhaseOne(props) {
 
     if (skills.length > 0){ 
     return  (skills.map(( skill , i) => {
-      console.log(skill)
+      
       return (
         <div className="flex justify-between text-xs" key={i}>
           <p>{skill.skill}</p>
-          <p>{skill.level}</p>
+          <p>{`${skill.level}%`}</p>
         </div>
       );
        }))
@@ -142,13 +142,15 @@ function SignupPhaseOne(props) {
     const joiningBonus = 2000;
     for (let category of skillTree ) {
       for (let skill of category.skills) {
-        if (skill)
+        if (skill.selected)
           skills.push({
             ...skill, 
-            redeemableDitos: ((skill.level / 10) * category.credits) + joiningBonus,
+            redeemableDitos: (Math.floor(skill.level / 10) * category.credits) + joiningBonus,
           });
       }
     }
+
+    console.log(skills);
 
     setUserInfo((userInfo) => {
       return { ...userInfo, skills };

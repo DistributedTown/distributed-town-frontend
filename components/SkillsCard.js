@@ -19,6 +19,7 @@ function SkillsCard({ title, skills, selectSkill, setSkillLevel }) {
                   value={typeof skill ==='string' ? 0 : skill.selected ? skill.level : 0}
                   onChange={(e) => setSkillLevel(i, e.target.value)}
                   disabled={!skill.selected}
+                  step={10}
                 />
               </div>
             </div>
