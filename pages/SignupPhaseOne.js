@@ -48,7 +48,7 @@ function SignupPhaseOne(props) {
   } , []);
 
   const  selectSkill = (categoryIndex, selectedSkillIndex) => {
-     
+    
     const  updateSkills = (category) => category.skills.map((skill, skillIndex) => {
       if (skillIndex === selectedSkillIndex) {
         const newSkill = typeof skill === 'string'  ?  {skill, selected: !skill.selected} : {...skill, selected: !skill.selected};
@@ -74,7 +74,7 @@ function SignupPhaseOne(props) {
           skills: copySkills(category)
        };
      });
-   
+     
      setSkillTree(updateSkillTree(skillTree));
     }
 
@@ -122,6 +122,7 @@ function SignupPhaseOne(props) {
         }
     }
 
+    
     if (skills.length > 0){ 
     return  (skills.map(( skill , i) => {
       
@@ -135,6 +136,23 @@ function SignupPhaseOne(props) {
     };
     return '';
   
+    }
+
+    function getTotalSelected() {
+      let skills = [];
+  
+      if (skillTree.length === 0) return <></>;
+  
+      for (let category of skillTree) {
+        for (let skill of category.skills) {
+          if (skill){
+            if(typeof skill.selected !== 'undefined' && skill.selected){
+            skills.push({ skill: skill.skill, level: typeof skill.level === 'undefined' ? 0 : skill.level });
+              } 
+            }
+          }
+      }
+      return skills.length;
     }
 
   function setUserSkills() {
@@ -168,8 +186,8 @@ function SignupPhaseOne(props) {
   }, [userInfo.skills.length]);
 
   return (
-    <div className="flex flex-col">
-      <div className="flex flex-row min-h-screen">
+    <div className="flex flex-col space-y-2">
+      <div className="flex  flex-row flex-grow">
         <div style={backgroundImageStyle} className="flex flex-col w-1/2 space-y-8 p-8 flex-grow-0  h-full">
             <NicknameSelection 
                setUserInfo={setUserInfo}
@@ -181,7 +199,7 @@ function SignupPhaseOne(props) {
             />
         </div>
         <div className="flex flex-col text-center space-y-1 p-8 flex-grow">
-          <h1 class="font-bold text-xl">Tell us about you!</h1>
+          <h1 className="font-bold text-xl">Tell us about you!</h1>
           <p>Pick your Skills (<span className="underline">between 1 and 3</span>)</p>
           <p>Select what you’re the best at, and receive Credits for it.</p>
           {skillTree.map((category, i) => {
@@ -191,6 +209,7 @@ function SignupPhaseOne(props) {
                 key={i}
                 title={category.subCat}
                 skills={category.skills}
+                totalSelected={getTotalSelected()}
                 selectSkill={(skillSelectedIndex) => selectSkill(i, skillSelectedIndex)}
                 setSkillLevel={(skillIndex, skillLevel) =>
                   setSkillLevel(i, skillIndex, skillLevel)
@@ -198,15 +217,15 @@ function SignupPhaseOne(props) {
               />
             );
           })}
-          <div className="bg-denim flex flex-row items-center justify-between p-4 text-white">
+          <div className="bg-denim flex flex-row  items-center justify-between p-4 text-white">
            
-            <p className="w-1/2">Your selection</p>
+            <p className=" flex md:h-16 lg:h-24 xl:h-28 w-1/2 items-center justify-center">Your selection</p>
             <div className="w-1/2">{getSelectedSkills()}</div>
           </div>
         </div>
       </div>
-      <div className="fixed bottom-0 right-0 left-0 flex justify-center items-center">
-        <Button onClick={() => setUserSkills()}>
+      <div className=" flex  justify-center items-center">
+        <Button className="font-black" onClick={() => setUserSkills()}>
           Next: choose your first community!
         </Button>
       </div>

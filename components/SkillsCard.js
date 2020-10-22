@@ -1,4 +1,4 @@
-function SkillsCard({ title, skills, selectSkill, setSkillLevel }) {
+function SkillsCard({ title, skills, selectSkill, setSkillLevel, totalSelected }) {
   return (
     <div className="flex flex-col border border-denim px-3 py-2 text-xs">
       <h2 className="text-center font-bold pb-2">{title}</h2>
@@ -10,6 +10,7 @@ function SkillsCard({ title, skills, selectSkill, setSkillLevel }) {
                 type="checkbox"
                 onClick={() => selectSkill(i)}
                 defaultChecked={i === -1}
+                disabled={  !skill.selected && totalSelected === 3   }
               />
               <div className="flex flex-col p-2">
                 <p>{typeof skill=== 'string' ? skill : skill.skill}</p>

@@ -13,7 +13,8 @@ module.exports = {
         'carrot': '#F08C28',
         'rain-forest':'#00825B',
         'dove-gray':'#707070'
-      }
+      },
+      
     },
   },
   variants: {},

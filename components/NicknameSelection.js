@@ -14,7 +14,8 @@ const NicknameSelection = ({setUserInfo, userInfo, value='', title='', subtitle=
         value={value}
         placeholder={placeholderText} 
         onChange={(e) => setUserInfo({ ...userInfo, nickname: e.target.value })}
-        ></input>
+       required
+       ></input>
     </div>
      </div>
     </div>
