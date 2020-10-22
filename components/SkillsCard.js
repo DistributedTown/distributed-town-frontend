@@ -13,12 +13,12 @@ function SkillsCard({ title, skills, selectSkill, setSkillLevel }) {
               />
               <div className="flex flex-col">
                
-          <p></p>
+                 <p></p>
                 <input
                   type="range"
                   value={typeof skill ==='string' ? 0 : skill.selected ? skill.level : 0}
                   onChange={(e) => setSkillLevel(i, e.target.value)}
-                  disabled={typeof skill.selected === 'undefined' && !skill.selected}
+                  disabled={!skill.selected}
                 />
               </div>
             </div>

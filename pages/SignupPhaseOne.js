@@ -122,29 +122,30 @@ function SignupPhaseOne(props) {
         }
     }
 
-    console.log('los skills',skills);
-
-    return (skills.length > 0 ? skills.map(({ skill, level }, i) => {
-      
+    if (skills.length > 0){ 
+    return  (skills.map(( skill , i) => {
+      console.log(skill)
       return (
-        <div className="flex justify-between" key={i}>
-          <p>{skill ? skill.skill : ''}</p>
-          <p>{skill ? skill.level : ''}</p>
+        <div className="flex justify-between text-xs" key={i}>
+          <p>{skill.skill}</p>
+          <p>{skill.level}</p>
         </div>
       );
-    }) : <></>)
-  }
+       }))
+    };
+    return '';
+  
+    }
 
   function setUserSkills() {
     let skills = [];
-
+    const joiningBonus = 2000;
     for (let category of skillTree ) {
       for (let skill of category.skills) {
-        if (skill[1])
+        if (skill)
           skills.push({
-            skill: skill,
-            level: skill[2] / 10,
-            redeemableDitos: (skill[2] / 10) * category.ditoMultFactor,
+            ...skill, 
+            redeemableDitos: ((skill.level / 10) * category.credits) + joiningBonus,
           });
       }
     }
@@ -195,9 +196,10 @@ function SignupPhaseOne(props) {
               />
             );
           })}
-          <div className="bg-blue-600 flex flex-row items-center justify-between p-4 text-white">
-            <p>Your selection</p>
-            <div>{getSelectedSkills()}</div>
+          <div className="bg-denim flex flex-row items-center justify-between p-4 text-white">
+           
+            <p className="w-1/2">Your selection</p>
+            <div className="w-1/2">{getSelectedSkills()}</div>
           </div>
         </div>
       </div>
