@@ -82,13 +82,13 @@ function SignupPhaseOne(props) {
   function setSkillLevel(catIndex, skillIndex, level) {
           const updateSkills = (category) => category.skills.map((skill, skIndex) => {
             if (skIndex === skillIndex) {
-              return {skill, level };
+              return {...skill, level };
             }
-            return {skill};
+            return {...skill};
           });
 
           const copySkills = (category) => category.skills.map((skill) => {
-            return {skill}
+            return {...skill}
           })
   
             const updateSkillTree = (_skillTree) =>
