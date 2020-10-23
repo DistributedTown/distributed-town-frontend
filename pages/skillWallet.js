@@ -26,7 +26,7 @@ function SkillWallet() {
 
   async function fetchOpenCloseGigs(authToken, isOpen) {
     try {
-      const response= await fetch(`http://localhost:3005/api/gig?isOpen=${isOpen}`, 
+      const response= await fetch(`http://3.250.21.129:3005/api/gig?isOpen=${isOpen}`, 
       {
         method: "GET",
         headers: {
@@ -46,7 +46,7 @@ function SkillWallet() {
 
   async function fetchCurrentUser(authToken){
     try{
-        const response = await fetch(`http://localhost:3005/api/user`,
+        const response = await fetch(`http://3.250.21.129:3005/api/user`,
         {
           method: 'GET',
           headers: {

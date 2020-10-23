@@ -34,7 +34,7 @@ function Gigs() {
    
 
       let resFetchGigs = await fetch(
-        `http://localhost:3005/api/gig?isOpen=true`,
+        `http://3.250.21.129:3005/api/gig?isOpen=true`,
         {
           method: "GET",
           headers: {
@@ -47,7 +47,7 @@ function Gigs() {
    
       if(!userInfo.skills){
         let resFetchUser = await fetch(
-          `http://localhost:3005/api/user`,
+          `http://3.250.21.129:3005/api/user`,
           {
             method: "GET",
             headers: {
@@ -79,7 +79,7 @@ function Gigs() {
 const takeGig = (gigID) => {
   try{
   let result = fetch(
-    `http://localhost:3005/api/gig/${gigID}/accept`,
+    `http://3.250.21.129:3005/api/gig/${gigID}/accept`,
     {
       method: "POST",
       headers: {

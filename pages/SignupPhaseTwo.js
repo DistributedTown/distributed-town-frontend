@@ -97,7 +97,7 @@ function SignupPhaseTwo() {
          skills: userInfo.userSkilss,
       };
       console.log('payload',payload);
-      const response = await fetch(`http://localhost:3005/api/user`,
+      const response = await fetch(`http://3.250.21.129:3005/api/user`,
        {
         method: 'POST',
         body: JSON.stringify(payload),
@@ -129,7 +129,7 @@ function SignupPhaseTwo() {
         let communitiesToAdd = new Map();
         for await (let { skill } of userInfo.skills) {
           let communities = await fetch(
-            `http://localhost:3005/api/community?skill=${skill}`,
+            `http://3.250.21.129:3005/api/community?skill=${skill}`,
             {
               method: "GET",
             }

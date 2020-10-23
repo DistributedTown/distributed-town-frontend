@@ -48,7 +48,7 @@ const Index = (props) => {
   const showRegisterModal = () => {setSelectedPill(-1); return toggleModal()};
 
   async function getCommunityById(id){
-    const response = await fectch (`http://localhost:3005/api/community/${id}`,  {
+    const response = await fectch (`http://3.250.21.129:3005/api/community/${id}`,  {
       method: "POST",
       headers: {
         Authorization: `Bearer ${res}`,
@@ -86,7 +86,7 @@ const Index = (props) => {
     
   async function fetchUserSkillsJSON(authToken) {
     const skillsRes = await fetch( 
-      `http://localhost:3005/api/user`,
+      `http://3.250.21.129:3005/api/user`,
       {
         method: "GET",
         headers: {Authorization: `Bearer ${authToken}`},
@@ -115,7 +115,7 @@ const Index = (props) => {
         setToken(didToken);
 
         let result = await fetch(
-          `http://localhost:3005/api/user/login`,
+          `http://3.250.21.129:3005/api/user/login`,
           {
             method: "POST",
             headers: {
@@ -229,7 +229,7 @@ const Index = (props) => {
 };
 
 export async function getServerSideProps(context) {
-  let skills = await fetch(`http://localhost:3005/api/skill`, {
+  let skills = await fetch(`http://3.250.21.129:3005/api/skill`, {
     method: "GET",
   });
   skills = await skills.json();
