@@ -191,7 +191,7 @@ function SignupPhaseOne(props) {
         <div style={backgroundImageStyle} className="flex flex-col w-1/2 space-y-8 p-8 flex-grow-0  h-full">
             <NicknameSelection 
                setUserInfo={setUserInfo}
-               value={userInfo.nickname}
+               value={userInfo.username}
                title="Welcome to Distributed Town!"
                subtitle="This is the first step to join a global community of local people or the other way around :)"
                placeholderText = "Please choose a nickname"

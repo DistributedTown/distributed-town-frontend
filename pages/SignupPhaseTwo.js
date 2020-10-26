@@ -92,7 +92,7 @@ function SignupPhaseTwo() {
     console.log('updated skills userinfo',userInfo);
 
       const payload =  {
-        username: userInfo.nickname,
+        username: userInfo.username,
         communityID: community._id,
          skills: userInfo.skills,
       };
