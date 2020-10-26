@@ -30,7 +30,7 @@ function Gigs() {
       
       try{
 
-          let resFetchGigs = await fetch(`http://localhost:3005/api/gig?isOpen=true`, {
+          let resFetchGigs = await fetch(`http://3.250.21.129:3005/api/gig?isOpen=true`, {
             method: "GET",
             headers: new Headers({
               Authorization: "Bearer " + token,
@@ -40,7 +40,7 @@ function Gigs() {
           const openGigsResp = await resFetchGigs.json();
           
           if(userInfo.skills === null || typeof userInfo.skills === 'undefined'){
-            let reresFetchUsers = await fetch(`http://localhost:3005/api/user/login`, {
+            let reresFetchUsers = await fetch(`http://3.250.21.129:3005/api/user/login`, {
               method: "POST",
               headers: new Headers({
                 Authorization: "Bearer " + token,
@@ -73,7 +73,7 @@ function Gigs() {
 
 const takeGig = async (gigID) => {
   try{
-    let result = await fetch(`http://localhost:3005/api/gig/${gigID}/accept`, {
+    let result = await fetch(`http://3.250.21.129:3005/api/gig/${gigID}/accept`, {
       method: "POST",
       headers: new Headers({
         Authorization: "Bearer " + token,

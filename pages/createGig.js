@@ -50,7 +50,7 @@ function CreateGig() {
      console.log('create gigs payload', payload);
      console.log('create gigs token', token); 
     let result = await fetch(
-      `http://localhost:3005/api/gig`,
+      `http://3.250.21.129:3005/api/gig`,
       {
         method: "POST",
         headers: new Headers({
