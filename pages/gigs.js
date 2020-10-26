@@ -19,76 +19,68 @@ function Gigs() {
 
   const router = useRouter();
 
-  console.log('USerrrrrrr SKILLSS');
-  console.log('USerrrrrrr SKILLSS');
-  console.log('USerrrrrrr SKILLSS here',userInfo);
-
   useEffect(() => {
     
-    const abortController = new AbortController();
-    const signal = abortController.signal;
-    try{
+   // const abortController = new AbortController();
+   // const signal = abortController.signal;
+   
 
 
     async function effect() {
-   
+      
+      try{
 
-      let resFetchGigs = await fetch(
-        `http://localhost:3005/api/gig?isOpen=true`,
-        {
-          method: "GET",
-          headers: {
-            Authorization: 'Bearer ' + token,
-            'Content-Type': 'application/json'
-          },
-        }, { signal: signal });
-      const openGigsResp = await resFetchGigs.json();
-     
-   
-      if(!userInfo.skills){
-        let resFetchUser = await fetch(
-          `http://localhost:3005/api/user`,
-          {
+          let resFetchGigs = await fetch(`http://localhost:3005/api/gig?isOpen=true`, {
             method: "GET",
-            headers: {
-              Authorization: 'Bearer ' + token,
-              'Content-Type': 'application/json'
-            },
-          }, { signal: signal });
-          const info = await resFetchUser.json();
-          console.log(info);
-          setUserInfo ({...userInfo, skills: info[0].skills});
+            headers: new Headers({
+              Authorization: "Bearer " + token,
+            }),
+          });
+          
+          const openGigsResp = await resFetchGigs.json();
+          
+          if(userInfo.skills === null || typeof userInfo.skills === 'undefined'){
+            let reresFetchUsers = await fetch(`http://localhost:3005/api/user/login`, {
+              method: "POST",
+              headers: new Headers({
+                Authorization: "Bearer " + token,
+              }),
+            });
+            
+            const info = await resFetchUser.json();
+              
+            setUserInfo ({...userInfo, skills: info[0].skills});
+          }
+          
+          setOpenGigs(openGigsResp)
+            
+        } catch(err){
+          console.log(err);
+        }
       }
-       return  openGigsResp;
-      }
-
-      effect().then(openGigsResp => setOpenGigs(openGigsResp));
+     
+      effect();
 
   
-      
-    }catch(err){
-      console.log(err);
-    }
-    const cleanup =  () => {
+   
+   /*  const cleanup =  () => {
       abortController.abort();
     };
-    return cleanup;
+    
+    return cleanup; */
   }, []);
 
 
-const takeGig = (gigID) => {
+const takeGig = async (gigID) => {
   try{
-  let result = fetch(
-    `http://localhost:3005/api/gig/${gigID}/accept`,
-    {
+    let result = await fetch(`http://localhost:3005/api/gig/${gigID}/accept`, {
       method: "POST",
-      headers: {
-        Authorization: 'Bearer ' + token,
-        'Content-Type': 'application/json'
-      },
-    }
-    );
-  }catch(err){
+      headers: new Headers({
+        Authorization: "Bearer " + token,
+      }),
+    });
+
+  } catch(err){
     console.log(err);
   }
 }
@@ -96,9 +88,9 @@ const takeGig = (gigID) => {
 return (
   <div className="w-full h-screen p-8">
     <h1 className="underline text-black text-4xl">Open Gigs</h1>
-   <div className="flex w-full h-2/3 flex-grow ">
+   <div className="flex w-full h-64 flex-grow ">
     <div className="grid grid-cols-3 gap-8">
-      {openGigs !== null ? openGigs.map((gig, i) => {
+      {typeof openGigs === 'undefined'  ? <div><h2>Loading Open Gigs...</h2></div> :  openGigs.legnth === 0 ? () => <h2>There are no Open Gigs.</h2> : openGigs.map((gig, i) => {
         return (
           <div
             key={i}
@@ -122,8 +114,7 @@ return (
           </div>
         );
       })
-     
-      : <div><h2>Loading Open Gigs...</h2></div>}
+     }
     </div>
     </div>
     
@@ -145,8 +136,7 @@ return (
         <div className="flex flex-col p-4 border-2 border-blue-600">
             <h2 className="text-bold underline">Your skills</h2>
             <div className="flex border-t-2 border-gray-400 p-2">
-             {/*userInfo && Array.isArray(userInfo.userSkills) !== null ?
-              userInfo.skills.map((skill, i) => {  return (
+             { typeof userInfo.skills !== undefined ? userInfo.skills.map((skill, i) => {  return (
                  <div
                  key={i}
                  >
@@ -154,7 +144,7 @@ return (
 
                  </div> );
               }) :  <p>Loading Skills...</p>
-            */}
+            }
           </div>          
         </div>
     </div>
@@ -166,5 +156,8 @@ return (
   </div>
 );
 }
+
+
+
 
 export default Gigs;

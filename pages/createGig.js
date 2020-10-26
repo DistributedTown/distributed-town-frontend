@@ -25,6 +25,7 @@ function CreateGig() {
 
 
   const handleChange = (event) => {
+
     gig[event.target.id] = event.target.value;
     setGig(gig);
   }
@@ -34,31 +35,44 @@ function CreateGig() {
       setGig(gig);
     }
   }
-  async function handleClick() {
-    try {
 
-      console.log(magic);
-      let result = await fetch(
-        `http://localhost:3005/api/gig`,
-        {
-          method: "POST",
-          headers: {
-            Authorization: 'Bearer ' + token,
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            title: gig.title,
-            description: gig.description,
-            skills: gig.skills,
-            creditsOffered: parseInt(gig.creditsOffered)
-          })
-        }
-      );
-      router.push("/gigs")
+  async function postNewGig() {
+  try {
 
-    } catch (err) {
-      console.error(err);
-    }
+
+     const payload = {
+        title: gig.title,
+        description: gig.description,
+        skills: gig.skills,
+        creditsOffered: parseInt(gig.creditsOffered)
+     };    
+     
+     console.log('create gigs payload', payload);
+     console.log('create gigs token', token); 
+    let result = await fetch(
+      `http://localhost:3005/api/gig`,
+      {
+        method: "POST",
+        headers: new Headers({
+          Authorization: "Bearer " + token,
+        }),
+        body: JSON.stringify(
+          payload
+        )
+      }
+    );
+
+    console.log(result);
+    router.push("/gigs")
+
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+  async function handleClick(e) {
+    e.preventDefault();
+    postNewGig();
   }
 
 
@@ -76,7 +90,7 @@ function CreateGig() {
               Just be honest please.
             </p>
           </div>
-          <input className="border-1 border-dove-gray py-1 px-2 " id="title" onChange={handleChange} />
+          <input className="border border-dove-gray py-3 mb-5 px-2 " id="title" onChange={handleChange} required />
 
         </div>
 
@@ -87,19 +101,21 @@ function CreateGig() {
               Hint: be as detailed as possible, and be nice - there are real people on the other side ;)
             </p>
           </div>
-          <textarea style={{border:" 1px solid #707070" }} className="border border-dove-gray py-6 px-2" id="description" onChange={handleChange}> </textarea>
+          <textarea style={{border:" 1px solid #707070" }} className="border border-dove-gray py-6 px-2" id="description" onChange={handleChange} required> </textarea>
         </div>
       </form>
 
-      <div className="flex fleox-row w-full p-8">
+      <div className="flex flex-wrap w-full">
 
-        <div className="flex flex-col w-1/3 space-y-2 p-2">
-          <h1 className="font-bold text-xl underline">Skills needed</h1>
-          <h2 className="text-dove-gray">Hint: If the gig requires many different skills, consider<br></br>
-          breaking it down in 2+ gigs, or starting a new project.
-        </h2>
-          <div className="grid grid-cols border-1 border-denim p-2">
-            <div className="flex flex-row items-start" >
+        <div className="flex flex-col sm:w-1/2 lg:w-1/3 space-y-2 p-2">
+          <div className="flex flex-col flex-1 px-10 py-12" >
+            <div className="flex-1 mb-12">
+            <h1 className="font-bold text-xl underline">Skills needed</h1>
+            <h2 className="text-dove-gray">Hint: If the gig requires many different skills, consider<br></br>
+              breaking it down in 2+ gigs, or starting a new project.
+             </h2>
+            </div>  
+           <div className="flex flex-row items-start" >
               <input type="checkbox" key={'Blockchain & DLT'} id="Blockchain & DLT" onChange={onSkillsChange} />
               <div className="flex flex-col font-bold pl-2">
                 <p>Blockchain & DLT</p>
@@ -120,35 +136,30 @@ function CreateGig() {
           </div>
         </div>
 
-        <div className="flex flex-col w-1/3 space-y-2 p-2">
-            
+
+        <div className="flex flex-col sm:w-1/2 lg:w-1/3 space-y-2 p-2">
+          <div className="flex flex-col flex-1 px-10 py-12" >
+            <div className="flex-1">
             <h1 className="font-bold  text-xl underline">Commitment</h1>
             <h2 className="text-dove-gray">Hint: the effort needed for this task. This value<br></br>
               influences the DiTo set as a reward for your gig!
             </h2>
-            <div className="grid grid-cols">
-              <div className="flex flex-row items-start" >
-                <div className="flex flex-row items-start justify-center items-center p-3">
-                  <input style={{width:"250px"}} className="bg-white" type="range" />
-                  <div className="flex flex-col">
-                  </div>
-                </div>
-              </div>
-            </div>
+            </div>  
+
+            <input step={10} style={{width:"250px"}} className="bg-white h-32 py-3 w-32" type="range" required/>
+          </div>
         </div>
 
-        <div className="flex flex-col w-1/3 space-y-2 p-2">
-          <h1 className="font-bold text-xl underline">Budget needed</h1>
-          <h2 className="text-dove-gray">Hint: the amount of DiTo<br></br>
-          you offer for this gig.
-        </h2>
-          <div className="grid grid-cols">
-            <div className="flex flex-col items-start">
-              <input className="border-1 border-denim py-6 px-4 mb-3" id="creditsOffered" type='number' onChange={handleChange} />
-              <div className="flex flex-col w-full text-right">
-                <h2>DiTo</h2>
-              </div>
-            </div>
+        <div className="flex flex-col sm:w-1/2 lg:w-1/3 space-y-2 p-2">
+          <div className="flex flex-col flex-1 px-10 py-12" >
+            <div className="flex-1 mb-12">
+              <h1 className="font-bold text-xl underline">Budget needed</h1>
+              <h2 className="text-dove-gray">Hint: the amount of DiTo<br></br>
+              you offer for this gig.
+              </h2>
+            </div>  
+            <input className="border-2 border-denim py-6 px-4 mb-3" id="creditsOffered" type='number' onChange={handleChange} />
+            <h2  className="text-right">DiTo</h2>
           </div>
         </div>
 

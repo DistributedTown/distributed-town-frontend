@@ -32,17 +32,13 @@ function Dashboard() {
       const address = await signer.getAddress();
 
       const contractABI = communityContractAbi;
-      const contractAddress = "0x790697f595Aa4F9294566be0d262f71b44b5039c";
+      const contractAddress = userInfo.communityContract.address || "0x790697f595Aa4F9294566be0d262f71b44b5039c";
       const contract = new ethers.Contract(
         contractAddress,
         contractABI,
         signer
       );
       
-      setUserInfo({
-        ...userInfo,
-        communityContract: { address: contractAddress },
-      });
       // Send transaction to smart contract to update message and wait to finish
       const [nUsers, investedBalance] = await Promise.all([
         contract.numberOfMembers(),
@@ -84,7 +80,7 @@ function Dashboard() {
       <div className="bg-blue-100 flex w-2/5 justify-center items-center">
           <div className="flex flex-col border-2 border-blue-600">
             <div className="bg-blue-600 p-4">
-              <h2>{userInfo.communityId}</h2>
+              <h2>{ typeof userInfo.communityID !== undefined ? userInfo.communityID : ''}</h2>
               <p>Check-up Card</p>
             </div>
             <div className="flex flex-col justify-center bg-white p-4 space-y-4">

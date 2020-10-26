@@ -25,6 +25,7 @@ function CommunityTreasury() {
       await getCommunityInfo();
     })();
   }, []);
+  
   async function getCommunityInfo() {
     const provider = new ethers.providers.Web3Provider(magic.rpcProvider);
 

@@ -6,12 +6,13 @@ function CommunityCard({
   selected,
 }) {
   function getCardState() {
-    if (members == 24) return "Not accepting";
+    if (members === 24) return "Not accepting";
     if (!selected) return "Can join";
     if (selected) return "Joined!";
   }
-
+  {console.log(members);}
   return (
+    
     <div
       className="flex flex-col border-2 border-denim bg-white cursor-pointer"
       onClick={selectCommunity}

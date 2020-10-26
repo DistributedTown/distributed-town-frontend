@@ -23,7 +23,6 @@ function SkillWallet() {
   const [pastGigs, setPastGigs] = useState([]);
   const [ditoBalance, setDitoBalance] = useState(-1);
 
-
   async function fetchOpenCloseGigs(authToken, isOpen) {
     try {
       const response= await fetch(`http://localhost:3005/api/gig?isOpen=${isOpen}`, 
@@ -37,7 +36,6 @@ function SkillWallet() {
     );
       const gigs = await response.json();
       setPastGigs(gigs);
-      //return gigs;
     } catch(err){
       console.log(err);
     }
@@ -75,7 +73,7 @@ function SkillWallet() {
         const address = await signer.getAddress();
 
         const communityContractABI = communityContractAbi;
-        const communityContractAddress = "0x759A224E15B12357b4DB2d3aa20ef84aDAf28bE7";
+        const communityContractAddress =  userInfo.communityContract.address || "0x759A224E15B12357b4DB2d3aa20ef84aDAf28bE7";
         const communityContract = new ethers.Contract(
           communityContractAddress,
           communityContractABI,
@@ -90,26 +88,22 @@ function SkillWallet() {
           signer
         );
 
-        // Send transaction to smart contract to update message and wait to finish
         const ditoBalance = await ditoContract.balanceOf(address);
-
         let ditoBalanceStr = BigNumber.from(ditoBalance).toString();
         ditoBalanceStr = ditoBalanceStr.slice(0, ditoBalanceStr.length - 18);
         setDitoBalance(ditoBalanceStr);
 
         
         const currentToken =  await magic.user.getIdToken();
-        console.log('currentToken', currentToken);
         const storedToken = token;
-        console.log('storedToken', storedToken);
         const currentTokenisNotStoredToken = currentToken !== storedToken;
-        console.log("token needs refresh??", currentTokenisNotStoredToken);
+     
         if(loggedIn && currentTokenisNotStoredToken ){
             setToken(currentToken);
         }
-        //change to false to get the closed after user with closed is ready.
+
         await fetchOpenCloseGigs(token, true);
-        // await fetchCurrentUser(token);
+        //await fetchCurrentUser(token);
         
       } catch (err) {
         console.error(err);
@@ -118,27 +112,26 @@ function SkillWallet() {
   }, []);
 
   const router = useRouter();
-
   return (
-   /*  <!--MAIN --> */
+       
     <div className="w-full flex flex-col  space-y-8"> 
-      {/* <!-- MAIN TITLE --> */}
+      {/* MAIN TITLE  */}
       <div className="w-1/8  ml-5 my-4">
         <h1 className="underline text-black text-4xl">Skill Wallet</h1>
       </div> 
        
       <div className="w-full flex flex-row space-y-8">
-      {/* <!-- WALLET CARD --> */}
+      {/*  WALLET CARD  */}
         <div className="flex flex-col w-2/7 p-3 rounded-lg border border-denim m-3">              
               <div className="flex flex-col">  
-                {/* <!--PROFILE--> */}
+                {/* PROFILE*/}
                 <div className="flex h-3/8 text-white bg-black rounded p-3 mb-3">
                   <div className="flex w-1/3 items-center justify-center">
                     <p className="text-4xl">👨</p>
                   </div>
                   <div className="flex flex-col w-1/8 items-left   justify-start">
-                    <h3 className="font-bold">{userInfo.nickname}</h3>
-                    <h3>{userInfo.email}</h3>  
+                    <h3 className="text-white font-bold">{userInfo.username}</h3>
+                    <h3 className="text-white">{userInfo.email}</h3>  
                   </div>
                 </div>
                {/*  <!--COMMUNITIES--> */}
@@ -160,7 +153,7 @@ function SkillWallet() {
                   <div className="flex flex-col w-1/2 p-3 items-center   justify-start">
                     <img src="dito-tokens.svg"/>
                     <h2 className="font-bold p-3">  
-                    {ditoBalance === -1 ? "Loading dito balance..." : `${ditoBalance} DiTo`} DiTo 
+                    {ditoBalance === -1 ? "Loading dito balance..." : `${ditoBalance} DiTo`} 
                     </h2>  
                   </div>
                 </div>

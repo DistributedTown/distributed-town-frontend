@@ -47,100 +47,86 @@ const Index = (props) => {
 
   const showRegisterModal = () => {setSelectedPill(-1); return toggleModal()};
 
-  async function getCommunityById(id){
-    const response = await fectch (`http://localhost:3005/api/community/${id}`,  {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${res}`,
-      },
+  async function fetchCommunityById(id, DIDT){
+   try{
+    const response = await fetch (`http://localhost:3005/api/community/${id}`,  {
+      method: "GET",
+      headers: new Headers({
+        Authorization: "Bearer " + DIDT,
+      }),
     });
     const community = await response.json();
     return community;
+    }catch(err){
+      console.log(err)
+    }
   }
 
-  async function saveCommunityContractToUserContext() {
-    const provider = new ethers.providers.Web3Provider(magic.rpcProvider);
-
-    try {
-      const signer = provider.getSigner();
-
-      // Get user's Ethereum public address
-      const address = await signer.getAddress();
-
-      const contractABI = communityContractAbi;
-      const contractAddress = "0x790697f595Aa4F9294566be0d262f71b44b5039c";
-      const contract = new ethers.Contract(
-        contractAddress,
-        contractABI,
-        signer
-      );
-      setUserInfo({
-        ...userInfo,
-        communityContract: { address: contractAddress },
-      });
-
-    }catch(err){
-        console.log(err);
-      }
-    }
-    
-  async function fetchUserSkillsJSON(authToken) {
-    const skillsRes = await fetch( 
-      `http://localhost:3005/api/user`,
-      {
+  async function fetchUserData(DIDT) {
+    try{
+      let res = await fetch(`http://localhost:3005/api/user`, {
         method: "GET",
-        headers: {Authorization: `Bearer ${authToken}`},
-      }
-    );
-    const userSkills = await skillsRes.json();
-    return userSkills;
+        headers: new Headers({
+          Authorization: "Bearer " + DIDT,
+        }),
+      });
+      const userData = await res.json();
+      return userData;
+    } catch(err){
+      console.log(err);
+    }
   }
 
    
   async function handleCreateAccountClick(e) {
     e.preventDefault();
     try {     
-        const didToken = await magic.auth.loginWithMagicLink({
-          email,
+        const DIDT = await magic.auth.loginWithMagicLink({email});
+        
+        console.log('didToken',DIDT);
+        
+        setToken(DIDT);
+
+        let res = await fetch(`http://localhost:3005/api/user/login`, {
+          method: "POST",
+          headers: new Headers({
+            Authorization: "Bearer " + DIDT,
+          }),
         });
-        console.log('didToken',didToken);
 
+        setLoggedIn(true);
+      
+      const userData = await fetchUserData(DIDT);
+      console.log('TWO',userData)
+      const haSkills = userData[0].skills && Array.isArray(userData[0].skills)  && userData[0].skills.length > 0;
+      
+      if(haSkills){
+        console.log('going to the skillwallet');
+         const userCommunityData = await fetchCommunityById(userData[0].communityID, DIDT);
+         setUserInfo({...userInfo, ...userData[0], communityContract: userCommunityData});
+      
+         router.push("/skillWallet");
+      
+      }  else {
+       
+       
         const { publicAddress } = await magic.user.getMetadata();
-
+       
         await fetch("/api/getFunded", {
           method: "POST",
           body: JSON.stringify({ publicAddress }),
         });
-
-        setToken(didToken);
-
-        let result = await fetch(
-          `http://localhost:3005/api/user/login`,
-          {
-            method: "POST",
-            headers: {
-              Authorization: `Bearer ${didToken}`,
-            },
-          }
-        ); 
-      
-      setLoggedIn(true);
-
-      const userSkills = await fetchUserSkillsJSON(didToken);
-      const haSkills = userSkills[0].skills && Array.isArray(userSkills[0].skills)  && userSkills[0].skills.length > 0;
-      if(haSkills && loggedIn){
-        setUserInfo({...setUserInfo, skills: userSkills[0].skills});
-        console.log('going to the dashboard');
-         await saveCommunityContractToUserContext()
-        router.push("/skillWallet");
-      }  else {
-        console.log('starting signup flow');
+       
+        setUserInfo({...userInfo, email:email, skills:[]});
+       
         router.push("/SignupPhaseOne");
       }
+   
     } catch (err) {
       console.error(err);
     }
   }
+  
 
 
   useEffect(() => {

@@ -58,7 +58,9 @@ function SignupPhaseTwo() {
       }
 
       // Send transaction to smart contract to update message and wait to finish
-      const tx = await contract.join(amountOfRedeemableDitos);
+      const baseDitos = 2000;
+      const totalDitos = amountOfRedeemableDitos + baseDitos;
+      const tx = await contract.join(totalDitos);
 
       // Wait for transaction to finish
       const receipt = await tx.wait();
@@ -74,8 +76,6 @@ function SignupPhaseTwo() {
   }
    
   async function updateUser(community){
-   console.log('community in updateuser',community);
-   console.log('community in updateduser ID IDI IDIDIDIDIDIDI', community,id);
 
    try{
     let currentToken = token;
@@ -94,8 +94,9 @@ function SignupPhaseTwo() {
       const payload =  {
         username: userInfo.nickname,
         communityID: community._id,
-         skills: userInfo.userSkilss,
+         skills: userInfo.skills,
       };
+
       console.log('payload',payload);
       const response = await fetch(`http://localhost:3005/api/user`,
        {
@@ -108,7 +109,7 @@ function SignupPhaseTwo() {
         });
 
       const updatedUser = await response.json();
-      console.log(updateUser);
+      console.log(await updateUser);
       
       router.push("/SignupCompleted");
 

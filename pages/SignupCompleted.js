@@ -55,6 +55,7 @@ function SignupCompleted() {
         ditoBalanceStr = ditoBalanceStr.slice(0, ditoBalanceStr.length - 18);
 
         setDitoBalance(ditoBalanceStr);
+        setUserInfo({...userInfo, ditoBalance: ditoBalanceStr});
       } catch (err) {
         console.error(err);
       }
