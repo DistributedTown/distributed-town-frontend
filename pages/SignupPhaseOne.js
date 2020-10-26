@@ -157,13 +157,13 @@ function SignupPhaseOne(props) {
 
   function setUserSkills() {
     let skills = [];
-    const joiningBonus = 2000;
+    
     for (let category of skillTree ) {
       for (let skill of category.skills) {
         if (skill.selected)
           skills.push({
             ...skill, 
-            redeemableDitos: (Math.floor(skill.level / 10) * category.credits) + joiningBonus,
+            redeemableDitos: (Math.floor(skill.level / 10) * category.credits),
           });
       }
     }

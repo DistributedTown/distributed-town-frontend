@@ -1,4 +1,4 @@
-import { createContext, useState, useEffect } from "react";
+import { createContext, useState, useEffect, useContext } from "react";
 import { Magic } from "magic-sdk";
 import Layout from "./Layout";
 
@@ -14,11 +14,11 @@ const Store = ({ children }) => {
   const [magic, setMagic] = useState();
   const [loggedIn, setLoggedIn] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [userInfo, setUserInfo] = useState({ nickname: "", skills: [] });
+  const [userInfo, setUserInfo] = useState();
   const [token, setToken] = useState("");
   
   
-  async function saveCommunityContractToUserContext() {
+ /*  async function saveCommunityContractToUserContext() {
     const provider = new ethers.providers.Web3Provider(magic.rpcProvider);
 
     try {
@@ -43,7 +43,7 @@ const Store = ({ children }) => {
         console.log(err);
       }
     }
-
+ */
 
   useEffect(() => {
     setIsLoading(true);
@@ -74,7 +74,7 @@ const Store = ({ children }) => {
           console.log(loggedIn);
   
           setLoggedIn(loggedIn);
-          // setIsLoading(false);
+          setIsLoading(false);
         }
       }catch(err){
         console.log(err);

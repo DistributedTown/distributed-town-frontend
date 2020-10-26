@@ -16,6 +16,11 @@ const Layout = () => {
    * Log the user out of their session with Magic
    */
 
+ /*  const communityContract = async () {
+    if(userInfo.communityContract) return userInfo.communityContract;
+
+  }; */
+
   const logout = (e) =>{
     e.preventDefault();
     setLoggedIn(false);
@@ -32,13 +37,13 @@ const Layout = () => {
       console.log(err);
     }
   }; */
-
   return (
     <>
       <Head>
         <title>DistributedTown</title>
       </Head>
-      {loggedIn && userInfo.communityContract ? (
+      
+      {loggedIn  && typeof userInfo !== 'undefined'  &&  typeof userInfo.skills !== 'undefined' && userInfo.skills.length > 0 ? (
         <nav className="flex flex-col h-screen max-w-sm p-4 border-r-2 border-denim">
           <div>
             <img src="/isologo.svg" alt="Logo" />
