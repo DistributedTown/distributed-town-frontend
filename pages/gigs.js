@@ -136,7 +136,7 @@ return (
         <div className="flex flex-col p-4 border-2 border-blue-600">
             <h2 className="text-bold underline">Your skills</h2>
             <div className="flex border-t-2 border-gray-400 p-2">
-             { typeof userInfo.skills !== undefined ? userInfo.skills.map((skill, i) => {  return (
+             { typeof userInfo !== 'undefined' && typeof userInfo.skills !== undefined ? userInfo.skills.map((skill, i) => {  return (
                  <div
                  key={i}
                  >

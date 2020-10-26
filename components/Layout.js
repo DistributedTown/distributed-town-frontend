@@ -42,8 +42,8 @@ const Layout = () => {
       <Head>
         <title>DistributedTown</title>
       </Head>
-      
-      {loggedIn  && typeof userInfo !== 'undefined'  &&  typeof userInfo.skills !== 'undefined' && userInfo.skills.length > 0 ? (
+      {console.log('show layout???',loggedIn  && typeof userInfo !== 'undefined'  &&  typeof userInfo.skills !== 'undefined' && userInfo.skills.length > 0)}
+      {loggedIn  && typeof userInfo !== 'undefined'  &&  typeof userInfo.skills !== 'undefined' && userInfo.skills.length > 0 && typeof userInfo.communityContract !== 'undefined' ? (
         <nav className="flex flex-col h-screen max-w-sm p-4 border-r-2 border-denim">
           <div>
             <img src="/isologo.svg" alt="Logo" />
