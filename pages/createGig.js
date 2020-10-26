@@ -84,7 +84,7 @@ function CreateGig() {
       <form className="border-l-2 flex flex-col pl-4">
         <div className="flex flex-col">
           <div className="flex justify-between">
-            <label className="font-bold  text-xl underline" htmlFor="gigTitle">Gig title</label>
+            <label className="font-bold  text-xl underline" htmlFor="gigTitle">Gig Title</label>
             <p className="text-dove-gray">
               Hint: a short, clear title will catch contributors’ attention.
               Just be honest please.
@@ -96,7 +96,7 @@ function CreateGig() {
 
         <div className="flex flex-col">
           <div className="flex justify-between">
-            <label className="font-bold  text-xl underline" htmlFor="gigDesciption">Gig description</label>
+            <label className="font-bold  text-xl underline" htmlFor="gigDesciption">Gig Description</label>
             <p className="text-dove-gray">
               Hint: be as detailed as possible, and be nice - there are real people on the other side ;)
             </p>
