@@ -88,13 +88,13 @@ const Login = () => {
     const DIDT = await magic.auth.loginWithMagicLink({ email });
 
     /* Pass the Decentralized ID token in the Authorization header to the database */
-    let res = await fetch('https://distributed.town:30005/api/user/login`, {
+    let res = await fetch('https://api.distributed.town/api/user/login`, {
       method: "POST",
       headers: new Headers({
         Authorization: "Bearer " + DIDT,
       }),
     });
-    
+
     let data = await res.json();
     console.log(data);
 
@@ -200,7 +200,9 @@ export default async (req, res) => {
   const { method } = req;
 
   if (method !== "GET") {
-    return res.status(400).json({ message: "This route only accepts GET requests" });
+    return res
+      .status(400)
+      .json({ message: "This route only accepts GET requests" });
   }
 
   let userFromCookie;

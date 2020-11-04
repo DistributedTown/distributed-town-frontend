@@ -3,7 +3,7 @@ import {
   LoggedInContext,
   LoadingContext,
   UserInfoContext,
-  TokenContext
+  TokenContext,
 } from "../components/Store";
 
 import { useContext, useEffect, useState } from "react";
@@ -40,7 +40,8 @@ function SignupPhaseTwo() {
       let community = communities.filter((community) => community.selected)[0];
 
       const contractABI = communityContractAbi;
-      const contractAddress = community.address || "0x790697f595Aa4F9294566be0d262f71b44b5039c";;
+      const contractAddress =
+        community.address || "0x790697f595Aa4F9294566be0d262f71b44b5039c";
       const contract = new ethers.Contract(
         contractAddress,
         contractABI,
@@ -49,7 +50,11 @@ function SignupPhaseTwo() {
 
       setUserInfo({
         ...userInfo,
-        communityContract: { _id: community._id, address: contractAddress, name: community.name },
+        communityContract: {
+          _id: community._id,
+          address: contractAddress,
+          name: community.name,
+        },
       });
 
       let amountOfRedeemableDitos = 0;
@@ -64,63 +69,54 @@ function SignupPhaseTwo() {
 
       // Wait for transaction to finish
       const receipt = await tx.wait();
-      
-      await updateUser(community);
 
-      
+      await updateUser(community);
     } catch (err) {
       console.error(err);
     } finally {
       setIsJoining(false);
     }
   }
-   
-  async function updateUser(community){
 
-   try{
-    let currentToken = token;
-    console.log('1 ct',currentToken);
-    const responseFetchToken = await magic.user.getIdToken();
-    const didToken = await responseFetchToken;
-    if(token !== didToken ) {
-      currentToken = didToken;
-      setToken(didToken);
-    } 
+  async function updateUser(community) {
+    try {
+      let currentToken = token;
+      console.log("1 ct", currentToken);
+      const responseFetchToken = await magic.user.getIdToken();
+      const didToken = await responseFetchToken;
+      if (token !== didToken) {
+        currentToken = didToken;
+        setToken(didToken);
+      }
 
-    console.log('2 ct',currentToken);
+      console.log("2 ct", currentToken);
 
-    console.log('updated skills userinfo',userInfo);
+      console.log("updated skills userinfo", userInfo);
 
-      const payload =  {
+      const payload = {
         username: userInfo.username,
         communityID: community._id,
-         skills: userInfo.skills,
+        skills: userInfo.skills,
       };
 
-      console.log('payload',payload);
-      const response = await fetch(`https://distributed.town:30005/api/user`,
-       {
-        method: 'POST',
+      console.log("payload", payload);
+      const response = await fetch(`https://api.distributed.town/api/user`, {
+        method: "POST",
         body: JSON.stringify(payload),
         headers: new Headers({
-          Authorization: "Bearer " +  currentToken,
-          'Content-Type': 'application/json'
-        })
-        });
+          Authorization: "Bearer " + currentToken,
+          "Content-Type": "application/json",
+        }),
+      });
 
       const updatedUser = await response.json();
       console.log(await updateUser);
-      
+
       router.push("/SignupCompleted");
-
-
-    } catch(err){
-
+    } catch (err) {
       console.log(err);
     }
   }
-
-
 
   useEffect(() => {
     (async () => {
@@ -130,14 +126,14 @@ function SignupPhaseTwo() {
         let communitiesToAdd = new Map();
         for await (let { skill } of userInfo.skills) {
           let communities = await fetch(
-            `https://distributed.town:30005/api/community?skill=${skill}`,
+            `https://api.distributed.town/api/community?skill=${skill}`,
             {
               method: "GET",
             }
           );
           communities = await communities.json();
 
-          console.log('communities',communities);
+          console.log("communities", communities);
 
           communities.map((community) => {
             return { ...community, selected: false };
