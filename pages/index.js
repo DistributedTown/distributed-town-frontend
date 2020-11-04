@@ -49,7 +49,7 @@ const Index = (props) => {
 
   async function fetchCommunityById(id, DIDT){
    try{
-    const response = await fetch (`http://3.250.21.129:3005/api/community/${id}`,  {
+    const response = await fetch (`https://distributed.town:30005/api/community/${id}`,  {
       method: "GET",
       headers: new Headers({
         Authorization: "Bearer " + DIDT,
@@ -64,7 +64,7 @@ const Index = (props) => {
 
   async function fetchUserData(DIDT) {
     try{
-      let res = await fetch(`http://3.250.21.129:3005/api/user`, {
+      let res = await fetch(`https://distributed.town:30005/api/user`, {
         method: "GET",
         headers: new Headers({
           Authorization: "Bearer " + DIDT,
@@ -87,7 +87,7 @@ const Index = (props) => {
         
         setToken(DIDT);
 
-        let res = await fetch(`http://3.250.21.129:3005/api/user/login`, {
+        let res = await fetch(`https://distributed.town:30005/api/user/login`, {
           method: "POST",
           headers: new Headers({
             Authorization: "Bearer " + DIDT,
@@ -215,7 +215,7 @@ const Index = (props) => {
 };
 
 export async function getServerSideProps(context) {
-  let skills = await fetch(`http://3.250.21.129:3005/api/skill`, {
+  let skills = await fetch(`https://distributed.town:30005/api/skill`, {
     method: "GET",
   });
   skills = await skills.json();

@@ -88,7 +88,7 @@ const Login = () => {
     const DIDT = await magic.auth.loginWithMagicLink({ email });
 
     /* Pass the Decentralized ID token in the Authorization header to the database */
-    let res = await fetch('http://3.250.21.129:3005/api/user/login`, {
+    let res = await fetch('https://distributed.town:30005/api/user/login`, {
       method: "POST",
       headers: new Headers({
         Authorization: "Bearer " + DIDT,

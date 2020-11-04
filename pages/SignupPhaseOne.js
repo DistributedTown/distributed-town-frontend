@@ -33,7 +33,7 @@ function SignupPhaseOne(props) {
     const getSkillTree = async () => {
       try{
       
-      const response = await fetch(`http://3.250.21.129:3005/api/skill?skill=${userInfo.category}`, { method: "GET" });
+      const response = await fetch(`https://distributed.town:30005/api/skill?skill=${userInfo.category}`, { method: "GET" });
       const skillTree = await response.json();
       const skillTreeCategories = skillTree.categories;
       setSkillTree(skillTreeCategories);

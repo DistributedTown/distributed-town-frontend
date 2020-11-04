@@ -5,8 +5,8 @@
   "private": true,
   "scripts": {
     "dev": "node ./node_modules/next/dist/bin/next dev",
-    "build": "./node_modules/next/dist/bin/next build",
-    "start": "./node_modules/next/dist/bin/next start",
+    "build": "node ./node_modules/next/dist/bin/next build",
+    "start": "node ./node_modules/next/dist/bin/next start",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build"
   },
