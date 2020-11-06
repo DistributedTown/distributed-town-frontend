@@ -10,10 +10,10 @@ import { useContext, useState, useEffect } from "react";
 import { router, useRouter } from "next/router";
 
 function Gigs() {
-    const [token, setToken] = useContext(TokenContext);
-    const [loggedIn, setLoggedIn] = useContext(LoggedInContext);
-    const [magic] = useContext(MagicContext);
-    const [userInfo, setUserInfo] = useContext(UserInfoContext);
+    // const [token, setToken] = useContext(TokenContext);
+    // const [loggedIn, setLoggedIn] = useContext(LoggedInContext);
+    // const [magic] = useContext(MagicContext);
+    // const [userInfo, setUserInfo] = useContext(UserInfoContext);
     const [openGigs, setOpenGigs] = useState([]);
 
     const router = useRouter();
@@ -135,7 +135,7 @@ function Gigs() {
                     <button
                         type="button"
                         className="p-4 border-2 justify-center  items-center border-blue-600"
-                        onClick={() => router.push("/createGig")}
+                        onClick={() => router.push("/community/gigs/create")}
                     >
                         <h2 className="underline font-bold">Create new gig</h2>
                         <img

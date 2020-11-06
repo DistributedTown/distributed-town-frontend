@@ -10,8 +10,8 @@ import { BigNumber, ethers } from "ethers";
 import communityContractAbi from "../../utils/communityContractAbi.json";
 import { Router, useRouter } from "next/router";
 function CommunityTreasury() {
-    const [userInfo, setUserInfo] = useContext(UserInfoContext);
-    const [magic] = useContext(MagicContext);
+    // const [userInfo, setUserInfo] = useContext(UserInfoContext);
+    // const [magic] = useContext(MagicContext);
 
     const router = useRouter();
 
@@ -26,7 +26,7 @@ function CommunityTreasury() {
     }, []);
 
     async function getCommunityInfo() {
-        const provider = new ethers.providers.Web3Provider(magic.rpcProvider);
+        // const provider = new ethers.providers.Web3Provider(magic.rpcProvider);
 
         try {
             const signer = provider.getSigner();

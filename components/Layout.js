@@ -6,22 +6,22 @@ import NavLink from "./NavLink";
 import { useRouter } from "next/router";
 
 const Layout = () => {
-  const [loggedIn, setLoggedIn] = useContext(LoggedInContext);
-  const [magic] = useContext(MagicContext);
-  const [userInfo, setUserInfo] = useContext(UserInfoContext);
+  // const [loggedIn, setLoggedIn] = useContext(LoggedInContext);
+  // const [magic] = useContext(MagicContext);
+  // const [userInfo, setUserInfo] = useContext(UserInfoContext);
 
-   const router = useRouter();
+  const router = useRouter();
   /**
    * Log user out of of the session with our app (clears the `auth` cookie)
    * Log the user out of their session with Magic
    */
 
- /*  const communityContract = async () {
-    if(userInfo.communityContract) return userInfo.communityContract;
+  /*  const communityContract = async () {
+     if(userInfo.communityContract) return userInfo.communityContract;
+ 
+   }; */
 
-  }; */
-
-  const logout = (e) =>{
+  const logout = (e) => {
     e.preventDefault();
     setLoggedIn(false);
     router.push("/");
@@ -42,23 +42,20 @@ const Layout = () => {
       <Head>
         <title>DistributedTown</title>
       </Head>
-      {console.log('show layout???',loggedIn  && typeof userInfo !== 'undefined'  &&  typeof userInfo.skills !== 'undefined' && userInfo.skills.length > 0)}
-      {loggedIn  && typeof userInfo !== 'undefined'  &&  typeof userInfo.skills !== 'undefined' && userInfo.skills.length > 0 && typeof userInfo.communityContract !== 'undefined' ? (
-        <nav className="flex flex-col h-screen max-w-sm p-4 border-r-2 border-denim">
-          <div>
-            <img src="/isologo.svg" alt="Logo" />
-          </div>
-          <ul className="flex flex-col w-full mt-8">
-            <NavLink href="/skillWallet">SkillWallet</NavLink>
-            <NavLink href="/dashboard">Dashboard</NavLink>
-            <NavLink href="#">Notifications</NavLink>
-            <NavLink href="#">Settings</NavLink>
-            <NavLink href="#" onClick={logout}>Logout</NavLink>
-          </ul>
-        </nav>
-      ) : (
-        <></>
-      )}
+      {/* {console.log('show layout???', loggedIn && typeof userInfo !== 'undefined' && typeof userInfo.skills !== 'undefined' && userInfo.skills.length > 0)} */}
+      {/* {loggedIn && typeof userInfo !== 'undefined' && typeof userInfo.skills !== 'undefined' && userInfo.skills.length > 0 && typeof userInfo.communityContract !== 'undefined' ? ( */}
+      <nav className="flex flex-col h-screen max-w-sm p-4 border-r-2 border-denim">
+        <div>
+          <img src="/isologo.svg" alt="Logo" />
+        </div>
+        <ul className="flex flex-col w-full mt-8">
+          <NavLink href="/skillWallet">SkillWallet</NavLink>
+          <NavLink href="/community">Dashboard</NavLink>
+          <NavLink href="#">Notifications</NavLink>
+          <NavLink href="#">Settings</NavLink>
+          <NavLink href="#" onClick={logout}>Logout</NavLink>
+        </ul>
+      </nav>
     </>
   );
 };

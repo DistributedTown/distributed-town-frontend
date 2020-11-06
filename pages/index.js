@@ -20,10 +20,10 @@ import communityContractAbi from "../utils/communityContractAbi.json";
 import { ethers } from "ethers";
 
 const Index = (props) => {
-  const [token, setToken] = useContext(TokenContext);
-  const [loggedIn, setLoggedIn] = useContext(LoggedInContext);
-  const [magic] = useContext(MagicContext);
-  const [userInfo, setUserInfo] = useContext(UserInfoContext);
+  // const [token, setToken] = useContext(TokenContext);
+  // const [loggedIn, setLoggedIn] = useContext(LoggedInContext);
+  // const [magic] = useContext(MagicContext);
+  // const [userInfo, setUserInfo] = useContext(UserInfoContext);
   const [modalState, setModalState] = useState(false);
 
   const [selectedPill, setSelectedPill] = useState(-1);
@@ -216,8 +216,8 @@ const Index = (props) => {
                       </a>
                     </div>
                   ) : (
-                    <></>
-                  )}
+                      <></>
+                    )}
                 </div>
                 <div className="w-full">
                   <h4 className="text-gray-500"> DiTo © 2020</h4>

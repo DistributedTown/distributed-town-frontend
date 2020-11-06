@@ -10,9 +10,9 @@ import { useContext, useState } from "react";
 import { useRouter } from "next/router";
 
 function CreateGig() {
-    const [loggedIn, setLoggedIn] = useContext(LoggedInContext);
-    const [token, setToken] = useContext(TokenContext);
-    const [magic] = useContext(MagicContext);
+    // const [loggedIn, setLoggedIn] = useContext(LoggedInContext);
+    // const [token, setToken] = useContext(TokenContext);
+    // const [magic] = useContext(MagicContext);
 
     const [gig, setGig] = useState({
         title: "",
