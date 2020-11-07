@@ -12,7 +12,12 @@ export const TokenContext = createContext();
 /* this function wraps our entire app within our context APIs so they all have access to their values */
 const Store = ({ children }) => {
   // const [magic, setMagic] = useState();
-  // const [loggedIn, setLoggedIn] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(false);
+  useEffect(() => {
+    setLoggedIn(false)
+  }, [])
+  // const loggedIn = false
+
   // const [isLoading, setIsLoading] = useState(true);
   // const [userInfo, setUserInfo] = useState();
   // const [token, setToken] = useState("");
@@ -94,10 +99,13 @@ const Store = ({ children }) => {
     //       <UserInfoContext.Provider value={[userInfo, setUserInfo]}>
     //         <TokenContext.Provider value={[token, setToken]}>
     //           {!isLoading ? (
-    <div className="flex flex-row">
-      <Layout />
-      {children}
-    </div>
+    <LoggedInContext.Provider value={[loggedIn, setLoggedIn]}>
+      <div className="flex flex-row">
+        <Layout />
+        {children}
+      </div>
+    </LoggedInContext.Provider>
+
     //   ) : (
     //     <div>Loading...</div>
     //   )
