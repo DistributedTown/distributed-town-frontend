@@ -21,9 +21,10 @@ import { ethers } from "ethers";
 
 const Index = (props) => {
   // const [token, setToken] = useContext(TokenContext);
-  // const [loggedIn, setLoggedIn] = useContext(LoggedInContext);
+  const [loggedIn, setLoggedIn] = useContext(LoggedInContext);
   // const [magic] = useContext(MagicContext);
   // const [userInfo, setUserInfo] = useContext(UserInfoContext);
+  // const loggedIn = false
   const [modalState, setModalState] = useState(false);
 
   const [selectedPill, setSelectedPill] = useState(-1);
@@ -149,86 +150,91 @@ const Index = (props) => {
       });
   }, [selectedPill]);
 
-  return (
-    <div className="h-screen w-full">
-      <div className="firstPage">
-        <TheNav
-          logoUrl="/dito-logo.svg"
-          slogan="Distributed Town"
-          helpCta="What is it about?"
-          helpUrl="#"
-          links={[
-            { text: "Docs", url: "#" },
-            { text: "Blog", url: "#" },
-          ]}
-        />
-        <div className="w-full h-full flex flex-col items-center space-y-8 px-4">
-          <Quote quote="Have you ever thought, 'I would like to contribute, but …'" />
-          <p className="w-1/3 text-gray-500">
-            Distributed Town (DiTo) lets you create or join a community with one
-            click. No name, location or bank account necessary.
+  if (loggedIn) {
+    if (typeof window !== 'undefined') router.push('/skillwallet')
+    return null
+  } else {
+    return (
+      <div className="h-screen w-full">
+        <div className="firstPage">
+          <TheNav
+            logoUrl="/dito-logo.svg"
+            slogan="Distributed Town"
+            helpCta="What is it about?"
+            helpUrl="#"
+            links={[
+              { text: "Docs", url: "#" },
+              { text: "Blog", url: "#" },
+            ]}
+          />
+          <div className="w-full h-full flex flex-col items-center space-y-8 px-4">
+            <Quote quote="Have you ever thought, 'I would like to contribute, but …'" />
+            <p className="w-1/3 text-gray-500">
+              Distributed Town (DiTo) lets you create or join a community with one
+              click. No name, location or bank account necessary.
           </p>
-          <div className="p-8 text-center w-3/4 grid grid-flow-row grid-cols-5 gap-4">
-            {props.skills.map((skill, i) => {
-              return (
-                <SkillPill
-                  onClick={() => {
-                    setSelectedPill(i);
-                    toggleModal();
-                  }}
-                  key={i}
-                  text={skill}
-                  selected={selectedPill === i}
-                />
-              );
-            })}
+            <div className="p-8 text-center w-3/4 grid grid-flow-row grid-cols-5 gap-4">
+              {props.skills.map((skill, i) => {
+                return (
+                  <SkillPill
+                    onClick={() => {
+                      setSelectedPill(i);
+                      toggleModal();
+                    }}
+                    key={i}
+                    text={skill}
+                    selected={selectedPill === i}
+                  />
+                );
+              })}
+            </div>
           </div>
         </div>
-      </div>
-      <div className={`modalBackground modalVisible-${modalState} bg-white`}>
-        <div className="modalWrapper">
-          <div className="flex flex-col">
-            <div className="flex flex-row">
-              <div className="flex flex-col space-y-8 container mx-auto h-screen">
-                <img src={getCommunityBgImg(selectedPill)} />
-              </div>
-              <div className="flex flex-col justify-between items-center space-y-8 w-full bg-white flex-grow p-8 h-screen">
-                <div className="p-4 flex flex-col flex-row space-y-4">
-                  {selectedPill >= 0 ? (
-                    <div className="flex flex-col justify-center mt-6 items-center">
-                      <RegistrationForm
-                        onSubmit={handleCreateAccountClick}
-                        setEmail={setEmail}
-                        title="Welcome to Dito"
-                        email={email}
-                        subtitle={`You will be joining a ${getSelectedSkillName(
-                          selectedPill
-                        )} community`}
-                        cta="Create Account"
-                        placeholderText="Please enter your email"
-                      />
-                      <a
-                        onClick={showRegisterModal}
-                        href="#"
-                        className=" pt-2 text-gray-500 underline"
-                      >
-                        Select a different community
-                      </a>
-                    </div>
-                  ) : (
-                      <></>
-                    )}
+        <div className={`modalBackground modalVisible-${modalState} bg-white`}>
+          <div className="modalWrapper">
+            <div className="flex flex-col">
+              <div className="flex flex-row">
+                <div className="flex flex-col space-y-8 container mx-auto h-screen">
+                  <img src={getCommunityBgImg(selectedPill)} />
                 </div>
-                <div className="w-full">
-                  <h4 className="text-gray-500"> DiTo © 2020</h4>
+                <div className="flex flex-col justify-between items-center space-y-8 w-full bg-white flex-grow p-8 h-screen">
+                  <div className="p-4 flex flex-col flex-row space-y-4">
+                    {selectedPill >= 0 ? (
+                      <div className="flex flex-col justify-center mt-6 items-center">
+                        <RegistrationForm
+                          onSubmit={handleCreateAccountClick}
+                          setEmail={setEmail}
+                          title="Welcome to Dito"
+                          email={email}
+                          subtitle={`You will be joining a ${getSelectedSkillName(
+                            selectedPill
+                          )} community`}
+                          cta="Create Account"
+                          placeholderText="Please enter your email"
+                        />
+                        <a
+                          onClick={showRegisterModal}
+                          href="#"
+                          className=" pt-2 text-gray-500 underline"
+                        >
+                          Select a different community
+                      </a>
+                      </div>
+                    ) : (
+                        <></>
+                      )}
+                  </div>
+                  <div className="w-full">
+                    <h4 className="text-gray-500"> DiTo © 2020</h4>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  );
+    );
+  }
 };
 
 export async function getServerSideProps(context) {
