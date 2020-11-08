@@ -3,36 +3,36 @@ import {
     LoggedInContext,
     LoadingContext,
     UserInfoContext,
-    TokenContext,
-} from "../../components/Store";
+    TokenContext
+} from "../components/Store";
 
 import { useContext, useState, useEffect } from "react";
 import { BigNumber, ethers } from "ethers";
 
 import { router, useRouter } from "next/router";
 
-import ditoContractAbi from "../../utils/ditoTokenContractAbi.json";
-import communityContractAbi from "../../utils/communityContractAbi.json";
+import ditoContractAbi from "../utils/ditoTokenContractAbi.json";
+import communityContractAbi from "../utils/communityContractAbi.json";
 import { set } from "mongoose";
 
 function SkillWallet() {
-    // const [userInfo, setUserInfo] = useContext(UserInfoContext);
-    // const [loggedIn, setLoggedIn] = useContext(LoggedInContext);
-    // const [magic] = useContext(MagicContext);
-    // const [token, setToken] = useContext(TokenContext);
+    const [userInfo, setUserInfo] = useContext(UserInfoContext);
+    const [loggedIn, setLoggedIn] = useContext(LoggedInContext);
+    const [magic] = useContext(MagicContext);
+    const [token, setToken] = useContext(TokenContext);
     const [pastGigs, setPastGigs] = useState([]);
-    const [ditoBalance, setDitoBalance] = useState(-1);
+    const [ditoBalance, setDitoBalance] = useState(userInfo.ditoBalance || 0);
 
     async function fetchOpenCloseGigs(authToken, isOpen) {
         try {
             const response = await fetch(
-                `${process.env.API_URL}/api/gig?isOpen=${isOpen}`,
+                `https://api.distributed.town/api/gig?isOpen=${isOpen}`,
                 {
                     method: "GET",
                     headers: {
                         Authorization: `Bearer ${authToken}`,
-                        "Content-Type": "application/json",
-                    },
+                        "Content-Type": "application/json"
+                    }
                 }
             );
             const gigs = await response.json();
@@ -44,17 +44,17 @@ function SkillWallet() {
 
     async function fetchCurrentUser(authToken) {
         try {
-            const response = await fetch(`${process.env.API_URL}/api/user`, {
+            const response = await fetch(`https://api.distributed.town/api/user`, {
                 method: "GET",
                 headers: {
-                    Authorization: `Bearer ${authToken}`,
-                },
+                    Authorization: `Bearer ${authToken}`
+                }
             });
             const userData = await response.json();
             setUserInfo({
                 ...userInfo,
                 username: userData.username,
-                email: userData.email,
+                email: userData.email
             });
         } catch (err) {
             console.log(err);
@@ -63,36 +63,21 @@ function SkillWallet() {
 
     useEffect(() => {
         (async () => {
-            // const provider = new ethers.providers.Web3Provider(magic.rpcProvider);
+            const provider = new ethers.providers.Web3Provider(magic.rpcProvider);
 
             try {
                 const signer = provider.getSigner();
 
-                // Get user's Ethereum public address
-                const address = await signer.getAddress();
-
                 const communityContractABI = communityContractAbi;
                 const communityContractAddress =
-                    userInfo.communityContract.address ||
-                    "0x759A224E15B12357b4DB2d3aa20ef84aDAf28bE7";
+                    userInfo.communityContract && userInfo.communityContract.address
+                        ? userInfo.communityContract.address
+                        : "0x759A224E15B12357b4DB2d3aa20ef84aDAf28bE7";
                 const communityContract = new ethers.Contract(
                     communityContractAddress,
                     communityContractABI,
                     signer
                 );
-
-                const ditoContractABI = ditoContractAbi;
-                const ditoContractAddress = await communityContract.tokens();
-                const ditoContract = new ethers.Contract(
-                    ditoContractAddress,
-                    ditoContractABI,
-                    signer
-                );
-
-                const ditoBalance = await ditoContract.balanceOf(address);
-                let ditoBalanceStr = BigNumber.from(ditoBalance).toString();
-                ditoBalanceStr = ditoBalanceStr.slice(0, ditoBalanceStr.length - 18);
-                setDitoBalance(ditoBalanceStr);
 
                 const currentToken = await magic.user.getIdToken();
                 const storedToken = token;
@@ -102,7 +87,7 @@ function SkillWallet() {
                     setToken(currentToken);
                 }
 
-                await fetchOpenCloseGigs(token, true);
+                await fetchOpenCloseGigs(currentToken, true);
                 //await fetchCurrentUser(token);
             } catch (err) {
                 console.error(err);
@@ -110,7 +95,6 @@ function SkillWallet() {
         })();
     }, []);
 
-    const router = useRouter();
     return (
         <div className="w-full flex flex-col  space-y-8">
             {/* MAIN TITLE  */}
@@ -128,8 +112,8 @@ function SkillWallet() {
                                 <p className="text-4xl">👨</p>
                             </div>
                             <div className="flex flex-col w-1/8 items-left   justify-start">
-                                {/* <h3 className="text-white font-bold">{userInfo.username}</h3> */}
-                                {/* <h3 className="text-white">{userInfo.email}</h3> */}
+                                <h3 className="text-white font-bold">{userInfo.username}</h3>
+                                <h3 className="text-white">{userInfo.email}</h3>
                             </div>
                         </div>
                         {/*  <!--COMMUNITIES--> */}
