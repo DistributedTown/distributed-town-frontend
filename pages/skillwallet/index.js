@@ -4,15 +4,15 @@ import {
     LoadingContext,
     UserInfoContext,
     TokenContext
-} from "../components/Store";
+} from "../../components/Store";
 
 import { useContext, useState, useEffect } from "react";
 import { BigNumber, ethers } from "ethers";
 
 import { router, useRouter } from "next/router";
 
-import ditoContractAbi from "../utils/ditoTokenContractAbi.json";
-import communityContractAbi from "../utils/communityContractAbi.json";
+import ditoContractAbi from "../../utils/ditoTokenContractAbi.json";
+import communityContractAbi from "../../utils/communityContractAbi.json";
 import { set } from "mongoose";
 
 function SkillWallet() {

@@ -137,7 +137,7 @@ const Store = ({ children }) => {
                 communityContract: { address: communityContractAddress },
                 ditoBalance: ditoBalanceStr
               });
-              router.push("/skillWallet");
+              router.push("/skillwallet");
             } catch (error) {
               console.log(error);
             }
@@ -161,7 +161,7 @@ const Store = ({ children }) => {
             <TokenContext.Provider value={[token, setToken]}>
               {!isLoading ? (
 
-                <div className="flex flex-row">
+                <div className="flex">
                   <Layout />
                   {children}
                 </div>
