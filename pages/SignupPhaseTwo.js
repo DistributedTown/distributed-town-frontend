@@ -100,7 +100,7 @@ function SignupPhaseTwo() {
       };
 
       console.log("payload", payload);
-      const response = await fetch(`https://api.distributed.town/api/user`, {
+      const response = await fetch(`${process.env.API_URL}/api/user`, {
         method: "POST",
         body: JSON.stringify(payload),
         headers: new Headers({
@@ -126,7 +126,7 @@ function SignupPhaseTwo() {
         let communitiesToAdd = new Map();
         for await (let { skill } of userInfo.skills) {
           let communities = await fetch(
-            `https://api.distributed.town/api/community?skill=${skill}`,
+            `${process.env.API_URL}/api/community?skill=${skill}`,
             {
               method: "GET",
             }

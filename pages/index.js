@@ -1,6 +1,6 @@
 import SkillPill from "../components/SkillPill";
 import Quote from "../components/Quote";
-import RegistrationForm from "../components/RegistrationForm";
+import RegistrationModal from "../components/registration/RegistrationModal";
 
 import { useContext, useEffect, useState } from "react";
 import Store, {
@@ -12,37 +12,26 @@ import Store, {
 } from "../components/Store";
 import { useRouter } from "next/router";
 import TheNav from "../components/TheNav";
-import bgImages from "../utils/bgImages.js";
 import { get, set } from "mongoose";
+
+import bgImages from "../utils/bgImages";
+
 
 import communityContractAbi from "../utils/communityContractAbi.json";
 
 import { ethers } from "ethers";
 
 const Index = (props) => {
-  // const [token, setToken] = useContext(TokenContext);
+  const [token, setToken] = useContext(TokenContext);
   const [loggedIn, setLoggedIn] = useContext(LoggedInContext);
-  // const [magic] = useContext(MagicContext);
-  // const [userInfo, setUserInfo] = useContext(UserInfoContext);
-  // const loggedIn = false
+  const [magic] = useContext(MagicContext);
+  const [userInfo, setUserInfo] = useContext(UserInfoContext);
   const [modalState, setModalState] = useState(false);
 
   const [selectedPill, setSelectedPill] = useState(-1);
   const [email, setEmail] = useState("");
 
   const router = useRouter();
-
-  const getCommunityBgImg = (selectedCommunity) => {
-    return typeof (selectedCommunity !== "undefined") && selectedCommunity >= 0
-      ? bgImages[props.skills[selectedCommunity].toLowerCase()]
-      : bgImages["default"];
-  };
-
-  const getSelectedSkillName = (selectedPill) => {
-    return typeof (selectedPill !== "undefined") && selectedPill >= 0
-      ? ` ${props.skills[selectedPill]}`
-      : `${props.skills[0]}`;
-  };
 
   const toggleModal = () => {
     setModalState(!modalState);
@@ -56,7 +45,7 @@ const Index = (props) => {
   async function fetchCommunityById(id, DIDT) {
     try {
       const response = await fetch(
-        `https://api.distributed.town/api/community/${id}`,
+        `${process.env.API_URL}/api/community/${id}`,
         {
           method: "GET",
           headers: new Headers({
@@ -73,7 +62,7 @@ const Index = (props) => {
 
   async function fetchUserData(DIDT) {
     try {
-      let res = await fetch(`https://api.distributed.town/api/user`, {
+      let res = await fetch(`${process.env.API_URL}/api/user`, {
         method: "GET",
         headers: new Headers({
           Authorization: "Bearer " + DIDT,
@@ -95,7 +84,7 @@ const Index = (props) => {
 
       setToken(DIDT);
 
-      let res = await fetch(`https://api.distributed.town/api/user/login`, {
+      let res = await fetch(`${process.env.API_URL}/api/user/login`, {
         method: "POST",
         headers: new Headers({
           Authorization: "Bearer " + DIDT,
@@ -140,14 +129,20 @@ const Index = (props) => {
       console.error(err);
     }
   }
+  const getCommunityBgImg = (selectedCommunity) => {
+    return typeof (selectedCommunity !== "undefined") && selectedCommunity >= 0
+      ? bgImages[props.skills[selectedCommunity].toLowerCase()]
+      : bgImages["default"];
+  };
 
   useEffect(() => {
     if (selectedPill !== -1)
-      setUserInfo({
-        ...userInfo,
-        category: props.skills[selectedPill],
-        background: getCommunityBgImg(selectedPill),
-      });
+      console.log(props.skills[selectedPill])
+    setUserInfo({
+      ...userInfo,
+      category: props.skills[selectedPill],
+      background: getCommunityBgImg(selectedPill),
+    });
   }, [selectedPill]);
 
   if (loggedIn) {
@@ -191,46 +186,7 @@ const Index = (props) => {
           </div>
         </div>
         <div className={`modalBackground modalVisible-${modalState} bg-white`}>
-          <div className="modalWrapper">
-            <div className="flex flex-col">
-              <div className="flex flex-row">
-                <div className="flex flex-col space-y-8 container mx-auto h-screen">
-                  <img src={getCommunityBgImg(selectedPill)} />
-                </div>
-                <div className="flex flex-col justify-between items-center space-y-8 w-full bg-white flex-grow p-8 h-screen">
-                  <div className="p-4 flex flex-col flex-row space-y-4">
-                    {selectedPill >= 0 ? (
-                      <div className="flex flex-col justify-center mt-6 items-center">
-                        <RegistrationForm
-                          onSubmit={handleCreateAccountClick}
-                          setEmail={setEmail}
-                          title="Welcome to Dito"
-                          email={email}
-                          subtitle={`You will be joining a ${getSelectedSkillName(
-                            selectedPill
-                          )} community`}
-                          cta="Create Account"
-                          placeholderText="Please enter your email"
-                        />
-                        <a
-                          onClick={showRegisterModal}
-                          href="#"
-                          className=" pt-2 text-gray-500 underline"
-                        >
-                          Select a different community
-                      </a>
-                      </div>
-                    ) : (
-                        <></>
-                      )}
-                  </div>
-                  <div className="w-full">
-                    <h4 className="text-gray-500"> DiTo © 2020</h4>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+          <RegistrationModal selectedPill={selectedPill} skills={props.skills} handleCreateAccountClick={handleCreateAccountClick} email={email} setEmail={setEmail} showRegisterModal={showRegisterModal} getCommunityBgImg={getCommunityBgImg} />
         </div>
       </div>
     );
@@ -238,7 +194,7 @@ const Index = (props) => {
 };
 
 export async function getServerSideProps(context) {
-  let skills = await fetch(`https://api.distributed.town/api/skill`, {
+  let skills = await fetch(`${process.env.API_URL}/api/skill`, {
     method: "GET",
   });
   skills = await skills.json();
