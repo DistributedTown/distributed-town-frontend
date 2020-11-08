@@ -26,7 +26,7 @@ function SkillWallet() {
     async function fetchOpenCloseGigs(authToken, isOpen) {
         try {
             const response = await fetch(
-                `https://api.distributed.town/api/gig?isOpen=${isOpen}`,
+                `${process.env.API_URL}/api/gig?isOpen=${isOpen}`,
                 {
                     method: "GET",
                     headers: {
@@ -44,7 +44,7 @@ function SkillWallet() {
 
     async function fetchCurrentUser(authToken) {
         try {
-            const response = await fetch(`https://api.distributed.town/api/user`, {
+            const response = await fetch(`${process.env.API_URL}/api/user`, {
                 method: "GET",
                 headers: {
                     Authorization: `Bearer ${authToken}`,

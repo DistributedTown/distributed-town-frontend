@@ -25,7 +25,7 @@ function Gigs() {
         async function effect() {
             try {
                 let resFetchGigs = await fetch(
-                    `https://api.distributed.town/api/gig?isOpen=true`,
+                    `${process.env.API_URL}/api/gig?isOpen=true`,
                     {
                         method: "GET",
                         headers: new Headers({
@@ -41,7 +41,7 @@ function Gigs() {
                     typeof userInfo.skills === "undefined"
                 ) {
                     let reresFetchUsers = await fetch(
-                        `https://api.distributed.town/api/user/login`,
+                        `${process.env.API_URL}/api/user/login`,
                         {
                             method: "POST",
                             headers: new Headers({
@@ -73,7 +73,7 @@ function Gigs() {
     const takeGig = async (gigID) => {
         try {
             let result = await fetch(
-                `https://api.distributed.town/api/gig/${gigID}/accept`,
+                `${process.env.API_URL}/api/gig/${gigID}/accept`,
                 {
                     method: "POST",
                     headers: new Headers({
