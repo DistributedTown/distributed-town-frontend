@@ -11,14 +11,14 @@ const Login = () => {
   const [errorMsg, setErrorMsg] = useState("");
   const [disableLogin, setDisableLogin] = useState(false);
 
-  const authenticateWithDb = async DIDT => {
+  const authenticateWithDb = async (DIDT) => {
     /* Pass the Decentralized ID token in the Authorization header to the database */
 
-    let res = await fetch('http://3.250.21.129:3005/api/user/login', {
+    let res = await fetch(`${process.env.API_URL}/api/user/login`, {
       method: "POST",
       headers: new Headers({
-        Authorization: "Bearer " + DIDT
-      })
+        Authorization: "Bearer " + DIDT,
+      }),
     });
 
     let data = await res.json();
@@ -64,7 +64,8 @@ const Login = () => {
         />
       ) : loggedIn ? ( // If the user is logged in, show a link to the home page
         <>
-          You're already logged in! Click <Link href="/">here</Link> to view your Todos.
+          You're already logged in! Click <Link href="/">here</Link> to view
+          your Todos.
         </>
       ) : (
         <div className="login-form">
@@ -74,7 +75,7 @@ const Login = () => {
               className="login-form-input"
               type="email"
               value={email}
-              onChange={e => {
+              onChange={(e) => {
                 setErrorMsg(""); // remove error msg
                 setEmail(e.target.value);
               }}
@@ -85,7 +86,7 @@ const Login = () => {
               type="submit"
               value="Log in"
               disabled={disableLogin}
-              onClick={e => {
+              onClick={(e) => {
                 e.preventDefault();
                 if (!email) return setErrorMsg("Email cannot be empty.");
                 handleLogin();

@@ -1,6 +1,6 @@
 import SkillPill from "../components/SkillPill";
 import Quote from "../components/Quote";
-import RegistrationForm from "../components/RegistrationForm";
+import RegistrationModal from "../components/registration/RegistrationModal";
 
 import { useContext, useEffect, useState } from "react";
 import Store, {
@@ -55,12 +55,12 @@ const Index = props => {
   async function fetchCommunityById(id, DIDT) {
     try {
       const response = await fetch(
-        `https://api.distributed.town/api/community/${id}`,
+        `${process.env.API_URL}/api/community/${id}`,
         {
           method: "GET",
           headers: new Headers({
-            Authorization: "Bearer " + DIDT
-          })
+            Authorization: "Bearer " + DIDT,
+          }),
         }
       );
       const community = await response.json();
@@ -72,7 +72,7 @@ const Index = props => {
 
   async function fetchUserData(DIDT) {
     try {
-      let res = await fetch(`https://api.distributed.town/api/user`, {
+      let res = await fetch(`${process.env.API_URL}/api/user`, {
         method: "GET",
         headers: new Headers({
           Authorization: "Bearer " + DIDT
@@ -94,11 +94,11 @@ const Index = props => {
 
       setToken(DIDT);
 
-      let res = await fetch(`https://api.distributed.town/api/user/login`, {
+      let res = await fetch(`${process.env.API_URL}/api/user/login`, {
         method: "POST",
         headers: new Headers({
-          Authorization: "Bearer " + DIDT
-        })
+          Authorization: "Bearer " + DIDT,
+        }),
       });
 
       setLoggedIn(true);
@@ -122,7 +122,7 @@ const Index = props => {
           communityContract: userCommunityData
         });
 
-        router.push("/skillWallet");
+        router.push("/skillwallet");
       } else {
         const { publicAddress } = await magic.user.getMetadata();
 
@@ -142,98 +142,65 @@ const Index = props => {
 
   useEffect(() => {
     if (selectedPill !== -1)
-      setUserInfo({
-        ...userInfo,
-        category: props.skills[selectedPill],
-        background: getCommunityBgImg(selectedPill)
-      });
+      console.log(props.skills[selectedPill])
+    setUserInfo({
+      ...userInfo,
+      category: props.skills[selectedPill],
+      background: getCommunityBgImg(selectedPill),
+    });
   }, [selectedPill]);
 
-  return (
-    <div className="h-screen w-full">
-      <div className="firstPage">
-        <TheNav
-          logoUrl="/dito-logo.svg"
-          slogan="Distributed Town"
-          helpCta="What is it about?"
-          helpUrl="#"
-          links={[
-            { text: "Docs", url: "#" },
-            { text: "Blog", url: "#" }
-          ]}
-        />
-        <div className="w-full h-full flex flex-col items-center space-y-8 px-4">
-          <Quote quote="Have you ever thought, 'I would like to contribute, but …'" />
-          <p className="w-1/3 text-gray-500">
-            Distributed Town (DiTo) lets you create or join a community with one
-            click. No name, location or bank account necessary.
+  if (loggedIn) {
+    if (typeof window !== 'undefined') router.push('/skillwallet')
+    return null
+  } else {
+    return (
+      <div className="h-screen w-full">
+        <div className="firstPage">
+          <TheNav
+            logoUrl="/dito-logo.svg"
+            slogan="Distributed Town"
+            helpCta="What is it about?"
+            helpUrl="#"
+            links={[
+              { text: "Docs", url: "#" },
+              { text: "Blog", url: "#" },
+            ]}
+          />
+          <div className="w-full h-full flex flex-col items-center space-y-8 px-4">
+            <Quote quote="Have you ever thought, 'I would like to contribute, but …'" />
+            <p className="w-1/3 text-gray-500">
+              Distributed Town (DiTo) lets you create or join a community with one
+              click. No name, location or bank account necessary.
           </p>
-          <div className="p-8 text-center w-3/4 grid grid-flow-row grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-            {props.skills.map((skill, i) => {
-              return (
-                <SkillPill
-                  onClick={() => {
-                    setSelectedPill(i);
-                    toggleModal();
-                  }}
-                  key={i}
-                  text={skill}
-                  selected={selectedPill === i}
-                />
-              );
-            })}
-          </div>
-        </div>
-      </div>
-      <div className={`modalBackground modalVisible-${modalState} bg-white`}>
-        <div className="modalWrapper">
-          <div className="flex flex-col">
-            <div className="flex flex-row">
-              <div className="flex flex-col space-y-8 container mx-auto h-screen">
-                <img src={getCommunityBgImg(selectedPill)} />
-              </div>
-              <div className="flex flex-col justify-between items-center space-y-8 w-full bg-white flex-grow p-8 h-screen">
-                <div className="p-4 flex flex-col flex-row space-y-4">
-                  {selectedPill >= 0 ? (
-                    <div className="flex flex-col justify-center mt-6 items-center">
-                      <RegistrationForm
-                        onSubmit={handleCreateAccountClick}
-                        setEmail={setEmail}
-                        title="Welcome to Dito"
-                        email={email}
-                        subtitle={`You will be joining a ${getSelectedSkillName(
-                          selectedPill
-                        )} community`}
-                        cta="Create Account"
-                        placeholderText="Please enter your email"
-                      />
-                      <a
-                        onClick={showRegisterModal}
-                        href="#"
-                        className=" pt-2 text-gray-500 underline"
-                      >
-                        Select a different community
-                      </a>
-                    </div>
-                  ) : (
-                    <></>
-                  )}
-                </div>
-                <div className="w-full">
-                  <h4 className="text-gray-500"> DiTo © 2020</h4>
-                </div>
-              </div>
+            <div className="p-8 text-center w-3/4 grid grid-flow-row grid-cols-5 gap-4">
+              {props.skills.map((skill, i) => {
+                return (
+                  <SkillPill
+                    onClick={() => {
+                      setSelectedPill(i);
+                      toggleModal();
+                    }}
+                    key={i}
+                    text={skill}
+                    selected={selectedPill === i}
+                  />
+                );
+              })}
             </div>
           </div>
         </div>
+        <div className={`modalBackground modalVisible-${modalState} bg-white`}>
+          <RegistrationModal selectedPill={selectedPill} skills={props.skills} handleCreateAccountClick={handleCreateAccountClick} email={email} setEmail={setEmail} showRegisterModal={showRegisterModal} getCommunityBgImg={getCommunityBgImg} />
+        </div>
       </div>
-    </div>
-  );
+    );
+  }
 };
 
 export async function getServerSideProps(context) {
-  let skills = await fetch(`https://api.distributed.town/api/skill`, {
-    method: "GET"
+  let skills = await fetch(`${process.env.API_URL}/api/skill`, {
+    method: "GET",
   });
   skills = await skills.json();
 

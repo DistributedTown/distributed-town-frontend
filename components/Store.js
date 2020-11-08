@@ -18,6 +18,10 @@ export const TokenContext = createContext();
 const Store = ({ children }) => {
   const [magic, setMagic] = useState();
   const [loggedIn, setLoggedIn] = useState(false);
+  useEffect(() => {
+    setLoggedIn(false)
+  }, [])
+
   const [isLoading, setIsLoading] = useState(true);
   const [userInfo, setUserInfo] = useState();
   const [token, setToken] = useState("");
@@ -44,11 +48,11 @@ const Store = ({ children }) => {
         communityContract: { address: contractAddress },
       });
 
-    }catch(err){
-        console.log(err);
-      }
+    } catch (err) {
+      console.log(err);
     }
- */
+  }
+*/
 
   useEffect(() => {
     /* We initialize Magic in `useEffect` so it has access to the global `window` object inside the browser */
@@ -133,7 +137,7 @@ const Store = ({ children }) => {
                 communityContract: { address: communityContractAddress },
                 ditoBalance: ditoBalanceStr
               });
-              router.push("/skillWallet");
+              router.push("/skillwallet");
             } catch (error) {
               console.log(error);
             }
@@ -156,18 +160,22 @@ const Store = ({ children }) => {
           <UserInfoContext.Provider value={[userInfo, setUserInfo]}>
             <TokenContext.Provider value={[token, setToken]}>
               {!isLoading ? (
-                <div className="flex flex-row">
+
+                <div className="flex">
                   <Layout />
                   {children}
                 </div>
+
+
               ) : (
-                <div>Loading...</div>
-              )}
-            </TokenContext.Provider>
-          </UserInfoContext.Provider>
-        </LoadingContext.Provider>
-      </MagicContext.Provider>
-    </LoggedInContext.Provider>
+                  <div>Loading...</div>
+                )
+              }
+            </TokenContext.Provider >
+          </UserInfoContext.Provider >
+        </LoadingContext.Provider >
+      </MagicContext.Provider >
+    </LoggedInContext.Provider >
   );
 };
 

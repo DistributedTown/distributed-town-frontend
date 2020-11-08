@@ -5,8 +5,8 @@
   "private": true,
   "scripts": {
     "dev": "node ./node_modules/next/dist/bin/next dev",
-    "build": "./node_modules/next/dist/bin/next build",
-    "start": "./node_modules/next/dist/bin/next start",
+    "build": "node ./node_modules/next/dist/bin/next build",
+    "start": "node ./node_modules/next/dist/bin/next start",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build"
   },
@@ -18,7 +18,7 @@
     "ethers": "^5.0.17",
     "magic-sdk": "^2.0.2",
     "mongoose": "^5.9.18",
-    "next": "9.4.4",
+    "next": "^10.0.1",
     "react": "16.13.1",
     "react-dom": "16.13.1"
   },
