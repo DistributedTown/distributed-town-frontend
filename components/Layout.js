@@ -21,7 +21,6 @@ const Layout = () => {
  
    }; */
 
-
   const handleLogout = async () => {
     try {
       await magic.user.logout();
@@ -40,26 +39,30 @@ const Layout = () => {
         <Head>
           <title>DistributedTown</title>
         </Head>
-        <nav className="flex flex-col h-screen max-w-sm p-4 border-r-2 border-denim">
-          <div>
+        <nav className="flex flex-col h-screen w-64 max-w-sm border-r-2 border-denim">
+          <div className="custom-gradient flex justify-center items-start pt-12">
             <img src="/isologo.svg" alt="Logo" />
           </div>
-          <ul className="flex flex-col w-full mt-8">
+          <ul className="flex flex-col w-full px-4 text-2xl text-center leading-10">
             <NavLink href="/skillwallet">Skill Wallet</NavLink>
             <NavLink href="/community">Dashboard</NavLink>
             <NavLink href="#">Notifications</NavLink>
             <NavLink href="#">Settings</NavLink>
-            <NavLink href="#" onClick={e => handleLogout()}>Logout</NavLink>
+            <li
+              className="bg-denim text-white cursor-pointer"
+              href="#"
+              onClick={e => handleLogout()}
+            >
+              Logout
+            </li>
           </ul>
         </nav>
       </>
-    )
-
+    );
   } else {
-    if (typeof window !== 'undefined') router.push('/')
-    return <></>
+    if (typeof window !== "undefined") router.push("/");
+    return <></>;
   }
-
 };
 
 export default Layout;
