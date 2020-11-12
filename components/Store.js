@@ -18,10 +18,6 @@ export const TokenContext = createContext();
 const Store = ({ children }) => {
   const [magic, setMagic] = useState();
   const [loggedIn, setLoggedIn] = useState(false);
-  useEffect(() => {
-    setLoggedIn(false)
-  }, [])
-
   const [isLoading, setIsLoading] = useState(true);
   const [userInfo, setUserInfo] = useState();
   const [token, setToken] = useState("");

@@ -26,7 +26,7 @@ function SkillWallet() {
     async function fetchOpenCloseGigs(authToken, isOpen) {
         try {
             const response = await fetch(
-                `https://api.distributed.town/api/gig?isOpen=${isOpen}`,
+                `${process.env.NEXT_PUBLIC_API_URL}/api/gig?isOpen=${isOpen}`,
                 {
                     method: "GET",
                     headers: {

@@ -10,14 +10,18 @@ import { BigNumber, ethers } from "ethers";
 import communityContractAbi from "../../utils/communityContractAbi.json";
 import { Router, useRouter } from "next/router";
 function CommunityTreasury() {
-    // const [userInfo, setUserInfo] = useContext(UserInfoContext);
-    // const [magic] = useContext(MagicContext);
+    const [userInfo, setUserInfo] = useContext(UserInfoContext);
+    const [magic] = useContext(MagicContext);
 
     const router = useRouter();
 
-    const [isJoining, setIsJoining] = useState(false);
-
     const [communities, setCommunities] = useState([]);
+    const [isJoining, setIsJoining] = useState(false);
+    const [numOfMembers, setNumOfMembers] = useState(0);
+    const [liquidityPoolBalance, setLiquidityPoolBalance] = useState(0);
+    const [liquidityPoolAPY, setLiquidityPoolAPY] = useState(0);
+    const [amountToInvest, setAmountToInvest] = useState(0);
+
 
     useEffect(() => {
         (async () => {
@@ -26,30 +30,74 @@ function CommunityTreasury() {
     }, []);
 
     async function getCommunityInfo() {
-        // const provider = new ethers.providers.Web3Provider(magic.rpcProvider);
+        await window.ethereum.enable();
+
+        const provider = new ethers.providers.Web3Provider(window.ethereum);
 
         try {
             const signer = provider.getSigner();
 
-            // Get user's Ethereum public address
-            const address = await signer.getAddress();
-
             const contractABI = communityContractAbi;
-            const contractAddress = "0x790697f595Aa4F9294566be0d262f71b44b5039c";
-            const contract = new ethers.Contract(
+            console.log(communityContractAbi)
+            const contractAddress = userInfo.communityContract.address; // "0x790697f595Aa4F9294566be0d262f71b44b5039c";
+            let contract = new ethers.Contract(
                 contractAddress,
                 contractABI,
-                signer
+                provider
             );
 
+            console.log(contract)
+
             // Send transaction to smart contract to update message and wait to finish
-            const [nUsers, investedBalance] = await Promise.all([
-                contract.numberOfMembers(),
+            // const [
+            //     nUsers,
+            //     docInvestedBalance,
+            //     wrbtcInvestedBalance,
+            // ] = await Promise.all([
+            //     contract.numberOfMembers(),
+            //     contract.getInvestedBalanceInfo("DOC"),
+            //     contract.getInvestedBalanceInfo("WRBTC"),
+            // ]);
+
+            const [
+                docInvestedBalance,
+            ] = await Promise.all([
                 contract.getInvestedBalance(),
             ]);
 
-            setNumOfMembers(BigNumber.from(nUsers).toNumber());
-            setLiquidityPoolBalance(BigNumber.from(investedBalance).toNumber());
+            console.log(docInvestedBalance)
+
+            // let docInvestedTokenApy = BigNumber.from(
+            //     docInvestedBalance.investedTokenAPY
+            // ).toString();
+
+            // docInvestedTokenApy = Number(
+            //     `${docInvestedTokenApy.substring(
+            //         0,
+            //         docInvestedTokenApy.length - 18
+            //     )}.${docInvestedTokenApy.substring(docInvestedTokenApy.length - 18)}`
+            // );
+            // let wrbtcInvestedTokenApy = BigNumber.from(
+            //     wrbtcInvestedBalance.investedTokenAPY
+            // ).toString();
+
+            // wrbtcInvestedTokenApy = Number(
+            //     `${wrbtcInvestedTokenApy.substring(
+            //         0,
+            //         wrbtcInvestedTokenApy.length - 18
+            //     )}.${wrbtcInvestedTokenApy.substring(
+            //         wrbtcInvestedTokenApy.length - 18
+            //     )}`
+            // );
+
+            // setNumOfMembers(BigNumber.from(nUsers).toNumber());
+            // setLiquidityPoolBalance(
+            //     BigNumber.from(docInvestedBalance.investedBalance).toNumber() +
+            //     BigNumber.from(wrbtcInvestedBalance.investedBalance).toNumber()
+            // );
+            // setLiquidityPoolAPY(
+            //     ((docInvestedTokenApy + wrbtcInvestedTokenApy) / 2).toFixed(2)
+            // );
         } catch (err) {
             console.error(err);
         }
@@ -61,7 +109,7 @@ function CommunityTreasury() {
                 <h1 className="underline text-black text-center text-4xl">Community Treasury</h1>
                 <div className="flex flex-col  justify-center  w-3/4 space-y-4 border-2 border-denim px-8 py-5">
 
-                    <h1 class="flex text-ceter font-bold underline justify-center">Add funds to Treasury</h1>
+                    <h1 className="flex text-ceter font-bold underline justify-center">Add funds to Treasury</h1>
 
                     <div className="flex flex-row justify-center">
                         <div className="flex flex-col w-1/2 p-3">

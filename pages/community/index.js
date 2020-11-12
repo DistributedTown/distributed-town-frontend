@@ -75,7 +75,7 @@ function CommunityDashboard() {
                         <Link href="/community/gigs">
                             <a className="w-2/3 text-center py-2 border-2 border-denim">Open Gigs</a>
                         </Link>
-                        <Link href="/">
+                        <Link href="/community/projects">
                             <a className="w-2/3 text-center py-2 border-2 border-denim">Projects & Proposals</a>
                         </Link>
                     </div>

@@ -29,7 +29,7 @@ function SignupPhaseOne(props) {
     const getSkillTree = async () => {
       try {
         const response = await fetch(
-          `${process.env.API_URL}/api/skill?skill=${userInfo.category}`,
+          `${process.env.NEXT_PUBLIC_API_URL}/api/skill?skill=${userInfo.category}`,
           { method: "GET" }
         );
         const skillTree = await response.json();
