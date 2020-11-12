@@ -19,8 +19,8 @@ const Store = ({ children }) => {
   const [magic, setMagic] = useState();
   const [loggedIn, setLoggedIn] = useState(false);
   useEffect(() => {
-    setLoggedIn(false)
-  }, [])
+    setLoggedIn(false);
+  }, []);
 
   const [isLoading, setIsLoading] = useState(true);
   const [userInfo, setUserInfo] = useState();
@@ -160,22 +160,15 @@ const Store = ({ children }) => {
           <UserInfoContext.Provider value={[userInfo, setUserInfo]}>
             <TokenContext.Provider value={[token, setToken]}>
               {!isLoading ? (
-
-                <div className="flex">
-                  <Layout />
-                  {children}
-                </div>
-
-
+                <div className="flex">{children}</div>
               ) : (
-                  <div>Loading...</div>
-                )
-              }
-            </TokenContext.Provider >
-          </UserInfoContext.Provider >
-        </LoadingContext.Provider >
-      </MagicContext.Provider >
-    </LoggedInContext.Provider >
+                <div>Loading...</div>
+              )}
+            </TokenContext.Provider>
+          </UserInfoContext.Provider>
+        </LoadingContext.Provider>
+      </MagicContext.Provider>
+    </LoggedInContext.Provider>
   );
 };
 
