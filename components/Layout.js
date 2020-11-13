@@ -21,7 +21,6 @@ const Layout = () => {
  
    }; */
 
-
   const handleLogout = async () => {
     try {
       await magic.user.logout();
@@ -34,32 +33,33 @@ const Layout = () => {
   };
 
   // if logged in show the nav menu, if not redirect to unlogged in index page.
-  if (loggedIn) {
-    return (
-      <>
-        <Head>
-          <title>DistributedTown</title>
-        </Head>
-        <nav className="flex flex-col h-screen max-w-sm p-4 border-r-2 border-denim">
-          <div>
-            <img src="/isologo.svg" alt="Logo" />
-          </div>
+  return (
+    <>
+      <Head>
+        <title>DistributedTown</title>
+      </Head>
+      <nav className="flex flex-col h-screen max-w-sm p-4 border-r-2 border-denim">
+        <div>
+          <img src="/isologo.svg" alt="Logo" />
+        </div>
+        {loggedIn && (
           <ul className="flex flex-col w-full mt-8">
             <NavLink href="/skillwallet">Skill Wallet</NavLink>
             <NavLink href="/community">Dashboard</NavLink>
             <NavLink href="#">Notifications</NavLink>
             <NavLink href="#">Settings</NavLink>
-            <NavLink href="#" onClick={e => handleLogout()}>Logout</NavLink>
+            <li
+              className="bg-denim text-white cursor-pointer"
+              href="#"
+              onClick={e => handleLogout()}
+            >
+              Logout
+            </li>
           </ul>
-        </nav>
-      </>
-    )
-
-  } else {
-    if (typeof window !== 'undefined') router.push('/')
-    return <></>
-  }
-
+        )}
+      </nav>
+    </>
+  );
 };
 
 export default Layout;

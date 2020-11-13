@@ -6,7 +6,7 @@ const CreateGigForm = ({ register, handleSubmit, onSubmit, errors }) => {
     const { data, error } = useSWR(`${process.env.NEXT_PUBLIC_API_URL}/api/skill`, fetcher)
 
     return (
-        <div className="flex flex-col border-l-2 border-denim p-2">
+        <div className="flex flex-col border-l-2 border-denim p-2 mt-6">
             <form className="border-l-2 flex flex-col pl-4" onSubmit={handleSubmit(onSubmit)}>
                 <div className="flex flex-col">
                     <div className="flex justify-between">
@@ -60,7 +60,7 @@ const CreateGigForm = ({ register, handleSubmit, onSubmit, errors }) => {
                                 {error && <p>Couldn't fetch skills</p>}
                                 {data ? data.map(skill => {
                                     return (
-                                        <div className="flex flex-row items-start">
+                                        <div className="flex items-center">
                                             <input
                                                 type="checkbox"
                                                 key={skill}

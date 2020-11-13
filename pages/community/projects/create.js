@@ -10,6 +10,7 @@ import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { useRouter } from "next/router";
+import Layout from "../../../components/Layout";
 
 function CreateProject() {
     const [token, setToken] = useContext(TokenContext);
@@ -57,10 +58,14 @@ function CreateProject() {
 
 
     return (
-        <div className="w-full h-screen p-8 space-y-3">
-            <h1 className="underline text-black text-4xl">Create New Project</h1>
-            <CreateProjectForm register={register} handleSubmit={handleSubmit} onSubmit={onSubmit} errors={errors} />
-        </div>
+        <>
+            <Layout />
+            <div className="w-full h-screen p-8 space-y-3">
+                <h1 className="underline text-black text-4xl">Create New Project</h1>
+                <CreateProjectForm register={register} handleSubmit={handleSubmit} onSubmit={onSubmit} errors={errors} />
+            </div>
+        </>
+
     );
 }
 

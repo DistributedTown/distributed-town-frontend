@@ -156,22 +156,15 @@ const Store = ({ children }) => {
           <UserInfoContext.Provider value={[userInfo, setUserInfo]}>
             <TokenContext.Provider value={[token, setToken]}>
               {!isLoading ? (
-
-                <div className="flex">
-                  <Layout />
-                  {children}
-                </div>
-
-
+                <div className="flex">{children}</div>
               ) : (
                   <div>Loading...</div>
-                )
-              }
-            </TokenContext.Provider >
-          </UserInfoContext.Provider >
-        </LoadingContext.Provider >
-      </MagicContext.Provider >
-    </LoggedInContext.Provider >
+                )}
+            </TokenContext.Provider>
+          </UserInfoContext.Provider>
+        </LoadingContext.Provider>
+      </MagicContext.Provider>
+    </LoggedInContext.Provider>
   );
 };
 

@@ -21,6 +21,7 @@
     "next": "^10.0.1",
     "react": "16.13.1",
     "react-dom": "16.13.1",
+    "react-qrcode-logo": "^2.2.1",
     "react-hook-form": "^6.11.0",
     "swr": "^0.3.8"
   },

@@ -10,6 +10,7 @@ import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { useRouter } from "next/router";
+import Layout from "../../../components/Layout";
 
 function CreateGig() {
     const [token, setToken] = useContext(TokenContext);
@@ -50,7 +51,6 @@ function CreateGig() {
     }
 
     const onSubmit = data => {
-
         const gigTitle = data.gigTitle
         const gigDescription = data.gigDescription
         const creditsOffered = data.creditsOffered
@@ -66,15 +66,18 @@ function CreateGig() {
         let skills = Object.filter(data, data => data === true);
         console.log(skills, userInfo)
         postNewGig(gigTitle, gigDescription, Object.keys(skills), creditsOffered)
-
     };
 
 
     return (
-        <div className="w-full h-screen p-8 space-y-3">
-            <h1 className="underline text-black text-4xl">Create New Gig</h1>
-            <CreateGigForm register={register} handleSubmit={handleSubmit} onSubmit={onSubmit} errors={errors} />
-        </div>
+        <>
+            <Layout />
+            <div className="w-full h-screen p-8">
+                <h1 className="underline text-black text-4xl">Create New Gig</h1>
+                <CreateGigForm register={register} handleSubmit={handleSubmit} onSubmit={onSubmit} errors={errors} />
+            </div>
+        </>
+
     );
 }
 
