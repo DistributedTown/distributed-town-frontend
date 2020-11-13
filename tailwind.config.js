@@ -22,9 +22,12 @@ module.exports = {
       },
       backgroundPosition: {
         bgImage: "12rem"
+      },
+      padding: {
+        radio: "0.125rem"
       }
-    }
-  },
-  variants: {},
-  plugins: []
+    },
+    variants: {},
+    plugins: []
+  }
 };

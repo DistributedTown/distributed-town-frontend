@@ -44,11 +44,14 @@
   pointer-events: none;
 }
 
-.custom-gradient {
-  height: 24rem;
-  background: linear-gradient(
-    -40deg,
-    rgba(255, 255, 255, 1) 38%,
-    rgba(0, 130, 91, 1) 38.5%
-  );
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
 }
