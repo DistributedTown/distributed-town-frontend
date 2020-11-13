@@ -1,5 +1,5 @@
 export default function CheckupCard() {
-    return (<div className="bg-blue-100 flex w-2/5 justify-center items-center">
+    return (<div className="bg-blue-100 flex w-1/2 justify-center items-center">
         <div className="flex flex-col border-2 border-blue-600">
             <div className="bg-blue-600 p-4">
                 {/* <h2>{typeof userInfo.communityID !== undefined ? userInfo.communityID : ''}</h2> */}

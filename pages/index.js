@@ -55,7 +55,7 @@ const Index = props => {
   async function fetchCommunityById(id, DIDT) {
     try {
       const response = await fetch(
-        `${process.env.API_URL}/api/community/${id}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/api/community/${id}`,
         {
           method: "GET",
           headers: new Headers({
@@ -72,7 +72,7 @@ const Index = props => {
 
   async function fetchUserData(DIDT) {
     try {
-      let res = await fetch(`${process.env.API_URL}/api/user`, {
+      let res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user`, {
         method: "GET",
         headers: new Headers({
           Authorization: "Bearer " + DIDT
@@ -94,7 +94,7 @@ const Index = props => {
 
       setToken(DIDT);
 
-      let res = await fetch(`${process.env.API_URL}/api/user/login`, {
+      let res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user/login`, {
         method: "POST",
         headers: new Headers({
           Authorization: "Bearer " + DIDT,
@@ -199,7 +199,7 @@ const Index = props => {
 };
 
 export async function getServerSideProps(context) {
-  let skills = await fetch(`${process.env.API_URL}/api/skill`, {
+  let skills = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/skill`, {
     method: "GET",
   });
   skills = await skills.json();

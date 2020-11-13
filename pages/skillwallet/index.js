@@ -28,7 +28,7 @@ function SkillWallet() {
   async function fetchOpenCloseGigs(authToken, isOpen) {
     try {
       const response = await fetch(
-        `https://api.distributed.town/api/gig?isOpen=${isOpen}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/api/gig?isOpen=${isOpen}`,
         {
           method: "GET",
           headers: {
@@ -243,8 +243,8 @@ function SkillWallet() {
                     );
                   })
                 ) : (
-                  <h1 className="text-black">Past Gigs Loading...</h1>
-                )}
+                    <h1 className="text-black">Past Gigs Loading...</h1>
+                  )}
               </div>
             </div>
           </div>
