@@ -1,6 +1,7 @@
 import SkillPill from "../components/SkillPill";
 import Quote from "../components/Quote";
 import RegistrationModal from "../components/registration/RegistrationModal";
+import Link from "next/link";
 
 import { useContext, useEffect, useState } from "react";
 import Store, {
@@ -10,6 +11,7 @@ import Store, {
   TokenContext,
   UserInfoContext
 } from "../components/Store";
+import Layout from "../components/Layout";
 import { useRouter } from "next/router";
 import TheNav from "../components/TheNav";
 import bgImages from "../utils/bgImages.js";
@@ -20,187 +22,123 @@ import communityContractAbi from "../utils/communityContractAbi.json";
 import { ethers } from "ethers";
 
 const Index = props => {
-  const [token, setToken] = useContext(TokenContext);
-  const [loggedIn, setLoggedIn] = useContext(LoggedInContext);
+  const [, setLoggedIn] = useContext(LoggedInContext);
   const [magic] = useContext(MagicContext);
-  const [userInfo, setUserInfo] = useContext(UserInfoContext);
-  const [modalState, setModalState] = useState(false);
-
-  const [selectedPill, setSelectedPill] = useState(-1);
-  const [email, setEmail] = useState("");
-
   const router = useRouter();
 
-  const getCommunityBgImg = selectedCommunity => {
-    return typeof (selectedCommunity !== "undefined") && selectedCommunity >= 0
-      ? bgImages[props.skills[selectedCommunity].toLowerCase()]
-      : bgImages["default"];
-  };
+  const authenticateWithDb = async DIDT => {
+    /* Pass the Decentralized ID token in the Authorization header to the database */
 
-  const getSelectedSkillName = selectedPill => {
-    return typeof (selectedPill !== "undefined") && selectedPill >= 0
-      ? ` ${props.skills[selectedPill]}`
-      : `${props.skills[0]}`;
-  };
-
-  const toggleModal = () => {
-    setModalState(!modalState);
-  };
-
-  const showRegisterModal = () => {
-    setSelectedPill(-1);
-    return toggleModal();
-  };
-
-  async function fetchCommunityById(id, DIDT) {
-    try {
-      const response = await fetch(
-        `${process.env.API_URL}/api/community/${id}`,
-        {
-          method: "GET",
-          headers: new Headers({
-            Authorization: "Bearer " + DIDT,
-          }),
-        }
-      );
-      const community = await response.json();
-      return community;
-    } catch (err) {
-      console.log(err);
-    }
-  }
-
-  async function fetchUserData(DIDT) {
-    try {
-      let res = await fetch(`${process.env.API_URL}/api/user`, {
-        method: "GET",
-        headers: new Headers({
-          Authorization: "Bearer " + DIDT
-        })
-      });
-      const userData = await res.json();
-      return userData;
-    } catch (err) {
-      console.log(err);
-    }
-  }
-
-  async function handleCreateAccountClick(e) {
-    e.preventDefault();
-    try {
-      const DIDT = await magic.auth.loginWithMagicLink({ email });
-
-      console.log("didToken", DIDT);
-
-      setToken(DIDT);
-
-      let res = await fetch(`${process.env.API_URL}/api/user/login`, {
-        method: "POST",
-        headers: new Headers({
-          Authorization: "Bearer " + DIDT,
-        }),
-      });
-
-      setLoggedIn(true);
-
-      const userData = await fetchUserData(DIDT);
-      console.log("TWO", userData);
-      const haSkills =
-        userData[0].skills &&
-        Array.isArray(userData[0].skills) &&
-        userData[0].skills.length > 0;
-
-      if (haSkills) {
-        console.log("going to the skillwallet");
-        const userCommunityData = await fetchCommunityById(
-          userData[0].communityID,
-          DIDT
-        );
-        setUserInfo({
-          ...userInfo,
-          ...userData[0],
-          communityContract: userCommunityData
-        });
-
-        router.push("/skillwallet");
-      } else {
-        const { publicAddress } = await magic.user.getMetadata();
-
-        await fetch("/api/getFunded", {
-          method: "POST",
-          body: JSON.stringify({ publicAddress })
-        });
-
-        setUserInfo({ ...userInfo, email: email, skills: [] });
-
-        router.push("/SignupPhaseOne");
-      }
-    } catch (err) {
-      console.error(err);
-    }
-  }
-
-  useEffect(() => {
-    if (selectedPill !== -1)
-      console.log(props.skills[selectedPill])
-    setUserInfo({
-      ...userInfo,
-      category: props.skills[selectedPill],
-      background: getCommunityBgImg(selectedPill),
+    let res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user/login`, {
+      method: "POST",
+      headers: new Headers({
+        Authorization: "Bearer " + DIDT
+      })
     });
-  }, [selectedPill]);
 
-  if (loggedIn) {
-    if (typeof window !== 'undefined') router.push('/skillwallet')
-    return null
-  } else {
-    return (
-      <div className="h-screen w-full">
-        <div className="firstPage">
-          <TheNav
-            logoUrl="/dito-logo.svg"
-            slogan="Distributed Town"
-            helpCta="What is it about?"
-            helpUrl="#"
-            links={[
-              { text: "Docs", url: "#" },
-              { text: "Blog", url: "#" },
-            ]}
-          />
-          <div className="w-full h-full flex flex-col items-center space-y-8 px-4">
-            <Quote quote="Have you ever thought, 'I would like to contribute, but …'" />
-            <p className="w-1/3 text-gray-500">
-              Distributed Town (DiTo) lets you create or join a community with one
-              click. No name, location or bank account necessary.
+    let data = await res.json();
+
+    /* If the user is authorized, return an object containing the user properties (issuer, publicAddress, email) */
+    /* Else, the login was not successful and return false */
+    return data.authorized ? data.user : false;
+  };
+
+  const loginHandler = async event => {
+    event.preventDefault();
+    const { email: emailInput } = event.target;
+    const email = emailInput.value;
+    try {
+      if (email.trim() === "") {
+        throw new Error("Please enter a valid email address");
+      }
+      const DIDT = await magic.auth.loginWithMagicLink({ email });
+      let user = await authenticateWithDb(DIDT);
+      if (user) {
+        setLoggedIn(user.email);
+        // router.push("/skillwallet");
+      } else {
+        throw new Error("Something went wrong, please try again!");
+      }
+    } catch (error) {
+      alert(error.message);
+    }
+  };
+
+  return (
+    <Layout
+      flex
+      bgImage={{ src: "/background-image.svg", alignment: "left", size: 60 }}
+      className="h-screen w-full flex"
+      logo={{ withText: true }}
+      splash={{
+        color: "blue",
+        variant: "default",
+        alignment: "left",
+        isTranslucent: true
+      }}
+    >
+      <div className="h-full w-3/5 flex justify-center items-center">
+        <div className="p-8 bg-white flex justify-center items-center w-2/4 m-auto border border-black">
+          <p className="text-center">
+            <strong>Distributed Town</strong> is a new financial infrastructure
+            for public goods, designed for the real world.
+            <br />
+            <br />
+            It’s built upon mutual, collaborative economics between individuals
+            and communities - and a universal identity management based on
+            skills, rather than personal data.
           </p>
-            <div className="p-8 text-center w-3/4 grid grid-flow-row grid-cols-5 gap-4">
-              {props.skills.map((skill, i) => {
-                return (
-                  <SkillPill
-                    onClick={() => {
-                      setSelectedPill(i);
-                      toggleModal();
-                    }}
-                    key={i}
-                    text={skill}
-                    selected={selectedPill === i}
-                  />
-                );
-              })}
-            </div>
-          </div>
-        </div>
-        <div className={`modalBackground modalVisible-${modalState} bg-white`}>
-          <RegistrationModal selectedPill={selectedPill} skills={props.skills} handleCreateAccountClick={handleCreateAccountClick} email={email} setEmail={setEmail} showRegisterModal={showRegisterModal} getCommunityBgImg={getCommunityBgImg} />
         </div>
       </div>
-    );
-  }
+      <div className="h-full w-2/5 flex flex-col justify-center items-center">
+        <h1 className="text-4xl m-12 font-bold">
+          This is <span className="underline">your Community</span>
+        </h1>
+
+        <div className="pt-8 pb-4 px-2 border-2 border-denim flex flex-col w-3/5">
+          <div className="border-2 border-red p-1">
+            <div className="border-2 border-denim p-4 text-center font-bold">
+              <Link href="/community/create">
+                <a className="flex justify-around items-center text-xl px-8">
+                  Create
+                  <img src="/create-plus-button.svg" />
+                </a>
+              </Link>
+            </div>
+          </div>
+          <div className="border-2 border-red p-1 mt-2">
+            <div className="border-2 border-denim p-4 text-center font-bold">
+              <Link href="/community/join">
+                <a className="flex justify-around items-center text-xl px-8">
+                  Join
+                  <img src="/create-people-button.svg" />
+                </a>
+              </Link>
+            </div>
+          </div>
+          <div className="border-2 border-red p-1 mt-8">
+            <form
+              className="border-2 border-denim p-4 flex justify-between items-center font-bold text-xl"
+              onSubmit={loginHandler}
+            >
+              Login{" "}
+              <input
+                className="border border-denim p-1 w-3/4"
+                placeholder="yourmail@me.io"
+                name="email"
+                type="email"
+              />
+            </form>
+          </div>
+        </div>
+      </div>
+    </Layout>
+  );
 };
 
 export async function getServerSideProps(context) {
-  let skills = await fetch(`${process.env.API_URL}/api/skill`, {
-    method: "GET",
+  let skills = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/skill`, {
+    method: "GET"
   });
   skills = await skills.json();
 

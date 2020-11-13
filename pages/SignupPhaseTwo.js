@@ -3,7 +3,7 @@ import {
   LoggedInContext,
   LoadingContext,
   UserInfoContext,
-  TokenContext,
+  TokenContext
 } from "../components/Store";
 
 import { useContext, useEffect, useState } from "react";
@@ -37,9 +37,10 @@ function SignupPhaseTwo() {
       // Get user's Ethereum public address
       const address = await signer.getAddress();
 
-      let community = communities.filter((community) => community.selected)[0];
+      let community = communities.filter(community => community.selected)[0];
 
       const contractABI = communityContractAbi;
+      console.log(community);
       const contractAddress =
         community.address || "0x790697f595Aa4F9294566be0d262f71b44b5039c";
       const contract = new ethers.Contract(
@@ -53,14 +54,16 @@ function SignupPhaseTwo() {
         communityContract: {
           _id: community._id,
           address: contractAddress,
-          name: community.name,
-        },
+          name: community.name
+        }
       });
 
       let amountOfRedeemableDitos = 0;
       for (let { redeemableDitos } of userInfo.skills) {
         amountOfRedeemableDitos += redeemableDitos;
       }
+
+      console.log(amountOfRedeemableDitos);
 
       // Send transaction to smart contract to update message and wait to finish
       const baseDitos = 2000;
@@ -96,18 +99,21 @@ function SignupPhaseTwo() {
       const payload = {
         username: userInfo.username,
         communityID: community._id,
-        skills: userInfo.skills,
+        skills: userInfo.skills
       };
 
       console.log("payload", payload);
-      const response = await fetch(`${process.env.API_URL}/api/user`, {
-        method: "POST",
-        body: JSON.stringify(payload),
-        headers: new Headers({
-          Authorization: "Bearer " + currentToken,
-          "Content-Type": "application/json",
-        }),
-      });
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/user`,
+        {
+          method: "POST",
+          body: JSON.stringify(payload),
+          headers: new Headers({
+            Authorization: "Bearer " + currentToken,
+            "Content-Type": "application/json"
+          })
+        }
+      );
 
       const updatedUser = await response.json();
       console.log(await updateUser);
@@ -121,41 +127,24 @@ function SignupPhaseTwo() {
   useEffect(() => {
     (async () => {
       try {
-        console.log(userInfo);
-
-        let communitiesToAdd = new Map();
+        let communitiesToAdd = [];
         for await (let { skill } of userInfo.skills) {
           let communities = await fetch(
-            `${process.env.API_URL}/api/community?skill=${skill}`,
+            `${process.env.NEXT_PUBLIC_API_URL}/api/community?skill=${skill}`,
             {
-              method: "GET",
+              method: "GET"
             }
           );
           communities = await communities.json();
 
-          console.log("communities", communities);
-
-          communities.map((community) => {
+          communities.map(community => {
             return { ...community, selected: false };
           });
 
-          for (let community of communities) {
-            if (!communitiesToAdd.has(community.address)) {
-              communitiesToAdd.set(community.address, {
-                ...community,
-                selected: false,
-              });
-            }
-          }
+          communitiesToAdd.push(...communities);
         }
 
-        let arrCommunitiesToAdd = [];
-        let i = 1;
-        for (let community of communitiesToAdd.values()) {
-          arrCommunitiesToAdd.push({ ...community, name: `DiTO #2060` });
-        }
-
-        setCommunities(arrCommunitiesToAdd);
+        setCommunities(communitiesToAdd);
       } catch (err) {
         console.error(err.message);
       }
@@ -163,7 +152,7 @@ function SignupPhaseTwo() {
   }, []);
 
   function selectCommunity(commIndex) {
-    setCommunities((communities) =>
+    setCommunities(communities =>
       communities.map((community, i) => {
         return { ...community, selected: i === commIndex };
       })
@@ -173,7 +162,7 @@ function SignupPhaseTwo() {
   return (
     <div className="flex flex-col">
       <div className="flex flex-row">
-        <div className="flex flex-col space-y-8 container mx-auto bg-blue-100 p-8 h-screen">
+        <div className="flex flex-col space-y-8 container mx-auto bg-blue-100 p-8 h-screen overflow-y-auto">
           <h1>Here's a few communities for you!</h1>
           {communities.map((community, i) => (
             <CommunityCard

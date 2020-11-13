@@ -45,7 +45,7 @@ function CreateGig() {
 
             console.log("create gigs payload", payload);
             console.log("create gigs token", token);
-            let result = await fetch(`${process.env.API_URL}/api/gig`, {
+            let result = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/gig`, {
                 method: "POST",
                 headers: new Headers({
                     Authorization: "Bearer " + token,

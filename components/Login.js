@@ -11,14 +11,14 @@ const Login = () => {
   const [errorMsg, setErrorMsg] = useState("");
   const [disableLogin, setDisableLogin] = useState(false);
 
-  const authenticateWithDb = async (DIDT) => {
+  const authenticateWithDb = async DIDT => {
     /* Pass the Decentralized ID token in the Authorization header to the database */
 
-    let res = await fetch(`${process.env.API_URL}/api/user/login`, {
+    let res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user/login`, {
       method: "POST",
       headers: new Headers({
-        Authorization: "Bearer " + DIDT,
-      }),
+        Authorization: "Bearer " + DIDT
+      })
     });
 
     let data = await res.json();
@@ -75,7 +75,7 @@ const Login = () => {
               className="login-form-input"
               type="email"
               value={email}
-              onChange={(e) => {
+              onChange={e => {
                 setErrorMsg(""); // remove error msg
                 setEmail(e.target.value);
               }}
@@ -86,7 +86,7 @@ const Login = () => {
               type="submit"
               value="Log in"
               disabled={disableLogin}
-              onClick={(e) => {
+              onClick={e => {
                 e.preventDefault();
                 if (!email) return setErrorMsg("Email cannot be empty.");
                 handleLogin();

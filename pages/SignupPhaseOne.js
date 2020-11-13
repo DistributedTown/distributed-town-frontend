@@ -2,8 +2,9 @@ import {
   MagicContext,
   LoggedInContext,
   UserInfoContext,
-  TokenContext,
+  TokenContext
 } from "../components/Store";
+import Layout from "../components/Layout";
 
 import { useContext, useState, useEffect } from "react";
 import SkillsCard from "../components/SkillsCard";
@@ -20,7 +21,7 @@ function SignupPhaseOne(props) {
   const [token, setToken] = useContext(TokenContext);
   const [selectedSkillsIndexes, setSelectedSkillsIndexes] = useState([]);
   const backgroundImageStyle = {
-    backgroundImage: `url(${userInfo.background})`,
+    backgroundImage: `url(${userInfo.background})`
     //filter: 'blur(8px)',
     // WebkitFilter: 'blur(8px)',
   };
@@ -29,7 +30,7 @@ function SignupPhaseOne(props) {
     const getSkillTree = async () => {
       try {
         const response = await fetch(
-          `${process.env.API_URL}/api/skill?skill=${userInfo.category}`,
+          `${process.env.NEXT_PUBLIC_API_URL}/api/skill?skill=${userInfo.category}`,
           { method: "GET" }
         );
         const skillTree = await response.json();
@@ -43,7 +44,7 @@ function SignupPhaseOne(props) {
   }, []);
 
   const selectSkill = (categoryIndex, selectedSkillIndex) => {
-    const updateSkills = (category) =>
+    const updateSkills = category =>
       category.skills.map((skill, skillIndex) => {
         if (skillIndex === selectedSkillIndex) {
           const newSkill =
@@ -56,19 +57,19 @@ function SignupPhaseOne(props) {
         return typeof skill === "string" ? { skill } : { ...skill };
       });
 
-    const copySkills = (category) =>
-      category.skills.map((skill) => {
+    const copySkills = category =>
+      category.skills.map(skill => {
         return typeof skill === "string" ? { skill } : { ...skill };
       });
 
-    const updateSkillTree = (_skillTree) =>
+    const updateSkillTree = _skillTree =>
       _skillTree.map((category, i) => {
         if (i === categoryIndex) {
           return { ...category, skills: updateSkills(category) };
         }
         return {
           ...category,
-          skills: copySkills(category),
+          skills: copySkills(category)
         };
       });
 
@@ -76,7 +77,7 @@ function SignupPhaseOne(props) {
   };
 
   function setSkillLevel(catIndex, skillIndex, level) {
-    const updateSkills = (category) =>
+    const updateSkills = category =>
       category.skills.map((skill, skIndex) => {
         if (skIndex === skillIndex) {
           return { ...skill, level };
@@ -84,22 +85,22 @@ function SignupPhaseOne(props) {
         return { ...skill };
       });
 
-    const copySkills = (category) =>
-      category.skills.map((skill) => {
+    const copySkills = category =>
+      category.skills.map(skill => {
         return { ...skill };
       });
 
-    const updateSkillTree = (_skillTree) =>
+    const updateSkillTree = _skillTree =>
       _skillTree.map((category, categoryIndex) => {
         if (categoryIndex === catIndex) {
           return {
             ...category,
-            skills: updateSkills(category),
+            skills: updateSkills(category)
           };
         }
         return {
           ...category,
-          skills: copySkills(category),
+          skills: copySkills(category)
         };
       });
     setSkillTree(updateSkillTree(skillTree));
@@ -116,7 +117,7 @@ function SignupPhaseOne(props) {
           if (typeof skill.selected !== "undefined" && skill.selected) {
             skills.push({
               skill: skill.skill,
-              level: typeof skill.level === "undefined" ? 0 : skill.level,
+              level: typeof skill.level === "undefined" ? 0 : skill.level
             });
           }
         }
@@ -147,7 +148,7 @@ function SignupPhaseOne(props) {
           if (typeof skill.selected !== "undefined" && skill.selected) {
             skills.push({
               skill: skill.skill,
-              level: typeof skill.level === "undefined" ? 0 : skill.level,
+              level: typeof skill.level === "undefined" ? 0 : skill.level
             });
           }
         }
@@ -164,20 +165,17 @@ function SignupPhaseOne(props) {
         if (skill.selected)
           skills.push({
             ...skill,
-            redeemableDitos: Math.floor(skill.level / 10) * category.credits,
+            redeemableDitos: Math.floor(skill.level / 10) * category.credits
           });
       }
     }
 
-    console.log(skills);
-
-    setUserInfo((userInfo) => {
+    setUserInfo(userInfo => {
       return { ...userInfo, skills };
     });
   }
 
   const router = useRouter();
-
   useEffect(() => {
     if (userInfo.skills.length > 0) {
       router.push("/SignupPhaseTwo");
@@ -185,11 +183,21 @@ function SignupPhaseOne(props) {
   }, [userInfo.skills.length]);
 
   return (
-    <div className="flex flex-col space-y-2">
-      <div className="flex  flex-row flex-grow">
+    <Layout
+      navBar={{ hideNav: true }}
+      flex
+      splash={{
+        color: "blue",
+        variant: "default",
+        alignment: "left"
+      }}
+      logo
+      bgImage={{ src: "/background-image.svg", alignment: "left", size: 40 }}
+    >
+      <div className="flex flex-wrap justify-between h-full w-full">
         <div
-          style={backgroundImageStyle}
-          className="flex flex-col w-1/2 space-y-8 p-8 flex-grow-0  h-full"
+          className="flex w-1/2 justify-center items-center space-y-8 p-8 flex-grow-0 h-full"
+          style={{ backdropFilter: "blur(5px)" }}
         >
           <NicknameSelection
             setUserInfo={setUserInfo}
@@ -200,7 +208,7 @@ function SignupPhaseOne(props) {
             userInfo={userInfo}
           />
         </div>
-        <div className="flex flex-col text-center space-y-1 p-8 flex-grow">
+        <div className="flex flex-col justify-center align-center text-center space-y-1 p-8 flex-grow w-1/2">
           <h1 className="font-bold text-xl">Tell us about you!</h1>
           <p>
             Pick your Skills (<span className="underline">between 1 and 3</span>
@@ -214,7 +222,7 @@ function SignupPhaseOne(props) {
                 title={category.subCat}
                 skills={category.skills}
                 totalSelected={getTotalSelected()}
-                selectSkill={(skillSelectedIndex) =>
+                selectSkill={skillSelectedIndex =>
                   selectSkill(i, skillSelectedIndex)
                 }
                 setSkillLevel={(skillIndex, skillLevel) =>
@@ -230,13 +238,13 @@ function SignupPhaseOne(props) {
             <div className="w-1/2">{getSelectedSkills()}</div>
           </div>
         </div>
+        <div className="flex justify-center items-center w-full absolute bottom-0 p-4 bg-white">
+          <Button className="font-black" onClick={() => setUserSkills()}>
+            Next: choose your first community!
+          </Button>
+        </div>
       </div>
-      <div className=" flex  justify-center items-center">
-        <Button className="font-black" onClick={() => setUserSkills()}>
-          Next: choose your first community!
-        </Button>
-      </div>
-    </div>
+    </Layout>
   );
 }
 
