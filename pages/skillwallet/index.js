@@ -104,15 +104,13 @@ function SkillWallet() {
 
   return (
     <Layout
-      navBar
       flex
+      navBar
       logo
       splash={{
-        color: "blue",
-        variant: "default",
-        alignment: "left",
-        isTranslucent: false,
-        fullHeight: false
+        color: "denim",
+        variant: "quad",
+        alignment: "left"
       }}
     >
       <div className="w-full flex flex-col  space-y-8">
@@ -148,10 +146,9 @@ function SkillWallet() {
               <div className="flex h-2/8 p-4 items-center justify-center border border-denim">
                 <p>
                   Show{" "}
-                  <a href="#" className="underline text-denim">
-                    {" "}
-                    Wallet's QR-Code
-                  </a>{" "}
+                  <Link href="/skillwallet/qr">
+                    <a className="underline text-denim">Wallet's QR-Code</a>
+                  </Link>
                   to help a different community.
                 </p>
               </div>

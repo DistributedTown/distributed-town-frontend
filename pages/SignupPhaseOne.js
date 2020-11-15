@@ -208,7 +208,7 @@ function SignupPhaseOne(props) {
             userInfo={userInfo}
           />
         </div>
-        <div className="flex flex-col justify-center align-center text-center space-y-1 p-8 flex-grow w-1/2">
+        <div className="flex flex-col justify-center align-center text-center space-y-1 p-8 flex-grow w-1/2 overflow-auto h-full pb-24">
           <h1 className="font-bold text-xl">Tell us about you!</h1>
           <p>
             Pick your Skills (<span className="underline">between 1 and 3</span>
