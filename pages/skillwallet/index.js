@@ -19,6 +19,7 @@ import { set } from "mongoose";
 
 function SkillWallet() {
   const [userInfo, setUserInfo] = useContext(UserInfoContext);
+  console.log(userInfo);
   const [loggedIn, setLoggedIn] = useContext(LoggedInContext);
   const [magic] = useContext(MagicContext);
   const [token, setToken] = useContext(TokenContext);
@@ -96,6 +97,10 @@ function SkillWallet() {
       }
     })();
   }, []);
+
+  if (!userInfo) {
+    router.push("/");
+  }
 
   return (
     <Layout

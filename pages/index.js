@@ -22,25 +22,20 @@ import communityContractAbi from "../utils/communityContractAbi.json";
 import { ethers } from "ethers";
 
 const Index = props => {
-  const [, setLoggedIn] = useContext(LoggedInContext);
+  const [loggedIn, setLoggedIn] = useContext(LoggedInContext);
   const [magic] = useContext(MagicContext);
   const router = useRouter();
+  const userInfo = useContext(UserInfoContext);
 
   const authenticateWithDb = async DIDT => {
     /* Pass the Decentralized ID token in the Authorization header to the database */
 
-    let res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user/login`, {
+    return await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user/login`, {
       method: "POST",
       headers: new Headers({
         Authorization: "Bearer " + DIDT
       })
     });
-
-    let data = await res.json();
-
-    /* If the user is authorized, return an object containing the user properties (issuer, publicAddress, email) */
-    /* Else, the login was not successful and return false */
-    return data.authorized ? data.user : false;
   };
 
   const loginHandler = async event => {
@@ -55,11 +50,12 @@ const Index = props => {
       let user = await authenticateWithDb(DIDT);
       if (user) {
         setLoggedIn(user.email);
-        // router.push("/skillwallet");
+        router.reload();
       } else {
         throw new Error("Something went wrong, please try again!");
       }
     } catch (error) {
+      console.log(error.message);
       alert(error.message);
     }
   };
@@ -116,20 +112,22 @@ const Index = props => {
               </Link>
             </div>
           </div>
-          <div className="border-2 border-red p-1 mt-8">
-            <form
-              className="border-2 border-denim p-4 flex justify-between items-center font-bold text-xl"
-              onSubmit={loginHandler}
-            >
-              Login{" "}
-              <input
-                className="border border-denim p-1 w-3/4"
-                placeholder="yourmail@me.io"
-                name="email"
-                type="email"
-              />
-            </form>
-          </div>
+          {!loggedIn && (
+            <div className="border-2 border-red p-1 mt-8">
+              <form
+                className="border-2 border-denim p-4 flex justify-between items-center font-bold text-xl"
+                onSubmit={loginHandler}
+              >
+                Login{" "}
+                <input
+                  className="border border-denim p-1 w-3/4"
+                  placeholder="yourmail@me.io"
+                  name="email"
+                  type="email"
+                />
+              </form>
+            </div>
+          )}
         </div>
       </div>
     </Layout>
