@@ -29,7 +29,7 @@ function SkillWallet() {
   async function fetchOpenCloseGigs(authToken, isOpen) {
     try {
       const response = await fetch(
-        `https://api.distributed.town/api/gig?isOpen=${isOpen}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/api/gig?isOpen=${isOpen}`,
         {
           method: "GET",
           headers: {
@@ -103,8 +103,16 @@ function SkillWallet() {
   }
 
   return (
-    <div className="flex">
-      <Layout />
+    <Layout
+      flex
+      navBar
+      logo
+      splash={{
+        color: "denim",
+        variant: "quad",
+        alignment: "left"
+      }}
+    >
       <div className="w-full flex flex-col  space-y-8">
         {/* MAIN TITLE  */}
         <div className="w-1/8  ml-5 my-4">
@@ -138,10 +146,9 @@ function SkillWallet() {
               <div className="flex h-2/8 p-4 items-center justify-center border border-denim">
                 <p>
                   Show{" "}
-                  <a href="#" className="underline text-denim">
-                    {" "}
-                    Wallet's QR-Code
-                  </a>{" "}
+                  <Link href="/skillwallet/qr">
+                    <a className="underline text-denim">Wallet's QR-Code</a>
+                  </Link>
                   to help a different community.
                 </p>
               </div>
@@ -248,14 +255,14 @@ function SkillWallet() {
                     );
                   })
                 ) : (
-                  <h1 className="text-black">Past Gigs Loading...</h1>
-                )}
+                    <h1 className="text-black">Past Gigs Loading...</h1>
+                  )}
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </Layout>
   );
 }
 

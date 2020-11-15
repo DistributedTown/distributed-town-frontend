@@ -18,10 +18,6 @@ export const TokenContext = createContext();
 const Store = ({ children }) => {
   const [magic, setMagic] = useState();
   const [loggedIn, setLoggedIn] = useState(false);
-  useEffect(() => {
-    setLoggedIn(false);
-  }, []);
-
   const [isLoading, setIsLoading] = useState(true);
   const [userInfo, setUserInfo] = useState();
   const [token, setToken] = useState("");
@@ -95,6 +91,7 @@ const Store = ({ children }) => {
             );
             const userInfoArray = await response.json();
             const userInfo = userInfoArray[0];
+            console.log(userInfo);
 
             if (
               !userInfo.skills ||
@@ -106,11 +103,7 @@ const Store = ({ children }) => {
                 skills: []
               });
               router.push("/community/join");
-            } else if (
-              !userInfo.communityContract ||
-              (userInfo.communityContract &&
-                !userInfo.communityContract.address)
-            ) {
+            } else if (!userInfo.communityID) {
               setUserInfo({
                 ...userInfo,
                 DIDT
@@ -185,8 +178,8 @@ const Store = ({ children }) => {
               {!isLoading ? (
                 <div className="flex">{children}</div>
               ) : (
-                <div>Loading...</div>
-              )}
+                  <div>Loading...</div>
+                )}
             </TokenContext.Provider>
           </UserInfoContext.Provider>
         </LoadingContext.Provider>

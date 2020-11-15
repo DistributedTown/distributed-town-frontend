@@ -178,7 +178,7 @@ function SignupPhaseTwo() {
             Your skills are your main asset. And the only thing that matters.
             The more rare they are, the more credits you’ll get!
           </p>
-          <div className="border-2 border-blue-600 p-4 flex flex-col space-y-4">
+          {/* <div className="border-2 border-blue-600 p-4 flex flex-col space-y-4">
             {userInfo.skills.map((skill, i) => {
               return (
                 <div key={i} className="grid grid-cols-2">
@@ -193,7 +193,7 @@ function SignupPhaseTwo() {
                 </div>
               );
             })}
-          </div>
+          </div> */}
 
           <div className="w-full border-2 border-gray-400">
             <button type="button" onClick={joinCommunity}>

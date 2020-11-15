@@ -62,9 +62,8 @@ const Layout = ({
         <div
           className={`absolute h-64 w-48 border-r-2 border-denim`}
           style={{
-            background: `linear-gradient(-40deg, rgba(255, 255, 255, 1) 38%, ${
-              colors[splash.color]
-            } 38.5%)`
+            background: `linear-gradient(-40deg, rgba(255, 255, 255, 1) 38%, ${colors[splash.color]
+              } 38.5%)`
           }}
         />
       );
@@ -72,9 +71,8 @@ const Layout = ({
       splashElement = (
         <img
           src={`/splash-${splash.color}-${splash.variant}.svg`}
-          className={`fixed top-0 ${splash.alignment}-0 ${
-            splash.isTranslucent ? "opacity-75" : "opacity-100"
-          }`}
+          className={`fixed top-0 ${splash.alignment}-0 ${splash.isTranslucent ? "opacity-75" : "opacity-100"
+            }`}
           style={{
             ...(splash.isTranslucent ? { filter: "blur(2px)" } : {}),
             ...(splash.zIndex ? { zIndex: splash.zIndex } : {})
@@ -94,25 +92,24 @@ const Layout = ({
         style={{
           ...(bgImageSrc
             ? {
-                backgroundImage: `url(${bgImage.src})`,
-                backgroundSize: `${bgImageSize ? bgImageSize : 50}%`
-              }
+              backgroundImage: `url(${bgImage.src})`,
+              backgroundSize: `${bgImageSize ? bgImageSize : 50}%`
+            }
             : {})
         }}
-        className={`flex h-screen w-full bg-no-repeat ${
-          navBar ? "bg-bgImage" : ""
-        } ${bgImageAlignment ? "bg-" + bgImageAlignment : ""}`}
+        className={`flex h-screen w-full bg-no-repeat ${navBar ? "bg-bgImage" : ""
+          } ${bgImageAlignment ? "bg-" + bgImageAlignment : ""}`}
       >
         {splashElement}
         {logoImage && (
           <div
             className={`pt-4 pl-${logo.withText ? "4" : "8"} fixed max-w-xxs`}
           >
-            <img src={logoImage} alt="Logo" />
+            <img src={logoImage} alt="Logo" className="z-0" />
           </div>
         )}
         {navBar && (
-          <nav className="flex flex-col h-screen w-48 max-w-sm p-4 pt-64 border-r-2 border-denim">
+          <nav className="flex flex-col h-screen w-48 max-w-sm p-4 pt-64 border-r-2 border-denim z-10">
             {loggedIn && !navBar.hideNav ? (
               <ul className="flex flex-col w-full mt-8 text-xl">
                 <NavLink href="/skillwallet">Skill Wallet</NavLink>
@@ -124,15 +121,15 @@ const Layout = ({
                 </NavLink>
               </ul>
             ) : (
-              <ul className="flex flex-col w-full mt-8 text-xl justify-end items-center flex-1">
-                <NavLink href="/community/create">
-                  <img src="/create-people-button.svg" />
-                </NavLink>
-              </ul>
-            )}
+                <ul className="flex flex-col w-full mt-8 text-xl justify-end items-center flex-1">
+                  <NavLink href="/community/create">
+                    <img src="/create-people-button.svg" />
+                  </NavLink>
+                </ul>
+              )}
           </nav>
         )}
-        <div className={`flex-1 h-full ${flex ? "flex" : ""}`}>{children}</div>
+        <div className={`flex-1 h-full ${flex ? "flex" : ""} z-10`}>{children}</div>
       </main>
     </>
   );

@@ -1,6 +1,10 @@
 export default function CheckupCard() {
+  const bgImage = { src: "/background-image.svg", alignment: "left", size: 60 }
+
   return (
-    <div className="flex w-2/5 justify-center items-center">
+    <div style={{
+      backgroundImage: `url(${bgImage.src})`,
+    }} className="flex w-2/5 justify-center items-center">
       <div className="flex flex-col border-2 border-blue-600">
         <div className="bg-blue-600 p-4">
           {/* <h2>{typeof userInfo.communityID !== undefined ? userInfo.communityID : ''}</h2> */}
