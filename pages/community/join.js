@@ -153,7 +153,9 @@ const Join = props => {
   //   // if (typeof window !== "undefined") router.push("/skillwallet");
   //   return null;
   // } else {
-  console.log(process.env.NEXT_PUBLIC_API_URL);
+  if (!loggedIn) {
+    router.push("/");
+  }
   return (
     <Layout
       className="h-screen w-full"

@@ -105,7 +105,7 @@ const Store = ({ children }) => {
                 DIDT,
                 skills: []
               });
-              // router.push("/community/join");
+              router.push("/community/join");
             } else if (
               !userInfo.communityContract ||
               (userInfo.communityContract &&
@@ -115,7 +115,7 @@ const Store = ({ children }) => {
                 ...userInfo,
                 DIDT
               });
-              // router.push("/SignupPhaseTwo");
+              router.push("/SignupPhaseTwo");
             } else {
               const provider = new ethers.providers.Web3Provider(
                 magic.rpcProvider
@@ -159,7 +159,7 @@ const Store = ({ children }) => {
                   ditoBalance: ditoBalanceStr,
                   DIDT
                 });
-                // router.push("/skillwallet");
+                router.push("/skillwallet");
               } catch (error) {
                 console.log(error);
               }
