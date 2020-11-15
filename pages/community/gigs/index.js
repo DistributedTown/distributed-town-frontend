@@ -49,6 +49,9 @@ function Gigs() {
                     }),
                 }
             );
+            const takenGig = await result.json();
+            console.log(result);
+            console.log('thetakengig', takenGig)
         } catch (err) {
             console.log(err);
         }
@@ -56,8 +59,18 @@ function Gigs() {
 
 
     return (
-        <>
-            <Layout />
+        <Layout
+            navBar
+            flex
+            logo
+            splash={{
+                color: "red",
+                variant: "default",
+                alignment: "left",
+                isTranslucent: false,
+                fullHeight: false
+            }}
+        >
             <div className="m-20 w-full">
                 <h1 className="underline text-black text-4xl">Open Gigs</h1>
                 <div className="mt-10 grid grid-cols-3 gap-12 items-baseline">
@@ -69,7 +82,7 @@ function Gigs() {
                         () => <h2>There are no Open Gigs.</h2>
                     ) : (openGigs.map((gig) => {
                         return (
-                            <GigCard key={gig._id} gig={gig} />
+                            <GigCard key={gig._id} gig={gig} takeGig={takeGig} />
                         );
                     })
                             )}
@@ -86,8 +99,7 @@ function Gigs() {
                     <SkillsDisplay skills={userInfo.skills} />
                 </div>
             </div >
-        </>
-
+        </Layout>
     );
 }
 

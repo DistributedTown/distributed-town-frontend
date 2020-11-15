@@ -98,8 +98,18 @@ function SkillWallet() {
   }, []);
 
   return (
-    <div className="flex">
-      <Layout />
+    <Layout
+      navBar
+      flex
+      logo
+      splash={{
+        color: "blue",
+        variant: "default",
+        alignment: "left",
+        isTranslucent: false,
+        fullHeight: false
+      }}
+    >
       <div className="w-full flex flex-col  space-y-8">
         {/* MAIN TITLE  */}
         <div className="w-1/8  ml-5 my-4">
@@ -250,7 +260,7 @@ function SkillWallet() {
           </div>
         </div>
       </div>
-    </div>
+    </Layout>
   );
 }
 

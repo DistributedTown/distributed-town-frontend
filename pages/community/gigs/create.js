@@ -2,7 +2,7 @@ import {
     MagicContext,
     LoggedInContext,
     TokenContext,
-    UserInfoContext,
+    UserInfoContext
 } from "../../../components/Store";
 import CreateGigForm from "../../../components/gig/CreateGigForm"
 
@@ -70,13 +70,24 @@ function CreateGig() {
 
 
     return (
-        <>
-            <Layout />
+
+        <Layout
+            navBar
+            flex
+            logo
+            splash={{
+                color: "red",
+                variant: "default",
+                alignment: "left",
+                isTranslucent: false,
+                fullHeight: false
+            }}
+        >
             <div className="w-full h-screen p-8">
                 <h1 className="underline text-black text-4xl">Create New Gig</h1>
                 <CreateGigForm register={register} handleSubmit={handleSubmit} onSubmit={onSubmit} errors={errors} />
             </div>
-        </>
+        </Layout>
 
     );
 }

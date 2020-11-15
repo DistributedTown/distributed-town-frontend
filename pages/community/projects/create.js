@@ -53,18 +53,28 @@ function CreateProject() {
     const onSubmit = data => {
         console.log(data)
         router.push("/community/projects");
-
     };
 
 
     return (
-        <>
-            <Layout />
+
+        <Layout
+            navBar
+            flex
+            logo
+            splash={{
+                color: "blue",
+                variant: "default",
+                alignment: "left",
+                isTranslucent: false,
+                fullHeight: false
+            }}
+        >
             <div className="w-full h-screen p-8 space-y-3">
                 <h1 className="underline text-black text-4xl">Create New Project</h1>
                 <CreateProjectForm register={register} handleSubmit={handleSubmit} onSubmit={onSubmit} errors={errors} />
             </div>
-        </>
+        </Layout>
 
     );
 }

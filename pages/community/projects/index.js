@@ -25,37 +25,49 @@ function Projects() {
     ]
 
     return (
-        <div className="flex">
-            <Layout />
-            <div className="m-12 w-full">
-                <h1 className="underline text-black text-4xl">Projects</h1>
-                <div className="mt-5 grid grid-cols-3 gap-12 items-baseline">
-                    {typeof projects === "undefined" ? (
-                        <div>
-                            <h2>Loading projects...</h2>
-                        </div>
-                    ) : projects.length === 0 ? (
-                        () => <h2>There are no projects.</h2>
-                    ) : (projects.map((project) => {
-                        return (
-                            <ProjectCard key={project._id} project={project} />
-                        );
-                    })
-                            )}
-                </div>
-                <div className="flex w-full mt-12">
-                    <Link href='/community/projects/create'>
-                        <div className="flex py-5 justify-center w-2/6 mr-20 border-2 border-blue-600">
-                            <a className="flex flex-col items-center">
-                                <p className="text-2xl mb-2">Create new project</p>
-                                <img src="/plusbutton.svg" />
-                            </a>
-                        </div>
-                    </Link>
-                    <SkillsDisplay skills={userInfo.skills} />
+        <Layout
+            navBar
+            flex
+            logo
+            splash={{
+                color: "blue",
+                variant: "default",
+                alignment: "left",
+                isTranslucent: false,
+                fullHeight: false
+            }}
+        >
+            <div className="flex">
+                <div className="m-12 w-full">
+                    <h1 className="underline text-black text-4xl">Projects</h1>
+                    <div className="mt-5 grid grid-cols-3 gap-12 items-baseline">
+                        {typeof projects === "undefined" ? (
+                            <div>
+                                <h2>Loading projects...</h2>
+                            </div>
+                        ) : projects.length === 0 ? (
+                            () => <h2>There are no projects.</h2>
+                        ) : (projects.map((project) => {
+                            return (
+                                <ProjectCard key={project._id} project={project} />
+                            );
+                        })
+                                )}
+                    </div>
+                    <div className="flex w-full mt-12">
+                        <Link href='/community/projects/create'>
+                            <div className="flex py-5 justify-center w-2/6 mr-20 border-2 border-blue-600">
+                                <a className="flex flex-col items-center">
+                                    <p className="text-2xl mb-2">Create new project</p>
+                                    <img src="/plusbutton.svg" />
+                                </a>
+                            </div>
+                        </Link>
+                        <SkillsDisplay skills={userInfo.skills} />
+                    </div>
                 </div>
             </div>
-        </div>
+        </Layout>
     );
 }
 

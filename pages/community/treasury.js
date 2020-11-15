@@ -10,6 +10,8 @@ import CommunityTreasuryForm from "../../components/treasury/CommunityTreasuryFo
 import CheckupCard from "../../components/community/CheckupCard"
 
 import communityContractAbi from "../../utils/communityContractAbi.json";
+import NoGSNCommunityAbi from "../../utils/NoGSNCommunity.json";
+
 import { Router, useRouter } from "next/router";
 function CommunityTreasury() {
     const [userInfo, setUserInfo] = useContext(UserInfoContext);
@@ -41,20 +43,40 @@ function CommunityTreasury() {
 
             // Get user's Ethereum public address
             const address = await signer.getAddress();
+            let contractAddress = ''
 
-            const contractABI = communityContractAbi;
-            const contractAddress = "0x790697f595Aa4F9294566be0d262f71b44b5039c";
+            console.log(userInfo)
+
+            for (let communityContractAddress of userInfo.communityContract.addresses) {
+                if (communityContractAddress.blockchain === 'ETH') contractAddress = communityContractAddress.address
+            }
+
+            const contractABI = NoGSNCommunityAbi.abi;
             const contract = new ethers.Contract(
                 contractAddress,
                 contractABI,
-                signer
+                provider
             );
 
+
+
             // Send transaction to smart contract to update message and wait to finish
-            const [nUsers, investedBalance] = await Promise.all([
-                contract.numberOfMembers(),
-                contract.getInvestedBalance()
-            ]);
+            // const [nUsers, investedBalance] = await Promise.all([
+            //     contract.numberOfMembers(),
+            //     contract.getInvestedBalanceInfo()
+            // ]);
+
+            const numberOfMembersTX = await contract.numberOfMembers();
+
+            console.log('here', numberOfMembersTX)
+
+
+            const getInvestedBalanceTX = await contract.getInvestedBalanceInfo();
+
+            console.log(
+                BigNumber.from(nUsers).toNumber(),
+                BigNumber.from(investedBalance).toNumber()
+            );
 
             setNumOfMembers(BigNumber.from(nUsers).toNumber());
             setLiquidityPoolBalance(BigNumber.from(investedBalance).toNumber());
@@ -75,8 +97,18 @@ function CommunityTreasury() {
     }
 
     return (
-        <div className="w-full h-full flex">
-            <Layout />
+        <Layout
+            navBar
+            flex
+            logo
+            splash={{
+                color: "blue",
+                variant: "default",
+                alignment: "left",
+                isTranslucent: false,
+                fullHeight: false
+            }}
+        >
             <div className="w-full">
                 <div style={{ height: "90%" }} className="flex">
                     <div className="flex flex-col items-center w-full">
@@ -94,7 +126,8 @@ function CommunityTreasury() {
                     <button type="button" onClick={handleSubmit(onSubmit)} className="border-2 mt-3 border-blue-600 text-2xl underline w-8/12">Stake and fund your community!</button>
                 </div>
             </div>
-        </div>
+
+        </Layout>
     );
 }
 

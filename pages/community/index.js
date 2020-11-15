@@ -64,9 +64,18 @@ function CommunityDashboard() {
   const router = useRouter();
 
   return (
-
-    <div className="w-full flex">
-      <Layout />
+    <Layout
+      navBar
+      flex
+      logo
+      splash={{
+        color: "blue",
+        variant: "default",
+        alignment: "left",
+        isTranslucent: false,
+        fullHeight: false
+      }}
+    >
       <div className="w-full">
         <div style={{ height: '90%' }} className="flex">
           <div className="w-3/5">
@@ -93,9 +102,7 @@ function CommunityDashboard() {
         </div>
 
       </div>
-
-    </div>
-
+    </Layout>
   );
 }
 

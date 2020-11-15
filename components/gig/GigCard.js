@@ -1,4 +1,4 @@
-const GigCard = ({ key, gig }) => {
+const GigCard = ({ key, gig, takeGig }) => {
     return (
         <div
             key={key}

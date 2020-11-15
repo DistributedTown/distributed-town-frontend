@@ -59,7 +59,7 @@ const CreateProjectForm = ({ register, handleSubmit, onSubmit, errors }) => {
                                 {error && <p>Couldn't fetch skills</p>}
                                 {data ? data.map(skill => {
                                     return (
-                                        <div className="flex flex-row items-start">
+                                        <div className="flex flex-row items-center">
                                             <input
                                                 type="checkbox"
                                                 key={skill}
