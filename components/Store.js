@@ -95,6 +95,7 @@ const Store = ({ children }) => {
             );
             const userInfoArray = await response.json();
             const userInfo = userInfoArray[0];
+            console.log(userInfo);
 
             if (
               !userInfo.skills ||
@@ -106,11 +107,7 @@ const Store = ({ children }) => {
                 skills: []
               });
               router.push("/community/join");
-            } else if (
-              !userInfo.communityContract ||
-              (userInfo.communityContract &&
-                !userInfo.communityContract.address)
-            ) {
+            } else if (!userInfo.communityID) {
               setUserInfo({
                 ...userInfo,
                 DIDT
