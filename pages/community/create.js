@@ -237,7 +237,7 @@ function CommunityCreate() {
             inputLabel="Community Name"
           />
         </div>
-        <div className="flex flex-col text-center py-24 px-8 flex-grow w-1/2 overflow-auto">
+        <div className="flex flex-col text-center py-24 px-8 pb-32 flex-grow w-1/2 overflow-auto h-full">
           <h1 className="font-bold text-3xl">Choose the perfect Community</h1>
           <p className="text-xl px-16 mt-2 mb-8">
             Read the short description and pick the best type of community for

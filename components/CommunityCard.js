@@ -1,14 +1,16 @@
 import { useState, useEffect, useContext } from "react";
-import { UserInfoContext } from "./Store";
+import { TokenContext } from "./Store";
 
 function CommunityCard({ selectCommunity, selected, _id }) {
-  const userInfo = useContext(UserInfoContext);
+  const [token] = useContext(TokenContext);
   function getCardState(members) {
     if (members === 24) return "Not accepting";
     if (!selected) return "Can join";
     if (selected) return "Joined!";
   }
   const [communityDetails, setCommunityDetails] = useState();
+
+  console.log(token);
 
   useEffect(() => {
     (async function() {
@@ -17,7 +19,7 @@ function CommunityCard({ selectCommunity, selected, _id }) {
         {
           method: "GET",
           headers: {
-            Authorization: `Bearer ${userInfo[0].DIDT}`
+            Authorization: `Bearer ${token}`
           }
         }
       );

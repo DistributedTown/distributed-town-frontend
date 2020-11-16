@@ -195,7 +195,7 @@ function SignupPhaseTwo() {
             })}
           </div> */}
 
-          <div className="w-full border-2 border-gray-400">
+          <div className="w-full border-2 border-gray-400 p-2 text-center">
             <button type="button" onClick={joinCommunity}>
               {isJoining
                 ? "Joining the community, please wait"
