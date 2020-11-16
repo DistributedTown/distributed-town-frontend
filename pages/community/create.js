@@ -222,7 +222,7 @@ function CommunityCreate() {
         >
           <NicknameSelection
             setUserInfo={val => setCommunityName(val.username)}
-            value={userInfo && userInfo.username}
+            value={communityName}
             title="Welcome to Distributed Town!"
             subtitle={
               <span>

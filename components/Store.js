@@ -80,6 +80,7 @@ const Store = ({ children }) => {
           if (loggedIn) {
             const metaData = await magic.user.getMetadata();
             const DIDT = await magic.user.getIdToken({ email: metaData.email });
+            setToken(DIDT);
             const response = await fetch(
               `https://api.distributed.town/api/user`,
               {
@@ -166,7 +167,7 @@ const Store = ({ children }) => {
         }
       })();
     }
-  }, [magic]);
+  }, [magic, loggedIn]);
 
   return (
     // `children` (passed as props in this file) represents the component nested inside <Store /> in `/pages/index.js` and `/pages/login.js`

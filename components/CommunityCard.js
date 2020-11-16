@@ -10,8 +10,6 @@ function CommunityCard({ selectCommunity, selected, _id }) {
   }
   const [communityDetails, setCommunityDetails] = useState();
 
-  console.log(token);
-
   useEffect(() => {
     (async function() {
       let community = await fetch(

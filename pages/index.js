@@ -12,20 +12,11 @@ import Store, {
   UserInfoContext
 } from "../components/Store";
 import Layout from "../components/Layout";
-import { useRouter } from "next/router";
-import TheNav from "../components/TheNav";
-import bgImages from "../utils/bgImages.js";
-import { get, set } from "mongoose";
 
-import communityContractAbi from "../utils/communityContractAbi.json";
-
-import { ethers } from "ethers";
-
-const Index = props => {
+const Index = () => {
   const [loggedIn, setLoggedIn] = useContext(LoggedInContext);
   const [magic] = useContext(MagicContext);
-  const router = useRouter();
-  const userInfo = useContext(UserInfoContext);
+  const [, setToken] = useContext(TokenContext);
 
   const authenticateWithDb = async DIDT => {
     /* Pass the Decentralized ID token in the Authorization header to the database */
@@ -49,8 +40,8 @@ const Index = props => {
       const DIDT = await magic.auth.loginWithMagicLink({ email });
       let user = await authenticateWithDb(DIDT);
       if (user) {
+        setToken(DIDT);
         setLoggedIn(user.email);
-        router.reload();
       } else {
         throw new Error("Something went wrong, please try again!");
       }
