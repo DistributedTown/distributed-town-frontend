@@ -17,6 +17,7 @@ const Index = () => {
   const [loggedIn, setLoggedIn] = useContext(LoggedInContext);
   const [magic] = useContext(MagicContext);
   const [, setToken] = useContext(TokenContext);
+  const [loading, setLoading] = useState(false);
 
   const authenticateWithDb = async DIDT => {
     /* Pass the Decentralized ID token in the Authorization header to the database */
@@ -38,10 +39,12 @@ const Index = () => {
         throw new Error("Please enter a valid email address");
       }
       const DIDT = await magic.auth.loginWithMagicLink({ email });
+      setLoading(true);
       let user = await authenticateWithDb(DIDT);
       if (user) {
         setToken(DIDT);
         setLoggedIn(user.email);
+        // setLoading(false);
       } else {
         throw new Error("Something went wrong, please try again!");
       }
@@ -121,6 +124,13 @@ const Index = () => {
           )}
         </div>
       </div>
+      {loading && (
+        <div className="fixed inset-0 h-screen w-screen bg-opacity-50 bg-black flex justify-center items-center">
+          <div className="w-48 h-48 bg-white rounded flex justify-center items-center">
+            Signing you in...
+          </div>
+        </div>
+      )}
     </Layout>
   );
 };
