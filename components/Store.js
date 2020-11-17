@@ -13,7 +13,7 @@ export const LoggedInContext = createContext();
 export const LoadingContext = createContext();
 export const UserInfoContext = createContext();
 export const TokenContext = createContext();
-
+let firstEffectRun = true;
 /* this function wraps our entire app within our context APIs so they all have access to their values */
 const Store = ({ children }) => {
   const [magic, setMagic] = useState();
@@ -103,13 +103,13 @@ const Store = ({ children }) => {
                 DIDT,
                 skills: []
               });
-              router.push("/community/join");
+              if (firstEffectRun) router.push("/community/join");
             } else if (!userInfo.communityID) {
               setUserInfo({
                 ...userInfo,
                 DIDT
               });
-              router.push("/SignupPhaseTwo");
+              if (firstEffectRun) router.push("/SignupPhaseTwo");
             } else {
               const provider = new ethers.providers.Web3Provider(
                 magic.rpcProvider
@@ -153,12 +153,14 @@ const Store = ({ children }) => {
                   ditoBalance: ditoBalanceStr,
                   DIDT
                 });
-                router.push("/skillwallet");
+                if (firstEffectRun) router.push("/skillwallet");
               } catch (error) {
                 console.log(error);
               }
             }
           }
+
+          firstEffectRun = false;
 
           setLoggedIn(loggedIn);
           setIsLoading(false);
@@ -179,8 +181,8 @@ const Store = ({ children }) => {
               {!isLoading ? (
                 <div className="flex">{children}</div>
               ) : (
-                  <div>Loading...</div>
-                )}
+                <div>Loading...</div>
+              )}
             </TokenContext.Provider>
           </UserInfoContext.Provider>
         </LoadingContext.Provider>

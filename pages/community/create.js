@@ -150,21 +150,6 @@ function CommunityCreate() {
     setCommunities(newCommunities);
   }
 
-  async function fetchUserData(DIDT) {
-    try {
-      let res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user`, {
-        method: "GET",
-        headers: new Headers({
-          Authorization: "Bearer " + DIDT
-        })
-      });
-      const userData = await res.json();
-      return userData;
-    } catch (err) {
-      console.log(err);
-    }
-  }
-
   async function handleCreateAccountClick(e) {
     e.preventDefault();
     try {
@@ -172,24 +157,14 @@ function CommunityCreate() {
 
       setToken(DIDT);
 
-      let res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/user/login`,
-        {
-          method: "POST",
-          headers: new Headers({
-            Authorization: "Bearer " + DIDT
-          })
-        }
-      );
+      await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user/login`, {
+        method: "POST",
+        headers: new Headers({
+          Authorization: "Bearer " + DIDT
+        })
+      });
 
       setLoggedIn(true);
-
-      const userData = await fetchUserData(DIDT);
-
-      const haSkills =
-        userData[0].skills &&
-        Array.isArray(userData[0].skills) &&
-        userData[0].skills.length > 0;
 
       setUserInfo({
         ...userInfo,
