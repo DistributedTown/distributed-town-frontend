@@ -34,23 +34,13 @@ function CommunityTreasury() {
     }, []);
 
     async function getCommunityInfo() {
-        await window.ethereum.enable();
-
-        const provider = new ethers.providers.Web3Provider(window.ethereum);
-
+        const provider = new ethers.providers.Web3Provider(magic.rpcProvider);
         try {
             const signer = provider.getSigner();
 
             // Get user's Ethereum public address
             const address = await signer.getAddress();
-            let contractAddress = ''
-
-            console.log(userInfo)
-
-            for (let communityContractAddress of userInfo.communityContract.addresses) {
-                if (communityContractAddress.blockchain === 'ETH') contractAddress = communityContractAddress.address
-            }
-
+            const contractAddress = userInfo.communityContract.address;
             const contractABI = NoGSNCommunityAbi.abi;
             const contract = new ethers.Contract(
                 contractAddress,
@@ -58,28 +48,40 @@ function CommunityTreasury() {
                 provider
             );
 
-
-
             // Send transaction to smart contract to update message and wait to finish
-            // const [nUsers, investedBalance] = await Promise.all([
-            //     contract.numberOfMembers(),
-            //     contract.getInvestedBalanceInfo()
-            // ]);
+            const [nUsers, investedBalanceInfo] = await Promise.all([
+                contract.numberOfMembers(),
+                contract.getInvestedBalanceInfo()
+            ]);
 
-            const numberOfMembersTX = await contract.numberOfMembers();
+            // const nUsers = await contract.numberOfMembers();
+            // console.log(BigNumber.from(nUsers).toNumber())
 
-            console.log('here', numberOfMembersTX)
+            // const investedBalanceInfo = await contract.getInvestedBalanceInfo()
+            // console.log(investedBalanceInfo)
 
+            let investedTokenAPY = BigNumber.from(
+                investedBalanceInfo.investedTokenAPY
+            ).toString();
 
-            const getInvestedBalanceTX = await contract.getInvestedBalanceInfo();
+            // 26 because uint256 returned from Aave are Rays which are decimals written as 27 digits long integers
+            investedTokenAPY = Number(
+                `${investedTokenAPY.substring(
+                    0,
+                    investedTokenAPY.length - 26
+                )}.${investedTokenAPY.substring(investedTokenAPY.length - 26)}`
+            );
 
             console.log(
                 BigNumber.from(nUsers).toNumber(),
-                BigNumber.from(investedBalance).toNumber()
+                BigNumber.from(investedBalanceInfo.investedBalance).toNumber(),
+                investedTokenAPY
             );
 
             setNumOfMembers(BigNumber.from(nUsers).toNumber());
-            setLiquidityPoolBalance(BigNumber.from(investedBalance).toNumber());
+            setLiquidityPoolBalance(
+                BigNumber.from(investedBalanceInfo.investedBalance).toNumber()
+            );
         } catch (err) {
             console.error(err);
         }
