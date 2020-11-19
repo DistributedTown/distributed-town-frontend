@@ -12,6 +12,7 @@ import Store, {
   UserInfoContext
 } from "../components/Store";
 import Layout from "../components/Layout";
+import { setUserJourney } from "../utils/userJourneyManager";
 
 const Index = () => {
   const [loggedIn, setLoggedIn] = useContext(LoggedInContext);
@@ -89,7 +90,15 @@ const Index = () => {
           <div className="border-2 border-red p-1">
             <div className="border-2 border-denim p-4 text-center font-bold">
               <Link href="/community/create">
-                <a className="flex justify-around items-center text-xl px-8">
+                <a
+                  className="flex justify-around items-center text-xl px-8"
+                  onClick={() => {
+                    setUserJourney({
+                      journey: "community",
+                      step: "category"
+                    });
+                  }}
+                >
                   Create
                   <img src="/create-plus-button.svg" />
                 </a>
@@ -99,7 +108,15 @@ const Index = () => {
           <div className="border-2 border-red p-1 mt-2">
             <div className="border-2 border-denim p-4 text-center font-bold">
               <Link href="/community/join">
-                <a className="flex justify-around items-center text-xl px-8">
+                <a
+                  className="flex justify-around items-center text-xl px-8"
+                  onClick={() => {
+                    setUserJourney({
+                      journey: "join",
+                      step: "start"
+                    });
+                  }}
+                >
                   Join
                   <img src="/create-people-button.svg" />
                 </a>
