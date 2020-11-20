@@ -16,3 +16,7 @@ export const getUserJourney = () => {
 
   return memoizedJourney;
 };
+
+export const removeUserJourney = () => {
+  localStorage.removeItem("userJourney");
+};

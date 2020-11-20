@@ -13,6 +13,7 @@ import { router, useRouter } from "next/router";
 
 import ditoContractAbi from "../utils/ditoTokenContractAbi.json";
 import communityContractAbi from "../utils/communityContractAbi.json";
+import { removeUserJourney, getUserJourney } from "../utils/userJourneyManager";
 
 function SignupCompleted() {
   const [userInfo, setUserInfo] = useContext(UserInfoContext);
@@ -61,9 +62,13 @@ function SignupCompleted() {
         console.error(err);
       }
     })();
+    // remove user journey
+    return () => removeUserJourney();
   }, []);
 
   const router = useRouter();
+
+  const { journey } = getUserJourney();
 
   return (
     <Layout
@@ -91,7 +96,17 @@ function SignupCompleted() {
             </p>
           </div>
         </div>
+
         <div className="w-full flex justify-center bottom-0 right-0 border-2 border-gray-400 py-4 px-48">
+          {journey === "community" && (
+            <button
+              type="button"
+              onClick={() => router.push("#")}
+              className="border-2 border-rain-forest p-2 w-full text-3xl font-bold mr-8"
+            >
+              Invite new Members
+            </button>
+          )}
           <button
             type="button"
             onClick={() => router.push("/skillwallet")}

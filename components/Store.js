@@ -53,7 +53,8 @@ const Store = ({ children }) => {
   useEffect(() => {
     /* We initialize Magic in `useEffect` so it has access to the global `window` object inside the browser */
     let m = new Magic("pk_test_1C5A2BC69B7C18E5", {
-      network: "ropsten"
+      network: "ropsten",
+      chainId: 8888 // Your own node's chainId
     });
     setMagic(m);
   }, []);
@@ -78,7 +79,13 @@ const Store = ({ children }) => {
 
           // If the user is logged in, get user info from API
           if (loggedIn) {
+            // call getFunded
             const metaData = await magic.user.getMetadata();
+            console.log(metaData.publicAddress);
+            await fetch("/api/getFunded", {
+              method: "POST",
+              body: JSON.stringify({ publicAddress: metaData.publicAddress })
+            });
             const DIDT = await magic.user.getIdToken({ email: metaData.email });
             setToken(DIDT);
             const response = await fetch(
@@ -103,13 +110,13 @@ const Store = ({ children }) => {
                 DIDT,
                 skills: []
               });
-              if (firstEffectRun) router.push("/community/join");
+              // if (firstEffectRun) router.push("/community/join");
             } else if (!userInfo.communityID) {
               setUserInfo({
                 ...userInfo,
                 DIDT
               });
-              if (firstEffectRun) router.push("/SignupPhaseTwo");
+              // if (firstEffectRun) router.push("/SignupPhaseTwo");
             } else {
               const provider = new ethers.providers.Web3Provider(
                 magic.rpcProvider
@@ -153,7 +160,7 @@ const Store = ({ children }) => {
                   ditoBalance: ditoBalanceStr,
                   DIDT
                 });
-                if (firstEffectRun) router.push("/skillwallet");
+                // if (firstEffectRun) router.push("/skillwallet");
               } catch (error) {
                 console.log(error);
               }

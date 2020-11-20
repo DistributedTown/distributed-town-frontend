@@ -8,12 +8,11 @@ import {
   UserInfoContext,
   TokenContext
 } from "../../components/Store";
-import RegistrationModal from "../../components/registration/RegistrationModal";
 import Layout from "../../components/Layout";
 import NicknameSelection from "../../components/NicknameSelection";
 import Button from "../../components/Button";
 import communitiesRegistryAbi from "../../utils/communitiesRegistryAbi.json";
-import RegistrationForm from "../../components/registration/RegistrationForm";
+import { setUserJourney } from "../../utils/userJourneyManager";
 
 const communityMeta = {
   "DLT & Blockchain": {
@@ -52,15 +51,11 @@ const communityMeta = {
 };
 
 function CommunityCreate() {
-  const [token, setToken] = useContext(TokenContext);
-  const [loggedIn, setLoggedIn] = useContext(LoggedInContext);
   const [communities, setCommunities] = useState([]);
   const [communityName, setCommunityName] = useState("");
   const [userInfo, setUserInfo] = useContext(UserInfoContext);
   const [magic] = useContext(MagicContext);
   const router = useRouter();
-  const [modalState, setModalState] = useState(false);
-  const [email, setEmail] = useState("");
 
   useEffect(() => {
     (async function() {
@@ -102,40 +97,63 @@ function CommunityCreate() {
   }
 
   async function createCommunity() {
-    const provider = new ethers.providers.Web3Provider(magic.rpcProvider);
-
-    try {
-      const signer = provider.getSigner();
-
-      // Get user's Ethereum public address
-      const address = await signer.getAddress();
-
-      const contractABI = communitiesRegistryAbi;
-      const contractAddress = "0xe141f6C659bEA31d39cD043539E426D53bF3D7d8";
-      const contract = new ethers.Contract(
-        contractAddress,
-        contractABI,
-        signer
-      );
-
-      const tx = await contract.createCommunity();
-      // Wait for transaction to finish
-      const receipt = await tx.wait();
-      setUserInfo({
-        ...userInfo,
-        communityContract: {
-          address: receipt
-        }
-      });
-
-      const addTx = await contract.addCommunity(receipt);
-      // Wait for transaction to finish
-      await tx.wait();
-
-      await sendToApi(receipt);
-    } catch (err) {
-      console.error(err);
+    if (communityName.trim() === "") {
+      alert("Please enter a community name");
+      return;
     }
+
+    const selectedCommunity = communities.find(community => community.selected);
+    if (!selectedCommunity) {
+      alert("Please select a community category");
+      return;
+    }
+
+    // store community name and category to localStorage.
+    // mark current flow as community
+    setUserJourney({
+      journey: "community",
+      step: "created",
+      meta: {
+        communityName,
+        category: selectedCommunity.category
+      }
+    });
+    // go to congrats page
+    router.push("/community/created");
+
+    // try {
+    //   const provider = new ethers.providers.Web3Provider(magic.rpcProvider);
+    //   const signer = provider.getSigner();
+
+    //   // Get user's Ethereum public address
+    //   const address = await signer.getAddress();
+
+    //   const contractABI = communitiesRegistryAbi;
+    //   const contractAddress = "0xe141f6C659bEA31d39cD043539E426D53bF3D7d8";
+    //   const contract = new ethers.Contract(
+    //     contractAddress,
+    //     contractABI,
+    //     signer
+    //   );
+
+    //   const tx = await contract.createCommunity();
+    //   // Wait for transaction to finish
+    //   const receipt = await tx.wait();
+    //   setUserInfo({
+    //     ...userInfo,
+    //     communityContract: {
+    //       address: receipt
+    //     }
+    //   });
+
+    //   const addTx = await contract.addCommunity(receipt);
+    //   // Wait for transaction to finish
+    //   await tx.wait();
+
+    //   await sendToApi(receipt);
+    // } catch (err) {
+    //   console.error(err);
+    // }
   }
 
   function setSelected(id) {
@@ -148,34 +166,6 @@ function CommunityCreate() {
       }
     });
     setCommunities(newCommunities);
-  }
-
-  async function handleCreateAccountClick(e) {
-    e.preventDefault();
-    try {
-      const DIDT = await magic.auth.loginWithMagicLink({ email });
-
-      setToken(DIDT);
-
-      await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user/login`, {
-        method: "POST",
-        headers: new Headers({
-          Authorization: "Bearer " + DIDT
-        })
-      });
-
-      setLoggedIn(true);
-
-      setUserInfo({
-        ...userInfo,
-        email: email,
-        skills: []
-      });
-      createCommunity();
-    } catch (err) {
-      await magic.user.logout();
-      console.error(err);
-    }
   }
 
   return (
@@ -235,6 +225,7 @@ function CommunityCreate() {
                   onClick={() => {
                     setSelected(_id);
                   }}
+                  key={_id}
                 >
                   <div
                     className={`bg-${color} text-white text-3xl font-bold border-b-4 rounded-md p-2 border-black leading-7`}
@@ -248,8 +239,8 @@ function CommunityCreate() {
                   >
                     <p className="text-sm text-center mb-2">{subtitle}</p>
                     <ol className="list-decimal list-inside my-2 text-xs">
-                      {description.map(desc => {
-                        return <li>{desc}</li>;
+                      {description.map((desc, index) => {
+                        return <li key={index}>{desc}</li>;
                       })}
                     </ol>
                   </div>
@@ -262,24 +253,11 @@ function CommunityCreate() {
           <Button
             className="font-black font-bold text-2xl px-32"
             color="rain-forest"
-            onClick={() => setModalState(true)}
+            onClick={createCommunity}
           >
             Next: Launch & Get Community Credits!
           </Button>
         </div>
-      </div>
-      <div
-        className={`modalBackground modalVisible-${modalState} bg-white flex justify-center items-center w-screen`}
-      >
-        <RegistrationForm
-          onSubmit={handleCreateAccountClick}
-          setEmail={setEmail}
-          title="Welcome to Dito"
-          email={email}
-          cta="Create Account"
-          placeholderText="Please enter your email"
-          className="flex justify-center items-center"
-        />
       </div>
     </Layout>
   );
