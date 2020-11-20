@@ -10,7 +10,7 @@ export const setUserJourney = journey => {
 };
 
 export const getUserJourney = () => {
-  if (!memoizedJourney.hasOwnProperty("journey")) {
+  if (!memoizedJourney || !memoizedJourney.hasOwnProperty("journey")) {
     memoizedJourney = JSON.parse(localStorage.getItem("userJourney"));
   }
 

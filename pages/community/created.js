@@ -24,6 +24,7 @@ function Created() {
   const [communityName, setCommunityName] = useState("Community");
   const [modalState, setModalState] = useState(false);
   const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -72,6 +73,7 @@ function Created() {
       const DIDT = await magic.auth.loginWithMagicLink({ email });
       setToken(DIDT);
 
+      setLoading(true);
       await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user/login`, {
         method: "POST",
         headers: new Headers({
@@ -119,6 +121,7 @@ function Created() {
       await magic.user.logout();
       console.error(err);
     }
+    setLoading(false);
   };
 
   const { meta } = getUserJourney();
@@ -167,6 +170,13 @@ function Created() {
           getCommunityBgImg={() => bgImages["default"]}
         />
       </div>
+      {loading && (
+        <div className="fixed inset-0 h-screen w-screen bg-opacity-50 bg-black flex justify-center items-center">
+          <div className="w-48 h-48 bg-white rounded flex justify-center items-center">
+            Signing you in...
+          </div>
+        </div>
+      )}
     </Layout>
   );
 }

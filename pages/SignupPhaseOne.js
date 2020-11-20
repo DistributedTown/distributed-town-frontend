@@ -18,18 +18,13 @@ import communitiesABI from "../utils/communitiesRegistryAbi.json";
 import contractABI from "../utils/communitiesRegistryAbi.json";
 
 function SignupPhaseOne(props) {
-  const [loggedIn, setLoggedIn] = useContext(LoggedInContext);
-  const [userInfo, setUserInfo] = useContext(UserInfoContext);
+  const [userInfo = { skills: [] }, setUserInfo] = useContext(UserInfoContext);
   const [magic] = useContext(MagicContext);
   const [skillTree, setSkillTree] = useState([]);
-  const [token, setToken] = useContext(TokenContext);
-  const [selectedSkillsIndexes, setSelectedSkillsIndexes] = useState([]);
-
-  const backgroundImageStyle = {
-    backgroundImage: `url(${userInfo.background})`
-    //filter: 'blur(8px)',
-    // WebkitFilter: 'blur(8px)',
-  };
+  const [loading, setLoading] = useState({
+    status: false,
+    message: null
+  });
 
   useEffect(() => {
     let category = userInfo.category;
@@ -68,7 +63,9 @@ function SignupPhaseOne(props) {
           return { ...newSkill };
         }
 
-        return typeof skill === "string" ? { skill } : { ...skill };
+        return typeof skill === "string"
+          ? { skill, selected: false }
+          : { ...skill, selected: false };
       });
 
     const copySkills = category =>
@@ -190,6 +187,10 @@ function SignupPhaseOne(props) {
   }
 
   const createCommunity = async () => {
+    setLoading({
+      status: true,
+      message: "Creating community..."
+    });
     try {
       const provider = new ethers.providers.Web3Provider(magic.rpcProvider);
       const signer = provider.getSigner();
@@ -201,7 +202,12 @@ function SignupPhaseOne(props) {
         signer
       );
 
-      const createTx = await contract.createCommunity();
+      const estimatedGas = await contract.estimateGas.createCommunity();
+      const createTx = await contract.createCommunity({
+        // 500k gas
+        gasLimit: ethers.BigNumber.from(estimatedGas).toNumber(), // 3896496,
+        gasPrice: 7910854493
+      });
       // Wait for transaction to finish
       const communityAddress = await createTx.wait();
       console.log("communityAddress", communityAddress);
@@ -210,12 +216,16 @@ function SignupPhaseOne(props) {
       // Wait for transaction to finish
       await addTx.wait();
 
+      setLoading({
+        status: true,
+        message: "Joining community..."
+      });
       // call the smart contract to join community
       let amountOfRedeemableDitos = 0;
       for (let { redeemableDitos } of userInfo.skills) {
         amountOfRedeemableDitos += redeemableDitos;
       }
-      console.log(amountOfRedeemableDitos);
+
       const baseDitos = 2000;
       const totalDitos = amountOfRedeemableDitos + baseDitos;
 
@@ -248,6 +258,10 @@ function SignupPhaseOne(props) {
         method: "POST",
         body: JSON.stringify(payload)
       });
+      setLoading({
+        status: false,
+        message: null
+      });
       // update user in UserInfoContext
       setUserInfo({
         ...userInfo,
@@ -264,6 +278,10 @@ function SignupPhaseOne(props) {
       router.push("/SignupCompleted");
     } catch (error) {
       console.log(error);
+      setLoading({
+        status: false,
+        message: null
+      });
     }
   };
 
@@ -272,6 +290,14 @@ function SignupPhaseOne(props) {
     if (userInfo.skills.length > 0) {
       const { journey } = getUserJourney();
       if (journey === "community") {
+        if (!userInfo.username) {
+          alert("Please choose a nickname");
+          setUserInfo({
+            ...userInfo,
+            skills: []
+          });
+          return;
+        }
         createCommunity();
       } else {
         router.push("/SignupPhaseTwo");
@@ -345,6 +371,13 @@ function SignupPhaseOne(props) {
           </Button>
         </div>
       </div>
+      {loading.status && (
+        <div className="fixed inset-0 h-screen w-screen bg-opacity-50 bg-black flex justify-center items-center">
+          <div className="w-48 h-48 bg-white rounded flex justify-center items-center">
+            {loading.message}
+          </div>
+        </div>
+      )}
     </Layout>
   );
 }

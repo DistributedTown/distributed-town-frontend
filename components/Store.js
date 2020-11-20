@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 
 import ditoContractAbi from "../utils/ditoTokenContractAbi.json";
 import communityContractAbi from "../utils/communityContractAbi.json";
+import { getUserJourney } from "../utils/userJourneyManager";
 
 /* initializing context API values */
 export const MagicContext = createContext();
@@ -163,6 +164,20 @@ const Store = ({ children }) => {
                 // if (firstEffectRun) router.push("/skillwallet");
               } catch (error) {
                 console.log(error);
+              }
+            }
+          } else {
+            const userJourney = getUserJourney();
+            if (!userJourney) {
+              router.push("/");
+            } else {
+              const { journey, step } = userJourney;
+              if (journey === "community") {
+                if (step === "category") {
+                  router.push("/community/create");
+                } else if (step === "created") {
+                  router.push("/community/created");
+                }
               }
             }
           }
