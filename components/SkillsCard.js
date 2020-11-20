@@ -1,4 +1,10 @@
-function SkillsCard({ title, skills, selectSkill, setSkillLevel, totalSelected }) {
+function SkillsCard({
+  title,
+  skills,
+  selectSkill,
+  setSkillLevel,
+  totalSelected
+}) {
   return (
     <div className="flex flex-col border border-denim px-3 py-2 text-xs">
       <h2 className="text-center font-bold pb-2">{title}</h2>
@@ -9,15 +15,21 @@ function SkillsCard({ title, skills, selectSkill, setSkillLevel, totalSelected }
               <input
                 type="checkbox"
                 onClick={() => selectSkill(i)}
-                defaultChecked={i === -1}
-                disabled={  !skill.selected && totalSelected === 3   }
+                checked={skill.selected}
+                disabled={!skill.selected && totalSelected === 3}
               />
               <div className="flex flex-col p-2">
-                <p>{typeof skill=== 'string' ? skill : skill.skill}</p>
+                <p>{typeof skill === "string" ? skill : skill.skill}</p>
                 <input
                   type="range"
-                  value={typeof skill ==='string' ? 0 : skill.selected ? skill.level : 0}
-                  onChange={(e) => setSkillLevel(i, e.target.value)}
+                  value={
+                    typeof skill === "string"
+                      ? 0
+                      : skill.selected
+                      ? skill.level
+                      : 0
+                  }
+                  onChange={e => setSkillLevel(i, e.target.value)}
                   disabled={!skill.selected}
                   step={10}
                   className="lg:w-32 md:w-24"
@@ -32,4 +44,3 @@ function SkillsCard({ title, skills, selectSkill, setSkillLevel, totalSelected }
 }
 
 export default SkillsCard;
-

@@ -12,25 +12,34 @@ import SkillsCard from "../components/SkillsCard";
 import Button from "../components/Button";
 import { useRouter } from "next/router";
 import NicknameSelection from "../components/NicknameSelection";
+import { getUserJourney, setUserJourney } from "../utils/userJourneyManager";
+import { ethers } from "ethers";
+import communitiesABI from "../utils/communitiesRegistryAbi.json";
+import contractABI from "../utils/communitiesRegistryAbi.json";
 
 function SignupPhaseOne(props) {
-  const [loggedIn, setLoggedIn] = useContext(LoggedInContext);
-  const [userInfo, setUserInfo] = useContext(UserInfoContext);
-  //const [categories, setCategories] = useState([]);
+  const [userInfo = { skills: [] }, setUserInfo] = useContext(UserInfoContext);
+  const [magic] = useContext(MagicContext);
   const [skillTree, setSkillTree] = useState([]);
-  const [token, setToken] = useContext(TokenContext);
-  const [selectedSkillsIndexes, setSelectedSkillsIndexes] = useState([]);
-  const backgroundImageStyle = {
-    backgroundImage: `url(${userInfo.background})`
-    //filter: 'blur(8px)',
-    // WebkitFilter: 'blur(8px)',
-  };
+  const [loading, setLoading] = useState({
+    status: false,
+    message: null
+  });
 
   useEffect(() => {
+    let category = userInfo.category;
+    let paramName = "skill";
+    const { journey, meta } = getUserJourney();
+    if (journey === "community") {
+      category = encodeURIComponent(meta.category);
+      paramName = "category";
+    }
+    console.log(category);
+
     const getSkillTree = async () => {
       try {
         const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/skill?skill=${userInfo.category}`,
+          `${process.env.NEXT_PUBLIC_API_URL}/api/skill?${paramName}=${category}`,
           { method: "GET" }
         );
         const skillTree = await response.json();
@@ -54,7 +63,9 @@ function SignupPhaseOne(props) {
           return { ...newSkill };
         }
 
-        return typeof skill === "string" ? { skill } : { ...skill };
+        return typeof skill === "string"
+          ? { skill, selected: false }
+          : { ...skill, selected: false };
       });
 
     const copySkills = category =>
@@ -175,12 +186,126 @@ function SignupPhaseOne(props) {
     });
   }
 
+  const createCommunity = async () => {
+    setLoading({
+      status: true,
+      message: "Creating community..."
+    });
+    try {
+      const provider = new ethers.providers.Web3Provider(magic.rpcProvider);
+      const signer = provider.getSigner();
+
+      // call the smart contract to create community
+      const contract = new ethers.Contract(
+        "0xe141f6C659bEA31d39cD043539E426D53bF3D7d8",
+        communitiesABI,
+        signer
+      );
+
+      const estimatedGas = await contract.estimateGas.createCommunity();
+      const createTx = await contract.createCommunity({
+        // 500k gas
+        gasLimit: ethers.BigNumber.from(estimatedGas).toNumber(), // 3896496,
+        gasPrice: 7910854493
+      });
+      // Wait for transaction to finish
+      const communityAddress = await createTx.wait();
+      console.log("communityAddress", communityAddress);
+
+      const addTx = await contract.addCommunity(communityAddress);
+      // Wait for transaction to finish
+      await addTx.wait();
+
+      setLoading({
+        status: true,
+        message: "Joining community..."
+      });
+      // call the smart contract to join community
+      let amountOfRedeemableDitos = 0;
+      for (let { redeemableDitos } of userInfo.skills) {
+        amountOfRedeemableDitos += redeemableDitos;
+      }
+
+      const baseDitos = 2000;
+      const totalDitos = amountOfRedeemableDitos + baseDitos;
+
+      const communitContract = new ethers.Contract(
+        communityAddress,
+        contractABI,
+        signer
+      );
+      const joinTx = await communitContract.join(totalDitos);
+      // Wait for transaction to finish
+      await joinTx.wait();
+
+      // call api to create community and user
+      const { meta } = getUserJourney();
+      const payload = {
+        category: meta.category,
+        addresses: [
+          {
+            blockchain: "ETH",
+            address: communityAddress
+          }
+        ],
+        name: meta.communityName,
+        owner: {
+          username: userInfo.username,
+          skills: userInfo.skills
+        }
+      };
+      await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/community`, {
+        method: "POST",
+        body: JSON.stringify(payload)
+      });
+      setLoading({
+        status: false,
+        message: null
+      });
+      // update user in UserInfoContext
+      setUserInfo({
+        ...userInfo,
+        ditoBalance: totalDitos,
+        communityContract: {
+          name: communityName,
+          address: communityAddress
+        }
+      });
+      // set the step to finished
+      setUserJourney({
+        step: "finish"
+      });
+      router.push("/SignupCompleted");
+    } catch (error) {
+      console.log(error);
+      setLoading({
+        status: false,
+        message: null
+      });
+    }
+  };
+
   const router = useRouter();
   useEffect(() => {
     if (userInfo.skills.length > 0) {
-      router.push("/SignupPhaseTwo");
+      const { journey } = getUserJourney();
+      if (journey === "community") {
+        if (!userInfo.username) {
+          alert("Please choose a nickname");
+          setUserInfo({
+            ...userInfo,
+            skills: []
+          });
+          return;
+        }
+        createCommunity();
+      } else {
+        router.push("/SignupPhaseTwo");
+      }
     }
   }, [userInfo.skills.length]);
+
+  const { journey } = getUserJourney();
 
   return (
     <Layout
@@ -240,10 +365,19 @@ function SignupPhaseOne(props) {
         </div>
         <div className="flex justify-center items-center w-full absolute bottom-0 p-4 bg-white">
           <Button className="font-black" onClick={() => setUserSkills()}>
-            Next: choose your first community!
+            {journey === "community"
+              ? "Next: Create and Join Community"
+              : "Next: choose your first community!"}
           </Button>
         </div>
       </div>
+      {loading.status && (
+        <div className="fixed inset-0 h-screen w-screen bg-opacity-50 bg-black flex justify-center items-center">
+          <div className="w-48 h-48 bg-white rounded flex justify-center items-center">
+            {loading.message}
+          </div>
+        </div>
+      )}
     </Layout>
   );
 }
