@@ -15,7 +15,7 @@ import NicknameSelection from "../components/NicknameSelection";
 import { getUserJourney, setUserJourney } from "../utils/userJourneyManager";
 import { ethers } from "ethers";
 import communitiesABI from "../utils/communitiesRegistryAbi.json";
-import contractABI from "../utils/communitiesRegistryAbi.json";
+import contractABI from "../utils/communityContractAbi.json";
 
 function SignupPhaseOne(props) {
   const [userInfo = { skills: [] }, setUserInfo] = useContext(UserInfoContext);
