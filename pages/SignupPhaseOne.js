@@ -209,6 +209,13 @@ function SignupPhaseOne(props) {
       // Wait for transaction to finish
       const communityAddress = await createTx.wait();
       console.log("communityAddress", communityAddress);
+      const { events } = communityAddress;
+      const communityCreatedEvent = events.find(
+        e => e.event === "CommunityCreated"
+      );
+      if (!communityCreatedEvent) {
+        throw new Error("Something went wrong");
+      }
 
       setLoading({
         status: true,
@@ -224,7 +231,7 @@ function SignupPhaseOne(props) {
       const totalDitos = amountOfRedeemableDitos + baseDitos;
 
       const communitContract = new ethers.Contract(
-        communityAddress,
+        communityCreatedEvent.args._newCommunityAddress,
         contractABI,
         signer
       );
@@ -261,7 +268,7 @@ function SignupPhaseOne(props) {
         ...userInfo,
         ditoBalance: totalDitos,
         communityContract: {
-          name: communityName,
+          name: meta.communityName,
           address: communityAddress
         }
       });
