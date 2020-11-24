@@ -210,10 +210,6 @@ function SignupPhaseOne(props) {
       const communityAddress = await createTx.wait();
       console.log("communityAddress", communityAddress);
 
-      const addTx = await contract.addCommunity(communityAddress);
-      // Wait for transaction to finish
-      await addTx.wait();
-
       setLoading({
         status: true,
         message: "Joining community..."
