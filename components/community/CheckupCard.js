@@ -1,4 +1,4 @@
-export default function CheckupCard() {
+export default function CheckupCard({ numOfMembers, liquidityPoolBalance }) {
   const bgImage = { src: "/background-image.svg", alignment: "left", size: 60 }
 
   return (
@@ -14,8 +14,7 @@ export default function CheckupCard() {
         <div className="flex flex-col justify-center bg-white p-4 space-y-4">
           <div className="flex flex-row justify-between">
             <p>Members</p>
-            {/* <p>{numOfMembers === -1 ? "Loading members..." : numOfMembers}</p> */}
-            <p>"Loading members..."</p>
+            <p>{numOfMembers === -1 ? "Loading members..." : numOfMembers}</p>
           </div>
           <div className="flex flex-row justify-between">
             <p>Open Proposals</p>
@@ -23,12 +22,11 @@ export default function CheckupCard() {
           </div>
           <div className="flex flex-row justify-between">
             <p>Liquidity Pool</p>
-            {/* <p>
-                        {liquidityPoolBalance === -1
-                            ? "Loading liquidity pool balance..."
-                            : liquidityPoolBalance}
-                    </p> */}
-            <p>"Loading liquidity pool balance..."</p>
+            <p>
+              {liquidityPoolBalance === -1
+                ? "Loading liquidity pool balance..."
+                : liquidityPoolBalance}
+            </p>
           </div>
           <div className="flex flex-col border-2 border-blue-600 p-4">
             <p>Scarcity score</p>

@@ -5,6 +5,7 @@ import { BigNumber, ethers } from "ethers";
 import { useRouter } from "next/router";
 
 import ditoContractAbi from "../utils/ditoTokenContractAbi.json";
+// import communityContractAbi from "../utils/communityContractAbi.json";
 import communityContractAbi from "../utils/communityContractAbi.json";
 import { getUserJourney } from "../utils/userJourneyManager";
 
@@ -88,9 +89,10 @@ const Store = ({ children }) => {
               body: JSON.stringify({ publicAddress: metaData.publicAddress })
             });
             const DIDT = await magic.user.getIdToken({ email: metaData.email });
+            console.log(DIDT)
             setToken(DIDT);
             const response = await fetch(
-              `https://api.distributed.town/api/user`,
+              `${process.env.NEXT_PUBLIC_API_URL}/api/user`,
               {
                 method: "GET",
                 headers: {
@@ -128,10 +130,33 @@ const Store = ({ children }) => {
                 // Get user's Ethereum public address
                 const address = await signer.getAddress();
 
-                const communityContractABI = communityContractAbi;
-                const communityContractAddress = userInfo.communityContract
-                  ? userInfo.communityContract.address
-                  : "0x759A224E15B12357b4DB2d3aa20ef84aDAf28bE7";
+
+                const communityContractABI = NoGSNCommunityAbi.abi;
+
+                let communityContractAddress;
+
+                if (userInfo.communityContract)
+                  communityContractAddress = userInfo.communityContract.address;
+                else {
+                  const getCommRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/community/${userInfo.communityID}`,
+                    {
+                      method: "GET",
+                      headers: {
+                        Authorization: `Bearer ${DIDT}`,
+                      },
+                    }
+                  );
+                  const communityInfo = await getCommRes.json();
+
+                  const [
+                    { address: communityAddress },
+                  ] = communityInfo.addresses.filter(
+                    ({ blockchain }) => blockchain === "ETH"
+                  );
+                  communityContractAddress = communityAddress;
+                }
+
+
                 const communityContract = new ethers.Contract(
                   communityContractAddress,
                   communityContractABI,
@@ -203,8 +228,8 @@ const Store = ({ children }) => {
               {!isLoading ? (
                 <div className="flex">{children}</div>
               ) : (
-                <div>Loading...</div>
-              )}
+                  <div>Loading...</div>
+                )}
             </TokenContext.Provider>
           </UserInfoContext.Provider>
         </LoadingContext.Provider>

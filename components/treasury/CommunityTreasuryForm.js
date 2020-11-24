@@ -1,4 +1,8 @@
-const CommunityTreasuryForm = ({ register, errors, clearErrors }) => {
+import { useState } from "react"
+
+const CommunityTreasuryForm = ({ register, errors, clearErrors, apy }) => {
+    const [returns, setReturns] = useState(0)
+
     return (
         <div className="flex flex-col border-2 border-denim px-8 py-4 mt-8">
             <h1 class="flex font-bold underline justify-center">
@@ -34,7 +38,7 @@ const CommunityTreasuryForm = ({ register, errors, clearErrors }) => {
                         <div
                             id="bar"
                             className="font-bold text-white pr-2 text-right transition-all ease-out duration-1000 h-full bg-denim relative w-24"
-                        >24%
+                        >{Math.round((apy + Number.EPSILON) * 1000) / 1000}%
                         </div>
                     </div>
                     <p className="text-sm text-dove-gray">
@@ -53,6 +57,7 @@ const CommunityTreasuryForm = ({ register, errors, clearErrors }) => {
                         name="amount"
                         min="1"
                         ref={register({ required: true })}
+                        onChange={e => { setReturns(e.target.value * (apy / 100)) }}
                     />
                     <p className="text-right text-sm">DAI/USDC</p>
                     {errors.amount && <p className="text-red-600">A value to stake is required</p>}
@@ -72,9 +77,9 @@ const CommunityTreasuryForm = ({ register, errors, clearErrors }) => {
                         <div className="w-full h-full bg-white absolute"></div>
                         <div
                             id="bar"
-                            className="font-bold text-white pr-2 text-right transition-all ease-out duration-1000 h-full bg-denim relative w-16"
+                            className="font-bold text-white pr-2 text-right transition-all ease-out duration-1000 h-full bg-denim relative w-48"
                         >
-                            $17.15
+                            ${Math.round((returns + Number.EPSILON) * 100) / 100}
                         </div>
                     </div>
                     <p className="text-left text-sm  text-dove-gray">
