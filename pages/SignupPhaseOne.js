@@ -15,7 +15,7 @@ import NicknameSelection from "../components/NicknameSelection";
 import { getUserJourney, setUserJourney } from "../utils/userJourneyManager";
 import { ethers } from "ethers";
 import communitiesABI from "../utils/communitiesRegistryAbi.json";
-import contractABI from "../utils/communitiesRegistryAbi.json";
+import contractABI from "../utils/communityContractAbi.json";
 
 function SignupPhaseOne(props) {
   const [userInfo = { skills: [] }, setUserInfo] = useContext(UserInfoContext);
@@ -63,9 +63,7 @@ function SignupPhaseOne(props) {
           return { ...newSkill };
         }
 
-        return typeof skill === "string"
-          ? { skill, selected: false }
-          : { ...skill, selected: false };
+        return typeof skill === "string" ? { skill } : { ...skill };
       });
 
     const copySkills = category =>
@@ -211,10 +209,13 @@ function SignupPhaseOne(props) {
       // Wait for transaction to finish
       const communityAddress = await createTx.wait();
       console.log("communityAddress", communityAddress);
-
-      const addTx = await contract.addCommunity(communityAddress);
-      // Wait for transaction to finish
-      await addTx.wait();
+      const { events } = communityAddress;
+      const communityCreatedEvent = events.find(
+        e => e.event === "CommunityCreated"
+      );
+      if (!communityCreatedEvent) {
+        throw new Error("Something went wrong");
+      }
 
       setLoading({
         status: true,
@@ -230,7 +231,7 @@ function SignupPhaseOne(props) {
       const totalDitos = amountOfRedeemableDitos + baseDitos;
 
       const communitContract = new ethers.Contract(
-        communityAddress,
+        communityCreatedEvent.args._newCommunityAddress,
         contractABI,
         signer
       );
@@ -267,7 +268,7 @@ function SignupPhaseOne(props) {
         ...userInfo,
         ditoBalance: totalDitos,
         communityContract: {
-          name: communityName,
+          name: meta.communityName,
           address: communityAddress
         }
       });

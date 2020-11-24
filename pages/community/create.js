@@ -182,7 +182,7 @@ function CommunityCreate() {
     >
       <div className="flex flex-wrap justify-between h-full w-full">
         <div
-          className="flex w-1/2 justify-center items-center space-y-8 p-8 flex-grow-0 h-full"
+          className="flex w-1/2 justify-center items-center space-y-8 p-8 flex-grow-0 h-full overflow-auto"
           style={{ backdropFilter: "blur(5px)" }}
         >
           <NicknameSelection
