@@ -63,9 +63,7 @@ function SignupPhaseOne(props) {
           return { ...newSkill };
         }
 
-        return typeof skill === "string"
-          ? { skill, selected: false }
-          : { ...skill, selected: false };
+        return typeof skill === "string" ? { skill } : { ...skill };
       });
 
     const copySkills = category =>
