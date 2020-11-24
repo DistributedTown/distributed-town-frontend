@@ -17,7 +17,7 @@ import NoGSNCommunityAbi from "../../utils/NoGSNCommunity.json";
 
 import { Router, useRouter } from "next/router";
 function CommunityTreasury() {
-    // const [userInfo, setUserInfo] = useContext(UserInfoContext);
+    const [userInfo, setUserInfo] = useContext(UserInfoContext);
     const [magic] = useContext(MagicContext);
     // const [magic, setMagic] = useState()
 
@@ -30,6 +30,7 @@ function CommunityTreasury() {
     const [liquidityPoolBalance, setLiquidityPoolBalance] = useState(0);
     const [liquidityPoolAPY, setLiquidityPoolAPY] = useState(0);
     const [amountToInvest, setAmountToInvest] = useState(0);
+    const [availableDAI, setAvailableDAI] = useState()
 
 
 
@@ -47,62 +48,38 @@ function CommunityTreasury() {
         (async () => {
             await getCommunityInfo();
         })();
+        (async () => {
+            await getBalance();
+        })();
     }, []);
 
     async function deposit(currency, amount) {
         const provider = new ethers.providers.Web3Provider(magic.rpcProvider);
-
-
         try {
             const signer = provider.getSigner();
-            const address = await signer.getAddress();
-
-            // const contractAddress = userInfo.communityContract.address;
-            const contractAddress = '0xe21A399D47B630eF41Bd3e7874CbA468DDFd38f9'
+            const contractAddress = userInfo.communityContract.address;
             const contractABI = NoGSNCommunityAbi.abi;
             const contract = new ethers.Contract(
                 contractAddress,
                 contractABI,
-                provider
+                signer
             );
-
-            // const daiToken = new ethers.Contract(DAI_ADDRESS, ERC20TransferABI, provider)
-
-            // console.log('the address', address)
-
-            // const bal = await daiToken.balanceOf(address)
-            // console.log('bal', bal)
-
-
-            const currencies = await contract.depositableCurrencies.length
-
-            console.log(currencies)
-
-
-            const contractWithSigner = contract.connect(signer)
-
-            const dai = ethers.utils.parseUnits("1.0", 18);
-            console.log('thedai', dai)
-            console.log(ethers.utils.id("USDC"))
-            depositTx = contractWithSigner.deposit(dai, "DAI", ethers.utils.id(""))
-            // console.log(depositTx)
+            const depositTx = await contract.deposit(amount, currency, ethers.utils.id(""))
+            const receipt = await depositTx.wait();
+            console.log(receipt)
+            return;
         } catch (err) {
             console.error(err);
         }
-
-
     }
 
     async function getCommunityInfo() {
         const provider = new ethers.providers.Web3Provider(magic.rpcProvider);
         try {
             const signer = provider.getSigner();
-
-            // Get user's Ethereum public address
             const address = await signer.getAddress();
-            // console.log(userInfo)
-            const contractAddress = '0x1347dBB8803aFa04Abe7D3a736A006502Bee2438'
-            // const contractAddress = userInfo.communityContract.address;
+            console.log('myaddress', address)
+            const contractAddress = userInfo.communityContract.address;
             const contractABI = NoGSNCommunityAbi.abi;
             const contract = new ethers.Contract(
                 contractAddress,
@@ -110,17 +87,16 @@ function CommunityTreasury() {
                 provider
             );
 
+            const currencies = await contract.depositableCurrencies.length
+
+            console.log('currencies', currencies)
+
+
             // Send transaction to smart contract to update message and wait to finish
             const [nUsers, investedBalanceInfo] = await Promise.all([
                 contract.numberOfMembers(),
                 contract.getInvestedBalanceInfo()
             ]);
-
-            // const nUsers = await contract.numberOfMembers();
-            // console.log(BigNumber.from(nUsers).toNumber())
-
-            // const investedBalanceInfo = await contract.getInvestedBalanceInfo()
-            // console.log(investedBalanceInfo)
 
             let investedTokenAPY = BigNumber.from(
                 investedBalanceInfo.investedTokenAPY
@@ -134,26 +110,84 @@ function CommunityTreasury() {
                 )}.${investedTokenAPY.substring(investedTokenAPY.length - 26)}`
             );
 
-            // console.log(
-            //     BigNumber.from(nUsers).toNumber(),
-            //     BigNumber.from(investedBalanceInfo.investedBalance).toNumber(),
-            //     investedTokenAPY
-            // );
             console.log(BigNumber.from(nUsers).toNumber(), '1')
-            console.log(BigNumber.from(investedBalanceInfo.investedBalance).toNumber(), '2')
+            console.log(ethers.utils.formatUnits(investedBalanceInfo.investedBalance, 18), '2')
             console.log(investedTokenAPY, '3')
 
             setLiquidityPoolAPY(investedTokenAPY)
-
             setNumOfMembers(BigNumber.from(nUsers).toNumber());
             setLiquidityPoolBalance(
-                BigNumber.from(investedBalanceInfo.investedBalance).toNumber()
+                Math.round((Number(ethers.utils.formatUnits(investedBalanceInfo.investedBalance, 18)) + Number.EPSILON) * 100) / 100
             );
         } catch (err) {
             console.error(err);
         }
     }
-    const onSubmit = (data) => {
+
+    const getBalance = async () => {
+        const provider = new ethers.providers.Web3Provider(magic.rpcProvider);
+        try {
+            const signer = provider.getSigner();
+            const address = await signer.getAddress();
+            const mockDAIAbi = '[{ "anonymous": false, "inputs": [{ "indexed": true, "internalType": "address", "name": "owner", "type": "address" }, { "indexed": true, "internalType": "address", "name": "spender", "type": "address" }, { "indexed": false, "internalType": "uint256", "name": "value", "type": "uint256" }], "name": "Approval", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": true, "internalType": "address", "name": "from", "type": "address" }, { "indexed": true, "internalType": "address", "name": "to", "type": "address" }, { "indexed": false, "internalType": "uint256", "name": "value", "type": "uint256" }], "name": "Transfer", "type": "event" }, { "constant": true, "inputs": [{ "internalType": "address", "name": "owner", "type": "address" }, { "internalType": "address", "name": "spender", "type": "address" }], "name": "allowance", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": false, "inputs": [{ "internalType": "address", "name": "spender", "type": "address" }, { "internalType": "uint256", "name": "value", "type": "uint256" }], "name": "approve", "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": true, "inputs": [{ "internalType": "address", "name": "account", "type": "address" }], "name": "balanceOf", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [], "name": "decimals", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": false, "inputs": [{ "internalType": "address", "name": "spender", "type": "address" }, { "internalType": "uint256", "name": "subtractedValue", "type": "uint256" }], "name": "decreaseAllowance", "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": false, "inputs": [{ "internalType": "address", "name": "spender", "type": "address" }, { "internalType": "uint256", "name": "addedValue", "type": "uint256" }], "name": "increaseAllowance", "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": false, "inputs": [{ "internalType": "uint256", "name": "value", "type": "uint256" }], "name": "mint", "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": true, "inputs": [], "name": "name", "outputs": [{ "internalType": "string", "name": "", "type": "string" }], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [], "name": "symbol", "outputs": [{ "internalType": "string", "name": "", "type": "string" }], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [], "name": "totalSupply", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": false, "inputs": [{ "internalType": "address", "name": "recipient", "type": "address" }, { "internalType": "uint256", "name": "amount", "type": "uint256" }], "name": "transfer", "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": false, "inputs": [{ "internalType": "address", "name": "sender", "type": "address" }, { "internalType": "address", "name": "recipient", "type": "address" }, { "internalType": "uint256", "name": "amount", "type": "uint256" }], "name": "transferFrom", "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }], "payable": false, "stateMutability": "nonpayable", "type": "function" }]'
+            const contractAddress = '0xf80A32A835F79D7787E8a8ee5721D0fEaFd78108'
+            const contract = new ethers.Contract(
+                contractAddress,
+                mockDAIAbi,
+                signer
+            )
+            const bal = await contract.balanceOf(address)
+            console.log(ethers.utils.formatUnits(bal, 18))
+            setAvailableDAI(ethers.utils.formatUnits(bal, 18))
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
+    const approveStaking = async () => {
+        const provider = new ethers.providers.Web3Provider(magic.rpcProvider);
+        try {
+            const signer = provider.getSigner();
+            const mockDAIAbi = '[{ "anonymous": false, "inputs": [{ "indexed": true, "internalType": "address", "name": "owner", "type": "address" }, { "indexed": true, "internalType": "address", "name": "spender", "type": "address" }, { "indexed": false, "internalType": "uint256", "name": "value", "type": "uint256" }], "name": "Approval", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": true, "internalType": "address", "name": "from", "type": "address" }, { "indexed": true, "internalType": "address", "name": "to", "type": "address" }, { "indexed": false, "internalType": "uint256", "name": "value", "type": "uint256" }], "name": "Transfer", "type": "event" }, { "constant": true, "inputs": [{ "internalType": "address", "name": "owner", "type": "address" }, { "internalType": "address", "name": "spender", "type": "address" }], "name": "allowance", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": false, "inputs": [{ "internalType": "address", "name": "spender", "type": "address" }, { "internalType": "uint256", "name": "value", "type": "uint256" }], "name": "approve", "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": true, "inputs": [{ "internalType": "address", "name": "account", "type": "address" }], "name": "balanceOf", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [], "name": "decimals", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": false, "inputs": [{ "internalType": "address", "name": "spender", "type": "address" }, { "internalType": "uint256", "name": "subtractedValue", "type": "uint256" }], "name": "decreaseAllowance", "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": false, "inputs": [{ "internalType": "address", "name": "spender", "type": "address" }, { "internalType": "uint256", "name": "addedValue", "type": "uint256" }], "name": "increaseAllowance", "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": false, "inputs": [{ "internalType": "uint256", "name": "value", "type": "uint256" }], "name": "mint", "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": true, "inputs": [], "name": "name", "outputs": [{ "internalType": "string", "name": "", "type": "string" }], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [], "name": "symbol", "outputs": [{ "internalType": "string", "name": "", "type": "string" }], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [], "name": "totalSupply", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": false, "inputs": [{ "internalType": "address", "name": "recipient", "type": "address" }, { "internalType": "uint256", "name": "amount", "type": "uint256" }], "name": "transfer", "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": false, "inputs": [{ "internalType": "address", "name": "sender", "type": "address" }, { "internalType": "address", "name": "recipient", "type": "address" }, { "internalType": "uint256", "name": "amount", "type": "uint256" }], "name": "transferFrom", "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }], "payable": false, "stateMutability": "nonpayable", "type": "function" }]'
+            const contractAddress = '0xf80A32A835F79D7787E8a8ee5721D0fEaFd78108'
+            const communityContractAddress = userInfo.communityContract.address;
+
+            const contract = new ethers.Contract(
+                contractAddress,
+                mockDAIAbi,
+                signer
+            )
+            const tx = await contract.approve(communityContractAddress, ethers.utils.parseUnits("10000", 18));
+            const receipt = await tx.wait();
+            console.log(receipt)
+            return
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
+    const invest = async (currency, amount) => {
+        const provider = new ethers.providers.Web3Provider(magic.rpcProvider);
+
+        try {
+            const signer = provider.getSigner();
+            const contractAddress = userInfo.communityContract.address;
+            const contractABI = NoGSNCommunityAbi.abi;
+            const contract = new ethers.Contract(
+                contractAddress,
+                contractABI,
+                signer
+            );
+            const investTx = await contract.invest(amount, currency);
+            const receipt = await investTx.wait();
+            console.log(receipt)
+            if (receipt) console.log('invested')
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
+    const onSubmit = async (data) => {
         if (data["DAI"] === false && data["USDC"] === false) {
             setError("currency", { type: "manual", message: "You need to pick one currency to stake" })
             return;
@@ -163,7 +197,14 @@ function CommunityTreasury() {
             return;
         }
         console.log(data)
-        deposit('DAI', 1)
+        for (const property in data) {
+            if (data[property] === true) {
+                await approveStaking()
+                await deposit(property, Number(data.amount))
+                invest(property, Number(data.amount))
+            }
+        }
+
     }
 
     return (
@@ -186,7 +227,7 @@ function CommunityTreasury() {
                             Community Treasury
                         </h1>
                         <form className="z-0 lg:mb-20">
-                            <CommunityTreasuryForm register={register} errors={errors} clearErrors={clearErrors} apy={liquidityPoolAPY} />
+                            <CommunityTreasuryForm register={register} errors={errors} clearErrors={clearErrors} apy={liquidityPoolAPY} availableDAI={availableDAI} />
                         </form>
                     </div>
                     <CheckupCard numOfMembers={numOfMembers} liquidityPoolBalance={liquidityPoolBalance} />

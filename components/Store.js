@@ -6,7 +6,7 @@ import { useRouter } from "next/router";
 
 import ditoContractAbi from "../utils/ditoTokenContractAbi.json";
 // import communityContractAbi from "../utils/communityContractAbi.json";
-import communityContractAbi from "../utils/communityContractAbi.json";
+import NoGSNCommunityAbi from "../utils/NoGSNCommunity.json";
 import { getUserJourney } from "../utils/userJourneyManager";
 
 /* initializing context API values */

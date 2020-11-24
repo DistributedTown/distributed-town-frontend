@@ -1,8 +1,7 @@
 import { useState } from "react"
 
-const CommunityTreasuryForm = ({ register, errors, clearErrors, apy }) => {
+const CommunityTreasuryForm = ({ register, errors, clearErrors, apy, availableDAI }) => {
     const [returns, setReturns] = useState(0)
-
     return (
         <div className="flex flex-col border-2 border-denim px-8 py-4 mt-8">
             <h1 class="flex font-bold underline justify-center">
@@ -64,6 +63,7 @@ const CommunityTreasuryForm = ({ register, errors, clearErrors, apy }) => {
                     <p className="text-left text-dove-gray text-sm">
                         The amount of tokens you stake for your community
                     </p>
+                    {availableDAI && <p>Available DAI balance: {availableDAI}</p>}
                 </div>
 
                 <div className="flex flex-col w-1/2 p-3">
