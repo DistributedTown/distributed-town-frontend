@@ -79,7 +79,7 @@ function Gigs() {
                             <h2>Loading Open Gigs...</h2>
                         </div>
                     ) : openGigs.length === 0 ? (
-                        () => <h2>There are no Open Gigs.</h2>
+                        <h2>There are no Open Gigs.</h2>
                     ) : (openGigs.map((gig) => {
                         return (
                             <GigCard key={gig._id} gig={gig} takeGig={takeGig} />

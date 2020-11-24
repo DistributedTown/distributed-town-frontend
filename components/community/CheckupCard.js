@@ -5,7 +5,7 @@ export default function CheckupCard({ numOfMembers, liquidityPoolBalance }) {
     <div style={{
       backgroundImage: `url(${bgImage.src})`,
     }} className="flex w-2/5 justify-center items-center">
-      <div className="flex flex-col border-2 border-blue-600">
+      <div className="flex flex-col border-2 border-blue-600 w-7/12">
         <div className="bg-blue-600 p-4">
           {/* <h2>{typeof userInfo.communityID !== undefined ? userInfo.communityID : ''}</h2> */}
           <h2>{""}</h2>

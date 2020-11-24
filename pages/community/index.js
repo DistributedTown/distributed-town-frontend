@@ -13,55 +13,54 @@ import Layout from "../../components/Layout";
 import Button from "../../components/Button";
 import CheckupCard from "../../components/community/CheckupCard";
 import communityContractAbi from "../../utils/communityContractAbi.json";
+import NoGSNCommunityAbi from "../../utils/NoGSNCommunity.json";
+
 import { Router, useRouter } from "next/router";
 
 function CommunityDashboard() {
-  // const [userInfo, setUserInfo] = useContext(UserInfoContext);
-  // const [loggedIn, setLoggedIn] = useContext(LoggedInContext);
-  // const [magic] = useContext(MagicContext);
-  // const [token, setToken] = useContext(TokenContext);
-  const [numOfMembers, setNumOfMembers] = useState(-1);
-  const [liquidityPoolBalance, setLiquidityPoolBalance] = useState(-1);
+  const [userInfo, setUserInfo] = useContext(UserInfoContext);
+  const [magic] = useContext(MagicContext);
+  const [token, setToken] = useContext(TokenContext);
+  const [numOfMembers, setNumOfMembers] = useState();
+  const [liquidityPoolBalance, setLiquidityPoolBalance] = useState();
+
 
   async function getCommunityInfo() {
-    // const provider = new ethers.providers.Web3Provider(magic.rpcProvider);
-
+    const provider = new ethers.providers.Web3Provider(magic.rpcProvider);
     try {
-      const signer = provider.getSigner();
-
-      // Get user's Ethereum public address
-      const address = await signer.getAddress();
-
-      const contractABI = communityContractAbi;
-      const contractAddress =
-        userInfo.communityContract.address ||
-        "0x790697f595Aa4F9294566be0d262f71b44b5039c";
+      const contractAddress = userInfo.communityContract.address;
+      const contractABI = NoGSNCommunityAbi.abi;
       const contract = new ethers.Contract(
         contractAddress,
         contractABI,
-        signer
+        provider
       );
 
       // Send transaction to smart contract to update message and wait to finish
-      const [nUsers, investedBalance] = await Promise.all([
+      const [nUsers, investedBalanceInfo] = await Promise.all([
         contract.numberOfMembers(),
-        contract.getInvestedBalance()
+        contract.getInvestedBalanceInfo()
       ]);
 
+
+      console.log(BigNumber.from(nUsers).toNumber(), '1')
+      console.log(ethers.utils.formatUnits(investedBalanceInfo.investedBalance, 18), '2')
+
       setNumOfMembers(BigNumber.from(nUsers).toNumber());
-      setLiquidityPoolBalance(BigNumber.from(investedBalance).toNumber());
+      setLiquidityPoolBalance(
+        Math.round((Number(ethers.utils.formatUnits(investedBalanceInfo.investedBalance, 18)) + Number.EPSILON) * 100) / 100
+      );
     } catch (err) {
       console.error(err);
     }
   }
+
 
   useEffect(() => {
     (async () => {
       await getCommunityInfo();
     })();
   }, []);
-
-  const router = useRouter();
 
   return (
     <Layout
@@ -93,7 +92,7 @@ function CommunityDashboard() {
               </Link>
             </div>
           </div>
-          <CheckupCard />
+          <CheckupCard numOfMembers={numOfMembers} liquidityPoolBalance={liquidityPoolBalance} />
         </div>
         <div className="flex justify-center mt-3">
           <Link href="/skillwallet">

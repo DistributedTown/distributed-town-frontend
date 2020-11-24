@@ -4,7 +4,7 @@ const CommunityTreasuryForm = ({ register, errors, clearErrors, apy, availableDA
     const [returns, setReturns] = useState(0)
     return (
         <div className="flex flex-col border-2 border-denim px-8 py-4 mt-8">
-            <h1 class="flex font-bold underline justify-center">
+            <h1 className="flex font-bold underline justify-center">
                 Add funds to Treasury
             </h1>
             <div className="flex">

@@ -6,7 +6,7 @@ import {
 } from "../../../components/Store";
 import CreateProjectForm from "../../../components/project/CreateProjectForm"
 
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 
 import { useRouter } from "next/router";
@@ -16,6 +16,7 @@ function CreateProject() {
     const [token, setToken] = useContext(TokenContext);
     const [userInfo, setUserInfo] = useContext(UserInfoContext);
     const { register, handleSubmit, errors } = useForm();
+    const [communityCategory, setCommunityCategory] = useState()
     const router = useRouter();
 
     // async function postNewProject(projectTitle, projectDescription, projectSkills, fundsNeeded) {
@@ -55,6 +56,26 @@ function CreateProject() {
         router.push("/community/projects");
     };
 
+    const getCommunityCategory = async () => {
+        const getCommRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/community/${userInfo.communityID}`,
+            {
+                method: "GET",
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            }
+        );
+        const communityInfo = await getCommRes.json();
+        console.log('comm', communityInfo)
+        setCommunityCategory(communityInfo.category)
+    }
+
+    useEffect(() => {
+        (async () => {
+            await getCommunityCategory();
+        })();
+    }, []);
+
 
     return (
 
@@ -72,7 +93,7 @@ function CreateProject() {
         >
             <div className="w-full h-screen p-8 space-y-3">
                 <h1 className="underline text-black text-4xl">Create New Project</h1>
-                <CreateProjectForm register={register} handleSubmit={handleSubmit} onSubmit={onSubmit} errors={errors} />
+                <CreateProjectForm register={register} handleSubmit={handleSubmit} onSubmit={onSubmit} errors={errors} communityCategory={communityCategory} />
             </div>
         </Layout>
 
