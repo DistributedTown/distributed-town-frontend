@@ -2,8 +2,8 @@ import useSWR from 'swr'
 
 const fetcher = (...args) => fetch(...args).then(res => res.json())
 
-const CreateGigForm = ({ register, handleSubmit, onSubmit, errors }) => {
-    const { data, error } = useSWR(`${process.env.NEXT_PUBLIC_API_URL}/api/skill`, fetcher)
+const CreateGigForm = ({ register, handleSubmit, onSubmit, errors, communityCategory }) => {
+    const { data, error } = useSWR(`${process.env.NEXT_PUBLIC_API_URL}/api/skill?skill=${communityCategory}`, fetcher)
 
     return (
         <div className="flex flex-col border-l-2 border-denim p-2 mt-6">

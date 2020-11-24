@@ -6,7 +6,7 @@ import {
 } from "../../../components/Store";
 import CreateGigForm from "../../../components/gig/CreateGigForm"
 
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 
 import { useRouter } from "next/router";
@@ -16,6 +16,7 @@ function CreateGig() {
     const [token, setToken] = useContext(TokenContext);
     const [userInfo, setUserInfo] = useContext(UserInfoContext);
     const { register, handleSubmit, errors } = useForm();
+    const [communityCategory, setCommunityCategory] = useState()
     const router = useRouter();
 
     async function postNewGig(gigTitle, gigDescription, gigSkills, creditsOffered) {
@@ -68,6 +69,26 @@ function CreateGig() {
         postNewGig(gigTitle, gigDescription, Object.keys(skills), creditsOffered)
     };
 
+    const getCommunityCategory = async () => {
+        const getCommRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/community/${userInfo.communityID}`,
+            {
+                method: "GET",
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            }
+        );
+        const communityInfo = await getCommRes.json();
+        console.log('comm', communityInfo)
+        setCommunityCategory(communityInfo.category)
+    }
+
+    useEffect(() => {
+        (async () => {
+            await getCommunityCategory();
+        })();
+    }, []);
+
 
     return (
 
@@ -85,7 +106,7 @@ function CreateGig() {
         >
             <div className="w-full h-screen p-8">
                 <h1 className="underline text-black text-4xl">Create New Gig</h1>
-                <CreateGigForm register={register} handleSubmit={handleSubmit} onSubmit={onSubmit} errors={errors} />
+                <CreateGigForm register={register} handleSubmit={handleSubmit} onSubmit={onSubmit} errors={errors} communityCategory={communityCategory} />
             </div>
         </Layout>
 
