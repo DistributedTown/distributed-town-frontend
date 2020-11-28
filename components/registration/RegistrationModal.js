@@ -12,7 +12,12 @@ const RegistrationModal = ({
   showRegisterModal,
   getCommunityBgImg
 }) => {
-  const { journey } = getUserJourney();
+  const userJourney = getUserJourney();
+  let journey = null;
+  if (userJourney) {
+    journey = userJourney.journey;
+  }
+
   const getSelectedSkillName = selectedPill => {
     return typeof (selectedPill !== "undefined") && selectedPill >= 0
       ? ` ${skills[selectedPill]}`

@@ -286,23 +286,23 @@ function SignupPhaseOne(props) {
     }
   };
 
+  const submit = () => {
+    const { journey } = getUserJourney();
+    if (!userInfo.username) {
+      alert("Please choose a nickname");
+      return;
+    }
+    if (journey === "community") {
+      createCommunity();
+    } else {
+      router.push("/SignupPhaseTwo");
+    }
+  };
+
   const router = useRouter();
   useEffect(() => {
     if (userInfo.skills.length > 0) {
-      const { journey } = getUserJourney();
-      if (journey === "community") {
-        if (!userInfo.username) {
-          alert("Please choose a nickname");
-          setUserInfo({
-            ...userInfo,
-            skills: []
-          });
-          return;
-        }
-        createCommunity();
-      } else {
-        router.push("/SignupPhaseTwo");
-      }
+      submit();
     }
   }, [userInfo.skills.length]);
 
@@ -334,7 +334,7 @@ function SignupPhaseOne(props) {
             userInfo={userInfo}
           />
         </div>
-        <div className="flex flex-col justify-center align-center text-center space-y-1 p-8 flex-grow w-1/2 overflow-auto h-full pb-24">
+        <div className="flex flex-col justify-center align-center text-center space-y-1 p-8 flex-grow w-1/2 overflow-auto h-full py-24">
           <h1 className="font-bold text-xl">Tell us about you!</h1>
           <p>
             Pick your Skills (<span className="underline">between 1 and 3</span>
@@ -365,7 +365,14 @@ function SignupPhaseOne(props) {
           </div>
         </div>
         <div className="flex justify-center items-center w-full absolute bottom-0 p-4 bg-white">
-          <Button className="font-black" onClick={() => setUserSkills()}>
+          <Button
+            className="font-black"
+            onClick={
+              userInfo.skills && userInfo.skills.length > 0
+                ? () => submit()
+                : () => setUserSkills()
+            }
+          >
             {journey === "community"
               ? "Next: Create and Join Community"
               : "Next: choose your first community!"}

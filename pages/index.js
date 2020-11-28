@@ -42,10 +42,13 @@ const Index = () => {
       const DIDT = await magic.auth.loginWithMagicLink({ email });
       setLoading(true);
       let user = await authenticateWithDb(DIDT);
+      setUserJourney({
+        journey: "login",
+        step: "login"
+      });
       if (user) {
         setToken(DIDT);
         setLoggedIn(user.email);
-        // setLoading(false);
       } else {
         throw new Error("Something went wrong, please try again!");
       }
@@ -86,7 +89,7 @@ const Index = () => {
           This is <span className="underline">your Community</span>
         </h1>
 
-        <div className="pt-8 pb-4 px-2 border-2 border-denim flex flex-col w-3/5">
+        <div className="pt-8 pb-4 px-2 border-2 border-denim flex flex-col md:w-4/5 xl:w-3/5">
           <div className="border-2 border-red p-1">
             <div className="border-2 border-denim p-4 text-center font-bold">
               <Link href="/community/create">

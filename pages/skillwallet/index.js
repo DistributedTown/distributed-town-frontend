@@ -10,7 +10,7 @@ import Link from "next/link";
 import { useContext, useState, useEffect } from "react";
 import { BigNumber, ethers } from "ethers";
 
-import { router, useRouter } from "next/router";
+import { useRouter } from "next/router";
 
 import Layout from "../../components/Layout";
 import ditoContractAbi from "../../utils/ditoTokenContractAbi.json";
@@ -23,7 +23,10 @@ function SkillWallet() {
   const [magic] = useContext(MagicContext);
   const [token, setToken] = useContext(TokenContext);
   const [pastGigs, setPastGigs] = useState([]);
-  const [ditoBalance, setDitoBalance] = useState(userInfo.ditoBalance || 0);
+  const [ditoBalance, setDitoBalance] = useState(
+    (userInfo && userInfo.ditoBalance) || 0
+  );
+  const router = useRouter();
 
   async function fetchOpenCloseGigs(authToken, isOpen) {
     try {
@@ -99,6 +102,7 @@ function SkillWallet() {
 
   if (!userInfo) {
     router.push("/");
+    return null;
   }
 
   return (

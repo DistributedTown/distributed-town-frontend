@@ -7,7 +7,7 @@ import { useRouter } from "next/router";
 import ditoContractAbi from "../utils/ditoTokenContractAbi.json";
 // import communityContractAbi from "../utils/communityContractAbi.json";
 import NoGSNCommunityAbi from "../utils/NoGSNCommunity.json";
-import { getUserJourney } from "../utils/userJourneyManager";
+import { getUserJourney, removeUserJourney } from "../utils/userJourneyManager";
 
 /* initializing context API values */
 export const MagicContext = createContext();
@@ -89,7 +89,7 @@ const Store = ({ children }) => {
               body: JSON.stringify({ publicAddress: metaData.publicAddress })
             });
             const DIDT = await magic.user.getIdToken({ email: metaData.email });
-            console.log(DIDT)
+            console.log(DIDT);
             setToken(DIDT);
             const response = await fetch(
               `${process.env.NEXT_PUBLIC_API_URL}/api/user`,
@@ -102,7 +102,12 @@ const Store = ({ children }) => {
             );
             const userInfoArray = await response.json();
             const userInfo = userInfoArray[0];
-            console.log(userInfo);
+
+            const userJourney = getUserJourney();
+            let journey = null;
+            if (userJourney) {
+              journey = userJourney.journey;
+            }
 
             if (
               !userInfo.skills ||
@@ -113,13 +118,17 @@ const Store = ({ children }) => {
                 DIDT,
                 skills: []
               });
-              // if (firstEffectRun) router.push("/community/join");
+              if (journey === "login") {
+                router.push("/community/join");
+              }
             } else if (!userInfo.communityID) {
               setUserInfo({
                 ...userInfo,
                 DIDT
               });
-              // if (firstEffectRun) router.push("/SignupPhaseTwo");
+              if (journey === "login") {
+                router.push("/SignupPhaseTwo");
+              }
             } else {
               const provider = new ethers.providers.Web3Provider(
                 magic.rpcProvider
@@ -130,7 +139,6 @@ const Store = ({ children }) => {
                 // Get user's Ethereum public address
                 const address = await signer.getAddress();
 
-
                 const communityContractABI = NoGSNCommunityAbi.abi;
 
                 let communityContractAddress;
@@ -138,24 +146,24 @@ const Store = ({ children }) => {
                 if (userInfo.communityContract)
                   communityContractAddress = userInfo.communityContract.address;
                 else {
-                  const getCommRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/community/${userInfo.communityID}`,
+                  const getCommRes = await fetch(
+                    `${process.env.NEXT_PUBLIC_API_URL}/api/community/${userInfo.communityID}`,
                     {
                       method: "GET",
                       headers: {
-                        Authorization: `Bearer ${DIDT}`,
-                      },
+                        Authorization: `Bearer ${DIDT}`
+                      }
                     }
                   );
                   const communityInfo = await getCommRes.json();
 
                   const [
-                    { address: communityAddress },
+                    { address: communityAddress }
                   ] = communityInfo.addresses.filter(
                     ({ blockchain }) => blockchain === "ETH"
                   );
                   communityContractAddress = communityAddress;
                 }
-
 
                 const communityContract = new ethers.Contract(
                   communityContractAddress,
@@ -186,11 +194,14 @@ const Store = ({ children }) => {
                   ditoBalance: ditoBalanceStr,
                   DIDT
                 });
-                // if (firstEffectRun) router.push("/skillwallet");
+                if (journey === "login" || !journey) {
+                  router.push("/skillwallet");
+                }
               } catch (error) {
                 console.log(error);
               }
             }
+            removeUserJourney();
           } else {
             const userJourney = getUserJourney();
             if (!userJourney) {
@@ -228,8 +239,8 @@ const Store = ({ children }) => {
               {!isLoading ? (
                 <div className="flex">{children}</div>
               ) : (
-                  <div>Loading...</div>
-                )}
+                <div>Loading...</div>
+              )}
             </TokenContext.Provider>
           </UserInfoContext.Provider>
         </LoadingContext.Provider>
