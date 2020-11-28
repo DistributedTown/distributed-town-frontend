@@ -127,7 +127,7 @@ function SignupPhaseTwo() {
   useEffect(() => {
     (async () => {
       try {
-        let communitiesToAdd = [];
+        let communitiesToAdd = new Map();
         for await (let { skill } of userInfo.skills) {
           let communities = await fetch(
             `${process.env.NEXT_PUBLIC_API_URL}/api/community?skill=${skill}`,
@@ -141,10 +141,17 @@ function SignupPhaseTwo() {
             return { ...community, selected: false };
           });
 
-          communitiesToAdd.push(...communities);
+          console.log(communities);
+
+          communities.forEach(community => {
+            if (!communitiesToAdd.has(community._id)) {
+              communitiesToAdd.set(community._id, community);
+            }
+          });
+          console.log(communitiesToAdd);
         }
 
-        setCommunities(communitiesToAdd);
+        setCommunities(Array.from(communitiesToAdd.values()));
       } catch (err) {
         console.error(err.message);
       }

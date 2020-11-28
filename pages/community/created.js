@@ -28,7 +28,11 @@ function Created() {
   const router = useRouter();
 
   useEffect(() => {
-    const { meta } = getUserJourney();
+    const userJourney = getUserJourney();
+    let meta = {};
+    if (userJourney) {
+      meta = userJourney.meta;
+    }
     if (meta.communityName) {
       setCommunityName(meta.communityName);
     }
@@ -81,6 +85,13 @@ function Created() {
         })
       });
 
+      const metaData = await magic.user.getMetadata();
+      console.log(metaData.publicAddress);
+      await fetch("/api/getFunded", {
+        method: "POST",
+        body: JSON.stringify({ publicAddress: metaData.publicAddress })
+      });
+
       setLoggedIn(true);
 
       const userData = await fetchUserData(DIDT);
@@ -124,8 +135,11 @@ function Created() {
     setLoading(false);
   };
 
-  const { meta } = getUserJourney();
-  console.log(meta);
+  const userJourney = getUserJourney();
+  let meta = {};
+  if (userJourney) {
+    meta = userJourney.meta;
+  }
 
   return (
     <Layout

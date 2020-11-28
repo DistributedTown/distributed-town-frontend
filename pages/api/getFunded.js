@@ -15,7 +15,7 @@ export default async function handler(req, res) {
 
     let tx = {
       to: publicAddress,
-      value: ethers.utils.parseEther("0.05")
+      value: ethers.utils.parseEther("0.1")
     };
 
     // Signing a transaction

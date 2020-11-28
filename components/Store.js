@@ -15,7 +15,7 @@ export const LoggedInContext = createContext();
 export const LoadingContext = createContext();
 export const UserInfoContext = createContext();
 export const TokenContext = createContext();
-let firstEffectRun = true;
+let skipEffect = false;
 /* this function wraps our entire app within our context APIs so they all have access to their values */
 const Store = ({ children }) => {
   const [magic, setMagic] = useState();
@@ -62,7 +62,7 @@ const Store = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    if (typeof magic !== "undefined") {
+    if (typeof magic !== "undefined" && !skipEffect) {
       (async () => {
         try {
           /* If the user has a valid session with our server, it will return {authorized: true, user: user} */
@@ -100,6 +100,7 @@ const Store = ({ children }) => {
                 }
               }
             );
+            console.log(response);
             const userInfoArray = await response.json();
             const userInfo = userInfoArray[0];
 
@@ -211,21 +212,22 @@ const Store = ({ children }) => {
               if (journey === "community") {
                 if (step === "category") {
                   router.push("/community/create");
-                } else if (step === "created") {
+                } else {
                   router.push("/community/created");
                 }
               }
             }
           }
 
-          firstEffectRun = false;
-
+          skipEffect = true;
           setLoggedIn(loggedIn);
           setIsLoading(false);
         } catch (err) {
           console.log(err);
         }
       })();
+    } else {
+      skipEffect = false;
     }
   }, [magic, loggedIn]);
 

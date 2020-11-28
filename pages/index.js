@@ -48,7 +48,7 @@ const Index = () => {
       });
       if (user) {
         setToken(DIDT);
-        setLoggedIn(user.email);
+        setLoggedIn(true);
       } else {
         throw new Error("Something went wrong, please try again!");
       }

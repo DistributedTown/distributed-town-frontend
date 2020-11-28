@@ -48,6 +48,7 @@ function SignupCompleted() {
 
         const ditoContractABI = ditoContractAbi;
         const ditoContractAddress = await communityContract.tokens();
+        console.log(ditoContractAddress);
         const ditoContract = new ethers.Contract(
           ditoContractAddress,
           ditoContractABI,
@@ -80,9 +81,9 @@ function SignupCompleted() {
         `${process.env.NEXT_PUBLIC_API_URL}/api/user/invite`,
         {
           method: "GET",
-          headers: new Headers({
+          headers: {
             Authorization: "Bearer " + token
-          })
+          }
         }
       );
       const link = await res.json();

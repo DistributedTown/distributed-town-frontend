@@ -12,7 +12,11 @@ import SkillsCard from "../components/SkillsCard";
 import Button from "../components/Button";
 import { useRouter } from "next/router";
 import NicknameSelection from "../components/NicknameSelection";
-import { getUserJourney, setUserJourney } from "../utils/userJourneyManager";
+import {
+  getUserJourney,
+  setUserJourney,
+  removeUserJourney
+} from "../utils/userJourneyManager";
 import { ethers } from "ethers";
 import communitiesABI from "../utils/communitiesRegistryAbi.json";
 import contractABI from "../utils/communityContractAbi.json";
@@ -21,6 +25,7 @@ function SignupPhaseOne(props) {
   const [userInfo = { skills: [] }, setUserInfo] = useContext(UserInfoContext);
   const [magic] = useContext(MagicContext);
   const [skillTree, setSkillTree] = useState([]);
+  const [token] = useContext(TokenContext);
   const [loading, setLoading] = useState({
     status: false,
     message: null
@@ -217,6 +222,8 @@ function SignupPhaseOne(props) {
         throw new Error("Something went wrong");
       }
 
+      console.log(communityCreatedEvent);
+
       setLoading({
         status: true,
         message: "Joining community..."
@@ -231,7 +238,7 @@ function SignupPhaseOne(props) {
       const totalDitos = amountOfRedeemableDitos + baseDitos;
 
       const communitContract = new ethers.Contract(
-        communityCreatedEvent.args._newCommunityAddress,
+        communityCreatedEvent.args[0],
         contractABI,
         signer
       );
@@ -246,7 +253,7 @@ function SignupPhaseOne(props) {
         addresses: [
           {
             blockchain: "ETH",
-            address: communityAddress
+            address: communityCreatedEvent.args[0]
           }
         ],
         name: meta.communityName,
@@ -257,7 +264,11 @@ function SignupPhaseOne(props) {
       };
       await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/community`, {
         method: "POST",
-        body: JSON.stringify(payload)
+        body: JSON.stringify(payload),
+        headers: {
+          "content-type": "application/json",
+          Authorization: `Bearer ${token}`
+        }
       });
       setLoading({
         status: false,
@@ -269,13 +280,10 @@ function SignupPhaseOne(props) {
         ditoBalance: totalDitos,
         communityContract: {
           name: meta.communityName,
-          address: communityAddress
+          address: communityCreatedEvent.args[0]
         }
       });
-      // set the step to finished
-      setUserJourney({
-        step: "finish"
-      });
+      removeUserJourney();
       router.push("/SignupCompleted");
     } catch (error) {
       console.log(error);
@@ -306,7 +314,11 @@ function SignupPhaseOne(props) {
     }
   }, [userInfo.skills.length]);
 
-  const { journey } = getUserJourney();
+  let journey = null;
+  const userJourney = getUserJourney();
+  if (userJourney) {
+    journey = userJourney.journey;
+  }
 
   return (
     <Layout
