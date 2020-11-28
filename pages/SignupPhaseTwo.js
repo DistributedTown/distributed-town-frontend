@@ -209,6 +209,13 @@ function SignupPhaseTwo() {
                 : "Join and get your credits!"}
             </button>
           </div>
+          {isJoining && (
+            <div className="fixed inset-0 h-screen w-screen bg-opacity-50 bg-black flex justify-center items-center">
+              <div className="w-48 h-48 bg-white rounded flex justify-center items-center">
+                Joining community...
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
