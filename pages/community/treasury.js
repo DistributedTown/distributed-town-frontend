@@ -1,8 +1,10 @@
-import { MagicContext, UserInfoContext } from "../../components/Store";
+import { MagicContext, UserInfoContext, TokenContext } from "../../components/Store";
 
 import { useContext, useState, useEffect } from "react";
 import { BigNumber, ethers } from "ethers";
 import { useForm } from "react-hook-form";
+import Link from "next/link";
+
 
 
 import Layout from "../../components/Layout";
@@ -15,10 +17,12 @@ import NoGSNCommunityAbi from "../../utils/NoGSNCommunity.json";
 // import { Magic } from "magic-sdk";
 
 
-import { Router, useRouter } from "next/router";
+import { useRouter } from "next/router";
 function CommunityTreasury() {
     const [userInfo, setUserInfo] = useContext(UserInfoContext);
     const [magic] = useContext(MagicContext);
+    const [token] = useContext(TokenContext);
+
     // const [magic, setMagic] = useState()
 
     const router = useRouter();
@@ -31,6 +35,9 @@ function CommunityTreasury() {
     const [liquidityPoolAPY, setLiquidityPoolAPY] = useState(0);
     const [amountToInvest, setAmountToInvest] = useState(0);
     const [availableDAI, setAvailableDAI] = useState()
+    const [stakingStage, setStakingStage] = useState(0)
+    const [etherscanLink, setEtherscanLink] = useState()
+    const [communityEtherscan, setCommunityEtherscan] = useState()
 
 
 
@@ -86,11 +93,6 @@ function CommunityTreasury() {
                 contractABI,
                 provider
             );
-
-            const currencies = await contract.depositableCurrencies.length
-
-            console.log('currencies', currencies)
-
 
             // Send transaction to smart contract to update message and wait to finish
             const [nUsers, investedBalanceInfo] = await Promise.all([
@@ -188,23 +190,14 @@ function CommunityTreasury() {
     }
 
     const onSubmit = async (data) => {
-        if (data["DAI"] === false && data["USDC"] === false) {
-            setError("currency", { type: "manual", message: "You need to pick one currency to stake" })
-            return;
-        }
-        if (data["DAI"] === true && data["USDC"] === true) {
-            setError("currency", { type: "manual", message: "You can only pick one currency to stake" })
-            return;
-        }
         console.log(data)
-        for (const property in data) {
-            if (data[property] === true) {
-                await approveStaking()
-                await deposit(property, Number(data.amount))
-                invest(property, Number(data.amount))
-            }
-        }
-
+        setStakingStage(1)
+        await approveStaking()
+        setStakingStage(2)
+        await deposit(data.currency, Number(data.amount))
+        setStakingStage(3)
+        invest(data.currency, Number(data.amount))
+        setStakingStage(4)
     }
 
     return (
@@ -226,14 +219,15 @@ function CommunityTreasury() {
                         <h1 className="mt-5 underline text-black text-center text-4xl">
                             Community Treasury
                         </h1>
-                        <form className="z-0 lg:mb-20">
-                            <CommunityTreasuryForm register={register} errors={errors} clearErrors={clearErrors} apy={liquidityPoolAPY} availableDAI={availableDAI} />
-                        </form>
+
+                        <CommunityTreasuryForm register={register} errors={errors} apy={liquidityPoolAPY} availableDAI={availableDAI} handleSubmit={handleSubmit} onSubmit={onSubmit} stakingStage={stakingStage} />
                     </div>
-                    <CheckupCard numOfMembers={numOfMembers} liquidityPoolBalance={liquidityPoolBalance} />
+                    <CheckupCard numOfMembers={numOfMembers} liquidityPoolBalance={liquidityPoolBalance} communityId={userInfo.communityID} token={token} />
                 </div>
-                <div className="fixed flex bottom-0 border-t-2 justify-center border-gray-600 bg-white z-10 w-11/12">
-                    <button type="button" onClick={handleSubmit(onSubmit)} className="px-32 border-2 mt-3 mb-3 border-blue-600 text-2xl underline">Stake and fund your community!</button>
+                <div className="w-11/12 fixed flex bottom-0 justify-center mt-3 border-t-2 border-gray-600 bg-white z-10">
+                    <Link href="/community">
+                        <a className="px-64 py-2 my-2 font-bold text-xl border-2 border-denim">Go back to Dashboard</a>
+                    </Link>
                 </div>
             </div>
 
