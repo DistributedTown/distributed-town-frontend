@@ -20,7 +20,7 @@ import { Router, useRouter } from "next/router";
 function CommunityDashboard() {
   const [userInfo, setUserInfo] = useContext(UserInfoContext);
   const [magic] = useContext(MagicContext);
-  const [token, setToken] = useContext(TokenContext);
+  const [token] = useContext(TokenContext);
   const [numOfMembers, setNumOfMembers] = useState();
   const [liquidityPoolBalance, setLiquidityPoolBalance] = useState();
 
@@ -92,7 +92,7 @@ function CommunityDashboard() {
               </Link>
             </div>
           </div>
-          <CheckupCard numOfMembers={numOfMembers} liquidityPoolBalance={liquidityPoolBalance} />
+          <CheckupCard numOfMembers={numOfMembers} liquidityPoolBalance={liquidityPoolBalance} communityId={userInfo.communityID} token={token} />
         </div>
         <div className="flex justify-center mt-3">
           <Link href="/skillwallet">
