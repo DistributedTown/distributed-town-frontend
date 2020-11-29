@@ -77,17 +77,19 @@ function SignupCompleted() {
 
   const inviteMembers = async () => {
     try {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/user/invite`,
-        {
-          method: "GET",
-          headers: {
-            Authorization: "Bearer " + token
+      if (!shareLink) {
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/user/invite`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: "Bearer " + token
+            }
           }
-        }
-      );
-      const link = await res.json();
-      setShareLink(link);
+        );
+        const link = await res.json();
+        setShareLink(link.linkUrl);
+      }
       setShowInviteModal(true);
     } catch (error) {
       console.log(error);

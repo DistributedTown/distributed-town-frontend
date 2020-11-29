@@ -25,18 +25,30 @@ function SignupPhaseOne(props) {
   const [userInfo = { skills: [] }, setUserInfo] = useContext(UserInfoContext);
   const [magic] = useContext(MagicContext);
   const [skillTree, setSkillTree] = useState([]);
-  const [token] = useContext(TokenContext);
+  const [token, setToken] = useContext(TokenContext);
   const [loading, setLoading] = useState({
     status: false,
     message: null
   });
 
+  console.log(userInfo);
+
   useEffect(() => {
     let category = userInfo.category;
     let paramName = "skill";
-    const { journey, meta } = getUserJourney();
+    const userJourney = getUserJourney();
+    let journey = null;
+    let meta = null;
+    if (userJourney) {
+      journey = userJourney.journey;
+      meta = userJourney.meta;
+    }
     if (journey === "community") {
       category = encodeURIComponent(meta.category);
+      paramName = "category";
+    }
+    if (journey === "invite") {
+      category = encodeURIComponent(userInfo.category);
       paramName = "category";
     }
     console.log(category);
@@ -294,6 +306,86 @@ function SignupPhaseOne(props) {
     }
   };
 
+  async function updateUser(community) {
+    try {
+      let currentToken = token;
+      console.log("1 ct", currentToken);
+      const responseFetchToken = await magic.user.getIdToken();
+      const didToken = await responseFetchToken;
+      if (token !== didToken) {
+        currentToken = didToken;
+        setToken(didToken);
+      }
+
+      console.log("2 ct", currentToken);
+
+      console.log("updated skills userinfo", userInfo);
+
+      const payload = {
+        username: userInfo.username,
+        communityID: community._id,
+        skills: userInfo.skills
+      };
+
+      console.log("payload", payload);
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/user`,
+        {
+          method: "POST",
+          body: JSON.stringify(payload),
+          headers: new Headers({
+            Authorization: "Bearer " + currentToken,
+            "Content-Type": "application/json"
+          })
+        }
+      );
+
+      const updatedUser = await response.json();
+
+      router.push("/SignupCompleted");
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  const joinCommunity = async () => {
+    const provider = new ethers.providers.Web3Provider(magic.rpcProvider);
+
+    try {
+      const signer = provider.getSigner();
+
+      // Get user's Ethereum public address
+      const address = await signer.getAddress();
+      console.log(userInfo);
+      const contractAddress = userInfo.communityContract
+        ? userInfo.communityContract.address
+        : "0x790697f595Aa4F9294566be0d262f71b44b5039c";
+      const contract = new ethers.Contract(
+        contractAddress,
+        contractABI,
+        signer
+      );
+
+      let amountOfRedeemableDitos = 0;
+      for (let { redeemableDitos } of userInfo.skills) {
+        amountOfRedeemableDitos += redeemableDitos;
+      }
+
+      // Send transaction to smart contract to update message and wait to finish
+      const baseDitos = 2000;
+      const totalDitos = amountOfRedeemableDitos + baseDitos;
+      const tx = await contract.join(totalDitos);
+
+      // Wait for transaction to finish
+      const receipt = await tx.wait();
+
+      await updateUser(userInfo.communitContract);
+    } catch (error) {
+      alert(error.message);
+      console.log(error);
+    }
+  };
+
   const submit = () => {
     const { journey } = getUserJourney();
     if (!userInfo.username) {
@@ -302,6 +394,8 @@ function SignupPhaseOne(props) {
     }
     if (journey === "community") {
       createCommunity();
+    } else if (journey === "invite") {
+      joinCommunity();
     } else {
       router.push("/SignupPhaseTwo");
     }
@@ -387,6 +481,8 @@ function SignupPhaseOne(props) {
           >
             {journey === "community"
               ? "Next: Create and Join Community"
+              : journey === "invite"
+              ? "Next: Join Community"
               : "Next: choose your first community!"}
           </Button>
         </div>

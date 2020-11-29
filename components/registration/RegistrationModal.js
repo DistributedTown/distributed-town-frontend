@@ -46,7 +46,7 @@ const RegistrationModal = ({
                     cta="Create Account"
                     placeholderText="Please enter your email"
                   />
-                  {journey !== "community" && (
+                  {journey !== "community" && showRegisterModal && (
                     <a
                       onClick={showRegisterModal}
                       href="#"

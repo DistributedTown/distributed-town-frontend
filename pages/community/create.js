@@ -66,10 +66,18 @@ function CommunityCreate() {
         }
       );
       const communitiesRes = await res.json();
+      let communitiesCategoryMap = [];
+      let communitiesToShow = [];
       communitiesRes.forEach(community => {
+        if (!communitiesCategoryMap.includes(community.category)) {
+          communitiesToShow.push(community);
+          communitiesCategoryMap.push(community.category);
+        }
+      });
+      communitiesToShow.forEach(community => {
         community.selected = false;
       });
-      setCommunities(communitiesRes);
+      setCommunities(communitiesToShow);
     })();
   }, []);
 
