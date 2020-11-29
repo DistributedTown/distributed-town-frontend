@@ -37,7 +37,7 @@ const communityMeta = {
       "update scores & rank while gaming"
     ]
   },
-  "Local community": {
+  "Local Community": {
     color: "alizarin",
     subtitle: "For neighbors, condos & small local clubs who need to",
     description: [
@@ -74,6 +74,7 @@ function CommunityCreate() {
           communitiesCategoryMap.push(community.category);
         }
       });
+      console.log(communitiesToShow);
       communitiesToShow.forEach(community => {
         community.selected = false;
       });
