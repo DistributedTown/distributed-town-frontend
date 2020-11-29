@@ -1,13 +1,20 @@
 import { useContext } from "react";
 import { UserInfoContext } from "../../components/Store";
 import { QRCode } from "react-qrcode-logo";
+import { useRouter } from "next/router";
 
 function QR() {
   const userInfo = useContext(UserInfoContext);
   const user = userInfo[0];
-  console.log(user);
+  const router = useRouter();
   return (
-    <div className="flex w-full">
+    <div className="flex w-full h-screen">
+      <button
+        className="absolute bg-white py-2 px-4 m-2 rounded"
+        onClick={() => router.push("/skillwallet")}
+      >
+        Go back
+      </button>
       <div className="flex flex-col px-40 py-64 justify-center items-center bg-denim w-1/2">
         <div className="bg-ripe-lemon w-56 h-56 p-4 flex justify-center items-center">
           <QRCode

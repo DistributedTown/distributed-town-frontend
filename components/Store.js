@@ -203,6 +203,7 @@ const Store = ({ children }) => {
               }
             }
             removeUserJourney();
+            skipEffect = true;
           } else {
             const userJourney = getUserJourney();
             if (!userJourney) {
@@ -219,7 +220,6 @@ const Store = ({ children }) => {
             }
           }
 
-          skipEffect = true;
           setLoggedIn(loggedIn);
           setIsLoading(false);
         } catch (err) {
@@ -241,7 +241,9 @@ const Store = ({ children }) => {
               {!isLoading ? (
                 <div className="flex">{children}</div>
               ) : (
-                <div>Loading...</div>
+                <div className="flex items-center justify-center">
+                  Loading...
+                </div>
               )}
             </TokenContext.Provider>
           </UserInfoContext.Provider>
