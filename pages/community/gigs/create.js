@@ -8,6 +8,8 @@ import CreateGigForm from "../../../components/gig/CreateGigForm"
 
 import { useContext, useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
+import Link from "next/link";
+
 
 import { useRouter } from "next/router";
 import Layout from "../../../components/Layout";
@@ -52,21 +54,21 @@ function CreateGig() {
     }
 
     const onSubmit = data => {
-        const gigTitle = data.gigTitle
-        const gigDescription = data.gigDescription
-        const creditsOffered = data.creditsOffered
-        delete data.gigTitle
-        delete data.gigDescription
-        delete data.creditsOffered
+        console.log(data)
+        // const gigTitle = data.gigTitle
+        // const gigDescription = data.gigDescription
+        // const creditsOffered = data.creditsOffered
+        // delete data.gigTitle
+        // delete data.gigDescription
+        // delete data.creditsOffered
 
-        Object.filter = (obj, predicate) =>
-            Object.keys(obj)
-                .filter(key => predicate(obj[key]))
-                .reduce((res, key) => (res[key] = obj[key], res), {});
+        // Object.filter = (obj, predicate) =>
+        //     Object.keys(obj)
+        //         .filter(key => predicate(obj[key]))
+        //         .reduce((res, key) => (res[key] = obj[key], res), {});
 
-        let skills = Object.filter(data, data => data === true);
-        console.log(skills, userInfo)
-        postNewGig(gigTitle, gigDescription, Object.keys(skills), creditsOffered)
+        // let skills = Object.filter(data, data => data === true);
+        // postNewGig(gigTitle, gigDescription, Object.keys(skills), creditsOffered)
     };
 
     const getCommunityCategory = async () => {
@@ -79,9 +81,9 @@ function CreateGig() {
             }
         );
         const communityInfo = await getCommRes.json();
-        console.log('comm', communityInfo)
         setCommunityCategory(communityInfo.category)
     }
+
 
     useEffect(() => {
         (async () => {
@@ -104,9 +106,14 @@ function CreateGig() {
                 fullHeight: false
             }}
         >
-            <div className="w-full h-screen p-8">
+            <div className="w-full p-8 h-full overflow-scroll bg-white">
                 <h1 className="underline text-black text-4xl">Create New Gig</h1>
-                <CreateGigForm register={register} handleSubmit={handleSubmit} onSubmit={onSubmit} errors={errors} communityCategory={communityCategory} />
+                <CreateGigForm register={register} handleSubmit={handleSubmit} onSubmit={onSubmit} errors={errors} communityCategory={communityCategory} skill={userInfo.skills[0].skill} />
+            </div>
+            <div className="w-11/12 fixed flex bottom-0 justify-center mt-3 border-t-2 border-gray-600 bg-white z-10">
+                <Link href="/community">
+                    <a className="px-64 py-2 my-2 font-bold text-xl border-2 border-denim">Back to Dashboard</a>
+                </Link>
             </div>
         </Layout>
 
