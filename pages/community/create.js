@@ -37,7 +37,7 @@ const communityMeta = {
       "update scores & rank while gaming"
     ]
   },
-  "Local community": {
+  "Local Community": {
     color: "alizarin",
     subtitle: "For neighbors, condos & small local clubs who need to",
     description: [
@@ -66,10 +66,19 @@ function CommunityCreate() {
         }
       );
       const communitiesRes = await res.json();
+      let communitiesCategoryMap = [];
+      let communitiesToShow = [];
       communitiesRes.forEach(community => {
+        if (!communitiesCategoryMap.includes(community.category)) {
+          communitiesToShow.push(community);
+          communitiesCategoryMap.push(community.category);
+        }
+      });
+      console.log(communitiesToShow);
+      communitiesToShow.forEach(community => {
         community.selected = false;
       });
-      setCommunities(communitiesRes);
+      setCommunities(communitiesToShow);
     })();
   }, []);
 

@@ -206,9 +206,13 @@ const Store = ({ children }) => {
             skipEffect = true;
           } else {
             const userJourney = getUserJourney();
-            if (!userJourney) {
+            if (
+              !userJourney &&
+              router.pathname !== "/community/join" &&
+              router.pathname !== "/community/invite"
+            ) {
               router.push("/");
-            } else {
+            } else if (userJourney) {
               const { journey, step } = userJourney;
               if (journey === "community") {
                 if (step === "category") {
@@ -254,3 +258,5 @@ const Store = ({ children }) => {
 };
 
 export default Store;
+
+// http://localhost:3000/community/invite?communityId=01eqdy3jndzjx3rgz2fd4e371p&communityName=Blabla
