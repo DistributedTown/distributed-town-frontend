@@ -116,9 +116,9 @@ function SkillWallet() {
         alignment: "left"
       }}
     >
-      <div className="w-full flex flex-col  space-y-8">
+      <div className="w-full flex flex-col h-full overflow-scroll">
         {/* MAIN TITLE  */}
-        <div className="w-1/8  ml-5 my-4">
+        <div className="w-1/8 ml-5 my-4">
           <h1 className="underline text-black text-4xl">Skill Wallet</h1>
         </div>
 
@@ -258,8 +258,8 @@ function SkillWallet() {
                     );
                   })
                 ) : (
-                  <h1 className="text-black">Past Gigs Loading...</h1>
-                )}
+                    <h1 className="text-black">Past Gigs Loading...</h1>
+                  )}
               </div>
             </div>
           </div>

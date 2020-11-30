@@ -46,7 +46,6 @@ const CommunityTreasuryForm = ({ register, errors, apy, availableDAI, handleSubm
                         </p>
                     </div>
                 </div>
-
                 <div className="flex">
                     <div className="flex flex-col w-1/2 p-3">
                         <label className="font-bold underline text-center mb-3">Amount</label>
@@ -89,7 +88,7 @@ const CommunityTreasuryForm = ({ register, errors, apy, availableDAI, handleSubm
                     </div>
                 </div>
                 <div className="flex w-full bg-white">
-                    <button type="submit" disabled={stakingStage > 0} className=" w-full my-3 py-2 bg-blue-600 text-white text-2xl underline">{stakingStage === 0 ? 'Stake and fund your community!' : stakingStage === 1 ? 'Approving DAI to stake with ... please wait ' : stakingStage === 2 ? 'Depositing DAI to community treasury ... please wait' : stakingStage === 3 ? 'Investing DAI to community ... please wait' : stakingStage === 4 ? 'Staking complete, please refresh page to see new values!' : 'Error has occured while processing transaction, please refresh.'}</button>
+                    <button type="submit" disabled={stakingStage > 0} className=" w-full my-3 py-2 bg-blue-600 text-white text-xl underline">{stakingStage === 0 ? 'Stake now!' : stakingStage === 1 ? 'Approving DAI to stake with ... please wait ' : stakingStage === 2 ? 'Depositing DAI to community treasury ... please wait' : stakingStage === 3 ? 'Investing DAI to community ... please wait' : stakingStage === 4 ? 'Staking complete, please refresh page to see new values!' : 'Error has occured while processing transaction, please refresh.'}</button>
                 </div>
             </div>
         </form>
