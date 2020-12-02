@@ -15,14 +15,35 @@ import Layout from "../../../components/Layout";
 function Projects() {
     const [token, setToken] = useContext(TokenContext);
     const [userInfo, setUserInfo] = useContext(UserInfoContext);
-    const [openGigs, setOpenGigs] = useState([]);
+    const [projects, setProjects] = useState();
 
-    const projects = [
-        { _id: "1", projectTitle: "Test project 1", projectDescription: "Test description", skillsNeeded: ["skill 1", "skill 2"], fundsNeeded: 10 },
-        { _id: "2", projectTitle: "Test project 2", projectDescription: "Another Test description", skillsNeeded: ["skill 3", "skill 2"], fundsNeeded: 1000 },
-        { _id: "3", projectTitle: "Test project 3", projectDescription: "Test description", skillsNeeded: ["skill 1", "skill 3"], fundsNeeded: 20 },
-        { _id: "4", projectTitle: "Test project 4", projectDescription: "Test description Test description Test description Test description", skillsNeeded: ["skill 1", "skill 4"], fundsNeeded: 40 },
-    ]
+    useEffect(() => {
+        async function fetchProjects() {
+            try {
+                let resFetchProjects = await fetch(
+                    `${process.env.NEXT_PUBLIC_API_URL}/api/gig?isOpen=true&isProject=true`,
+                    {
+                        method: "GET",
+                        headers: new Headers({
+                            Authorization: "Bearer " + token,
+                        }),
+                    }
+                );
+                const openProjectsResp = await resFetchProjects.json();
+                setProjects(openProjectsResp);
+            } catch (err) {
+                console.log(err);
+            }
+        }
+        fetchProjects();
+    }, []);
+
+    // const projects = [
+    //     { _id: "1", projectTitle: "Test project 1", projectDescription: "Test description", skillsNeeded: ["skill 1", "skill 2"], fundsNeeded: 10 },
+    //     { _id: "2", projectTitle: "Test project 2", projectDescription: "Another Test description", skillsNeeded: ["skill 3", "skill 2"], fundsNeeded: 1000 },
+    //     { _id: "3", projectTitle: "Test project 3", projectDescription: "Test description", skillsNeeded: ["skill 1", "skill 3"], fundsNeeded: 20 },
+    //     { _id: "4", projectTitle: "Test project 4", projectDescription: "Test description Test description Test description Test description", skillsNeeded: ["skill 1", "skill 4"], fundsNeeded: 40 },
+    // ]
 
     return (
         <Layout
@@ -39,14 +60,14 @@ function Projects() {
         >
             <div className="flex">
                 <div className="m-12 w-full overflow-scroll">
-                    <h1 className="underline text-black text-4xl">Projects</h1>
+                    <h1 className="underline text-black text-4xl">Open Projects</h1>
                     <div className="mt-5 grid grid-cols-3 gap-12 items-baseline mb-40">
                         {typeof projects === "undefined" ? (
                             <div>
                                 <h2>Loading projects...</h2>
                             </div>
                         ) : projects.length === 0 ? (
-                            () => <h2>There are no projects.</h2>
+                            <h2>There are no open projects.</h2>
                         ) : (projects.map((project) => {
                             return (
                                 <ProjectCard key={project._id} project={project} />
