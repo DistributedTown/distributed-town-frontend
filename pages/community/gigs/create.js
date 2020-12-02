@@ -15,21 +15,23 @@ import { useRouter } from "next/router";
 import Layout from "../../../components/Layout";
 
 function CreateGig() {
+    const [creationState, setCreationState] = useState()
     const [token, setToken] = useContext(TokenContext);
     const [userInfo, setUserInfo] = useContext(UserInfoContext);
-    const { register, handleSubmit, errors } = useForm();
+    const { register, handleSubmit, errors, getValues } = useForm();
     const [communityCategory, setCommunityCategory] = useState()
     const router = useRouter();
 
     async function postNewGig(gigTitle, gigDescription, gigSkills, creditsOffered) {
         try {
             const payload = {
-                userID: userInfo._id,
                 title: gigTitle,
                 description: gigDescription,
                 skills: gigSkills,
                 creditsOffered: parseInt(creditsOffered),
+                isProject: false
             };
+            setCreationState(1)
 
             console.log("create gigs payload", JSON.stringify(payload));
 
@@ -45,30 +47,37 @@ function CreateGig() {
 
             result.json().then(data => {
                 console.log(data)
+                if (data.message === "The community is not yet active.") {
+                    setCreationState(2)
+                } else {
+                    router.push("/community/gigs");
+                }
             })
 
-            router.push("/community/gigs");
         } catch (err) {
             console.error(err);
+            setCreationState(3)
         }
     }
 
     const onSubmit = data => {
-        console.log(data)
-        // const gigTitle = data.gigTitle
-        // const gigDescription = data.gigDescription
-        // const creditsOffered = data.creditsOffered
-        // delete data.gigTitle
-        // delete data.gigDescription
-        // delete data.creditsOffered
+        const gigTitle = data.gigTitle
+        const gigDescription = data.gigDescription
+        const creditsOffered = data.creditsOffered
+        delete data.gigTitle
+        delete data.gigDescription
+        delete data.creditsOffered
+        delete data.commitment
 
-        // Object.filter = (obj, predicate) =>
-        //     Object.keys(obj)
-        //         .filter(key => predicate(obj[key]))
-        //         .reduce((res, key) => (res[key] = obj[key], res), {});
 
-        // let skills = Object.filter(data, data => data === true);
-        // postNewGig(gigTitle, gigDescription, Object.keys(skills), creditsOffered)
+        Object.filter = (obj, predicate) =>
+            Object.keys(obj)
+                .filter(key => predicate(obj[key]))
+                .reduce((res, key) => (res[key] = obj[key], res), {});
+
+        let skills = Object.filter(data, data => (data[0] === "on" || data === true));
+
+        postNewGig(gigTitle, gigDescription, Object.keys(skills), creditsOffered)
     };
 
     const getCommunityCategory = async () => {
@@ -108,7 +117,7 @@ function CreateGig() {
         >
             <div className="w-full p-8 h-full overflow-scroll bg-white">
                 <h1 className="underline text-black text-4xl">Create New Gig</h1>
-                <CreateGigForm register={register} handleSubmit={handleSubmit} onSubmit={onSubmit} errors={errors} communityCategory={communityCategory} skill={userInfo.skills[0].skill} />
+                <CreateGigForm register={register} handleSubmit={handleSubmit} onSubmit={onSubmit} errors={errors} communityCategory={communityCategory} skill={userInfo.skills[0].skill} getValues={getValues} creationState={creationState} />
             </div>
             <div className="w-11/12 fixed flex bottom-0 justify-center mt-3 border-t-2 border-gray-600 bg-white z-10">
                 <Link href="/community">

@@ -1,10 +1,15 @@
 import useSWR from 'swr'
-import { useContext, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 
 const fetcher = (...args) => fetch(...args).then(res => res.json())
 
-const CreateGigForm = ({ register, handleSubmit, onSubmit, errors, communityCategory, skill }) => {
+const CreateGigForm = ({ register, handleSubmit, onSubmit, errors, skill, getValues, creationState }) => {
+    const [budgetRequired, setBudgetRequired] = useState()
+    const [selectedSkills, setSelectedSkills] = useState([])
+    const [commitment, setCommitment] = useState(getValues("commitment"))
     const { data, error } = useSWR(`${process.env.NEXT_PUBLIC_API_URL}/api/skill?skill=${encodeURIComponent(skill)}`, fetcher)
+    const [subCategories, setSubCategories] = useState()
+
     let skillsList = []
     if (data) {
         for (let category of data.categories) {
@@ -12,8 +17,35 @@ const CreateGigForm = ({ register, handleSubmit, onSubmit, errors, communityCate
         }
     }
 
-    return (
+    const calculateBudgetRequired = (commitment, skillsSelected) => {
+        let totalCredits = 0;
+        for (let skill of skillsSelected) {
+            for (let subCategory of subCategories) {
+                if (subCategory.skills.indexOf(skill) !== -1) {
+                    totalCredits += subCategory.credits
+                }
+            }
+        }
+        const budgetRequired = ((totalCredits * Number(commitment)) / 10)
+        setBudgetRequired(budgetRequired)
+        return null;
+    }
 
+    const getSelectedSkills = () => {
+        let selectedSkills = []
+        for (skill of skillsList) {
+            if (getValues(skill)[0] === "on" || getValues(skill)) {
+                selectedSkills.push(skill)
+            }
+        }
+        setSelectedSkills(selectedSkills)
+    }
+
+    useEffect(() => {
+        if (data) setSubCategories(data.categories)
+    })
+
+    return (
         <form className="flex flex-col pl-4 border-l-2 border-denim mt-6 mb-24" onSubmit={handleSubmit(onSubmit)}>
             <div className="flex flex-col">
                 <div className="flex justify-between">
@@ -65,15 +97,16 @@ const CreateGigForm = ({ register, handleSubmit, onSubmit, errors, communityCate
                                 </h2>
                         <div className=" mt-5 px-4 overflow-scroll h-20 border-2 border-blue-600">
                             {error && <p>Couldn't fetch skills</p>}
-                            {skillsList ? skillsList.map(skill => {
+                            {skillsList ? skillsList.map((skill, i) => {
                                 return (
-                                    <div className="flex items-center">
+                                    <div key={skill} className="flex items-center">
                                         <input
                                             type="checkbox"
                                             key={skill}
                                             id={skill}
                                             name={skill}
                                             ref={register}
+                                            onChange={e => { getSelectedSkills(); calculateBudgetRequired(commitment, selectedSkills) }}
                                         />
                                         <div className="flex flex-col font-bold pl-2">
                                             <p>{skill}</p>
@@ -91,11 +124,13 @@ const CreateGigForm = ({ register, handleSubmit, onSubmit, errors, communityCate
                             Hint: the effort needed for this task. This value<br></br>influences the DiTo set as a reward for your gig!
                                 </h2>
                         <input
+                            id="commitment"
                             name="commitment"
                             style={{ width: "250px" }}
                             className="bg-white h-32 py-3 w-32"
                             type="range"
                             ref={register({ required: true })}
+                            onChange={e => { setCommitment(e.target.value); calculateBudgetRequired(e.target.value, selectedSkills) }}
                         />
                         {errors.commitment && <span className="text-red-600">This field is required</span>}
                     </div>
@@ -107,25 +142,19 @@ const CreateGigForm = ({ register, handleSubmit, onSubmit, errors, communityCate
                         <h2 className="text-dove-gray">
                             Hint: the amount of DiTo<br></br>you offer for this gig.
                             </h2>
-                        <input
-                            className="border-2 border-denim py-6 px-4 mt-5 mb-1"
-                            id="creditsOffered"
-                            name="creditsOffered"
-                            ref={register({ required: true })}
-                            type="number"
-                            min="0"
-                        />
+                        <input id="creditsOffered" name="creditsOffered" type="number" ref={register} value={budgetRequired} hidden></input>
+                        <p className="border-black border-2 p-4 text-xl mt-2">{budgetRequired}</p>
                         <h2 className="text-right">DiTo</h2>
-                        {errors.creditsOffered && <span className="text-red-600">This field is required</span>}
                     </div>
                 </div>
             </div>
-            <button
-                type="submit"
-                className="py-3 text-lg underline bg-alizarin text-white w-full"
-            >
-                Publish your gig!
-            </button>
+            {creationState === undefined ?
+                <button
+                    type="submit"
+                    className="py-3 text-lg underline bg-alizarin text-white w-full"
+                >
+                    Publish your gig!
+            </button> : creationState === 1 ? <p>Loading, please wait</p> : creationState === 2 ? <p>Can't create gig, community is not yet active</p> : <p>An error occured, please try again</p>}
 
         </form>
 
