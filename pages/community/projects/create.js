@@ -1,6 +1,4 @@
 import {
-    MagicContext,
-    LoggedInContext,
     TokenContext,
     UserInfoContext,
 } from "../../../components/Store";
@@ -14,7 +12,6 @@ import { useRouter } from "next/router";
 import Layout from "../../../components/Layout";
 
 function CreateProject() {
-    const [creationState, setCreationState] = useState()
     const [token, setToken] = useContext(TokenContext);
     const [userInfo, setUserInfo] = useContext(UserInfoContext);
     const { register, handleSubmit, errors, getValues } = useForm();
@@ -31,7 +28,6 @@ function CreateProject() {
                 isProject: true
             };
 
-            setCreationState(1)
 
             console.log("create project payload", JSON.stringify(payload));
 
@@ -48,15 +44,12 @@ function CreateProject() {
             result.json().then(data => {
                 console.log(data)
                 if (data.message === "The community is not yet active.") {
-                    setCreationState(2)
                 } else {
                     router.push("/community/projects");
                 }
             })
         } catch (err) {
             console.error(err);
-            setCreationState(3)
-
         }
     }
 

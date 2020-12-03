@@ -4,52 +4,24 @@ import { useContext, useState, useEffect } from "react";
 import { BigNumber, ethers } from "ethers";
 import { useForm } from "react-hook-form";
 import Link from "next/link";
-
-
-
 import Layout from "../../components/Layout";
 import CommunityTreasuryForm from "../../components/treasury/CommunityTreasuryForm"
 import CheckupCard from "../../components/community/CheckupCard"
 
-import communityContractAbi from "../../utils/communityContractAbi.json";
 import NoGSNCommunityAbi from "../../utils/NoGSNCommunity.json";
 
-// import { Magic } from "magic-sdk";
-
-
-import { useRouter } from "next/router";
 function CommunityTreasury() {
     const [userInfo, setUserInfo] = useContext(UserInfoContext);
     const [magic] = useContext(MagicContext);
     const [token] = useContext(TokenContext);
 
-    // const [magic, setMagic] = useState()
+    const { register, handleSubmit, errors } = useForm();
 
-    const router = useRouter();
-    const { register, handleSubmit, errors, setError, clearErrors } = useForm();
-
-    const [communities, setCommunities] = useState([]);
-    const [isJoining, setIsJoining] = useState(false);
     const [numOfMembers, setNumOfMembers] = useState(0);
     const [liquidityPoolBalance, setLiquidityPoolBalance] = useState(0);
     const [liquidityPoolAPY, setLiquidityPoolAPY] = useState(0);
-    const [amountToInvest, setAmountToInvest] = useState(0);
     const [availableDAI, setAvailableDAI] = useState()
     const [stakingStage, setStakingStage] = useState(0)
-    const [etherscanLink, setEtherscanLink] = useState()
-    const [communityEtherscan, setCommunityEtherscan] = useState()
-
-
-
-
-    // useEffect(() => {
-    //     /* We initialize Magic in `useEffect` so it has access to the global `window` object inside the browser */
-    //     let m = new Magic("pk_test_1C5A2BC69B7C18E5", {
-    //         network: "ropsten",
-    //         chainId: 8888 // Your own node's chainId
-    //     });
-    //     setMagic(m);
-    // }, []);
 
     useEffect(() => {
         (async () => {

@@ -1,15 +1,12 @@
 import { useContext, useEffect, useState } from "react";
 import Link from "next/link";
-import { ethers } from "ethers";
-import { get, set } from "mongoose";
 
 import SkillPill from "../../components/SkillPill";
 import Quote from "../../components/Quote";
 import RegistrationModal from "../../components/registration/RegistrationModal";
-import Store, {
+import  {
   MagicContext,
   LoggedInContext,
-  LoadingContext,
   TokenContext,
   UserInfoContext
 } from "../../components/Store";
@@ -17,10 +14,9 @@ import { useRouter } from "next/router";
 import Layout from "../../components/Layout";
 import bgImages from "../../utils/bgImages.js";
 
-import communityContractAbi from "../../utils/communityContractAbi.json";
 
 const Join = props => {
-  const [token, setToken] = useContext(TokenContext);
+  const [, setToken] = useContext(TokenContext);
   const [loggedIn, setLoggedIn] = useContext(LoggedInContext);
   const [magic] = useContext(MagicContext);
   const [userInfo, setUserInfo] = useContext(UserInfoContext);
@@ -151,11 +147,6 @@ const Join = props => {
     });
   }, [selectedPill]);
 
-  // if (loggedIn) {
-  //   // if (typeof window !== "undefined") router.push("/skillwallet");
-  //   return null;
-  // } else {
-
   return (
     <Layout
       className="h-screen w-full"
@@ -170,7 +161,6 @@ const Join = props => {
       }}
     >
       <div className="firstPage">
-        {/* <TheNav helpCta="What is it about?" helpUrl="#" /> */}
         <Link href="#">
           <a className="fixed top-0 right-0 hover:underline p-8 text-2xl font-bold">
             what's this about?
@@ -216,7 +206,6 @@ const Join = props => {
       </div>
     </Layout>
   );
-  // }
 };
 
 export async function getServerSideProps(context) {

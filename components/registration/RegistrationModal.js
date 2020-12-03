@@ -1,6 +1,5 @@
 import RegistrationForm from "./RegistrationForm";
 
-import bgImages from "../../utils/bgImages";
 import { getUserJourney } from "../../utils/userJourneyManager";
 
 const RegistrationModal = ({

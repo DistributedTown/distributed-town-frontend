@@ -1,7 +1,5 @@
 import {
   MagicContext,
-  LoggedInContext,
-  LoadingContext,
   UserInfoContext,
   TokenContext
 } from "../components/Store";
@@ -15,7 +13,6 @@ import { ethers } from "ethers";
 import { useRouter } from "next/router";
 
 function SignupPhaseTwo() {
-  const [loggedIn, setLoggedIn] = useContext(LoggedInContext);
   const [userInfo, setUserInfo] = useContext(UserInfoContext);
   const [token, setToken] = useContext(TokenContext);
   const [magic] = useContext(MagicContext);

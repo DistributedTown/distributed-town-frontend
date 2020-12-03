@@ -1,6 +1,5 @@
 import {
   MagicContext,
-  LoggedInContext,
   UserInfoContext,
   TokenContext
 } from "../components/Store";
@@ -14,7 +13,6 @@ import { useRouter } from "next/router";
 import NicknameSelection from "../components/NicknameSelection";
 import {
   getUserJourney,
-  setUserJourney,
   removeUserJourney
 } from "../utils/userJourneyManager";
 import { ethers } from "ethers";

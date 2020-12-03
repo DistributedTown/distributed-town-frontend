@@ -1,7 +1,5 @@
 import {
   MagicContext,
-  LoggedInContext,
-  LoadingContext,
   UserInfoContext,
   TokenContext
 } from "../../components/Store";
@@ -10,15 +8,12 @@ import { BigNumber, ethers } from "ethers";
 import Link from "next/link";
 
 import Layout from "../../components/Layout";
-import Button from "../../components/Button";
 import CheckupCard from "../../components/community/CheckupCard";
-import communityContractAbi from "../../utils/communityContractAbi.json";
 import NoGSNCommunityAbi from "../../utils/NoGSNCommunity.json";
 
-import { Router, useRouter } from "next/router";
 
 function CommunityDashboard() {
-  const [userInfo, setUserInfo] = useContext(UserInfoContext);
+  const [userInfo, ] = useContext(UserInfoContext);
   const [magic] = useContext(MagicContext);
   const [token] = useContext(TokenContext);
   const [numOfMembers, setNumOfMembers] = useState();

@@ -1,6 +1,4 @@
 import {
-    MagicContext,
-    LoggedInContext,
     TokenContext,
     UserInfoContext,
 } from "../../../components/Store";
@@ -13,8 +11,8 @@ import Link from 'next/link'
 import Layout from "../../../components/Layout";
 
 function Gigs() {
-    const [token, setToken] = useContext(TokenContext);
-    const [userInfo, setUserInfo] = useContext(UserInfoContext);
+    const [token, ] = useContext(TokenContext);
+    const [userInfo, ] = useContext(UserInfoContext);
     const [openGigs, setOpenGigs] = useState();
 
     useEffect(() => {

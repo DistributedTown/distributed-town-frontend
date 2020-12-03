@@ -129,40 +129,6 @@ function CommunityCreate() {
     });
     // go to congrats page
     router.push("/community/created");
-
-    // try {
-    //   const provider = new ethers.providers.Web3Provider(magic.rpcProvider);
-    //   const signer = provider.getSigner();
-
-    //   // Get user's Ethereum public address
-    //   const address = await signer.getAddress();
-
-    //   const contractABI = communitiesRegistryAbi;
-    //   const contractAddress = "0xe141f6C659bEA31d39cD043539E426D53bF3D7d8";
-    //   const contract = new ethers.Contract(
-    //     contractAddress,
-    //     contractABI,
-    //     signer
-    //   );
-
-    //   const tx = await contract.createCommunity();
-    //   // Wait for transaction to finish
-    //   const receipt = await tx.wait();
-    //   setUserInfo({
-    //     ...userInfo,
-    //     communityContract: {
-    //       address: receipt
-    //     }
-    //   });
-
-    //   const addTx = await contract.addCommunity(receipt);
-    //   // Wait for transaction to finish
-    //   await tx.wait();
-
-    //   await sendToApi(receipt);
-    // } catch (err) {
-    //   console.error(err);
-    // }
   }
 
   function setSelected(id) {

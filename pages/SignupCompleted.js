@@ -1,7 +1,5 @@
 import {
   MagicContext,
-  LoggedInContext,
-  LoadingContext,
   UserInfoContext,
   TokenContext
 } from "../components/Store";
@@ -10,7 +8,7 @@ import Layout from "../components/Layout";
 import { useContext, useState, useEffect } from "react";
 import { BigNumber, ethers } from "ethers";
 
-import { router, useRouter } from "next/router";
+import { useRouter } from "next/router";
 
 import ditoContractAbi from "../utils/ditoTokenContractAbi.json";
 import communityContractAbi from "../utils/communityContractAbi.json";
@@ -18,7 +16,6 @@ import { removeUserJourney, getUserJourney } from "../utils/userJourneyManager";
 
 function SignupCompleted() {
   const [userInfo, setUserInfo] = useContext(UserInfoContext);
-  const [loggedIn, setLoggedIn] = useContext(LoggedInContext);
   const [magic] = useContext(MagicContext);
   const [token] = useContext(TokenContext);
   const [shareLink, setShareLink] = useState("");

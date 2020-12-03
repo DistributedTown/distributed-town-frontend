@@ -16,8 +16,8 @@ import Layout from "../../../components/Layout";
 
 function CreateGig() {
     const [creationState, setCreationState] = useState()
-    const [token, setToken] = useContext(TokenContext);
-    const [userInfo, setUserInfo] = useContext(UserInfoContext);
+    const [token, ] = useContext(TokenContext);
+    const [userInfo, ] = useContext(UserInfoContext);
     const { register, handleSubmit, errors, getValues } = useForm();
     const [communityCategory, setCommunityCategory] = useState()
     const router = useRouter();

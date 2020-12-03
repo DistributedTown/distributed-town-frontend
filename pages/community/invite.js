@@ -1,36 +1,26 @@
 import { useContext, useEffect, useState } from "react";
-import Link from "next/link";
-import { ethers } from "ethers";
-import { get, set } from "mongoose";
-
-import SkillPill from "../../components/SkillPill";
-import Quote from "../../components/Quote";
 import RegistrationModal from "../../components/registration/RegistrationModal";
-import Store, {
+import  {
   MagicContext,
   LoggedInContext,
-  LoadingContext,
   TokenContext,
   UserInfoContext
 } from "../../components/Store";
 import { useRouter } from "next/router";
-import Layout from "../../components/Layout";
 import bgImages from "../../utils/bgImages.js";
 
-import communityContractAbi from "../../utils/communityContractAbi.json";
 import {
   setUserJourney,
   removeUserJourney
 } from "../../utils/userJourneyManager";
 
 const Join = props => {
-  const [token, setToken] = useContext(TokenContext);
-  const [loggedIn, setLoggedIn] = useContext(LoggedInContext);
+  const [, setToken] = useContext(TokenContext);
+  const [, setLoggedIn] = useContext(LoggedInContext);
   const [magic] = useContext(MagicContext);
   const [userInfo, setUserInfo] = useContext(UserInfoContext);
   const [loading, setLoading] = useState(false);
 
-  const [selectedPill, setSelectedPill] = useState(-1);
   const [email, setEmail] = useState("");
 
   const router = useRouter();

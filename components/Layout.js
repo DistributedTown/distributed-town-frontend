@@ -29,11 +29,6 @@ const Layout = ({
    * Log the user out of their session with Magic
    */
 
-  /*  const communityContract = async () {
-     if(userInfo.communityContract) return userInfo.communityContract;
- 
-   }; */
-
   const handleLogout = async () => {
     try {
       await magic.user.logout();
@@ -133,7 +128,6 @@ const Layout = ({
       </main>
     </>
   );
-  return null;
 };
 
 export default Layout;

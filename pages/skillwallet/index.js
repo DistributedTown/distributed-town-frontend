@@ -1,25 +1,22 @@
 import {
   MagicContext,
   LoggedInContext,
-  LoadingContext,
   UserInfoContext,
   TokenContext
 } from "../../components/Store";
 import Link from "next/link";
 
 import { useContext, useState, useEffect } from "react";
-import { BigNumber, ethers } from "ethers";
+import {  ethers } from "ethers";
 
 import { useRouter } from "next/router";
 
 import Layout from "../../components/Layout";
-import ditoContractAbi from "../../utils/ditoTokenContractAbi.json";
 import communityContractAbi from "../../utils/communityContractAbi.json";
-import { set } from "mongoose";
 
 function SkillWallet() {
   const [userInfo, setUserInfo] = useContext(UserInfoContext);
-  const [loggedIn, setLoggedIn] = useContext(LoggedInContext);
+  const [loggedIn,] = useContext(LoggedInContext);
   const [magic] = useContext(MagicContext);
   const [token, setToken] = useContext(TokenContext);
   const [pastGigs, setPastGigs] = useState([]);

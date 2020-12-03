@@ -1,11 +1,9 @@
 import { createContext, useState, useEffect, useContext } from "react";
 import { Magic } from "magic-sdk";
-import Layout from "./Layout";
 import { BigNumber, ethers } from "ethers";
 import { useRouter } from "next/router";
 
 import ditoContractAbi from "../utils/ditoTokenContractAbi.json";
-// import communityContractAbi from "../utils/communityContractAbi.json";
 import NoGSNCommunityAbi from "../utils/NoGSNCommunity.json";
 import { getUserJourney, removeUserJourney } from "../utils/userJourneyManager";
 
@@ -16,6 +14,7 @@ export const LoadingContext = createContext();
 export const UserInfoContext = createContext();
 export const TokenContext = createContext();
 let skipEffect = false;
+
 /* this function wraps our entire app within our context APIs so they all have access to their values */
 const Store = ({ children }) => {
   const [magic, setMagic] = useState();
@@ -24,33 +23,6 @@ const Store = ({ children }) => {
   const [userInfo, setUserInfo] = useState();
   const [token, setToken] = useState("");
   const router = useRouter();
-
-  /*  async function saveCommunityContractToUserContext() {
-    const provider = new ethers.providers.Web3Provider(magic.rpcProvider);
-
-    try {
-      const signer = provider.getSigner();
-
-      // Get user's Ethereum public address
-      const address = await signer.getAddress();
-
-      const contractABI = communityContractAbi;
-      const contractAddress = "0x790697f595Aa4F9294566be0d262f71b44b5039c";
-      const contract = new ethers.Contract(
-        contractAddress,
-        contractABI,
-        signer
-      );
-      setUserInfo({
-        ...userInfo,
-        communityContract: { address: contractAddress },
-      });
-
-    } catch (err) {
-      console.log(err);
-    }
-  }
-*/
 
   useEffect(() => {
     /* We initialize Magic in `useEffect` so it has access to the global `window` object inside the browser */

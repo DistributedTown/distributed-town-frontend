@@ -1,15 +1,10 @@
-import SkillPill from "../components/SkillPill";
-import Quote from "../components/Quote";
-import RegistrationModal from "../components/registration/RegistrationModal";
 import Link from "next/link";
 
-import { useContext, useEffect, useState } from "react";
-import Store, {
+import { useContext, useState } from "react";
+import {
   MagicContext,
   LoggedInContext,
-  LoadingContext,
   TokenContext,
-  UserInfoContext
 } from "../components/Store";
 import Layout from "../components/Layout";
 import { setUserJourney } from "../utils/userJourneyManager";
