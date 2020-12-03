@@ -1,11 +1,11 @@
-import { createContext, useState, useEffect, useContext } from "react";
-import { Magic } from "magic-sdk";
-import { BigNumber, ethers } from "ethers";
-import { useRouter } from "next/router";
+import { createContext, useState, useEffect, useContext } from 'react';
+import { Magic } from 'magic-sdk';
+import { BigNumber, ethers } from 'ethers';
+import { useRouter } from 'next/router';
 
-import ditoContractAbi from "../utils/ditoTokenContractAbi.json";
-import NoGSNCommunityAbi from "../utils/NoGSNCommunity.json";
-import { getUserJourney, removeUserJourney } from "../utils/userJourneyManager";
+import ditoContractAbi from '../utils/ditoTokenContractAbi.json';
+import NoGSNCommunityAbi from '../utils/NoGSNCommunity.json';
+import { getUserJourney, removeUserJourney } from '../utils/userJourneyManager';
 
 /* initializing context API values */
 export const MagicContext = createContext();
@@ -21,20 +21,20 @@ const Store = ({ children }) => {
   const [loggedIn, setLoggedIn] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [userInfo, setUserInfo] = useState();
-  const [token, setToken] = useState("");
+  const [token, setToken] = useState('');
   const router = useRouter();
 
   useEffect(() => {
     /* We initialize Magic in `useEffect` so it has access to the global `window` object inside the browser */
-    let m = new Magic("pk_test_1C5A2BC69B7C18E5", {
-      network: "ropsten",
-      chainId: 8888 // Your own node's chainId
+    const m = new Magic('pk_test_1C5A2BC69B7C18E5', {
+      network: 'ropsten',
+      chainId: 8888, // Your own node's chainId
     });
     setMagic(m);
   }, []);
 
   useEffect(() => {
-    if (typeof magic !== "undefined" && !skipEffect) {
+    if (typeof magic !== 'undefined' && !skipEffect) {
       (async () => {
         try {
           /* If the user has a valid session with our server, it will return {authorized: true, user: user} */
@@ -48,7 +48,7 @@ const Store = ({ children }) => {
           //   await magic.user.logout();
           // }
 
-          console.log("LOGGEDIN");
+          console.log('LOGGEDIN');
           console.log(loggedIn);
 
           // If the user is logged in, get user info from API
@@ -56,9 +56,9 @@ const Store = ({ children }) => {
             // call getFunded
             const metaData = await magic.user.getMetadata();
             console.log(metaData.publicAddress);
-            await fetch("/api/getFunded", {
-              method: "POST",
-              body: JSON.stringify({ publicAddress: metaData.publicAddress })
+            await fetch('/api/getFunded', {
+              method: 'POST',
+              body: JSON.stringify({ publicAddress: metaData.publicAddress }),
             });
             const DIDT = await magic.user.getIdToken({ email: metaData.email });
             console.log(DIDT);
@@ -66,11 +66,11 @@ const Store = ({ children }) => {
             const response = await fetch(
               `${process.env.NEXT_PUBLIC_API_URL}/api/user`,
               {
-                method: "GET",
+                method: 'GET',
                 headers: {
-                  Authorization: `Bearer ${DIDT}`
-                }
-              }
+                  Authorization: `Bearer ${DIDT}`,
+                },
+              },
             );
             console.log(response);
             const userInfoArray = await response.json();
@@ -89,22 +89,22 @@ const Store = ({ children }) => {
               setUserInfo({
                 ...userInfo,
                 DIDT,
-                skills: []
+                skills: [],
               });
-              if (journey === "login") {
-                router.push("/community/join");
+              if (journey === 'login') {
+                router.push('/community/join');
               }
             } else if (!userInfo.communityID) {
               setUserInfo({
                 ...userInfo,
-                DIDT
+                DIDT,
               });
-              if (journey === "login") {
-                router.push("/SignupPhaseTwo");
+              if (journey === 'login') {
+                router.push('/SignupPhaseTwo');
               }
             } else {
               const provider = new ethers.providers.Web3Provider(
-                magic.rpcProvider
+                magic.rpcProvider,
               );
               try {
                 const signer = provider.getSigner();
@@ -122,18 +122,18 @@ const Store = ({ children }) => {
                   const getCommRes = await fetch(
                     `${process.env.NEXT_PUBLIC_API_URL}/api/community/${userInfo.communityID}`,
                     {
-                      method: "GET",
+                      method: 'GET',
                       headers: {
-                        Authorization: `Bearer ${DIDT}`
-                      }
-                    }
+                        Authorization: `Bearer ${DIDT}`,
+                      },
+                    },
                   );
                   const communityInfo = await getCommRes.json();
 
                   const [
-                    { address: communityAddress }
+                    { address: communityAddress },
                   ] = communityInfo.addresses.filter(
-                    ({ blockchain }) => blockchain === "ETH"
+                    ({ blockchain }) => blockchain === 'ETH',
                   );
                   communityContractAddress = communityAddress;
                 }
@@ -141,7 +141,7 @@ const Store = ({ children }) => {
                 const communityContract = new ethers.Contract(
                   communityContractAddress,
                   communityContractABI,
-                  signer
+                  signer,
                 );
 
                 const ditoContractABI = ditoContractAbi;
@@ -149,7 +149,7 @@ const Store = ({ children }) => {
                 const ditoContract = new ethers.Contract(
                   ditoContractAddress,
                   ditoContractABI,
-                  signer
+                  signer,
                 );
 
                 // Send transaction to smart contract to update message and wait to finish
@@ -158,17 +158,17 @@ const Store = ({ children }) => {
                 let ditoBalanceStr = BigNumber.from(ditoBalance).toString();
                 ditoBalanceStr = ditoBalanceStr.slice(
                   0,
-                  ditoBalanceStr.length - 18
+                  ditoBalanceStr.length - 18,
                 );
 
                 setUserInfo({
                   ...userInfo,
                   communityContract: { address: communityContractAddress },
                   ditoBalance: ditoBalanceStr,
-                  DIDT
+                  DIDT,
                 });
-                if (journey === "login" || !journey) {
-                  router.push("/skillwallet");
+                if (journey === 'login' || !journey) {
+                  router.push('/skillwallet');
                 }
               } catch (error) {
                 console.log(error);
@@ -180,17 +180,17 @@ const Store = ({ children }) => {
             const userJourney = getUserJourney();
             if (
               !userJourney &&
-              router.pathname !== "/community/join" &&
-              router.pathname !== "/community/invite"
+              router.pathname !== '/community/join' &&
+              router.pathname !== '/community/invite'
             ) {
-              router.push("/");
+              router.push('/');
             } else if (userJourney) {
               const { journey, step } = userJourney;
-              if (journey === "community") {
-                if (step === "category") {
-                  router.push("/community/create");
+              if (journey === 'community') {
+                if (step === 'category') {
+                  router.push('/community/create');
                 } else {
-                  router.push("/community/created");
+                  router.push('/community/created');
                 }
               }
             }

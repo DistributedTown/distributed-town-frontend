@@ -1,19 +1,18 @@
-import { useContext, useEffect, useState } from "react";
-import Link from "next/link";
+import { useContext, useEffect, useState } from 'react';
+import Link from 'next/link';
 
-import SkillPill from "../../components/SkillPill";
-import Quote from "../../components/Quote";
-import RegistrationModal from "../../components/registration/RegistrationModal";
-import  {
+import { useRouter } from 'next/router';
+import SkillPill from '../../components/SkillPill';
+import Quote from '../../components/Quote';
+import RegistrationModal from '../../components/registration/RegistrationModal';
+import {
   MagicContext,
   LoggedInContext,
   TokenContext,
-  UserInfoContext
-} from "../../components/Store";
-import { useRouter } from "next/router";
-import Layout from "../../components/Layout";
-import bgImages from "../../utils/bgImages.js";
-
+  UserInfoContext,
+} from '../../components/Store';
+import Layout from '../../components/Layout';
+import bgImages from '../../utils/bgImages.js';
 
 const Join = props => {
   const [, setToken] = useContext(TokenContext);
@@ -23,20 +22,20 @@ const Join = props => {
   const [modalState, setModalState] = useState(false);
 
   const [selectedPill, setSelectedPill] = useState(-1);
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState('');
 
   const router = useRouter();
 
   console.log(router.query);
   // if (router)
   const getCommunityBgImg = selectedCommunity => {
-    return typeof (selectedCommunity !== "undefined") && selectedCommunity >= 0
+    return typeof (selectedCommunity !== 'undefined') && selectedCommunity >= 0
       ? bgImages[props.skills[selectedCommunity].toLowerCase()]
-      : bgImages["default"];
+      : bgImages.default;
   };
 
   const getSelectedSkillName = selectedPill => {
-    return typeof (selectedPill !== "undefined") && selectedPill >= 0
+    return typeof (selectedPill !== 'undefined') && selectedPill >= 0
       ? ` ${props.skills[selectedPill]}`
       : `${props.skills[0]}`;
   };
@@ -55,11 +54,11 @@ const Join = props => {
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/api/community/${id}`,
         {
-          method: "GET",
+          method: 'GET',
           headers: new Headers({
-            Authorization: "Bearer " + DIDT
-          })
-        }
+            Authorization: `Bearer ${DIDT}`,
+          }),
+        },
       );
       const community = await response.json();
       return community;
@@ -70,11 +69,11 @@ const Join = props => {
 
   async function fetchUserData(DIDT) {
     try {
-      let res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user`, {
-        method: "GET",
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user`, {
+        method: 'GET',
         headers: new Headers({
-          Authorization: "Bearer " + DIDT
-        })
+          Authorization: `Bearer ${DIDT}`,
+        }),
       });
       const userData = await res.json();
       return userData;
@@ -88,49 +87,49 @@ const Join = props => {
     try {
       const DIDT = await magic.auth.loginWithMagicLink({ email });
 
-      console.log("didToken", DIDT);
+      console.log('didToken', DIDT);
 
       setToken(DIDT);
 
-      let res = await fetch(
+      const res = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/api/user/login`,
         {
-          method: "POST",
+          method: 'POST',
           headers: new Headers({
-            Authorization: "Bearer " + DIDT
-          })
-        }
+            Authorization: `Bearer ${DIDT}`,
+          }),
+        },
       );
 
       setLoggedIn(true);
 
       const userData = await fetchUserData(DIDT);
-      console.log("TWO", userData);
+      console.log('TWO', userData);
       const haSkills =
         userData[0].skills &&
         Array.isArray(userData[0].skills) &&
         userData[0].skills.length > 0;
 
       if (haSkills) {
-        console.log("going to the skillwallet");
+        console.log('going to the skillwallet');
         const userCommunityData = await fetchCommunityById(
           userData[0].communityID,
-          DIDT
+          DIDT,
         );
         setUserInfo({
           ...userInfo,
           ...userData[0],
-          communityContract: userCommunityData
+          communityContract: userCommunityData,
         });
 
-        router.push("/skillwallet");
+        router.push('/skillwallet');
       } else {
         setUserInfo({
           ...userInfo,
-          email: email,
-          skills: userData[0].skills || []
+          email,
+          skills: userData[0].skills || [],
         });
-        router.push("/SignupPhaseOne");
+        router.push('/SignupPhaseOne');
       }
     } catch (err) {
       await magic.user.logout();
@@ -143,7 +142,7 @@ const Join = props => {
     setUserInfo({
       ...userInfo,
       category: props.skills[selectedPill],
-      background: getCommunityBgImg(selectedPill)
+      background: getCommunityBgImg(selectedPill),
     });
   }, [selectedPill]);
 
@@ -152,12 +151,12 @@ const Join = props => {
       className="h-screen w-full"
       logo={{ withText: true }}
       splash={{
-        color: "blue",
-        variant: "1",
-        alignment: "right",
+        color: 'blue',
+        variant: '1',
+        alignment: 'right',
         isTranslucent: false,
         fullHeight: false,
-        zIndex: -1
+        zIndex: -1,
       }}
     >
       <div className="firstPage">
@@ -179,7 +178,7 @@ const Join = props => {
                   onClick={() => {
                     setSelectedPill(i);
                     if (loggedIn) {
-                      router.push("/SignupPhaseOne");
+                      router.push('/SignupPhaseOne');
                     } else {
                       toggleModal();
                     }
@@ -210,12 +209,12 @@ const Join = props => {
 
 export async function getServerSideProps(context) {
   let skills = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/skill`, {
-    method: "GET"
+    method: 'GET',
   });
   skills = await skills.json();
 
   return {
-    props: { skills } // will be passed to the page component as props
+    props: { skills }, // will be passed to the page component as props
   };
 }
 

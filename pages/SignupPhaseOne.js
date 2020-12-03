@@ -1,23 +1,20 @@
+import { useContext, useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
+import { ethers } from 'ethers';
 import {
   MagicContext,
   UserInfoContext,
-  TokenContext
-} from "../components/Store";
-import Layout from "../components/Layout";
+  TokenContext,
+} from '../components/Store';
+import Layout from '../components/Layout';
 
-import { useContext, useState, useEffect } from "react";
-import SkillsCard from "../components/SkillsCard";
+import SkillsCard from '../components/SkillsCard';
 
-import Button from "../components/Button";
-import { useRouter } from "next/router";
-import NicknameSelection from "../components/NicknameSelection";
-import {
-  getUserJourney,
-  removeUserJourney
-} from "../utils/userJourneyManager";
-import { ethers } from "ethers";
-import communitiesABI from "../utils/communitiesRegistryAbi.json";
-import contractABI from "../utils/communityContractAbi.json";
+import Button from '../components/Button';
+import NicknameSelection from '../components/NicknameSelection';
+import { getUserJourney, removeUserJourney } from '../utils/userJourneyManager';
+import communitiesABI from '../utils/communitiesRegistryAbi.json';
+import contractABI from '../utils/communityContractAbi.json';
 
 function SignupPhaseOne(props) {
   const [userInfo = { skills: [] }, setUserInfo] = useContext(UserInfoContext);
@@ -26,14 +23,14 @@ function SignupPhaseOne(props) {
   const [token, setToken] = useContext(TokenContext);
   const [loading, setLoading] = useState({
     status: false,
-    message: null
+    message: null,
   });
 
   console.log(userInfo);
 
   useEffect(() => {
-    let category = userInfo.category;
-    let paramName = "skill";
+    let { category } = userInfo;
+    let paramName = 'skill';
     const userJourney = getUserJourney();
     let journey = null;
     let meta = null;
@@ -41,13 +38,13 @@ function SignupPhaseOne(props) {
       journey = userJourney.journey;
       meta = userJourney.meta;
     }
-    if (journey === "community") {
+    if (journey === 'community') {
       category = encodeURIComponent(meta.category);
-      paramName = "category";
+      paramName = 'category';
     }
-    if (journey === "invite") {
+    if (journey === 'invite') {
       category = encodeURIComponent(userInfo.category);
-      paramName = "category";
+      paramName = 'category';
     }
     console.log(category);
 
@@ -55,7 +52,7 @@ function SignupPhaseOne(props) {
       try {
         const response = await fetch(
           `${process.env.NEXT_PUBLIC_API_URL}/api/skill?${paramName}=${category}`,
-          { method: "GET" }
+          { method: 'GET' },
         );
         const skillTree = await response.json();
         const skillTreeCategories = skillTree.categories;
@@ -72,18 +69,18 @@ function SignupPhaseOne(props) {
       category.skills.map((skill, skillIndex) => {
         if (skillIndex === selectedSkillIndex) {
           const newSkill =
-            typeof skill === "string"
+            typeof skill === 'string'
               ? { skill, selected: !skill.selected }
               : { ...skill, selected: !skill.selected };
           return { ...newSkill };
         }
 
-        return typeof skill === "string" ? { skill } : { ...skill };
+        return typeof skill === 'string' ? { skill } : { ...skill };
       });
 
     const copySkills = category =>
       category.skills.map(skill => {
-        return typeof skill === "string" ? { skill } : { ...skill };
+        return typeof skill === 'string' ? { skill } : { ...skill };
       });
 
     const updateSkillTree = _skillTree =>
@@ -93,7 +90,7 @@ function SignupPhaseOne(props) {
         }
         return {
           ...category,
-          skills: copySkills(category)
+          skills: copySkills(category),
         };
       });
 
@@ -119,29 +116,29 @@ function SignupPhaseOne(props) {
         if (categoryIndex === catIndex) {
           return {
             ...category,
-            skills: updateSkills(category)
+            skills: updateSkills(category),
           };
         }
         return {
           ...category,
-          skills: copySkills(category)
+          skills: copySkills(category),
         };
       });
     setSkillTree(updateSkillTree(skillTree));
   }
 
   function getSelectedSkills() {
-    let skills = [];
+    const skills = [];
 
     if (skillTree.length === 0) return <></>;
 
-    for (let category of skillTree) {
-      for (let skill of category.skills) {
+    for (const category of skillTree) {
+      for (const skill of category.skills) {
         if (skill) {
-          if (typeof skill.selected !== "undefined" && skill.selected) {
+          if (typeof skill.selected !== 'undefined' && skill.selected) {
             skills.push({
               skill: skill.skill,
-              level: typeof skill.level === "undefined" ? 0 : skill.level
+              level: typeof skill.level === 'undefined' ? 0 : skill.level,
             });
           }
         }
@@ -158,21 +155,21 @@ function SignupPhaseOne(props) {
         );
       });
     }
-    return "";
+    return '';
   }
 
   function getTotalSelected() {
-    let skills = [];
+    const skills = [];
 
     if (skillTree.length === 0) return <></>;
 
-    for (let category of skillTree) {
-      for (let skill of category.skills) {
+    for (const category of skillTree) {
+      for (const skill of category.skills) {
         if (skill) {
-          if (typeof skill.selected !== "undefined" && skill.selected) {
+          if (typeof skill.selected !== 'undefined' && skill.selected) {
             skills.push({
               skill: skill.skill,
-              level: typeof skill.level === "undefined" ? 0 : skill.level
+              level: typeof skill.level === 'undefined' ? 0 : skill.level,
             });
           }
         }
@@ -182,14 +179,14 @@ function SignupPhaseOne(props) {
   }
 
   function setUserSkills() {
-    let skills = [];
+    const skills = [];
 
-    for (let category of skillTree) {
-      for (let skill of category.skills) {
+    for (const category of skillTree) {
+      for (const skill of category.skills) {
         if (skill.selected)
           skills.push({
             ...skill,
-            redeemableDitos: Math.floor(skill.level / 10) * category.credits
+            redeemableDitos: Math.floor(skill.level / 10) * category.credits,
           });
       }
     }
@@ -202,7 +199,7 @@ function SignupPhaseOne(props) {
   const createCommunity = async () => {
     setLoading({
       status: true,
-      message: "Creating community..."
+      message: 'Creating community...',
     });
     try {
       const provider = new ethers.providers.Web3Provider(magic.rpcProvider);
@@ -210,37 +207,37 @@ function SignupPhaseOne(props) {
 
       // call the smart contract to create community
       const contract = new ethers.Contract(
-        "0xe141f6C659bEA31d39cD043539E426D53bF3D7d8",
+        '0xe141f6C659bEA31d39cD043539E426D53bF3D7d8',
         communitiesABI,
-        signer
+        signer,
       );
 
       const estimatedGas = await contract.estimateGas.createCommunity();
       const createTx = await contract.createCommunity({
         // 500k gas
         gasLimit: ethers.BigNumber.from(estimatedGas).toNumber(), // 3896496,
-        gasPrice: 7910854493
+        gasPrice: 7910854493,
       });
       // Wait for transaction to finish
       const communityAddress = await createTx.wait();
-      console.log("communityAddress", communityAddress);
+      console.log('communityAddress', communityAddress);
       const { events } = communityAddress;
       const communityCreatedEvent = events.find(
-        e => e.event === "CommunityCreated"
+        e => e.event === 'CommunityCreated',
       );
       if (!communityCreatedEvent) {
-        throw new Error("Something went wrong");
+        throw new Error('Something went wrong');
       }
 
       console.log(communityCreatedEvent);
 
       setLoading({
         status: true,
-        message: "Joining community..."
+        message: 'Joining community...',
       });
       // call the smart contract to join community
       let amountOfRedeemableDitos = 0;
-      for (let { redeemableDitos } of userInfo.skills) {
+      for (const { redeemableDitos } of userInfo.skills) {
         amountOfRedeemableDitos += redeemableDitos;
       }
 
@@ -250,7 +247,7 @@ function SignupPhaseOne(props) {
       const communitContract = new ethers.Contract(
         communityCreatedEvent.args[0],
         contractABI,
-        signer
+        signer,
       );
       const joinTx = await communitContract.join(totalDitos);
       // Wait for transaction to finish
@@ -262,27 +259,27 @@ function SignupPhaseOne(props) {
         category: meta.category,
         addresses: [
           {
-            blockchain: "ETH",
-            address: communityCreatedEvent.args[0]
-          }
+            blockchain: 'ETH',
+            address: communityCreatedEvent.args[0],
+          },
         ],
         name: meta.communityName,
         owner: {
           username: userInfo.username,
-          skills: userInfo.skills
-        }
+          skills: userInfo.skills,
+        },
       };
       await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/community`, {
-        method: "POST",
+        method: 'POST',
         body: JSON.stringify(payload),
         headers: {
-          "content-type": "application/json",
-          Authorization: `Bearer ${token}`
-        }
+          'content-type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
       });
       setLoading({
         status: false,
-        message: null
+        message: null,
       });
       // update user in UserInfoContext
       setUserInfo({
@@ -290,16 +287,16 @@ function SignupPhaseOne(props) {
         ditoBalance: totalDitos,
         communityContract: {
           name: meta.communityName,
-          address: communityCreatedEvent.args[0]
-        }
+          address: communityCreatedEvent.args[0],
+        },
       });
       removeUserJourney();
-      router.push("/SignupCompleted");
+      router.push('/SignupCompleted');
     } catch (error) {
       console.log(error);
       setLoading({
         status: false,
-        message: null
+        message: null,
       });
     }
   };
@@ -307,7 +304,7 @@ function SignupPhaseOne(props) {
   async function updateUser(community) {
     try {
       let currentToken = token;
-      console.log("1 ct", currentToken);
+      console.log('1 ct', currentToken);
       const responseFetchToken = await magic.user.getIdToken();
       const didToken = await responseFetchToken;
       if (token !== didToken) {
@@ -315,32 +312,32 @@ function SignupPhaseOne(props) {
         setToken(didToken);
       }
 
-      console.log("2 ct", currentToken);
+      console.log('2 ct', currentToken);
 
-      console.log("updated skills userinfo", userInfo);
+      console.log('updated skills userinfo', userInfo);
 
       const payload = {
         username: userInfo.username,
         communityID: community._id,
-        skills: userInfo.skills
+        skills: userInfo.skills,
       };
 
-      console.log("payload", payload);
+      console.log('payload', payload);
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/api/user`,
         {
-          method: "POST",
+          method: 'POST',
           body: JSON.stringify(payload),
           headers: new Headers({
-            Authorization: "Bearer " + currentToken,
-            "Content-Type": "application/json"
-          })
-        }
+            Authorization: `Bearer ${currentToken}`,
+            'Content-Type': 'application/json',
+          }),
+        },
       );
 
       const updatedUser = await response.json();
 
-      router.push("/SignupCompleted");
+      router.push('/SignupCompleted');
     } catch (err) {
       console.log(err);
     }
@@ -357,15 +354,15 @@ function SignupPhaseOne(props) {
       console.log(userInfo);
       const contractAddress = userInfo.communityContract
         ? userInfo.communityContract.address
-        : "0x790697f595Aa4F9294566be0d262f71b44b5039c";
+        : '0x790697f595Aa4F9294566be0d262f71b44b5039c';
       const contract = new ethers.Contract(
         contractAddress,
         contractABI,
-        signer
+        signer,
       );
 
       let amountOfRedeemableDitos = 0;
-      for (let { redeemableDitos } of userInfo.skills) {
+      for (const { redeemableDitos } of userInfo.skills) {
         amountOfRedeemableDitos += redeemableDitos;
       }
 
@@ -387,15 +384,15 @@ function SignupPhaseOne(props) {
   const submit = () => {
     const { journey } = getUserJourney();
     if (!userInfo.username) {
-      alert("Please choose a nickname");
+      alert('Please choose a nickname');
       return;
     }
-    if (journey === "community") {
+    if (journey === 'community') {
       createCommunity();
-    } else if (journey === "invite") {
+    } else if (journey === 'invite') {
       joinCommunity();
     } else {
-      router.push("/SignupPhaseTwo");
+      router.push('/SignupPhaseTwo');
     }
   };
 
@@ -417,17 +414,17 @@ function SignupPhaseOne(props) {
       navBar={{ hideNav: true }}
       flex
       splash={{
-        color: "blue",
-        variant: "default",
-        alignment: "left"
+        color: 'blue',
+        variant: 'default',
+        alignment: 'left',
       }}
       logo
-      bgImage={{ src: "/background-image.svg", alignment: "left", size: 40 }}
+      bgImage={{ src: '/background-image.svg', alignment: 'left', size: 40 }}
     >
       <div className="flex flex-wrap justify-between h-full w-full relative">
         <div
           className="flex w-1/2 justify-center items-center space-y-8 p-8 flex-grow-0 h-full"
-          style={{ backdropFilter: "blur(5px)" }}
+          style={{ backdropFilter: 'blur(5px)' }}
         >
           <NicknameSelection
             setUserInfo={setUserInfo}
@@ -477,11 +474,11 @@ function SignupPhaseOne(props) {
                 : () => setUserSkills()
             }
           >
-            {journey === "community"
-              ? "Next: Create and Join Community"
-              : journey === "invite"
-              ? "Next: Join Community"
-              : "Next: choose your first community!"}
+            {journey === 'community'
+              ? 'Next: Create and Join Community'
+              : journey === 'invite'
+              ? 'Next: Join Community'
+              : 'Next: choose your first community!'}
           </Button>
         </div>
       </div>

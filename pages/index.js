@@ -1,13 +1,13 @@
-import Link from "next/link";
+import Link from 'next/link';
 
-import { useContext, useState } from "react";
+import { useContext, useState } from 'react';
 import {
   MagicContext,
   LoggedInContext,
   TokenContext,
-} from "../components/Store";
-import Layout from "../components/Layout";
-import { setUserJourney } from "../utils/userJourneyManager";
+} from '../components/Store';
+import Layout from '../components/Layout';
+import { setUserJourney } from '../utils/userJourneyManager';
 
 const Index = () => {
   const [loggedIn, setLoggedIn] = useContext(LoggedInContext);
@@ -19,10 +19,10 @@ const Index = () => {
     /* Pass the Decentralized ID token in the Authorization header to the database */
 
     return await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user/login`, {
-      method: "POST",
+      method: 'POST',
       headers: new Headers({
-        Authorization: "Bearer " + DIDT
-      })
+        Authorization: `Bearer ${DIDT}`,
+      }),
     });
   };
 
@@ -31,21 +31,21 @@ const Index = () => {
     const { email: emailInput } = event.target;
     const email = emailInput.value;
     try {
-      if (email.trim() === "") {
-        throw new Error("Please enter a valid email address");
+      if (email.trim() === '') {
+        throw new Error('Please enter a valid email address');
       }
       const DIDT = await magic.auth.loginWithMagicLink({ email });
       setLoading(true);
-      let user = await authenticateWithDb(DIDT);
+      const user = await authenticateWithDb(DIDT);
       setUserJourney({
-        journey: "login",
-        step: "login"
+        journey: 'login',
+        step: 'login',
       });
       if (user) {
         setToken(DIDT);
         setLoggedIn(true);
       } else {
-        throw new Error("Something went wrong, please try again!");
+        throw new Error('Something went wrong, please try again!');
       }
     } catch (error) {
       console.log(error.message);
@@ -56,14 +56,14 @@ const Index = () => {
   return (
     <Layout
       flex
-      bgImage={{ src: "/background-image.svg", alignment: "left", size: 60 }}
+      bgImage={{ src: '/background-image.svg', alignment: 'left', size: 60 }}
       className="h-screen w-full flex"
       logo={{ withText: true }}
       splash={{
-        color: "blue",
-        variant: "default",
-        alignment: "left",
-        isTranslucent: true
+        color: 'blue',
+        variant: 'default',
+        alignment: 'left',
+        isTranslucent: true,
       }}
     >
       <div className="h-full w-3/5 flex justify-center items-center">
@@ -92,8 +92,8 @@ const Index = () => {
                   className="flex justify-around items-center text-xl px-8"
                   onClick={() => {
                     setUserJourney({
-                      journey: "community",
-                      step: "category"
+                      journey: 'community',
+                      step: 'category',
                     });
                   }}
                 >
@@ -110,8 +110,8 @@ const Index = () => {
                   className="flex justify-around items-center text-xl px-8"
                   onClick={() => {
                     setUserJourney({
-                      journey: "join",
-                      step: "start"
+                      journey: 'join',
+                      step: 'start',
                     });
                   }}
                 >
@@ -127,7 +127,7 @@ const Index = () => {
                 className="border-2 border-denim p-4 flex justify-between items-center font-bold text-xl"
                 onSubmit={loginHandler}
               >
-                Login{" "}
+                Login{' '}
                 <input
                   className="border border-denim p-1 w-3/4"
                   placeholder="yourmail@me.io"
@@ -152,12 +152,12 @@ const Index = () => {
 
 export async function getServerSideProps(context) {
   let skills = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/skill`, {
-    method: "GET"
+    method: 'GET',
   });
   skills = await skills.json();
 
   return {
-    props: { skills } // will be passed to the page component as props
+    props: { skills }, // will be passed to the page component as props
   };
 }
 

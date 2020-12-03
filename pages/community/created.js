@@ -1,29 +1,29 @@
-import { useContext, useState, useEffect } from "react";
-import { useRouter } from "next/router";
+import { useContext, useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
 
-import Layout from "../../components/Layout";
-import RegistrationModal from "../../components/registration/RegistrationModal";
+import Layout from '../../components/Layout';
+import RegistrationModal from '../../components/registration/RegistrationModal';
 import {
   MagicContext,
   LoggedInContext,
   UserInfoContext,
-  TokenContext
-} from "../../components/Store";
+  TokenContext,
+} from '../../components/Store';
 import {
   setUserJourney,
   getUserJourney,
-  removeUserJourney
-} from "../../utils/userJourneyManager";
-import bgImages from "../../utils/bgImages.js";
+  removeUserJourney,
+} from '../../utils/userJourneyManager';
+import bgImages from '../../utils/bgImages.js';
 
 function Created() {
   const [userInfo, setUserInfo] = useContext(UserInfoContext);
   const [, setToken] = useContext(TokenContext);
   const [, setLoggedIn] = useContext(LoggedInContext);
   const [magic] = useContext(MagicContext);
-  const [communityName, setCommunityName] = useState("Community");
+  const [communityName, setCommunityName] = useState('Community');
   const [modalState, setModalState] = useState(false);
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
@@ -40,11 +40,11 @@ function Created() {
 
   const fetchUserData = async DIDT => {
     try {
-      let res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user`, {
-        method: "GET",
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user`, {
+        method: 'GET',
         headers: new Headers({
-          Authorization: "Bearer " + DIDT
-        })
+          Authorization: `Bearer ${DIDT}`,
+        }),
       });
       const userData = await res.json();
       return userData;
@@ -58,11 +58,11 @@ function Created() {
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/api/community/${id}`,
         {
-          method: "GET",
+          method: 'GET',
           headers: new Headers({
-            Authorization: "Bearer " + DIDT
-          })
-        }
+            Authorization: `Bearer ${DIDT}`,
+          }),
+        },
       );
       const community = await response.json();
       return community;
@@ -79,17 +79,17 @@ function Created() {
 
       setLoading(true);
       await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user/login`, {
-        method: "POST",
+        method: 'POST',
         headers: new Headers({
-          Authorization: "Bearer " + DIDT
-        })
+          Authorization: `Bearer ${DIDT}`,
+        }),
       });
 
       const metaData = await magic.user.getMetadata();
       console.log(metaData.publicAddress);
-      await fetch("/api/getFunded", {
-        method: "POST",
-        body: JSON.stringify({ publicAddress: metaData.publicAddress })
+      await fetch('/api/getFunded', {
+        method: 'POST',
+        body: JSON.stringify({ publicAddress: metaData.publicAddress }),
       });
 
       setLoggedIn(true);
@@ -102,31 +102,31 @@ function Created() {
         userData[0].skills.length > 0;
 
       if (haSkills) {
-        console.log("going to the skillwallet");
+        console.log('going to the skillwallet');
         const userCommunityData = await fetchCommunityById(
           userData[0].communityID,
-          DIDT
+          DIDT,
         );
         setUserInfo({
           ...userInfo,
           ...userData[0],
-          communityContract: userCommunityData
+          communityContract: userCommunityData,
         });
 
-        router.push("/skillwallet");
+        router.push('/skillwallet');
         removeUserJourney();
       } else {
         setUserInfo({
           ...userInfo,
-          email: email,
-          skills: userData[0].skills || []
+          email,
+          skills: userData[0].skills || [],
         });
 
         // send the user to pick skills
         setUserJourney({
-          step: "skills"
+          step: 'skills',
         });
-        router.push("/SignupPhaseOne");
+        router.push('/SignupPhaseOne');
       }
     } catch (err) {
       await magic.user.logout();
@@ -146,9 +146,9 @@ function Created() {
       navBar
       logo
       splash={{
-        color: "rain-forest",
-        variant: "quad",
-        alignment: "left"
+        color: 'rain-forest',
+        variant: 'quad',
+        alignment: 'left',
       }}
     >
       <div className="w-full flex flex-col items-center justify-between space-y-8 pt-32 h-full">
@@ -181,7 +181,7 @@ function Created() {
           email={email}
           setEmail={setEmail}
           showRegisterModal={modalState}
-          getCommunityBgImg={() => bgImages["default"]}
+          getCommunityBgImg={() => bgImages.default}
         />
       </div>
       {loading && (

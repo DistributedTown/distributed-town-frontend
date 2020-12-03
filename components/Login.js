@@ -1,27 +1,30 @@
-import { useContext, useState } from "react";
-import { MagicContext, LoggedInContext, LoadingContext } from "./Store";
-import Router from "next/router";
-import Link from "next/link";
+import { useContext, useState } from 'react';
+import Router from 'next/router';
+import Link from 'next/link';
+import { MagicContext, LoggedInContext, LoadingContext } from './Store';
 
 const Login = () => {
   const [loggedIn, setLoggedIn] = useContext(LoggedInContext);
   const [isLoading, setIsLoading] = useContext(LoadingContext);
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState('');
   const [magic] = useContext(MagicContext);
-  const [errorMsg, setErrorMsg] = useState("");
+  const [errorMsg, setErrorMsg] = useState('');
   const [disableLogin, setDisableLogin] = useState(false);
 
   const authenticateWithDb = async DIDT => {
     /* Pass the Decentralized ID token in the Authorization header to the database */
 
-    let res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user/login`, {
-      method: "POST",
-      headers: new Headers({
-        Authorization: "Bearer " + DIDT
-      })
-    });
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/user/login`,
+      {
+        method: 'POST',
+        headers: new Headers({
+          Authorization: `Bearer ${DIDT}`,
+        }),
+      },
+    );
 
-    let data = await res.json();
+    const data = await res.json();
 
     /* If the user is authorized, return an object containing the user properties (issuer, publicAddress, email) */
     /* Else, the login was not successful and return false */
@@ -37,11 +40,11 @@ const Login = () => {
       const DIDT = await magic.auth.loginWithMagicLink({ email });
 
       /* `user` will be the user object returned from the db, or `false` if the login failed */
-      let user = await authenticateWithDb(DIDT);
+      const user = await authenticateWithDb(DIDT);
 
       if (user) {
         setLoggedIn(user.email);
-        Router.push("/");
+        Router.push('/');
       }
     } catch (err) {
       /* If the user clicked "cancel", allow them to click the login again */
@@ -76,7 +79,7 @@ const Login = () => {
               type="email"
               value={email}
               onChange={e => {
-                setErrorMsg(""); // remove error msg
+                setErrorMsg(''); // remove error msg
                 setEmail(e.target.value);
               }}
             />
@@ -88,7 +91,7 @@ const Login = () => {
               disabled={disableLogin}
               onClick={e => {
                 e.preventDefault();
-                if (!email) return setErrorMsg("Email cannot be empty.");
+                if (!email) return setErrorMsg('Email cannot be empty.');
                 handleLogin();
               }}
             />

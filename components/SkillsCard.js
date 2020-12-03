@@ -3,7 +3,7 @@ function SkillsCard({
   skills,
   selectSkill,
   setSkillLevel,
-  totalSelected
+  totalSelected,
 }) {
   return (
     <div className="flex flex-col border border-denim px-3 py-2 text-xs">
@@ -19,11 +19,11 @@ function SkillsCard({
                 disabled={!skill.selected && totalSelected === 3}
               />
               <div className="flex flex-col p-2">
-                <p>{typeof skill === "string" ? skill : skill.skill}</p>
+                <p>{typeof skill === 'string' ? skill : skill.skill}</p>
                 <input
                   type="range"
                   value={
-                    typeof skill === "string"
+                    typeof skill === 'string'
                       ? 0
                       : skill.selected
                       ? skill.level

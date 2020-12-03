@@ -1,18 +1,18 @@
-import { useContext, useEffect, useState } from "react";
-import RegistrationModal from "../../components/registration/RegistrationModal";
-import  {
+import { useContext, useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
+import RegistrationModal from '../../components/registration/RegistrationModal';
+import {
   MagicContext,
   LoggedInContext,
   TokenContext,
-  UserInfoContext
-} from "../../components/Store";
-import { useRouter } from "next/router";
-import bgImages from "../../utils/bgImages.js";
+  UserInfoContext,
+} from '../../components/Store';
+import bgImages from '../../utils/bgImages.js';
 
 import {
   setUserJourney,
-  removeUserJourney
-} from "../../utils/userJourneyManager";
+  removeUserJourney,
+} from '../../utils/userJourneyManager';
 
 const Join = props => {
   const [, setToken] = useContext(TokenContext);
@@ -21,7 +21,7 @@ const Join = props => {
   const [userInfo, setUserInfo] = useContext(UserInfoContext);
   const [loading, setLoading] = useState(false);
 
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState('');
 
   const router = useRouter();
 
@@ -30,23 +30,23 @@ const Join = props => {
   let communityName = null;
   useEffect(() => {
     setUserJourney({
-      journey: "invite",
-      step: "login"
+      journey: 'invite',
+      step: 'login',
     });
   }, []);
-  if (router.query.hasOwnProperty("communityId")) {
+  if (router.query.hasOwnProperty('communityId')) {
     communityId = router.query.communityId;
     communityName = router.query.communityName;
   } else {
-    router.push("/");
+    router.push('/');
     removeUserJourney();
     return;
   }
 
   const getCommunityBgImg = selectedCommunity => {
-    return typeof (selectedCommunity !== "undefined") && selectedCommunity >= 0
+    return typeof (selectedCommunity !== 'undefined') && selectedCommunity >= 0
       ? bgImages[props.skills[selectedCommunity].toLowerCase()]
-      : bgImages["default"];
+      : bgImages.default;
   };
 
   async function fetchCommunityById(id, DIDT) {
@@ -54,11 +54,11 @@ const Join = props => {
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/api/community/${id}`,
         {
-          method: "GET",
+          method: 'GET',
           headers: new Headers({
-            Authorization: "Bearer " + DIDT
-          })
-        }
+            Authorization: `Bearer ${DIDT}`,
+          }),
+        },
       );
       const community = await response.json();
       return community;
@@ -69,11 +69,11 @@ const Join = props => {
 
   async function fetchUserData(DIDT) {
     try {
-      let res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user`, {
-        method: "GET",
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user`, {
+        method: 'GET',
         headers: new Headers({
-          Authorization: "Bearer " + DIDT
-        })
+          Authorization: `Bearer ${DIDT}`,
+        }),
       });
       const userData = await res.json();
       return userData;
@@ -88,57 +88,57 @@ const Join = props => {
     try {
       const DIDT = await magic.auth.loginWithMagicLink({ email });
 
-      console.log("didToken", DIDT);
+      console.log('didToken', DIDT);
 
       setToken(DIDT);
 
-      let res = await fetch(
+      const res = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/api/user/login`,
         {
-          method: "POST",
+          method: 'POST',
           headers: new Headers({
-            Authorization: "Bearer " + DIDT
-          })
-        }
+            Authorization: `Bearer ${DIDT}`,
+          }),
+        },
       );
 
       setLoggedIn(true);
 
       const userData = await fetchUserData(DIDT);
-      console.log("TWO", userData);
+      console.log('TWO', userData);
       const haSkills =
         userData[0].skills &&
         Array.isArray(userData[0].skills) &&
         userData[0].skills.length > 0;
 
       if (haSkills) {
-        console.log("going to the skillwallet");
+        console.log('going to the skillwallet');
         const userCommunityData = await fetchCommunityById(
           userData[0].communityID,
-          DIDT
+          DIDT,
         );
         setUserInfo({
           ...userInfo,
           ...userData[0],
-          communityContract: userCommunityData
+          communityContract: userCommunityData,
         });
 
-        router.push("/skillwallet");
+        router.push('/skillwallet');
       } else {
         const communityData = await fetchCommunityById(communityId, DIDT);
         console.log(communityData);
         setUserInfo({
           ...userInfo,
-          email: email,
+          email,
           communityContract: {
             ...communityData,
-            address: communityData.addresses[0].address
+            address: communityData.addresses[0].address,
           },
           category: communityData.category,
-          skills: []
+          skills: [],
         });
         setTimeout(() => {
-          router.push("/SignupPhaseOne");
+          router.push('/SignupPhaseOne');
         }, 400);
       }
     } catch (err) {
@@ -170,12 +170,12 @@ const Join = props => {
 
 export async function getServerSideProps(context) {
   let skills = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/skill`, {
-    method: "GET"
+    method: 'GET',
   });
   skills = await skills.json();
 
   return {
-    props: { skills } // will be passed to the page component as props
+    props: { skills }, // will be passed to the page component as props
   };
 }
 

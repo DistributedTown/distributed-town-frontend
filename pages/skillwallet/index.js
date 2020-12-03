@@ -1,27 +1,27 @@
+import Link from 'next/link';
+
+import { useContext, useState, useEffect } from 'react';
+import { ethers } from 'ethers';
+
+import { useRouter } from 'next/router';
 import {
   MagicContext,
   LoggedInContext,
   UserInfoContext,
-  TokenContext
-} from "../../components/Store";
-import Link from "next/link";
+  TokenContext,
+} from '../../components/Store';
 
-import { useContext, useState, useEffect } from "react";
-import {  ethers } from "ethers";
-
-import { useRouter } from "next/router";
-
-import Layout from "../../components/Layout";
-import communityContractAbi from "../../utils/communityContractAbi.json";
+import Layout from '../../components/Layout';
+import communityContractAbi from '../../utils/communityContractAbi.json';
 
 function SkillWallet() {
   const [userInfo, setUserInfo] = useContext(UserInfoContext);
-  const [loggedIn,] = useContext(LoggedInContext);
+  const [loggedIn] = useContext(LoggedInContext);
   const [magic] = useContext(MagicContext);
   const [token, setToken] = useContext(TokenContext);
   const [pastGigs, setPastGigs] = useState([]);
   const [ditoBalance, setDitoBalance] = useState(
-    (userInfo && userInfo.ditoBalance) || 0
+    (userInfo && userInfo.ditoBalance) || 0,
   );
   const router = useRouter();
 
@@ -30,12 +30,12 @@ function SkillWallet() {
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/api/gig?isOpen=${isOpen}`,
         {
-          method: "GET",
+          method: 'GET',
           headers: {
             Authorization: `Bearer ${authToken}`,
-            "Content-Type": "application/json"
-          }
-        }
+            'Content-Type': 'application/json',
+          },
+        },
       );
       const gigs = await response.json();
       setPastGigs(gigs);
@@ -47,16 +47,16 @@ function SkillWallet() {
   async function fetchCurrentUser(authToken) {
     try {
       const response = await fetch(`https://api.distributed.town/api/user`, {
-        method: "GET",
+        method: 'GET',
         headers: {
-          Authorization: `Bearer ${authToken}`
-        }
+          Authorization: `Bearer ${authToken}`,
+        },
       });
       const userData = await response.json();
       setUserInfo({
         ...userInfo,
         username: userData.username,
-        email: userData.email
+        email: userData.email,
       });
     } catch (err) {
       console.log(err);
@@ -74,11 +74,11 @@ function SkillWallet() {
         const communityContractAddress =
           userInfo.communityContract && userInfo.communityContract.address
             ? userInfo.communityContract.address
-            : "0x759A224E15B12357b4DB2d3aa20ef84aDAf28bE7";
+            : '0x759A224E15B12357b4DB2d3aa20ef84aDAf28bE7';
         const communityContract = new ethers.Contract(
           communityContractAddress,
           communityContractABI,
-          signer
+          signer,
         );
 
         const currentToken = await magic.user.getIdToken();
@@ -90,7 +90,7 @@ function SkillWallet() {
         }
 
         await fetchOpenCloseGigs(currentToken, true);
-        //await fetchCurrentUser(token);
+        // await fetchCurrentUser(token);
       } catch (err) {
         console.error(err);
       }
@@ -98,7 +98,7 @@ function SkillWallet() {
   }, []);
 
   if (!userInfo) {
-    router.push("/");
+    router.push('/');
     return null;
   }
 
@@ -108,9 +108,9 @@ function SkillWallet() {
       navBar
       logo
       splash={{
-        color: "denim",
-        variant: "quad",
-        alignment: "left"
+        color: 'denim',
+        variant: 'quad',
+        alignment: 'left',
       }}
     >
       <div className="w-full flex flex-col h-full overflow-scroll">
@@ -123,7 +123,7 @@ function SkillWallet() {
           {/*  WALLET CARD  */}
           <div className="flex flex-col w-2/7 p-3 rounded-lg border border-denim m-3">
             <div className="flex flex-col">
-              {/* PROFILE*/}
+              {/* PROFILE */}
               <div className="flex h-3/8 text-white bg-black rounded p-3 mb-3">
                 <div className="flex w-1/3 items-center justify-center">
                   <p className="text-4xl">👨</p>
@@ -145,7 +145,7 @@ function SkillWallet() {
               {/*  <!--QR-CODE--> */}
               <div className="flex h-2/8 p-4 items-center justify-center border border-denim">
                 <p>
-                  Show{" "}
+                  Show{' '}
                   <Link href="/skillwallet/qr">
                     <a className="underline text-denim">Wallet's QR-Code</a>
                   </Link>
@@ -163,7 +163,7 @@ function SkillWallet() {
                   <img src="dito-tokens.svg" />
                   <h2 className="font-bold p-3">
                     {ditoBalance === -1
-                      ? "Loading dito balance..."
+                      ? 'Loading dito balance...'
                       : `${ditoBalance} DiTo`}
                   </h2>
                 </div>
@@ -201,12 +201,12 @@ function SkillWallet() {
                   <div className="p-3 w-full">
                     <p className="pr-4">
                       Badges will appear here once you validate your skills.
-                      Check the{" "}
+                      Check the{' '}
                       <a className="text-denim underline" href="#">
                         Open Gigs
-                      </a>{" "}
+                      </a>{' '}
                       and validate your Skills now!
-                    </p>{" "}
+                    </p>{' '}
                   </div>
                 </div>
               </div>
@@ -255,8 +255,8 @@ function SkillWallet() {
                     );
                   })
                 ) : (
-                    <h1 className="text-black">Past Gigs Loading...</h1>
-                  )}
+                  <h1 className="text-black">Past Gigs Loading...</h1>
+                )}
               </div>
             </div>
           </div>

@@ -1,7 +1,7 @@
-import { useContext } from "react";
-import { UserInfoContext } from "../../components/Store";
-import { QRCode } from "react-qrcode-logo";
-import { useRouter } from "next/router";
+import { useContext } from 'react';
+import { QRCode } from 'react-qrcode-logo';
+import { useRouter } from 'next/router';
+import { UserInfoContext } from '../../components/Store';
 
 function QR() {
   const userInfo = useContext(UserInfoContext);
@@ -11,7 +11,7 @@ function QR() {
     <div className="flex w-full h-screen">
       <button
         className="absolute bg-white py-2 px-4 m-2 rounded"
-        onClick={() => router.push("/skillwallet")}
+        onClick={() => router.push('/skillwallet')}
       >
         Go back
       </button>
@@ -27,7 +27,7 @@ function QR() {
           />
         </div>
         <div className="bg-white p-2 mt-10">
-          Scan <span className="underline text-denim ">Wallet’s QR-Code</span>{" "}
+          Scan <span className="underline text-denim ">Wallet’s QR-Code</span>{' '}
           to verify new member.
         </div>
       </div>
@@ -48,7 +48,7 @@ function QR() {
               <img src="/dito-tokens.svg" />
               <h2 className="font-bold">
                 {user.ditoBalance === -1
-                  ? "Loading dito balance..."
+                  ? 'Loading dito balance...'
                   : user.ditoBalance || 0}
               </h2>
             </div>

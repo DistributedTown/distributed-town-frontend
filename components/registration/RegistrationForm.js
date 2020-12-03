@@ -1,5 +1,5 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React from 'react';
+import PropTypes from 'prop-types';
 
 const RegistrationForm = ({
   cta,
@@ -9,7 +9,7 @@ const RegistrationForm = ({
   subtitle,
   placeholderText,
   email,
-  className = ""
+  className = '',
 }) => (
   <div
     className={`max-w-sm  rounded w-full lg:max-w-full lg:flex ${className}`}
@@ -49,7 +49,7 @@ RegistrationForm.propTypes = {
   email: PropTypes.string,
   subtitle: PropTypes.string,
   title: PropTypes.string,
-  placeholderText: PropTypes.string
+  placeholderText: PropTypes.string,
 };
 
 export default RegistrationForm;

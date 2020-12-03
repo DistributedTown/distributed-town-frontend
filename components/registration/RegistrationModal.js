@@ -1,6 +1,6 @@
-import RegistrationForm from "./RegistrationForm";
+import RegistrationForm from './RegistrationForm';
 
-import { getUserJourney } from "../../utils/userJourneyManager";
+import { getUserJourney } from '../../utils/userJourneyManager';
 
 const RegistrationModal = ({
   selectedPill,
@@ -9,7 +9,7 @@ const RegistrationModal = ({
   email,
   setEmail,
   showRegisterModal,
-  getCommunityBgImg
+  getCommunityBgImg,
 }) => {
   const userJourney = getUserJourney();
   let journey = null;
@@ -18,7 +18,7 @@ const RegistrationModal = ({
   }
 
   const getSelectedSkillName = selectedPill => {
-    return typeof (selectedPill !== "undefined") && selectedPill >= 0
+    return typeof (selectedPill !== 'undefined') && selectedPill >= 0
       ? ` ${skills[selectedPill]}`
       : `${skills[0]}`;
   };
@@ -40,12 +40,12 @@ const RegistrationModal = ({
                     title="Welcome to Dito"
                     email={email}
                     subtitle={`You will be joining a ${getSelectedSkillName(
-                      selectedPill
+                      selectedPill,
                     )} community`}
                     cta="Create Account"
                     placeholderText="Please enter your email"
                   />
-                  {journey !== "community" && showRegisterModal && (
+                  {journey !== 'community' && showRegisterModal && (
                     <a
                       onClick={showRegisterModal}
                       href="#"

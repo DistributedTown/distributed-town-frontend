@@ -1,13 +1,13 @@
-import React from "react";
+import React from 'react';
 
 const NicknameSelection = ({
   setUserInfo,
   userInfo,
-  value = "",
-  title = "",
-  subtitle = "",
-  placeholderText = "",
-  inputLabel = null
+  value = '',
+  title = '',
+  subtitle = '',
+  placeholderText = '',
+  inputLabel = null,
 }) => (
   <div className="max-w-md h-full text-center flex flex-col justify-between pt-32 pb-64">
     <div className="px-8">
@@ -28,7 +28,7 @@ const NicknameSelection = ({
         placeholder={placeholderText}
         onChange={e => setUserInfo({ ...userInfo, username: e.target.value })}
         required
-      ></input>
+      />
     </div>
   </div>
 );

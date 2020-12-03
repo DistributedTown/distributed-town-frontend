@@ -1,25 +1,25 @@
-import { useState, useEffect, useContext } from "react";
-import { TokenContext } from "./Store";
+import { useState, useEffect, useContext } from 'react';
+import { TokenContext } from './Store';
 
 function CommunityCard({ selectCommunity, selected, _id }) {
   const [token] = useContext(TokenContext);
   function getCardState(members) {
-    if (members === 24) return "Not accepting";
-    if (!selected) return "Can join";
-    if (selected) return "Joined!";
+    if (members === 24) return 'Not accepting';
+    if (!selected) return 'Can join';
+    if (selected) return 'Joined!';
   }
   const [communityDetails, setCommunityDetails] = useState();
 
   useEffect(() => {
     (async function() {
-      let community = await fetch(
+      const community = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/api/community/${_id}`,
         {
-          method: "GET",
+          method: 'GET',
           headers: {
-            Authorization: `Bearer ${token}`
-          }
-        }
+            Authorization: `Bearer ${token}`,
+          },
+        },
       );
       const communityDetails = await community.json();
       setCommunityDetails(communityDetails);

@@ -10,9 +10,8 @@ const Quote = ({ quote }) => (
   </blockquote>
 );
 
-
 Quote.propTypes = {
-   quote: PropTypes.string,
-  };
+  quote: PropTypes.string,
+};
 
 export default Quote;

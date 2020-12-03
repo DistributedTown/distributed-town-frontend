@@ -1,13 +1,13 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React from 'react';
+import PropTypes from 'prop-types';
 
 const TheNav = ({
   logoUrl,
-  slogan = "",
-  helpCta = "",
-  helpUrl = "",
+  slogan = '',
+  helpCta = '',
+  helpUrl = '',
   links,
-  className
+  className,
 }) => (
   <nav
     className={`flex items-center justify-between flex-wrap p-6 ${className}`}
@@ -65,7 +65,7 @@ TheNav.propTypes = {
   slogan: PropTypes.string,
   helpCta: PropTypes.string,
   helpUrl: PropTypes.string,
-  links: PropTypes.array
+  links: PropTypes.array,
 };
 
 export default TheNav;

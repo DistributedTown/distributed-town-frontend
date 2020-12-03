@@ -1,16 +1,15 @@
+import { useContext, useEffect, useState } from 'react';
+import { ethers } from 'ethers';
+import { useRouter } from 'next/router';
 import {
   MagicContext,
   UserInfoContext,
-  TokenContext
-} from "../components/Store";
+  TokenContext,
+} from '../components/Store';
 
-import { useContext, useEffect, useState } from "react";
-import CommunityCard from "../components/CommunityCard";
+import CommunityCard from '../components/CommunityCard';
 
-import communityContractAbi from "../utils/communityContractAbi.json";
-
-import { ethers } from "ethers";
-import { useRouter } from "next/router";
+import communityContractAbi from '../utils/communityContractAbi.json';
 
 function SignupPhaseTwo() {
   const [userInfo, setUserInfo] = useContext(UserInfoContext);
@@ -34,16 +33,16 @@ function SignupPhaseTwo() {
       // Get user's Ethereum public address
       const address = await signer.getAddress();
 
-      let community = communities.filter(community => community.selected)[0];
+      const community = communities.filter(community => community.selected)[0];
 
       const contractABI = communityContractAbi;
       console.log(community);
       const contractAddress =
-        community.address || "0x790697f595Aa4F9294566be0d262f71b44b5039c";
+        community.address || '0x790697f595Aa4F9294566be0d262f71b44b5039c';
       const contract = new ethers.Contract(
         contractAddress,
         contractABI,
-        signer
+        signer,
       );
 
       setUserInfo({
@@ -51,12 +50,12 @@ function SignupPhaseTwo() {
         communityContract: {
           _id: community._id,
           address: contractAddress,
-          name: community.name
-        }
+          name: community.name,
+        },
       });
 
       let amountOfRedeemableDitos = 0;
-      for (let { redeemableDitos } of userInfo.skills) {
+      for (const { redeemableDitos } of userInfo.skills) {
         amountOfRedeemableDitos += redeemableDitos;
       }
 
@@ -81,7 +80,7 @@ function SignupPhaseTwo() {
   async function updateUser(community) {
     try {
       let currentToken = token;
-      console.log("1 ct", currentToken);
+      console.log('1 ct', currentToken);
       const responseFetchToken = await magic.user.getIdToken();
       const didToken = await responseFetchToken;
       if (token !== didToken) {
@@ -89,33 +88,33 @@ function SignupPhaseTwo() {
         setToken(didToken);
       }
 
-      console.log("2 ct", currentToken);
+      console.log('2 ct', currentToken);
 
-      console.log("updated skills userinfo", userInfo);
+      console.log('updated skills userinfo', userInfo);
 
       const payload = {
         username: userInfo.username,
         communityID: community._id,
-        skills: userInfo.skills
+        skills: userInfo.skills,
       };
 
-      console.log("payload", payload);
+      console.log('payload', payload);
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/api/user`,
         {
-          method: "POST",
+          method: 'POST',
           body: JSON.stringify(payload),
           headers: new Headers({
-            Authorization: "Bearer " + currentToken,
-            "Content-Type": "application/json"
-          })
-        }
+            Authorization: `Bearer ${currentToken}`,
+            'Content-Type': 'application/json',
+          }),
+        },
       );
 
       const updatedUser = await response.json();
       console.log(await updateUser);
 
-      router.push("/SignupCompleted");
+      router.push('/SignupCompleted');
     } catch (err) {
       console.log(err);
     }
@@ -124,13 +123,13 @@ function SignupPhaseTwo() {
   useEffect(() => {
     (async () => {
       try {
-        let communitiesToAdd = new Map();
-        for await (let { skill } of userInfo.skills) {
+        const communitiesToAdd = new Map();
+        for await (const { skill } of userInfo.skills) {
           let communities = await fetch(
             `${process.env.NEXT_PUBLIC_API_URL}/api/community?skill=${skill}`,
             {
-              method: "GET"
-            }
+              method: 'GET',
+            },
           );
           communities = await communities.json();
 
@@ -159,7 +158,7 @@ function SignupPhaseTwo() {
     setCommunities(communities =>
       communities.map((community, i) => {
         return { ...community, selected: i === commIndex };
-      })
+      }),
     );
   }
 
@@ -202,8 +201,8 @@ function SignupPhaseTwo() {
           <div className="w-full border-2 border-gray-400 p-2 text-center">
             <button type="button" onClick={joinCommunity}>
               {isJoining
-                ? "Joining the community, please wait"
-                : "Join and get your credits!"}
+                ? 'Joining the community, please wait'
+                : 'Join and get your credits!'}
             </button>
           </div>
           {isJoining && (
