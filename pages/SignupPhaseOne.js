@@ -426,7 +426,7 @@ function SignupPhaseOne(props) {
       logo
       bgImage={{ src: "/background-image.svg", alignment: "left", size: 40 }}
     >
-      <div className="flex flex-wrap justify-between h-full w-full">
+      <div className="flex flex-wrap justify-between h-full w-full relative">
         <div
           className="flex w-1/2 justify-center items-center space-y-8 p-8 flex-grow-0 h-full"
           style={{ backdropFilter: "blur(5px)" }}
