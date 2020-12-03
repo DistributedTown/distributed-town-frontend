@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 
 const fetcher = (...args) => fetch(...args).then(res => res.json())
 
-const CreateGigForm = ({ register, handleSubmit, onSubmit, errors, skill, getValues, creationState }) => {
+const CreateGigForm = ({ register, handleSubmit, onSubmit, errors, skill, getValues, creationState, setError, clearErrors }) => {
     const [budgetRequired, setBudgetRequired] = useState()
     const [selectedSkills, setSelectedSkills] = useState([])
     const [commitment, setCommitment] = useState(getValues("commitment"))
@@ -26,12 +26,13 @@ const CreateGigForm = ({ register, handleSubmit, onSubmit, errors, skill, getVal
                 }
             }
         }
-        const budgetRequired = ((totalCredits * Number(commitment)) / 10)
+        const budgetRequired = ((totalCredits * Number(commitment)))
         setBudgetRequired(budgetRequired)
         return null;
     }
 
     const getSelectedSkills = () => {
+        clearErrors('selectedSkills')
         let selectedSkills = []
         for (skill of skillsList) {
             if (getValues(skill)[0] === "on" || getValues(skill)) {
@@ -39,6 +40,11 @@ const CreateGigForm = ({ register, handleSubmit, onSubmit, errors, skill, getVal
             }
         }
         setSelectedSkills(selectedSkills)
+        if (selectedSkills.length > 3) setError("selectedSkills", {
+            type: "manual",
+            message: "You cannot select more than 3 skills"
+        });
+        calculateBudgetRequired(commitment, selectedSkills)
     }
 
     useEffect(() => {
@@ -115,6 +121,7 @@ const CreateGigForm = ({ register, handleSubmit, onSubmit, errors, skill, getVal
                                 )
                             }) : <p>loading</p>}
                         </div>
+                        {errors.selectedSkills && <p className="text-red-600">{errors.selectedSkills.message}</p>}
                     </div>
                 </div>
                 <div className="p-2">
@@ -129,6 +136,8 @@ const CreateGigForm = ({ register, handleSubmit, onSubmit, errors, skill, getVal
                             style={{ width: "250px" }}
                             className="bg-white h-32 py-3 w-32"
                             type="range"
+                            min="1"
+                            max="10"
                             ref={register({ required: true })}
                             onChange={e => { setCommitment(e.target.value); calculateBudgetRequired(e.target.value, selectedSkills) }}
                         />

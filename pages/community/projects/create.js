@@ -17,8 +17,7 @@ function CreateProject() {
     const [creationState, setCreationState] = useState()
     const [token, setToken] = useContext(TokenContext);
     const [userInfo, setUserInfo] = useContext(UserInfoContext);
-    const { register, handleSubmit, errors, getValues } = useForm();
-    const [communityCategory, setCommunityCategory] = useState()
+    const { register, handleSubmit, errors, getValues, setError, clearErrors } = useForm();
     const router = useRouter();
 
     async function postNewProject(projectTitle, projectDescription, projectSkills, fundsNeeded) {
@@ -56,7 +55,6 @@ function CreateProject() {
         } catch (err) {
             console.error(err);
             setCreationState(3)
-
         }
     }
 
@@ -79,26 +77,6 @@ function CreateProject() {
         postNewProject(projectTitle, projectDescription, Object.keys(skills), creditsOffered)
     };
 
-    const getCommunityCategory = async () => {
-        const getCommRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/community/${userInfo.communityID}`,
-            {
-                method: "GET",
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            }
-        );
-        const communityInfo = await getCommRes.json();
-        console.log('comm', communityInfo)
-        setCommunityCategory(communityInfo.category)
-    }
-
-    useEffect(() => {
-        (async () => {
-            await getCommunityCategory();
-        })();
-    }, []);
-
 
     return (
 
@@ -116,7 +94,7 @@ function CreateProject() {
         >
             <div className="w-full p-8 h-full overflow-scroll">
                 <h1 className="underline text-black text-4xl">Create New Project</h1>
-                <CreateProjectForm register={register} handleSubmit={handleSubmit} onSubmit={onSubmit} errors={errors} communityCategory={communityCategory} skill={userInfo.skills[0].skill} getValues={getValues} />
+                <CreateProjectForm register={register} handleSubmit={handleSubmit} onSubmit={onSubmit} errors={errors} skill={userInfo.skills[0].skill} getValues={getValues} creationState={creationState} setError={setError} clearErrors={clearErrors} />
             </div>
             <div className="w-11/12 fixed flex bottom-0 justify-center mt-3 border-t-2 border-gray-600 bg-white z-10">
                 <Link href="/community">
