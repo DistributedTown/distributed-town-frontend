@@ -1,4 +1,5 @@
 module.exports = {
+  parser: 'babel-eslint',
   parserOptions: {
     ecmaVersion: 2020,
     sourceType: 'module',
@@ -31,5 +32,6 @@ module.exports = {
     'jsx-a11y/no-static-element-interactions': 1,
     'jsx-a11y/click-events-have-key-events': 1,
     'jsx-a11y/alt-text': 1,
+    'no-restricted-syntax': 0,
   },
 };

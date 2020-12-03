@@ -126,7 +126,7 @@ function Created() {
         setUserJourney({
           step: 'skills',
         });
-        router.push('/SignupPhaseOne');
+        router.push('/signup/step-one');
       }
     } catch (err) {
       await magic.user.logout();

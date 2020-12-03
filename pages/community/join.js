@@ -129,7 +129,7 @@ const Join = props => {
           email,
           skills: userData[0].skills || [],
         });
-        router.push('/SignupPhaseOne');
+        router.push('/signup/step-one');
       }
     } catch (err) {
       await magic.user.logout();
@@ -178,7 +178,7 @@ const Join = props => {
                   onClick={() => {
                     setSelectedPill(i);
                     if (loggedIn) {
-                      router.push('/SignupPhaseOne');
+                      router.push('/signup/step-one');
                     } else {
                       toggleModal();
                     }

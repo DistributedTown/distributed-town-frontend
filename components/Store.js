@@ -100,7 +100,7 @@ const Store = ({ children }) => {
                 DIDT,
               });
               if (journey === 'login') {
-                router.push('/SignupPhaseTwo');
+                router.push('/signup/step-two');
               }
             } else {
               const provider = new ethers.providers.Web3Provider(

@@ -2,16 +2,19 @@ import { useContext, useState, useEffect } from 'react';
 import { BigNumber, ethers } from 'ethers';
 
 import { useRouter } from 'next/router';
-import Layout from '../components/Layout';
+import Layout from '../../components/Layout';
 import {
   MagicContext,
   UserInfoContext,
   TokenContext,
-} from '../components/Store';
+} from '../../components/Store';
 
-import ditoContractAbi from '../utils/ditoTokenContractAbi.json';
-import communityContractAbi from '../utils/communityContractAbi.json';
-import { removeUserJourney, getUserJourney } from '../utils/userJourneyManager';
+import ditoContractAbi from '../../utils/ditoTokenContractAbi.json';
+import communityContractAbi from '../../utils/communityContractAbi.json';
+import {
+  removeUserJourney,
+  getUserJourney,
+} from '../../utils/userJourneyManager';
 
 function SignupCompleted() {
   const [userInfo, setUserInfo] = useContext(UserInfoContext);
@@ -96,10 +99,10 @@ function SignupCompleted() {
     const text = `Hey there! We've got some funds from DistributedTown,
     join my community - and let's work on something meaningful together! ${shareLink}`;
     navigator.clipboard.writeText(text).then(
-      function() {
+      () => {
         console.log('Async: Copying to clipboard was successful!');
       },
-      function(err) {
+      err => {
         console.error('Async: Could not copy text: ', err);
       },
     );
@@ -159,6 +162,7 @@ function SignupCompleted() {
           <div className="bg-white flex flex-col justify-center items-center border-2 border-black">
             <a
               target="_blank"
+              rel="noreferrer"
               href={encodeURI(`https://twitter.com/intent/tweet?text=Hey there! We've got some funds from DistributedTown,
 join my community - and let's work on something meaningful together! ${shareLink}`)}
               className="px-24 py-8 text-xl font-bold border-black border w-full flex items-center justify-between"
@@ -171,6 +175,7 @@ join my community - and let's work on something meaningful together! ${shareLink
                 `https://www.facebook.com/sharer/sharer.php?href=`,
               )}
               target="_blank"
+              rel="noreferrer"
               className="px-24 py-8 text-xl font-bold border-black border w-full flex items-center justify-between"
               onClick={() => {
                 const text = encodeURIComponent(
@@ -189,6 +194,7 @@ join my community - and let's work on something meaningful together! ${shareLink
             </a>
             <a
               target="_blank"
+              rel="noreferrer"
               href={encodeURI(`https://www.linkedin.com/shareArticle?mini=true&url=http://developer.linkedin.com&title=DiTo&summary=Hey there! We've got some funds from DistributedTown,
               join my community - and let's work on something meaningful together! ${shareLink}`)}
               className="px-24 py-8 text-xl font-bold border-black border w-full flex items-center justify-between"

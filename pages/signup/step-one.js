@@ -5,18 +5,21 @@ import {
   MagicContext,
   UserInfoContext,
   TokenContext,
-} from '../components/Store';
-import Layout from '../components/Layout';
+} from '../../components/Store';
+import Layout from '../../components/Layout';
 
-import SkillsCard from '../components/SkillsCard';
+import SkillsCard from '../../components/SkillsCard';
 
-import Button from '../components/Button';
-import NicknameSelection from '../components/NicknameSelection';
-import { getUserJourney, removeUserJourney } from '../utils/userJourneyManager';
-import communitiesABI from '../utils/communitiesRegistryAbi.json';
-import contractABI from '../utils/communityContractAbi.json';
+import Button from '../../components/Button';
+import NicknameSelection from '../../components/NicknameSelection';
+import {
+  getUserJourney,
+  removeUserJourney,
+} from '../../utils/userJourneyManager';
+import communitiesABI from '../../utils/communitiesRegistryAbi.json';
+import contractABI from '../../utils/communityContractAbi.json';
 
-function SignupPhaseOne(props) {
+function SignupPhaseOne() {
   const [userInfo = { skills: [] }, setUserInfo] = useContext(UserInfoContext);
   const [magic] = useContext(MagicContext);
   const [skillTree, setSkillTree] = useState([]);
@@ -291,7 +294,7 @@ function SignupPhaseOne(props) {
         },
       });
       removeUserJourney();
-      router.push('/SignupCompleted');
+      router.push('/signup/completed');
     } catch (error) {
       console.log(error);
       setLoading({
@@ -337,7 +340,7 @@ function SignupPhaseOne(props) {
 
       const updatedUser = await response.json();
 
-      router.push('/SignupCompleted');
+      router.push('/signup/completed');
     } catch (err) {
       console.log(err);
     }
@@ -392,7 +395,7 @@ function SignupPhaseOne(props) {
     } else if (journey === 'invite') {
       joinCommunity();
     } else {
-      router.push('/SignupPhaseTwo');
+      router.push('/signup/step-two');
     }
   };
 
@@ -450,11 +453,9 @@ function SignupPhaseOne(props) {
                 skills={category.skills}
                 totalSelected={getTotalSelected()}
                 selectSkill={skillSelectedIndex =>
-                  selectSkill(i, skillSelectedIndex)
-                }
+                  selectSkill(i, skillSelectedIndex)}
                 setSkillLevel={(skillIndex, skillLevel) =>
-                  setSkillLevel(i, skillIndex, skillLevel)
-                }
+                  setSkillLevel(i, skillIndex, skillLevel)}
               />
             );
           })}

@@ -5,11 +5,11 @@ import {
   MagicContext,
   UserInfoContext,
   TokenContext,
-} from '../components/Store';
+} from '../../components/Store';
 
-import CommunityCard from '../components/CommunityCard';
+import CommunityCard from '../../components/CommunityCard';
 
-import communityContractAbi from '../utils/communityContractAbi.json';
+import communityContractAbi from '../../utils/communityContractAbi.json';
 
 function SignupPhaseTwo() {
   const [userInfo, setUserInfo] = useContext(UserInfoContext);
@@ -114,7 +114,7 @@ function SignupPhaseTwo() {
       const updatedUser = await response.json();
       console.log(await updateUser);
 
-      router.push('/SignupCompleted');
+      router.push('/signup/completed');
     } catch (err) {
       console.log(err);
     }
