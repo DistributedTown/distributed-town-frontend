@@ -9,7 +9,7 @@ import Store, {
   LoggedInContext,
   LoadingContext,
   TokenContext,
-  UserInfoContext
+  UserInfoContext,
 } from "../components/Store";
 import Layout from "../components/Layout";
 import { setUserJourney } from "../utils/userJourneyManager";
@@ -20,18 +20,18 @@ const Index = () => {
   const [, setToken] = useContext(TokenContext);
   const [loading, setLoading] = useState(false);
 
-  const authenticateWithDb = async DIDT => {
+  const authenticateWithDb = async (DIDT) => {
     /* Pass the Decentralized ID token in the Authorization header to the database */
 
     return await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user/login`, {
       method: "POST",
       headers: new Headers({
-        Authorization: "Bearer " + DIDT
-      })
+        Authorization: "Bearer " + DIDT,
+      }),
     });
   };
 
-  const loginHandler = async event => {
+  const loginHandler = async (event) => {
     event.preventDefault();
     const { email: emailInput } = event.target;
     const email = emailInput.value;
@@ -44,7 +44,7 @@ const Index = () => {
       let user = await authenticateWithDb(DIDT);
       setUserJourney({
         journey: "login",
-        step: "login"
+        step: "login",
       });
       if (user) {
         setToken(DIDT);
@@ -68,7 +68,7 @@ const Index = () => {
         color: "blue",
         variant: "default",
         alignment: "left",
-        isTranslucent: true
+        isTranslucent: true,
       }}
     >
       <div className="h-full w-3/5 flex justify-center items-center">
@@ -98,7 +98,7 @@ const Index = () => {
                   onClick={() => {
                     setUserJourney({
                       journey: "community",
-                      step: "category"
+                      step: "category",
                     });
                   }}
                 >
@@ -116,7 +116,7 @@ const Index = () => {
                   onClick={() => {
                     setUserJourney({
                       journey: "join",
-                      step: "start"
+                      step: "start",
                     });
                   }}
                 >
@@ -157,12 +157,12 @@ const Index = () => {
 
 export async function getServerSideProps(context) {
   let skills = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/skill`, {
-    method: "GET"
+    method: "GET",
   });
   skills = await skills.json();
 
   return {
-    props: { skills } // will be passed to the page component as props
+    props: { skills }, // will be passed to the page component as props
   };
 }
 

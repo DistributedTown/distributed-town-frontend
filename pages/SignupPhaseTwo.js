@@ -3,7 +3,7 @@ import {
   LoggedInContext,
   LoadingContext,
   UserInfoContext,
-  TokenContext
+  TokenContext,
 } from "../components/Store";
 
 import { useContext, useEffect, useState } from "react";
@@ -37,7 +37,7 @@ function SignupPhaseTwo() {
       // Get user's Ethereum public address
       const address = await signer.getAddress();
 
-      let community = communities.filter(community => community.selected)[0];
+      let community = communities.filter((community) => community.selected)[0];
 
       const contractABI = communityContractAbi;
       console.log(community);
@@ -54,8 +54,8 @@ function SignupPhaseTwo() {
         communityContract: {
           _id: community._id,
           address: contractAddress,
-          name: community.name
-        }
+          name: community.name,
+        },
       });
 
       let amountOfRedeemableDitos = 0;
@@ -99,7 +99,7 @@ function SignupPhaseTwo() {
       const payload = {
         username: userInfo.username,
         communityID: community._id,
-        skills: userInfo.skills
+        skills: userInfo.skills,
       };
 
       console.log("payload", payload);
@@ -110,8 +110,8 @@ function SignupPhaseTwo() {
           body: JSON.stringify(payload),
           headers: new Headers({
             Authorization: "Bearer " + currentToken,
-            "Content-Type": "application/json"
-          })
+            "Content-Type": "application/json",
+          }),
         }
       );
 
@@ -130,20 +130,20 @@ function SignupPhaseTwo() {
         let communitiesToAdd = new Map();
         for await (let { skill } of userInfo.skills) {
           let communities = await fetch(
-            `${process.env.NEXT_PUBLIC_API_URL}/api/community?skill=${skill}`,
+            `${process.env.NEXT_PUBLIC_API_URL}/api/community?skill=${skill}&blockchain=${process.env.NEXT_PUBLIC_BLOCKCHAIN}`,
             {
-              method: "GET"
+              method: "GET",
             }
           );
           communities = await communities.json();
 
-          communities.map(community => {
+          communities.map((community) => {
             return { ...community, selected: false };
           });
 
           console.log(communities);
 
-          communities.forEach(community => {
+          communities.forEach((community) => {
             if (!communitiesToAdd.has(community._id)) {
               communitiesToAdd.set(community._id, community);
             }
@@ -159,7 +159,7 @@ function SignupPhaseTwo() {
   }, []);
 
   function selectCommunity(commIndex) {
-    setCommunities(communities =>
+    setCommunities((communities) =>
       communities.map((community, i) => {
         return { ...community, selected: i === commIndex };
       })

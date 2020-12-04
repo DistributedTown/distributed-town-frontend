@@ -52,11 +52,18 @@ const Store = ({ children }) => {
   }
 */
 
+  const network =
+    process.env.NEXT_PUBLIC_BLOCKCHAIN === "ETH"
+      ? "ropsten"
+      : {
+          rpcUrl: `https://rpc-mainnet.maticvigil.com/v1/${process.env.NEXT_PUBLIC_MATICVIGIL_KEY}`,
+          chainId: 137, // Your own node's chainId
+        };
+
   useEffect(() => {
     /* We initialize Magic in `useEffect` so it has access to the global `window` object inside the browser */
     let m = new Magic("pk_test_1C5A2BC69B7C18E5", {
-      network: "ropsten",
-      chainId: 8888 // Your own node's chainId
+      network,
     });
     setMagic(m);
   }, []);
@@ -86,7 +93,7 @@ const Store = ({ children }) => {
             console.log(metaData.publicAddress);
             await fetch("/api/getFunded", {
               method: "POST",
-              body: JSON.stringify({ publicAddress: metaData.publicAddress })
+              body: JSON.stringify({ publicAddress: metaData.publicAddress }),
             });
             const DIDT = await magic.user.getIdToken({ email: metaData.email });
             console.log(DIDT);
@@ -96,8 +103,8 @@ const Store = ({ children }) => {
               {
                 method: "GET",
                 headers: {
-                  Authorization: `Bearer ${DIDT}`
-                }
+                  Authorization: `Bearer ${DIDT}`,
+                },
               }
             );
             console.log(response);
@@ -117,7 +124,7 @@ const Store = ({ children }) => {
               setUserInfo({
                 ...userInfo,
                 DIDT,
-                skills: []
+                skills: [],
               });
               if (journey === "login") {
                 router.push("/community/join");
@@ -125,7 +132,7 @@ const Store = ({ children }) => {
             } else if (!userInfo.communityID) {
               setUserInfo({
                 ...userInfo,
-                DIDT
+                DIDT,
               });
               if (journey === "login") {
                 router.push("/SignupPhaseTwo");
@@ -152,16 +159,17 @@ const Store = ({ children }) => {
                     {
                       method: "GET",
                       headers: {
-                        Authorization: `Bearer ${DIDT}`
-                      }
+                        Authorization: `Bearer ${DIDT}`,
+                      },
                     }
                   );
                   const communityInfo = await getCommRes.json();
 
                   const [
-                    { address: communityAddress }
+                    { address: communityAddress },
                   ] = communityInfo.addresses.filter(
-                    ({ blockchain }) => blockchain === "ETH"
+                    ({ blockchain }) =>
+                      blockchain === process.env.NEXT_PUBLIC_BLOCKCHAIN
                   );
                   communityContractAddress = communityAddress;
                 }
@@ -193,7 +201,7 @@ const Store = ({ children }) => {
                   ...userInfo,
                   communityContract: { address: communityContractAddress },
                   ditoBalance: ditoBalanceStr,
-                  DIDT
+                  DIDT,
                 });
                 if (journey === "login" || !journey) {
                   router.push("/skillwallet");

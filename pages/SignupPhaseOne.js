@@ -2,7 +2,7 @@ import {
   MagicContext,
   LoggedInContext,
   UserInfoContext,
-  TokenContext
+  TokenContext,
 } from "../components/Store";
 import Layout from "../components/Layout";
 
@@ -15,7 +15,7 @@ import NicknameSelection from "../components/NicknameSelection";
 import {
   getUserJourney,
   setUserJourney,
-  removeUserJourney
+  removeUserJourney,
 } from "../utils/userJourneyManager";
 import { ethers } from "ethers";
 import communitiesABI from "../utils/communitiesRegistryAbi.json";
@@ -28,7 +28,7 @@ function SignupPhaseOne(props) {
   const [token, setToken] = useContext(TokenContext);
   const [loading, setLoading] = useState({
     status: false,
-    message: null
+    message: null,
   });
 
   console.log(userInfo);
@@ -70,7 +70,7 @@ function SignupPhaseOne(props) {
   }, []);
 
   const selectSkill = (categoryIndex, selectedSkillIndex) => {
-    const updateSkills = category =>
+    const updateSkills = (category) =>
       category.skills.map((skill, skillIndex) => {
         if (skillIndex === selectedSkillIndex) {
           const newSkill =
@@ -83,19 +83,19 @@ function SignupPhaseOne(props) {
         return typeof skill === "string" ? { skill } : { ...skill };
       });
 
-    const copySkills = category =>
-      category.skills.map(skill => {
+    const copySkills = (category) =>
+      category.skills.map((skill) => {
         return typeof skill === "string" ? { skill } : { ...skill };
       });
 
-    const updateSkillTree = _skillTree =>
+    const updateSkillTree = (_skillTree) =>
       _skillTree.map((category, i) => {
         if (i === categoryIndex) {
           return { ...category, skills: updateSkills(category) };
         }
         return {
           ...category,
-          skills: copySkills(category)
+          skills: copySkills(category),
         };
       });
 
@@ -103,7 +103,7 @@ function SignupPhaseOne(props) {
   };
 
   function setSkillLevel(catIndex, skillIndex, level) {
-    const updateSkills = category =>
+    const updateSkills = (category) =>
       category.skills.map((skill, skIndex) => {
         if (skIndex === skillIndex) {
           return { ...skill, level };
@@ -111,22 +111,22 @@ function SignupPhaseOne(props) {
         return { ...skill };
       });
 
-    const copySkills = category =>
-      category.skills.map(skill => {
+    const copySkills = (category) =>
+      category.skills.map((skill) => {
         return { ...skill };
       });
 
-    const updateSkillTree = _skillTree =>
+    const updateSkillTree = (_skillTree) =>
       _skillTree.map((category, categoryIndex) => {
         if (categoryIndex === catIndex) {
           return {
             ...category,
-            skills: updateSkills(category)
+            skills: updateSkills(category),
           };
         }
         return {
           ...category,
-          skills: copySkills(category)
+          skills: copySkills(category),
         };
       });
     setSkillTree(updateSkillTree(skillTree));
@@ -143,7 +143,7 @@ function SignupPhaseOne(props) {
           if (typeof skill.selected !== "undefined" && skill.selected) {
             skills.push({
               skill: skill.skill,
-              level: typeof skill.level === "undefined" ? 0 : skill.level
+              level: typeof skill.level === "undefined" ? 0 : skill.level,
             });
           }
         }
@@ -174,7 +174,7 @@ function SignupPhaseOne(props) {
           if (typeof skill.selected !== "undefined" && skill.selected) {
             skills.push({
               skill: skill.skill,
-              level: typeof skill.level === "undefined" ? 0 : skill.level
+              level: typeof skill.level === "undefined" ? 0 : skill.level,
             });
           }
         }
@@ -191,12 +191,12 @@ function SignupPhaseOne(props) {
         if (skill.selected)
           skills.push({
             ...skill,
-            redeemableDitos: Math.floor(skill.level / 10) * category.credits
+            redeemableDitos: Math.floor(skill.level / 10) * category.credits,
           });
       }
     }
 
-    setUserInfo(userInfo => {
+    setUserInfo((userInfo) => {
       return { ...userInfo, skills };
     });
   }
@@ -204,7 +204,7 @@ function SignupPhaseOne(props) {
   const createCommunity = async () => {
     setLoading({
       status: true,
-      message: "Creating community..."
+      message: "Creating community...",
     });
     try {
       const provider = new ethers.providers.Web3Provider(magic.rpcProvider);
@@ -212,7 +212,7 @@ function SignupPhaseOne(props) {
 
       // call the smart contract to create community
       const contract = new ethers.Contract(
-        "0xe141f6C659bEA31d39cD043539E426D53bF3D7d8",
+        process.env.NEXT_PUBLIC_COMMUNITIESREGISTRY_ADDRESS,
         communitiesABI,
         signer
       );
@@ -221,14 +221,14 @@ function SignupPhaseOne(props) {
       const createTx = await contract.createCommunity({
         // 500k gas
         gasLimit: ethers.BigNumber.from(estimatedGas).toNumber(), // 3896496,
-        gasPrice: 7910854493
+        gasPrice: 7910854493,
       });
       // Wait for transaction to finish
       const communityAddress = await createTx.wait();
       console.log("communityAddress", communityAddress);
       const { events } = communityAddress;
       const communityCreatedEvent = events.find(
-        e => e.event === "CommunityCreated"
+        (e) => e.event === "CommunityCreated"
       );
       if (!communityCreatedEvent) {
         throw new Error("Something went wrong");
@@ -238,7 +238,7 @@ function SignupPhaseOne(props) {
 
       setLoading({
         status: true,
-        message: "Joining community..."
+        message: "Joining community...",
       });
       // call the smart contract to join community
       let amountOfRedeemableDitos = 0;
@@ -265,26 +265,26 @@ function SignupPhaseOne(props) {
         addresses: [
           {
             blockchain: "ETH",
-            address: communityCreatedEvent.args[0]
-          }
+            address: communityCreatedEvent.args[0],
+          },
         ],
         name: meta.communityName,
         owner: {
           username: userInfo.username,
-          skills: userInfo.skills
-        }
+          skills: userInfo.skills,
+        },
       };
       await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/community`, {
         method: "POST",
         body: JSON.stringify(payload),
         headers: {
           "content-type": "application/json",
-          Authorization: `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       });
       setLoading({
         status: false,
-        message: null
+        message: null,
       });
       // update user in UserInfoContext
       setUserInfo({
@@ -292,8 +292,8 @@ function SignupPhaseOne(props) {
         ditoBalance: totalDitos,
         communityContract: {
           name: meta.communityName,
-          address: communityCreatedEvent.args[0]
-        }
+          address: communityCreatedEvent.args[0],
+        },
       });
       removeUserJourney();
       router.push("/SignupCompleted");
@@ -301,7 +301,7 @@ function SignupPhaseOne(props) {
       console.log(error);
       setLoading({
         status: false,
-        message: null
+        message: null,
       });
     }
   };
@@ -324,7 +324,7 @@ function SignupPhaseOne(props) {
       const payload = {
         username: userInfo.username,
         communityID: community._id,
-        skills: userInfo.skills
+        skills: userInfo.skills,
       };
 
       console.log("payload", payload);
@@ -335,8 +335,8 @@ function SignupPhaseOne(props) {
           body: JSON.stringify(payload),
           headers: new Headers({
             Authorization: "Bearer " + currentToken,
-            "Content-Type": "application/json"
-          })
+            "Content-Type": "application/json",
+          }),
         }
       );
 
@@ -421,7 +421,7 @@ function SignupPhaseOne(props) {
       splash={{
         color: "blue",
         variant: "default",
-        alignment: "left"
+        alignment: "left",
       }}
       logo
       bgImage={{ src: "/background-image.svg", alignment: "left", size: 40 }}
@@ -454,7 +454,7 @@ function SignupPhaseOne(props) {
                 title={category.subCat}
                 skills={category.skills}
                 totalSelected={getTotalSelected()}
-                selectSkill={skillSelectedIndex =>
+                selectSkill={(skillSelectedIndex) =>
                   selectSkill(i, skillSelectedIndex)
                 }
                 setSkillLevel={(skillIndex, skillLevel) =>

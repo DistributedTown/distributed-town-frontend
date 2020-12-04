@@ -3,7 +3,7 @@ import {
   LoggedInContext,
   LoadingContext,
   UserInfoContext,
-  TokenContext
+  TokenContext,
 } from "../components/Store";
 import Layout from "../components/Layout";
 
@@ -83,8 +83,8 @@ function SignupCompleted() {
           {
             method: "GET",
             headers: {
-              Authorization: "Bearer " + token
-            }
+              Authorization: "Bearer " + token,
+            },
           }
         );
         const link = await res.json();
@@ -100,10 +100,10 @@ function SignupCompleted() {
     const text = `Hey there! We've got some funds from DistributedTown,
     join my community - and let's work on something meaningful together! ${shareLink}`;
     navigator.clipboard.writeText(text).then(
-      function() {
+      function () {
         console.log("Async: Copying to clipboard was successful!");
       },
-      function(err) {
+      function (err) {
         console.error("Async: Could not copy text: ", err);
       }
     );
@@ -116,7 +116,7 @@ function SignupCompleted() {
       splash={{
         color: "alizarin",
         variant: "quad",
-        alignment: "left"
+        alignment: "left",
       }}
     >
       <div className="w-full flex flex-col items-center justify-between space-y-8 pt-32 h-full">
