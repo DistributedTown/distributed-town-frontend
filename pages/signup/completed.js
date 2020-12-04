@@ -1,98 +1,35 @@
-import { useContext, useState, useEffect } from 'react';
-import { BigNumber, ethers } from 'ethers';
+import { useState, useEffect } from 'react';
 
 import { useRouter } from 'next/router';
 import Layout from '../../components/Layout';
-import {
-  MagicContext,
-  UserInfoContext,
-  TokenContext,
-} from '../../components/Store';
+import { useGetInvitation } from '../../hooks/useGetInvitation';
 
-import ditoContractAbi from '../../utils/ditoTokenContractAbi.json';
-import communityContractAbi from '../../utils/communityContractAbi.json';
 import {
   removeUserJourney,
   getUserJourney,
 } from '../../utils/userJourneyManager';
+import { useGetDitoBalance } from '../../hooks/useGetDitoBalance';
 
 function SignupCompleted() {
-  const [userInfo, setUserInfo] = useContext(UserInfoContext);
-  const [magic] = useContext(MagicContext);
-  const [token] = useContext(TokenContext);
-  const [shareLink, setShareLink] = useState('');
-
-  const [ditoBalance, setDitoBalance] = useState(-1);
+  const { data: ditoBalance } = useGetDitoBalance();
   const [showInviteModal, setShowInviteModal] = useState(false);
 
   useEffect(() => {
-    (async () => {
-      const provider = new ethers.providers.Web3Provider(magic.rpcProvider);
-
-      try {
-        const signer = provider.getSigner();
-
-        // Get user's Ethereum public address
-        const address = await signer.getAddress();
-
-        const communityContractABI = communityContractAbi;
-        const communityContractAddress =
-          userInfo.communityContract.address ||
-          '0x759A224E15B12357b4DB2d3aa20ef84aDAf28bE7';
-        const communityContract = new ethers.Contract(
-          communityContractAddress,
-          communityContractABI,
-          signer,
-        );
-
-        const ditoContractABI = ditoContractAbi;
-        const ditoContractAddress = await communityContract.tokens();
-        console.log(ditoContractAddress);
-        const ditoContract = new ethers.Contract(
-          ditoContractAddress,
-          ditoContractABI,
-          signer,
-        );
-
-        // Send transaction to smart contract to update message and wait to finish
-        const ditoBalance = await ditoContract.balanceOf(address);
-
-        let ditoBalanceStr = BigNumber.from(ditoBalance).toString();
-        ditoBalanceStr = ditoBalanceStr.slice(0, ditoBalanceStr.length - 18);
-
-        setDitoBalance(ditoBalanceStr);
-        setUserInfo({ ...userInfo, ditoBalance: ditoBalanceStr });
-      } catch (err) {
-        console.error(err);
-      }
-    })();
-    // remove user journey
-    return () => removeUserJourney();
+    removeUserJourney();
   }, []);
 
   const router = useRouter();
 
   const { journey } = getUserJourney();
 
+  const {
+    data: { linkUrl: shareLink },
+    refetch: getShareLink,
+  } = useGetInvitation();
+
   const inviteMembers = async () => {
-    try {
-      if (!shareLink) {
-        const res = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/user/invite`,
-          {
-            method: 'GET',
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          },
-        );
-        const link = await res.json();
-        setShareLink(link.linkUrl);
-      }
-      setShowInviteModal(true);
-    } catch (error) {
-      console.log(error);
-    }
+    getShareLink();
+    setShowInviteModal(true);
   };
 
   const copyLink = () => {

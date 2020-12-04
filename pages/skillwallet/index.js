@@ -20,9 +20,7 @@ function SkillWallet() {
   const [magic] = useContext(MagicContext);
   const [token, setToken] = useContext(TokenContext);
   const [pastGigs, setPastGigs] = useState([]);
-  const [ditoBalance, setDitoBalance] = useState(
-    (userInfo && userInfo.ditoBalance) || 0,
-  );
+  const ditoBalance = (userInfo && userInfo.ditoBalance) || 0;
   const router = useRouter();
 
   async function fetchOpenCloseGigs(authToken, isOpen) {
