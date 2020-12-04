@@ -4,23 +4,21 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import Quote from '../../components/Quote';
 import RegistrationModal from '../../components/registration/RegistrationModal';
-import { MagicContext, TokenContext } from '../../components/Store';
+import { MagicContext } from '../../components/Store';
 import Layout from '../../components/Layout';
-import { authenticateWithDb, getUserInfo } from '../../api';
+import { getUserInfo } from '../../api';
+import { useMagicLinkLogin } from '../../hooks/useMagicLinkLogin';
 
 const Join = props => {
-  const [, setToken] = useContext(TokenContext);
   const [magic] = useContext(MagicContext);
+  const [login] = useMagicLinkLogin();
 
   const router = useRouter();
 
   async function handleCreateAccountClick(e, email) {
     e.preventDefault();
     try {
-      const didToken = await magic.auth.loginWithMagicLink({ email });
-      await authenticateWithDb(didToken);
-
-      setToken(didToken);
+      const { didToken } = await login(email);
 
       const userData = await getUserInfo(didToken);
       const hasSkills =
@@ -42,6 +40,7 @@ const Join = props => {
   const [showRegistration, setShowRegistration] = useState(false);
 
   const onSkillClick = skill => {
+    // TODO: Rediret to pick skills if logged in
     // if (loggedIn) {
     //   router.push(`/signup/pick-skills?skill=${encodeURIComponent(skill)}`);
     // }
