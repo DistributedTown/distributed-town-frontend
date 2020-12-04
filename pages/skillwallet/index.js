@@ -1,7 +1,6 @@
 import Link from 'next/link';
 
 import { useContext, useState, useEffect } from 'react';
-import { ethers } from 'ethers';
 
 import { useRouter } from 'next/router';
 import {
@@ -12,10 +11,9 @@ import {
 } from '../../components/Store';
 
 import Layout from '../../components/Layout';
-import communityContractAbi from '../../utils/communityContractAbi.json';
 
 function SkillWallet() {
-  const [userInfo, setUserInfo] = useContext(UserInfoContext);
+  const [userInfo] = useContext(UserInfoContext);
   const [loggedIn] = useContext(LoggedInContext);
   const [magic] = useContext(MagicContext);
   const [token, setToken] = useContext(TokenContext);
@@ -42,53 +40,17 @@ function SkillWallet() {
     }
   }
 
-  async function fetchCurrentUser(authToken) {
-    try {
-      const response = await fetch(`https://api.distributed.town/api/user`, {
-        method: 'GET',
-        headers: {
-          Authorization: `Bearer ${authToken}`,
-        },
-      });
-      const userData = await response.json();
-      setUserInfo({
-        ...userInfo,
-        username: userData.username,
-        email: userData.email,
-      });
-    } catch (err) {
-      console.log(err);
-    }
-  }
-
   useEffect(() => {
     (async () => {
-      const provider = new ethers.providers.Web3Provider(magic.rpcProvider);
-
       try {
-        const signer = provider.getSigner();
-
-        const communityContractABI = communityContractAbi;
-        const communityContractAddress =
-          userInfo.communityContract && userInfo.communityContract.address
-            ? userInfo.communityContract.address
-            : '0x759A224E15B12357b4DB2d3aa20ef84aDAf28bE7';
-        const communityContract = new ethers.Contract(
-          communityContractAddress,
-          communityContractABI,
-          signer,
-        );
-
         const currentToken = await magic.user.getIdToken();
         const storedToken = token;
-        const currentTokenisNotStoredToken = currentToken !== storedToken;
 
-        if (loggedIn && currentTokenisNotStoredToken) {
+        if (loggedIn && currentToken !== storedToken) {
           setToken(currentToken);
         }
 
         await fetchOpenCloseGigs(currentToken, true);
-        // await fetchCurrentUser(token);
       } catch (err) {
         console.error(err);
       }
