@@ -42,7 +42,9 @@ const Join = props => {
   const onSkillClick = skill => {
     // TODO: Rediret to pick skills if logged in
     // if (loggedIn) {
-    //   router.push(`/signup/pick-skills?skill=${encodeURIComponent(skill)}`);
+    //   router.push(
+    //     `/signup/pick-skills?communitySkill=${encodeURIComponent(skill)}`,
+    //   );
     // }
 
     setShowRegistration(true);

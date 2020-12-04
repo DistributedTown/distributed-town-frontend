@@ -11,44 +11,28 @@ import NicknameSelection from '../../components/NicknameSelection';
 import { getUserJourney } from '../../utils/userJourneyManager';
 import { useCreateCommunity } from '../../hooks/useCreateCommunity';
 import { useJoinCommunity } from '../../hooks/useJoinCommunity';
+import { getSkillTreeByCategorySkill } from '../../api';
 
 function SignupPhaseOne() {
   const router = useRouter();
   const [userInfo = { skills: [] }, setUserInfo] = useContext(UserInfoContext);
   const [skillTree, setSkillTree] = useState([]);
-  const [loading] = useState({
-    status: false,
-    message: null,
-  });
 
   const [createCommunity] = useCreateCommunity();
   const [joinCommunity] = useJoinCommunity();
 
   useEffect(() => {
-    let { category } = userInfo;
-    const { journey, meta } = getUserJourney() || {};
-    if (journey === 'community') {
-      category = encodeURIComponent(meta.category);
-    }
-    if (journey === 'invite') {
-      category = encodeURIComponent(userInfo.category);
-    }
+    const { categorySkill } = router.query;
 
     const getSkillTree = async () => {
       try {
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/skill?category=${category}`,
-          { method: 'GET' },
+        const skillTreeResponse = await getSkillTreeByCategorySkill(
+          categorySkill,
         );
-        const skillTreeResponse = await response.json();
-        console.log(skillTreeResponse);
+        // Transform skill string to skill object with skill name field
         skillTreeResponse.categories.forEach(c => {
           c.skills = c.skills.map(skill => ({ skill }));
         });
-        console.log(
-          'SKILL TREE RESPONSE FORMATTED',
-          skillTreeResponse.categories,
-        );
         setSkillTree(skillTreeResponse.categories);
       } catch (err) {
         console.log(err);
@@ -221,13 +205,6 @@ function SignupPhaseOne() {
           </Button>
         </div>
       </div>
-      {loading.status && (
-        <div className="fixed inset-0 h-screen w-screen bg-opacity-50 bg-black flex justify-center items-center">
-          <div className="w-48 h-48 bg-white rounded flex justify-center items-center">
-            {loading.message}
-          </div>
-        </div>
-      )}
     </Layout>
   );
 }

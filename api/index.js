@@ -25,3 +25,10 @@ export const getCommunityById = (didToken, id) => {
     }),
   }).then(res => res.json());
 };
+
+export const getSkillTreeByCategorySkill = categorySkill => {
+  return fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/api/skill?skill=${categorySkill}`,
+    { method: 'GET' },
+  ).then(res => res.json());
+};
