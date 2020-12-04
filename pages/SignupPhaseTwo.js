@@ -3,7 +3,7 @@ import {
   LoggedInContext,
   LoadingContext,
   UserInfoContext,
-  TokenContext,
+  TokenContext
 } from "../components/Store";
 
 import { useContext, useEffect, useState } from "react";
@@ -37,9 +37,10 @@ function SignupPhaseTwo() {
       // Get user's Ethereum public address
       const address = await signer.getAddress();
 
-      let community = communities.filter((community) => community.selected)[0];
+      let community = communities.filter(community => community.selected)[0];
 
       const contractABI = communityContractAbi;
+      console.log(community);
       const contractAddress =
         community.address || "0x790697f595Aa4F9294566be0d262f71b44b5039c";
       const contract = new ethers.Contract(
@@ -53,14 +54,16 @@ function SignupPhaseTwo() {
         communityContract: {
           _id: community._id,
           address: contractAddress,
-          name: community.name,
-        },
+          name: community.name
+        }
       });
 
       let amountOfRedeemableDitos = 0;
       for (let { redeemableDitos } of userInfo.skills) {
         amountOfRedeemableDitos += redeemableDitos;
       }
+
+      console.log(amountOfRedeemableDitos);
 
       // Send transaction to smart contract to update message and wait to finish
       const baseDitos = 2000;
@@ -96,18 +99,21 @@ function SignupPhaseTwo() {
       const payload = {
         username: userInfo.username,
         communityID: community._id,
-        skills: userInfo.skills,
+        skills: userInfo.skills
       };
 
       console.log("payload", payload);
-      const response = await fetch(`https://api.distributed.town/api/user`, {
-        method: "POST",
-        body: JSON.stringify(payload),
-        headers: new Headers({
-          Authorization: "Bearer " + currentToken,
-          "Content-Type": "application/json",
-        }),
-      });
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/user`,
+        {
+          method: "POST",
+          body: JSON.stringify(payload),
+          headers: new Headers({
+            Authorization: "Bearer " + currentToken,
+            "Content-Type": "application/json"
+          })
+        }
+      );
 
       const updatedUser = await response.json();
       console.log(await updateUser);
@@ -121,41 +127,31 @@ function SignupPhaseTwo() {
   useEffect(() => {
     (async () => {
       try {
-        console.log(userInfo);
-
         let communitiesToAdd = new Map();
         for await (let { skill } of userInfo.skills) {
           let communities = await fetch(
-            `https://api.distributed.town/api/community?skill=${skill}`,
+            `${process.env.NEXT_PUBLIC_API_URL}/api/community?skill=${skill}`,
             {
-              method: "GET",
+              method: "GET"
             }
           );
           communities = await communities.json();
 
-          console.log("communities", communities);
-
-          communities.map((community) => {
+          communities.map(community => {
             return { ...community, selected: false };
           });
 
-          for (let community of communities) {
-            if (!communitiesToAdd.has(community.address)) {
-              communitiesToAdd.set(community.address, {
-                ...community,
-                selected: false,
-              });
+          console.log(communities);
+
+          communities.forEach(community => {
+            if (!communitiesToAdd.has(community._id)) {
+              communitiesToAdd.set(community._id, community);
             }
-          }
+          });
+          console.log(communitiesToAdd);
         }
 
-        let arrCommunitiesToAdd = [];
-        let i = 1;
-        for (let community of communitiesToAdd.values()) {
-          arrCommunitiesToAdd.push({ ...community, name: `DiTO #2060` });
-        }
-
-        setCommunities(arrCommunitiesToAdd);
+        setCommunities(Array.from(communitiesToAdd.values()));
       } catch (err) {
         console.error(err.message);
       }
@@ -163,7 +159,7 @@ function SignupPhaseTwo() {
   }, []);
 
   function selectCommunity(commIndex) {
-    setCommunities((communities) =>
+    setCommunities(communities =>
       communities.map((community, i) => {
         return { ...community, selected: i === commIndex };
       })
@@ -173,7 +169,7 @@ function SignupPhaseTwo() {
   return (
     <div className="flex flex-col">
       <div className="flex flex-row">
-        <div className="flex flex-col space-y-8 container mx-auto bg-blue-100 p-8 h-screen">
+        <div className="flex flex-col space-y-8 container mx-auto bg-blue-100 p-8 h-screen overflow-y-auto">
           <h1>Here's a few communities for you!</h1>
           {communities.map((community, i) => (
             <CommunityCard
@@ -189,7 +185,7 @@ function SignupPhaseTwo() {
             Your skills are your main asset. And the only thing that matters.
             The more rare they are, the more credits you’ll get!
           </p>
-          <div className="border-2 border-blue-600 p-4 flex flex-col space-y-4">
+          {/* <div className="border-2 border-blue-600 p-4 flex flex-col space-y-4">
             {userInfo.skills.map((skill, i) => {
               return (
                 <div key={i} className="grid grid-cols-2">
@@ -204,15 +200,22 @@ function SignupPhaseTwo() {
                 </div>
               );
             })}
-          </div>
+          </div> */}
 
-          <div className="w-full border-2 border-gray-400">
+          <div className="w-full border-2 border-gray-400 p-2 text-center">
             <button type="button" onClick={joinCommunity}>
               {isJoining
                 ? "Joining the community, please wait"
                 : "Join and get your credits!"}
             </button>
           </div>
+          {isJoining && (
+            <div className="fixed inset-0 h-screen w-screen bg-opacity-50 bg-black flex justify-center items-center">
+              <div className="w-48 h-48 bg-white rounded flex justify-center items-center">
+                Joining community...
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
