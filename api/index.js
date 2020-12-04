@@ -7,3 +7,21 @@ export const authenticateWithDb = didToken => {
     }),
   });
 };
+
+export const getUserInfo = didToken => {
+  return fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user`, {
+    method: 'GET',
+    headers: new Headers({
+      Authorization: `Bearer ${didToken}`,
+    }),
+  }).then(res => res.json());
+};
+
+export const getCommunityById = (didToken, id) => {
+  return fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/community/${id}`, {
+    method: 'GET',
+    headers: new Headers({
+      Authorization: `Bearer ${didToken}`,
+    }),
+  }).then(res => res.json());
+};

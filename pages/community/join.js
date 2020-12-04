@@ -1,150 +1,53 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 import Link from 'next/link';
 
 import { useRouter } from 'next/router';
-import SkillPill from '../../components/SkillPill';
 import Quote from '../../components/Quote';
 import RegistrationModal from '../../components/registration/RegistrationModal';
-import {
-  MagicContext,
-  LoggedInContext,
-  TokenContext,
-  UserInfoContext,
-} from '../../components/Store';
+import { MagicContext, TokenContext } from '../../components/Store';
 import Layout from '../../components/Layout';
-import bgImages from '../../utils/bgImages.js';
+import { authenticateWithDb, getUserInfo } from '../../api';
 
 const Join = props => {
   const [, setToken] = useContext(TokenContext);
-  const [loggedIn, setLoggedIn] = useContext(LoggedInContext);
   const [magic] = useContext(MagicContext);
-  const [userInfo, setUserInfo] = useContext(UserInfoContext);
-  const [modalState, setModalState] = useState(false);
-
-  const [selectedPill, setSelectedPill] = useState(-1);
-  const [email, setEmail] = useState('');
 
   const router = useRouter();
 
-  console.log(router.query);
-  // if (router)
-  const getCommunityBgImg = selectedCommunity => {
-    return typeof (selectedCommunity !== 'undefined') && selectedCommunity >= 0
-      ? bgImages[props.skills[selectedCommunity].toLowerCase()]
-      : bgImages.default;
-  };
-
-  const getSelectedSkillName = selectedPill => {
-    return typeof (selectedPill !== 'undefined') && selectedPill >= 0
-      ? ` ${props.skills[selectedPill]}`
-      : `${props.skills[0]}`;
-  };
-
-  const toggleModal = () => {
-    setModalState(!modalState);
-  };
-
-  const showRegisterModal = () => {
-    setSelectedPill(-1);
-    return toggleModal();
-  };
-
-  async function fetchCommunityById(id, DIDT) {
-    try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/community/${id}`,
-        {
-          method: 'GET',
-          headers: new Headers({
-            Authorization: `Bearer ${DIDT}`,
-          }),
-        },
-      );
-      const community = await response.json();
-      return community;
-    } catch (err) {
-      console.log(err);
-    }
-  }
-
-  async function fetchUserData(DIDT) {
-    try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user`, {
-        method: 'GET',
-        headers: new Headers({
-          Authorization: `Bearer ${DIDT}`,
-        }),
-      });
-      const userData = await res.json();
-      return userData;
-    } catch (err) {
-      console.log(err);
-    }
-  }
-
-  async function handleCreateAccountClick(e) {
+  async function handleCreateAccountClick(e, email) {
     e.preventDefault();
     try {
-      const DIDT = await magic.auth.loginWithMagicLink({ email });
+      const didToken = await magic.auth.loginWithMagicLink({ email });
+      await authenticateWithDb(didToken);
 
-      console.log('didToken', DIDT);
+      setToken(didToken);
 
-      setToken(DIDT);
-
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/user/login`,
-        {
-          method: 'POST',
-          headers: new Headers({
-            Authorization: `Bearer ${DIDT}`,
-          }),
-        },
-      );
-
-      setLoggedIn(true);
-
-      const userData = await fetchUserData(DIDT);
-      console.log('TWO', userData);
-      const haSkills =
+      const userData = await getUserInfo(didToken);
+      const hasSkills =
         userData[0].skills &&
         Array.isArray(userData[0].skills) &&
         userData[0].skills.length > 0;
 
-      if (haSkills) {
-        console.log('going to the skillwallet');
-        const userCommunityData = await fetchCommunityById(
-          userData[0].communityID,
-          DIDT,
-        );
-        setUserInfo({
-          ...userInfo,
-          ...userData[0],
-          communityContract: userCommunityData,
-        });
-
+      if (hasSkills) {
         router.push('/skillwallet');
       } else {
-        setUserInfo({
-          ...userInfo,
-          email,
-          skills: userData[0].skills || [],
-        });
         router.push('/signup/pick-skills');
       }
     } catch (err) {
       await magic.user.logout();
-      console.error(err);
+      throw err;
     }
   }
 
-  useEffect(() => {
-    if (selectedPill !== -1) console.log(props.skills[selectedPill]);
-    setUserInfo({
-      ...userInfo,
-      category: props.skills[selectedPill],
-      background: getCommunityBgImg(selectedPill),
-    });
-  }, [selectedPill]);
+  const [showRegistration, setShowRegistration] = useState(false);
+
+  const onSkillClick = skill => {
+    // if (loggedIn) {
+    //   router.push(`/signup/pick-skills?skill=${encodeURIComponent(skill)}`);
+    // }
+
+    setShowRegistration(true);
+  };
 
   return (
     <Layout
@@ -172,42 +75,32 @@ const Join = props => {
             click. No name, location or bank account necessary.
           </p>
           <div className="p-8 text-center w-3/4 grid grid-flow-row grid-cols-5 gap-4">
-            {props.skills.map((skill, i) => {
-              return (
-                <SkillPill
-                  onClick={() => {
-                    setSelectedPill(i);
-                    if (loggedIn) {
-                      router.push('/signup/pick-skills');
-                    } else {
-                      toggleModal();
-                    }
-                  }}
-                  key={i}
-                  text={skill}
-                  selected={selectedPill === i}
-                />
-              );
-            })}
+            {props.skills.map((skill, i) => (
+              <button
+                key={skill}
+                type="button"
+                onClick={() => onSkillClick(skill)}
+                className="rounded rounded-full flex items-center justify-center p-2"
+              >
+                {skill}
+              </button>
+            ))}
           </div>
         </div>
       </div>
-      <div className={`modalBackground modalVisible-${modalState} bg-white`}>
+      <div
+        className={`modalBackground modalVisible-${showRegistration} bg-white`}
+      >
         <RegistrationModal
-          selectedPill={selectedPill}
-          skills={props.skills}
           handleCreateAccountClick={handleCreateAccountClick}
-          email={email}
-          setEmail={setEmail}
-          showRegisterModal={showRegisterModal}
-          getCommunityBgImg={getCommunityBgImg}
+          onChooseDifferentCommunity={() => setShowRegistration(false)}
         />
       </div>
     </Layout>
   );
 };
 
-export async function getServerSideProps(context) {
+export async function getServerSideProps() {
   let skills = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/skill`, {
     method: 'GET',
   });
