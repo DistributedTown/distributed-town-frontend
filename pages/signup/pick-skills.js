@@ -123,7 +123,7 @@ function SignupPhaseOne() {
     } else if (journey === 'invite') {
       joinCommunity();
     } else {
-      router.push('/signup/step-two');
+      router.push('/signup/choose-community');
     }
   };
 

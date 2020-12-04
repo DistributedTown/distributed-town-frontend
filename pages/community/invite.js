@@ -138,7 +138,7 @@ const Join = props => {
           skills: [],
         });
         setTimeout(() => {
-          router.push('/signup/step-one');
+          router.push('/signup/pick-skills');
         }, 400);
       }
     } catch (err) {
