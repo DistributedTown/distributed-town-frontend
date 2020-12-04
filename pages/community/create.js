@@ -1,17 +1,10 @@
 import { useState, useEffect, useContext } from 'react';
-import { ethers } from 'ethers';
 import { useRouter } from 'next/router';
 
-import {
-  MagicContext,
-  LoggedInContext,
-  UserInfoContext,
-  TokenContext,
-} from '../../components/Store';
+import { UserInfoContext } from '../../components/Store';
 import Layout from '../../components/Layout';
 import NicknameSelection from '../../components/NicknameSelection';
 import Button from '../../components/Button';
-import communitiesRegistryAbi from '../../utils/communitiesRegistryAbi.json';
 import { setUserJourney } from '../../utils/userJourneyManager';
 
 const communityMeta = {
@@ -53,8 +46,7 @@ const communityMeta = {
 function CommunityCreate() {
   const [communities, setCommunities] = useState([]);
   const [communityName, setCommunityName] = useState('');
-  const [userInfo, setUserInfo] = useContext(UserInfoContext);
-  const [magic] = useContext(MagicContext);
+  const [userInfo] = useContext(UserInfoContext);
   const router = useRouter();
 
   useEffect(() => {
@@ -81,29 +73,6 @@ function CommunityCreate() {
       setCommunities(communitiesToShow);
     })();
   }, []);
-
-  async function sendToApi(receipt) {
-    const payload = {
-      address: receipt,
-      name: communityName,
-      category: communities.find(community => community.selected).category,
-    };
-
-    await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/community`, {
-      method: 'POST',
-      body: JSON.stringify(payload),
-    });
-
-    setUserInfo({
-      ...userInfo,
-      communityContract: {
-        ...userInfo.communityContract,
-        name: communityName,
-      },
-    });
-
-    router.push('/community/created');
-  }
 
   async function createCommunity() {
     if (communityName.trim() === '') {
