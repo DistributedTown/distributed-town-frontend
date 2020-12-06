@@ -1,41 +1,16 @@
-import { useState, useEffect, useContext } from 'react';
-import { TokenContext } from './Store';
+function CommunityCard({ onSelectCommunity, selected, community }) {
+  const { name, members, scarcityScore } = community;
 
-function CommunityCard({ selectCommunity, selected, _id }) {
-  const [token] = useContext(TokenContext);
   function getCardState(members) {
     if (members === 24) return 'Not accepting';
     if (!selected) return 'Can join';
-    if (selected) return 'Joined!';
+    if (selected) return 'Selected!';
   }
-  const [communityDetails, setCommunityDetails] = useState();
-
-  useEffect(() => {
-    (async function() {
-      const community = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/community/${_id}`,
-        {
-          method: 'GET',
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
-      );
-      const communityDetails = await community.json();
-      setCommunityDetails(communityDetails);
-    })();
-  }, []);
-
-  if (!communityDetails) {
-    return null;
-  }
-
-  const { name, members, scarcityScore } = communityDetails;
 
   return (
     <div
       className="flex flex-col border-2 border-denim bg-white cursor-pointer"
-      onClick={selectCommunity}
+      onClick={onSelectCommunity}
     >
       <div className="grid grid-cols-2 p-4 border-b-2 border-denim">
         <h2>{name}</h2>

@@ -63,7 +63,7 @@ function SignupCompleted() {
             Here are your community credits
           </p>
           <div className="bg-red-600 rounded-full flex flex-col p-8 items-center justify-center h-64 w-64 mt-4">
-            <img src="/dito-tokens.svg" />
+            <img alt="dito tokens" src="/dito-tokens.svg" />
             <p className="text-orange mt-4">
               {ditoBalance === -1
                 ? 'Loading dito balance...'
@@ -104,7 +104,11 @@ function SignupCompleted() {
 join my community - and let's work on something meaningful together! ${shareLink}`)}
               className="px-24 py-8 text-xl font-bold border-black border w-full flex items-center justify-between"
             >
-              <img src="/twitter.png" className="mr-4 h-12" />
+              <img
+                alt="twitter logo"
+                src="/twitter.png"
+                className="mr-4 h-12"
+              />
               Twitter
             </a>
             <a

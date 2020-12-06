@@ -2,97 +2,42 @@ import { useContext } from 'react';
 import { useRouter } from 'next/router';
 import { ethers } from 'ethers';
 import { useMutation } from 'react-query';
-import {
-  MagicContext,
-  UserInfoContext,
-  TokenContext,
-} from '../components/Store';
+import { MagicContext } from '../components/Store';
 import contractABI from '../utils/communityContractAbi.json';
+import { getUserInfo, updateUserCommunityID } from '../api';
 
 export const useJoinCommunity = () => {
   const router = useRouter();
-  const [userInfo = { skills: [] }] = useContext(UserInfoContext);
   const [magic] = useContext(MagicContext);
-  const [token, setToken] = useContext(TokenContext);
 
-  async function joinCommunity() {
+  async function joinCommunity(community) {
     const provider = new ethers.providers.Web3Provider(magic.rpcProvider);
+    const signer = provider.getSigner();
 
-    try {
-      const signer = provider.getSigner();
+    const contractAddress = community.address
+      ? community.address
+      : '0x21255bC60234359A7aBa6EdB8d1b9cd0070B13aE';
+    console.log('CONTRACT ADDRESS', contractAddress);
+    const contract = new ethers.Contract(contractAddress, contractABI, signer);
 
-      // Get user's Ethereum public address
-      const address = await signer.getAddress();
-      console.log(userInfo);
-      const contractAddress = userInfo.communityContract
-        ? userInfo.communityContract.address
-        : '0x790697f595Aa4F9294566be0d262f71b44b5039c';
-      const contract = new ethers.Contract(
-        contractAddress,
-        contractABI,
-        signer,
-      );
-
-      let amountOfRedeemableDitos = 0;
-      for (const { redeemableDitos } of userInfo.skills) {
-        amountOfRedeemableDitos += redeemableDitos;
-      }
-
-      // Send transaction to smart contract to update message and wait to finish
-      const baseDitos = 2000;
-      const totalDitos = amountOfRedeemableDitos + baseDitos;
-      const tx = await contract.join(totalDitos);
-
-      // Wait for transaction to finish
-      const receipt = await tx.wait();
-
-      await updateUser(userInfo.communitContract);
-    } catch (error) {
-      alert(error.message);
-      console.log(error);
+    const didToken = await magic.user.getIdToken();
+    const userInfo = await getUserInfo(didToken);
+    let amountOfRedeemableDitos = 0;
+    for (const { redeemableDitos } of userInfo.skills) {
+      amountOfRedeemableDitos += redeemableDitos || 0;
     }
-  }
 
-  async function updateUser(community) {
-    try {
-      let currentToken = token;
-      console.log('1 ct', currentToken);
-      const responseFetchToken = await magic.user.getIdToken();
-      const didToken = await responseFetchToken;
-      if (token !== didToken) {
-        currentToken = didToken;
-        setToken(didToken);
-      }
+    // Send transaction to smart contract to update message and wait to finish
+    const baseDitos = 2000;
+    const totalDitos = amountOfRedeemableDitos + baseDitos;
+    const tx = await contract.join(totalDitos);
 
-      console.log('2 ct', currentToken);
+    // Wait for transaction to finish
+    await tx.wait();
 
-      console.log('updated skills userinfo', userInfo);
+    await updateUserCommunityID(didToken, community._id);
 
-      const payload = {
-        username: userInfo.username,
-        communityID: community._id,
-        skills: userInfo.skills,
-      };
-
-      console.log('payload', payload);
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/user`,
-        {
-          method: 'POST',
-          body: JSON.stringify(payload),
-          headers: new Headers({
-            Authorization: `Bearer ${currentToken}`,
-            'Content-Type': 'application/json',
-          }),
-        },
-      );
-
-      const updatedUser = await response.json();
-
-      router.push('/signup/completed');
-    } catch (err) {
-      console.log(err);
-    }
+    router.push('/signup/completed');
   }
 
   return useMutation(joinCommunity);

@@ -3,7 +3,6 @@ import Link from 'next/link';
 
 import { useContext } from 'react';
 import { LoggedInContext } from '../components/Store';
-import { setUserJourney } from '../utils/userJourneyManager';
 import { useMagicLinkLogin } from '../hooks/useMagicLinkLogin';
 
 const Index = () => {
@@ -31,15 +30,7 @@ const Index = () => {
         <div className="p-8 border-2 border-denim flex flex-col mx-8 ">
           <div className="border-2 border-red p-1">
             <div className="border-2 border-denim p-4 text-center font-bold">
-              <Link
-                href="/community/create"
-                onClick={() => {
-                  setUserJourney({
-                    journey: 'community',
-                    step: 'category',
-                  });
-                }}
-              >
+              <Link href="/community/create">
                 <a className="flex justify-around items-center text-xl px-8">
                   Create
                   <img src="/create-plus-button.svg" alt="create community" />
@@ -49,15 +40,7 @@ const Index = () => {
           </div>
           <div className="border-2 border-red p-1 mt-2">
             <div className="border-2 border-denim p-4 text-center font-bold">
-              <Link
-                href="/community/join"
-                onClick={() => {
-                  setUserJourney({
-                    journey: 'join',
-                    step: 'start',
-                  });
-                }}
-              >
+              <Link href="/community/join">
                 <a className="flex justify-around items-center text-xl px-8">
                   Join
                   <img src="/create-people-button.svg" alt="join community" />

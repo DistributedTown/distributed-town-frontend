@@ -1,54 +1,37 @@
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
 
 import { useRouter } from 'next/router';
 import Quote from '../../components/Quote';
 import RegistrationModal from '../../components/registration/RegistrationModal';
-import { MagicContext } from '../../components/Store';
 import Layout from '../../components/Layout';
 import { getUserInfo } from '../../api';
 import { useMagicLinkLogin } from '../../hooks/useMagicLinkLogin';
 
 const Join = props => {
-  const [magic] = useContext(MagicContext);
   const [login] = useMagicLinkLogin();
+
+  const [chosenSkill, setChosenSkill] = useState('');
+  const showRegistrationModal = !!chosenSkill;
 
   const router = useRouter();
 
   async function handleCreateAccountClick(e, email) {
     e.preventDefault();
-    try {
-      const { didToken } = await login(email);
 
-      const userData = await getUserInfo(didToken);
-      const hasSkills =
-        userData[0].skills &&
-        Array.isArray(userData[0].skills) &&
-        userData[0].skills.length > 0;
+    const { didToken } = await login(email);
 
-      if (hasSkills) {
-        router.push('/skillwallet');
-      } else {
-        router.push('/signup/pick-skills');
-      }
-    } catch (err) {
-      await magic.user.logout();
-      throw err;
+    const userData = await getUserInfo(didToken);
+    const hasSkills = userData.skills && userData.skills.length > 0;
+
+    if (hasSkills) {
+      router.push('/skillwallet');
+    } else {
+      router.push(
+        `/signup/pick-skills?categorySkill=${encodeURIComponent(chosenSkill)}`,
+      );
     }
   }
-
-  const [showRegistration, setShowRegistration] = useState(false);
-
-  const onSkillClick = skill => {
-    // TODO: Rediret to pick skills if logged in
-    // if (loggedIn) {
-    //   router.push(
-    //     `/signup/pick-skills?communitySkill=${encodeURIComponent(skill)}`,
-    //   );
-    // }
-
-    setShowRegistration(true);
-  };
 
   return (
     <Layout
@@ -76,11 +59,11 @@ const Join = props => {
             click. No name, location or bank account necessary.
           </p>
           <div className="p-8 text-center w-3/4 grid grid-flow-row grid-cols-5 gap-4">
-            {props.skills.map((skill, i) => (
+            {props.skills.map(skill => (
               <button
                 key={skill}
                 type="button"
-                onClick={() => onSkillClick(skill)}
+                onClick={() => setChosenSkill(skill)}
                 className="rounded rounded-full flex items-center justify-center p-2"
               >
                 {skill}
@@ -90,11 +73,11 @@ const Join = props => {
         </div>
       </div>
       <div
-        className={`modalBackground modalVisible-${showRegistration} bg-white`}
+        className={`modalBackground modalVisible-${showRegistrationModal} bg-white`}
       >
         <RegistrationModal
           handleCreateAccountClick={handleCreateAccountClick}
-          onChooseDifferentCommunity={() => setShowRegistration(false)}
+          onChooseDifferentCommunity={() => setChosenSkill('')}
         />
       </div>
     </Layout>
@@ -105,7 +88,7 @@ export async function getServerSideProps() {
   let skills = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/skill`, {
     method: 'GET',
   });
-  skills = await skills.json();
+  skills = (await skills.json()) || [];
 
   return {
     props: { skills }, // will be passed to the page component as props

@@ -1,25 +1,21 @@
-import { useContext, useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import produce from 'immer';
-import { UserInfoContext } from '../../components/Store';
 import Layout from '../../components/Layout';
 
 import SkillsCard from '../../components/SkillsCard';
 
 import Button from '../../components/Button';
 import NicknameSelection from '../../components/NicknameSelection';
-import { getUserJourney } from '../../utils/userJourneyManager';
-import { useCreateCommunity } from '../../hooks/useCreateCommunity';
-import { useJoinCommunity } from '../../hooks/useJoinCommunity';
 import { getSkillTreeByCategorySkill } from '../../api';
+import { useCreateUser } from '../../hooks/useCreateUser';
 
-function SignupPhaseOne() {
+function PickSkills() {
   const router = useRouter();
-  const [userInfo = { skills: [] }, setUserInfo] = useContext(UserInfoContext);
   const [skillTree, setSkillTree] = useState([]);
 
-  const [createCommunity] = useCreateCommunity();
-  const [joinCommunity] = useJoinCommunity();
+  const [username, setUsername] = useState('');
+  const [createUser] = useCreateUser();
 
   useEffect(() => {
     const { categorySkill } = router.query;
@@ -31,6 +27,7 @@ function SignupPhaseOne() {
         );
         // Transform skill string to skill object with skill name field
         skillTreeResponse.categories.forEach(c => {
+          // eslint-disable-next-line no-param-reassign
           c.skills = c.skills.map(skill => ({ skill }));
         });
         setSkillTree(skillTreeResponse.categories);
@@ -38,6 +35,7 @@ function SignupPhaseOne() {
         console.log(err);
       }
     };
+
     getSkillTree();
   }, []);
 
@@ -78,50 +76,11 @@ function SignupPhaseOne() {
     return getSelectedSkills().length;
   }
 
-  function setUserSkills() {
-    const skills = [];
-
-    for (const category of skillTree) {
-      for (const skill of category.skills) {
-        if (skill.selected)
-          skills.push({
-            ...skill,
-            redeemableDitos: Math.floor(skill.level / 10) * category.credits,
-          });
-      }
-    }
-
-    setUserInfo(prev => {
-      return { ...prev, skills };
-    });
-  }
-
-  const submit = () => {
-    const { journey } = getUserJourney();
-    if (!userInfo.username) {
-      alert('Please choose a nickname');
-      return;
-    }
-    if (journey === 'community') {
-      createCommunity();
-    } else if (journey === 'invite') {
-      joinCommunity();
-    } else {
-      router.push('/signup/choose-community');
-    }
+  const onSubmit = async () => {
+    const skills = getSelectedSkills();
+    await createUser({ username, communityID: '', skills });
+    router.push('/signup/choose-community');
   };
-
-  useEffect(() => {
-    if (userInfo.skills.length > 0) {
-      submit();
-    }
-  }, [userInfo.skills.length]);
-
-  let journey = null;
-  const userJourney = getUserJourney();
-  if (userJourney) {
-    journey = userJourney.journey;
-  }
 
   return (
     <Layout
@@ -141,12 +100,11 @@ function SignupPhaseOne() {
           style={{ backdropFilter: 'blur(5px)' }}
         >
           <NicknameSelection
-            setUserInfo={setUserInfo}
-            value={userInfo.username}
+            value={username}
+            onChange={e => setUsername(e.target.value)}
             title="Welcome to Distributed Town!"
             subtitle="This is the first step to join a global community of local people or the other way around :)"
             placeholderText="Please choose a nickname"
-            userInfo={userInfo}
           />
         </div>
         <div className="flex flex-col justify-center align-center text-center space-y-1 p-8 flex-grow w-1/2 overflow-auto h-full py-24">
@@ -189,19 +147,13 @@ function SignupPhaseOne() {
           </div>
         </div>
         <div className="flex justify-center items-center w-full absolute bottom-0 p-4 bg-white">
-          <Button
-            className="font-black"
-            onClick={
-              userInfo.skills && userInfo.skills.length > 0
-                ? () => submit()
-                : () => setUserSkills()
-            }
-          >
-            {journey === 'community'
+          <Button className="font-black" onClick={onSubmit}>
+            Choose community
+            {/* TODO: {journey === 'community'
               ? 'Next: Create and Join Community'
               : journey === 'invite'
               ? 'Next: Join Community'
-              : 'Next: choose your first community!'}
+              : 'Next: choose your first community!'} */}
           </Button>
         </div>
       </div>
@@ -209,4 +161,4 @@ function SignupPhaseOne() {
   );
 }
 
-export default SignupPhaseOne;
+export default PickSkills;
