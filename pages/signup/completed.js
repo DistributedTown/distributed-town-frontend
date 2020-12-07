@@ -1,31 +1,22 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 import { useRouter } from 'next/router';
 import Layout from '../../components/Layout';
 import { useGetInvitation } from '../../hooks/useGetInvitation';
 
-import {
-  removeUserJourney,
-  getUserJourney,
-} from '../../utils/userJourneyManager';
+import { getUserJourney } from '../../utils/userJourneyManager';
 import { useGetDitoBalance } from '../../hooks/useGetDitoBalance';
 
 function SignupCompleted() {
   const { data: ditoBalance } = useGetDitoBalance();
   const [showInviteModal, setShowInviteModal] = useState(false);
 
-  useEffect(() => {
-    removeUserJourney();
-  }, []);
-
   const router = useRouter();
 
   const { journey } = getUserJourney();
 
-  const {
-    data: { linkUrl: shareLink },
-    refetch: getShareLink,
-  } = useGetInvitation();
+  const { data, refetch: getShareLink } = useGetInvitation();
+  const { linkUrl: shareLink } = data || {};
 
   const inviteMembers = async () => {
     getShareLink();
@@ -65,9 +56,7 @@ function SignupCompleted() {
           <div className="bg-red-600 rounded-full flex flex-col p-8 items-center justify-center h-64 w-64 mt-4">
             <img alt="dito tokens" src="/dito-tokens.svg" />
             <p className="text-orange mt-4">
-              {ditoBalance === -1
-                ? 'Loading dito balance...'
-                : `${ditoBalance} DiTo`}
+              {ditoBalance ? `${ditoBalance} DiTo` : 'Loading dito balance...'}
             </p>
           </div>
         </div>

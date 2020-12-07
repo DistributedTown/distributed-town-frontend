@@ -1,7 +1,7 @@
 import Head from 'next/head';
-import { useContext, useEffect } from 'react';
+import { useContext } from 'react';
 import { useRouter } from 'next/router';
-import { LoggedInContext, MagicContext, UserInfoContext } from './Store';
+import { MagicContext } from './Store';
 
 import NavLink from './NavLink';
 
@@ -19,9 +19,7 @@ const Layout = ({
   navBar,
   children,
 }) => {
-  const [loggedIn, setLoggedIn] = useContext(LoggedInContext);
   const [magic] = useContext(MagicContext);
-  const [userInfo, setUserInfo] = useContext(UserInfoContext);
 
   const router = useRouter();
   /**
@@ -33,7 +31,6 @@ const Layout = ({
     try {
       await magic.user.logout();
       console.log(await magic.user.isLoggedIn()); // => `false`
-      setLoggedIn(false);
       router.push('/');
     } catch (err) {
       console.log(err);
@@ -108,7 +105,8 @@ const Layout = ({
         )}
         {navBar && (
           <nav className="flex flex-col h-screen w-48 max-w-sm p-4 pt-64 border-r-2 border-denim z-10">
-            {loggedIn && !navBar.hideNav ? (
+            {/* TODO: Show only if logged in */}
+            {!navBar.hideNav ? (
               <ul className="flex flex-col w-full mt-8 text-xl">
                 <NavLink href="/skillwallet">Skill Wallet</NavLink>
                 <NavLink href="/community">Dashboard</NavLink>

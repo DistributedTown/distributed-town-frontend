@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 import { useJoinCommunity } from '../../hooks/useJoinCommunity';
 
 import CommunityCard from '../../components/CommunityCard';
@@ -7,7 +8,7 @@ import { useGetCommunities } from '../../hooks/useGetCommunities';
 function ChooseCommunity() {
   const [communities, setCommunities] = useState([]);
   const [chosenCommunity, setChosenCommunity] = useState(null);
-  const [joinCommunity] = useJoinCommunity();
+  const [joinCommunity, { isLoading: joiningCommunity }] = useJoinCommunity();
   const { refetch: getCommunities } = useGetCommunities();
 
   useEffect(() => {
@@ -16,6 +17,15 @@ function ChooseCommunity() {
       setCommunities(comms || []);
     })();
   }, []);
+
+  const router = useRouter();
+
+  const handleJoinClick = async () => {
+    await joinCommunity(chosenCommunity);
+    await router.push('/signup/completed');
+  };
+
+  const joinDisabled = !chosenCommunity || joiningCommunity;
 
   return (
     <div className="flex flex-col">
@@ -37,15 +47,15 @@ function ChooseCommunity() {
             Your skills are your main asset. And the only thing that matters.
             The more rare they are, the more credits you’ll get!
           </p>
-          <div className="w-full border-2 border-gray-400 p-2 text-center">
-            {/* TODO: Loading */}
-            <button
-              type="button"
-              onClick={() => joinCommunity(chosenCommunity)}
-            >
-              Join and get your credits!
-            </button>
-          </div>
+          {/* TODO: Loading */}
+          <button
+            className="w-full border-2 border-gray-400 p-2 text-center disabled:opacity-50"
+            type="button"
+            onClick={handleJoinClick}
+            disabled={joinDisabled}
+          >
+            Join and get your credits!
+          </button>
         </div>
       </div>
     </div>

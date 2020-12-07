@@ -3,10 +3,10 @@ import { BigNumber, ethers } from 'ethers';
 import { useContext } from 'react';
 import ditoContractAbi from '../utils/ditoTokenContractAbi.json';
 import communityContractAbi from '../utils/communityContractAbi.json';
-import { MagicContext, UserInfoContext } from '../components/Store';
+import { MagicContext } from '../components/Store';
+import { getCommunityById, getUserInfo } from '../api';
 
 export const useGetDitoBalance = () => {
-  const [userInfo] = useContext(UserInfoContext);
   const [magic] = useContext(MagicContext);
   const provider = new ethers.providers.Web3Provider(magic.rpcProvider);
 
@@ -17,8 +17,14 @@ export const useGetDitoBalance = () => {
     const address = await signer.getAddress();
 
     const communityContractABI = communityContractAbi;
+
+    // TODO: useUserInfo to avoid making the same call many times
+    const didToken = await magic.user.getIdToken();
+    const userInfo = await getUserInfo(didToken);
+    const community = await getCommunityById(didToken, userInfo.communityID);
+
     const communityContractAddress =
-      userInfo.communityContract.address ||
+      community.addresses.find(a => a.blockchain === 'ETH').address ||
       '0x759A224E15B12357b4DB2d3aa20ef84aDAf28bE7';
     const communityContract = new ethers.Contract(
       communityContractAddress,
@@ -28,7 +34,7 @@ export const useGetDitoBalance = () => {
 
     const ditoContractABI = ditoContractAbi;
     const ditoContractAddress = await communityContract.tokens();
-    console.log(ditoContractAddress);
+
     const ditoContract = new ethers.Contract(
       ditoContractAddress,
       ditoContractABI,

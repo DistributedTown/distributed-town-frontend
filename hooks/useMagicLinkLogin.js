@@ -1,6 +1,6 @@
 import { useMutation } from 'react-query';
 import { useContext } from 'react';
-import { login } from '../api';
+import { fundUser, login } from '../api';
 import { MagicContext } from '../components/Store';
 
 export const useMagicLinkLogin = () => {
@@ -9,7 +9,10 @@ export const useMagicLinkLogin = () => {
   const loginHandler = async email => {
     // TODO: Validate email in form
     const didToken = await magic.auth.loginWithMagicLink({ email });
+    sessionStorage.setItem('user', JSON.stringify({ email }));
     await login(didToken);
+    const { publicAddress } = await magic.user.getMetadata();
+    await fundUser(publicAddress);
 
     return { didToken };
   };

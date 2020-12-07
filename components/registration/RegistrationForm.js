@@ -14,7 +14,7 @@ const RegistrationForm = ({
   <div
     className={`max-w-sm  rounded w-full lg:max-w-full lg:flex ${className}`}
   >
-    <div className="border-r border-b border-l border-gray-400 lg:border-l-0 lg:border-t lg:border-gray-400 bg-white rounded p-4 flex flex-col justify-between leading-normal">
+    <div className="border border-gray-400 rounded p-4 flex flex-col justify-between leading-normal">
       <div className="mb-8">
         <div className="text-gray-900 font-bold text-xl mb-2">{title}</div>
         <p className="text-gray-700 text-base">{subtitle}</p>

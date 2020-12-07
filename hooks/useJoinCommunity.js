@@ -1,5 +1,4 @@
 import { useContext } from 'react';
-import { useRouter } from 'next/router';
 import { ethers } from 'ethers';
 import { useMutation } from 'react-query';
 import { MagicContext } from '../components/Store';
@@ -7,7 +6,6 @@ import contractABI from '../utils/communityContractAbi.json';
 import { getUserInfo, updateUserCommunityID } from '../api';
 
 export const useJoinCommunity = () => {
-  const router = useRouter();
   const [magic] = useContext(MagicContext);
 
   async function joinCommunity(community) {
@@ -22,6 +20,7 @@ export const useJoinCommunity = () => {
 
     const didToken = await magic.user.getIdToken();
     const userInfo = await getUserInfo(didToken);
+    console.log('USER INFO', userInfo);
     let amountOfRedeemableDitos = 0;
     for (const { redeemableDitos } of userInfo.skills) {
       amountOfRedeemableDitos += redeemableDitos || 0;
@@ -30,15 +29,16 @@ export const useJoinCommunity = () => {
     // Send transaction to smart contract to update message and wait to finish
     const baseDitos = 2000;
     const totalDitos = amountOfRedeemableDitos + baseDitos;
+    console.log('TOTAL DITOS', totalDitos);
     const tx = await contract.join(totalDitos);
 
+    console.log('TRANSACTION', tx);
     // Wait for transaction to finish
     await tx.wait();
+    console.log('TRANSACTION FINISHED', tx);
 
     await updateUserCommunityID(didToken, community._id);
-
-    router.push('/signup/completed');
   }
 
-  return useMutation(joinCommunity);
+  return useMutation(joinCommunity, { throwOnError: true });
 };
