@@ -32,7 +32,13 @@ export const getCommunityById = (didToken, id) => {
   }).then(res => res.json());
 };
 
-export const createCommunity = async (didToken, community, user) => {
+export const getCommunities = () => {
+  return fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/community`, {
+    method: 'GET',
+  }).then(res => res.json());
+};
+
+export const createCommunityAndUser = async (didToken, community, user) => {
   const { address, category, name } = community;
   const payload = {
     category,
@@ -164,3 +170,11 @@ export const getUserBalance = async () => {
 
   return ditoBalanceStr;
 };
+
+export const getInvitation = async didToken =>
+  fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user/invite`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${didToken}`,
+    },
+  }).then(res => res.json());

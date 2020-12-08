@@ -1,22 +1,17 @@
 import { useContext } from 'react';
 import { useQuery } from 'react-query';
-import { TokenContext } from '../components/Store';
+import { getInvitation } from '../api';
+import { MagicContext } from '../components/Store';
 
 export const useGetInvitation = () => {
-  const [token] = useContext(TokenContext);
+  const [magic] = useContext(MagicContext);
 
-  const inviteMembers = async () => {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/user/invite`,
-      {
-        method: 'GET',
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      },
-    );
-    return res.json();
-  };
-
-  return useQuery('inviteLink', inviteMembers, { enabled: false });
+  return useQuery(
+    'inviteLink',
+    async () => {
+      const didToken = await magic.user.getIdToken();
+      return getInvitation(didToken);
+    },
+    { enabled: false },
+  );
 };
