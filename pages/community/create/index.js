@@ -1,14 +1,13 @@
-import { useState, useEffect, useContext } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/router';
 
-import { UserInfoContext } from '../../components/Store';
-import Layout from '../../components/Layout';
-import NicknameSelection from '../../components/NicknameSelection';
-import Button from '../../components/Button';
-import { setUserJourney } from '../../utils/userJourneyManager';
+import Layout from '../../../components/Layout';
+import NicknameSelection from '../../../components/NicknameSelection';
+import Button from '../../../components/Button';
 
-const communityMeta = {
-  'DLT & Blockchain': {
+const communityCategories = [
+  {
+    name: 'DLT & Blockchain',
     color: 'denim',
     subtitle: 'Ideal for small, functional Web3 teams aiming to',
     description: [
@@ -19,7 +18,8 @@ const communityMeta = {
       'coordinate for hackathons & sprints',
     ],
   },
-  'Art & Lifestyle': {
+  {
+    name: 'Art & Lifestyle',
     color: 'rain-forest',
     subtitle: 'For artists & creative minds who want to:',
     description: [
@@ -30,7 +30,8 @@ const communityMeta = {
       'update scores & rank while gaming',
     ],
   },
-  'Local Community': {
+  {
+    name: 'Local Community',
     color: 'alizarin',
     subtitle: 'For neighbors, condos & small local clubs who need to',
     description: [
@@ -41,76 +42,20 @@ const communityMeta = {
       'divide tasks for mutual support',
     ],
   },
-};
+];
 
 function CommunityCreate() {
-  const [communities, setCommunities] = useState([]);
   const [communityName, setCommunityName] = useState('');
-  const [userInfo] = useContext(UserInfoContext);
+  const [selectedCategory, setSelectedCategory] = useState();
   const router = useRouter();
 
-  useEffect(() => {
-    (async function() {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/community`,
-        {
-          method: 'GET',
-        },
-      );
-      const communitiesRes = await res.json();
-      const communitiesCategoryMap = [];
-      const communitiesToShow = [];
-      communitiesRes.forEach(community => {
-        if (!communitiesCategoryMap.includes(community.category)) {
-          communitiesToShow.push(community);
-          communitiesCategoryMap.push(community.category);
-        }
-      });
-      console.log(communitiesToShow);
-      communitiesToShow.forEach(community => {
-        community.selected = false;
-      });
-      setCommunities(communitiesToShow);
-    })();
-  }, []);
-
-  async function createCommunity() {
-    if (communityName.trim() === '') {
-      alert('Please enter a community name');
-      return;
-    }
-
-    const selectedCommunity = communities.find(community => community.selected);
-    if (!selectedCommunity) {
-      alert('Please select a community category');
-      return;
-    }
-
-    // store community name and category to localStorage.
-    // mark current flow as community
-    setUserJourney({
-      journey: 'community',
-      step: 'created',
-      meta: {
+  const handleCreateCommunity = async () => {
+    await router.push(
+      `/community/create/created?name=${encodeURIComponent(
         communityName,
-        category: selectedCommunity.category,
-      },
-    });
-    // go to congrats page
-    router.push('/community/created');
-  }
-
-  function setSelected(id) {
-    const newCommunities = [...communities];
-    newCommunities.forEach(({ _id }, index) => {
-      if (_id === id) {
-        newCommunities[index].selected = true;
-      } else {
-        newCommunities[index].selected = false;
-      }
-    });
-    setCommunities(newCommunities);
-  }
+      )}&category=${encodeURIComponent(selectedCategory.name)}`,
+    );
+  };
 
   return (
     <Layout
@@ -130,7 +75,7 @@ function CommunityCreate() {
           style={{ backdropFilter: 'blur(5px)' }}
         >
           <NicknameSelection
-            setUserInfo={val => setCommunityName(val.username)}
+            onChange={e => setCommunityName(e.target.value)}
             value={communityName}
             title="Welcome to Distributed Town!"
             subtitle={
@@ -142,7 +87,6 @@ function CommunityCreate() {
               </span>
             }
             placeholderText="Please choose a community name"
-            userInfo={userInfo}
             inputLabel="Community Name"
           />
         </div>
@@ -153,32 +97,26 @@ function CommunityCreate() {
             you and your needs!
           </p>
           <div className="flex flex-wrap justify-center">
-            {communities.map(community => {
-              if (!communityMeta[community.category]) {
-                return null;
-              }
-
-              const { _id, selected } = community;
-              const { color, subtitle, description } = communityMeta[
-                community.category
-              ];
+            {communityCategories.map(category => {
+              const { name, color, subtitle, description } = category;
 
               return (
                 <div
                   className="rounded-xl border-4 border-black w-2/5 m-4"
-                  onClick={() => {
-                    setSelected(_id);
-                  }}
-                  key={_id}
+                  onClick={() => setSelectedCategory(category)}
+                  key={name}
                 >
                   <div
                     className={`bg-${color} text-white text-3xl font-bold border-b-4 rounded-md p-2 border-black leading-7`}
                   >
-                    {community.category}
+                    {name}
                   </div>
                   <div
                     className={`m-2 border-${color} border rounded-md p-1 leading-4 text-left ${
-                      selected ? `bg-${color} text-white` : ''
+                      (selectedCategory && selectedCategory.name) ===
+                      category.name
+                        ? `bg-${color} text-white`
+                        : ''
                     }`}
                   >
                     <p className="text-sm text-center mb-2">{subtitle}</p>
@@ -197,7 +135,7 @@ function CommunityCreate() {
           <Button
             className="font-black font-bold text-2xl px-32"
             color="rain-forest"
-            onClick={createCommunity}
+            onClick={handleCreateCommunity}
           >
             Next: Launch & Get Community Credits!
           </Button>

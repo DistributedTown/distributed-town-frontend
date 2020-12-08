@@ -32,9 +32,46 @@ export const getCommunityById = (didToken, id) => {
   }).then(res => res.json());
 };
 
-export const getSkillTreeByCategorySkill = categorySkill => {
+export const createCommunity = async (didToken, community, user) => {
+  const { address, category, name } = community;
+  const payload = {
+    category,
+    addresses: [
+      {
+        blockchain: 'ETH',
+        address,
+      },
+    ],
+    name,
+    owner: {
+      username: user.username,
+      skills: user.skills,
+    },
+  };
+  await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/community`, {
+    method: 'POST',
+    body: JSON.stringify(payload),
+    headers: {
+      'content-type': 'application/json',
+      Authorization: `Bearer ${didToken}`,
+    },
+  }).then(res => res.json());
+};
+
+export const getSkillTreeBySkill = skill => {
   return fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/skill?skill=${categorySkill}`,
+    `${process.env.NEXT_PUBLIC_API_URL}/api/skill?skill=${encodeURIComponent(
+      skill,
+    )}`,
+    { method: 'GET' },
+  ).then(res => res.json());
+};
+
+export const getSkillTreeByCategory = category => {
+  return fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/api/skill?category=${encodeURIComponent(
+      category,
+    )}`,
     { method: 'GET' },
   ).then(res => res.json());
 };

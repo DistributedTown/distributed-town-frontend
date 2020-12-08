@@ -15,12 +15,13 @@ export const useJoinCommunity = () => {
     const contractAddress = community.address
       ? community.address
       : '0x21255bC60234359A7aBa6EdB8d1b9cd0070B13aE';
-    console.log('CONTRACT ADDRESS', contractAddress);
+
     const contract = new ethers.Contract(contractAddress, contractABI, signer);
 
     const didToken = await magic.user.getIdToken();
     const userInfo = await getUserInfo(didToken);
-    console.log('USER INFO', userInfo);
+
+    // TODO: This should not be done on the frontend
     let amountOfRedeemableDitos = 0;
     for (const { redeemableDitos } of userInfo.skills) {
       amountOfRedeemableDitos += redeemableDitos || 0;
@@ -29,7 +30,7 @@ export const useJoinCommunity = () => {
     // Send transaction to smart contract to update message and wait to finish
     const baseDitos = 2000;
     const totalDitos = amountOfRedeemableDitos + baseDitos;
-    console.log('TOTAL DITOS', totalDitos);
+
     const tx = await contract.join(totalDitos);
 
     console.log('TRANSACTION', tx);

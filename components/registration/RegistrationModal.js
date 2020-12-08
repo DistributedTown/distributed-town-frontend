@@ -3,7 +3,7 @@ import bgImages from '../../utils/bgImages';
 import RegistrationForm from './RegistrationForm';
 
 const RegistrationModal = ({
-  chosenSkill,
+  chosenSkill = '',
   handleCreateAccountClick,
   onChooseDifferentCommunity,
 }) => {
@@ -35,13 +35,15 @@ const RegistrationModal = ({
                 cta="Create Account"
                 placeholderText="Please enter your email"
               />
-              <a
-                onClick={onChooseDifferentCommunity}
-                href="#"
-                className=" pt-2 text-gray-500 underline"
-              >
-                Select a different community
-              </a>
+              {onChooseDifferentCommunity && (
+                <a
+                  onClick={onChooseDifferentCommunity}
+                  href="#"
+                  className=" pt-2 text-gray-500 underline"
+                >
+                  Select a different community
+                </a>
+              )}
             </div>
           </div>
           <div className="w-full z-10 justify-self-end">

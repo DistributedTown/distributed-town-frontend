@@ -1,27 +1,20 @@
 import { useContext } from 'react';
 import { ethers } from 'ethers';
 import { useMutation } from 'react-query';
-import { useRouter } from 'next/router';
 import communitiesABI from '../utils/communitiesRegistryAbi.json';
-import {
-  MagicContext,
-  TokenContext,
-  UserInfoContext,
-} from '../components/Store';
-import { getUserJourney, removeUserJourney } from '../utils/userJourneyManager';
+import { MagicContext } from '../components/Store';
 import contractABI from '../utils/communityContractAbi.json';
+import { createCommunity } from '../api';
 
 export const useCreateCommunity = () => {
-  const [userInfo = { skills: [] }, setUserInfo] = useContext(UserInfoContext);
   const [magic] = useContext(MagicContext);
-  const [token] = useContext(TokenContext);
-  const router = useRouter();
 
-  const createCommunity = async () => {
-    try {
+  return useMutation(
+    async ({ name, category, user }) => {
       const provider = new ethers.providers.Web3Provider(magic.rpcProvider);
       const signer = provider.getSigner();
 
+      // TODO: Create contract should join the user automatically instead of needing to call join after that.
       // call the smart contract to create community
       const contract = new ethers.Contract(
         '0xe141f6C659bEA31d39cD043539E426D53bF3D7d8',
@@ -37,7 +30,6 @@ export const useCreateCommunity = () => {
       });
       // Wait for transaction to finish
       const communityTransactionResult = await createTx.wait();
-      console.log('community transaction result', communityTransactionResult);
       const { events } = communityTransactionResult;
       const communityCreatedEvent = events.find(
         e => e.event === 'CommunityCreated',
@@ -47,71 +39,33 @@ export const useCreateCommunity = () => {
       }
       const communityAddress = communityCreatedEvent.args[0];
 
-      console.log(communityCreatedEvent);
-
-      // TODO: Message JOINING COMMUNITY
-      // setLoading({
-      //   status: true,
-      //   message: 'Joining community...',
-      // });
-      // call the smart contract to join community
+      // FIXME: Security concern
+      // TODO: This should be calculated and done in the backend
+      const didToken = await magic.user.getIdToken();
       let amountOfRedeemableDitos = 0;
-      for (const { redeemableDitos } of userInfo.skills) {
-        amountOfRedeemableDitos += redeemableDitos;
+      for (const { redeemableDitos } of user.skills || []) {
+        amountOfRedeemableDitos += redeemableDitos || 0;
       }
-
       const baseDitos = 2000;
       const totalDitos = amountOfRedeemableDitos + baseDitos;
 
-      const communitContract = new ethers.Contract(
+      const communityContract = new ethers.Contract(
         communityAddress,
         contractABI,
         signer,
       );
-      const joinTx = await communitContract.join(totalDitos);
+      const joinTx = await communityContract.join(totalDitos);
       // Wait for transaction to finish
       await joinTx.wait();
 
       // call api to create community and user
-      const { meta } = getUserJourney();
-      const payload = {
-        category: meta.category,
-        addresses: [
-          {
-            blockchain: 'ETH',
-            address: communityCreatedEvent.args[0],
-          },
-        ],
-        name: meta.communityName,
-        owner: {
-          username: userInfo.username,
-          skills: userInfo.skills,
-        },
+      const community = {
+        address: communityCreatedEvent.args[0],
+        name,
+        category,
       };
-      await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/community`, {
-        method: 'POST',
-        body: JSON.stringify(payload),
-        headers: {
-          'content-type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      // update user in UserInfoContext
-      setUserInfo({
-        ...userInfo,
-        ditoBalance: totalDitos,
-        communityContract: {
-          name: meta.communityName,
-          address: communityCreatedEvent.args[0],
-        },
-      });
-      removeUserJourney();
-      router.push('/signup/completed');
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  return useMutation(createCommunity);
+      await createCommunity(didToken, community, user);
+    },
+    { throwOnError: true },
+  );
 };

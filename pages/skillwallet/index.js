@@ -13,6 +13,7 @@ import {
 import Layout from '../../components/Layout';
 
 function SkillWallet() {
+  // TODO: Fetch necessary data (community and user info)
   const [userInfo] = useContext(UserInfoContext);
   const [loggedIn] = useContext(LoggedInContext);
   const [magic] = useContext(MagicContext);

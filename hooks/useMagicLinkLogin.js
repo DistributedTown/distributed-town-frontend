@@ -9,6 +9,7 @@ export const useMagicLinkLogin = () => {
   const loginHandler = async email => {
     // TODO: Validate email in form
     const didToken = await magic.auth.loginWithMagicLink({ email });
+
     sessionStorage.setItem('user', JSON.stringify({ email }));
     await login(didToken);
     const { publicAddress } = await magic.user.getMetadata();
@@ -17,5 +18,5 @@ export const useMagicLinkLogin = () => {
     return { didToken };
   };
 
-  return useMutation(loginHandler);
+  return useMutation(loginHandler, { throwOnError: true });
 };

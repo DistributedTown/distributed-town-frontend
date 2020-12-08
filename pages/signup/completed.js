@@ -4,16 +4,14 @@ import { useRouter } from 'next/router';
 import Layout from '../../components/Layout';
 import { useGetInvitation } from '../../hooks/useGetInvitation';
 
-import { getUserJourney } from '../../utils/userJourneyManager';
 import { useGetDitoBalance } from '../../hooks/useGetDitoBalance';
 
 function SignupCompleted() {
+  // TODO: Set correct ditoBalance on pick skills
   const { data: ditoBalance } = useGetDitoBalance();
   const [showInviteModal, setShowInviteModal] = useState(false);
 
   const router = useRouter();
-
-  const { journey } = getUserJourney();
 
   const { data, refetch: getShareLink } = useGetInvitation();
   const { linkUrl: shareLink } = data || {};
@@ -62,15 +60,14 @@ function SignupCompleted() {
         </div>
 
         <div className="w-full flex justify-center bottom-0 right-0 border-2 border-gray-400 py-4 px-48">
-          {journey === 'community' && (
-            <button
-              type="button"
-              onClick={inviteMembers}
-              className="border-2 border-rain-forest p-2 w-full text-3xl font-bold mr-8"
-            >
-              Invite new Members
-            </button>
-          )}
+          {/* TODO: Only on create */}
+          <button
+            type="button"
+            onClick={inviteMembers}
+            className="border-2 border-rain-forest p-2 w-full text-3xl font-bold mr-8"
+          >
+            Invite new Members
+          </button>
           <button
             type="button"
             onClick={() => router.push('/skillwallet')}

@@ -2,7 +2,7 @@ import { ethers } from 'ethers';
 
 export default async function handler(req, res) {
   try {
-    // TODO move in env
+    // TODO: move in env
     const INFURA_PROVIDER_URL =
       'https://ropsten.infura.io/v3/6a96a40694e24de3b6313b71ca71786b';
     const WALLET_MNEMONIC =
@@ -31,5 +31,7 @@ export default async function handler(req, res) {
     res.status(200).end();
   } catch (err) {
     console.error(err);
+    res.status(400);
+    res.send(err);
   }
 }
