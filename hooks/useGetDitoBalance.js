@@ -1,6 +1,5 @@
 import { useQuery } from 'react-query';
-import { useContext } from 'react';
-import { MagicContext } from '../components/Store';
+import { useMagic } from '../components/Store';
 import { getCommunityById } from '../api';
 import { useGetUserInfo } from './useGetUserInfo';
 import {
@@ -9,7 +8,7 @@ import {
 } from '../contracts/community';
 
 export const useGetDitoBalance = () => {
-  const [magic] = useContext(MagicContext);
+  const magic = useMagic();
   const { data: userInfo } = useGetUserInfo();
 
   const enabled = !!userInfo;

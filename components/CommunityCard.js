@@ -12,7 +12,11 @@ function CommunityCard({ onSelectCommunity, selected, community }) {
       className="flex flex-col border-2 border-denim bg-white cursor-pointer"
       onClick={onSelectCommunity}
     >
-      <div className="grid grid-cols-2 p-4 border-b-2 border-denim">
+      <div
+        className={`grid grid-cols-2 p-4 border-b-2 border-denim ${
+          selected ? 'bg-denim text-white' : ''
+        }`}
+      >
         <h2>{name}</h2>
         <p>{getCardState(members)}</p>
       </div>

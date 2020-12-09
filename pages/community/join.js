@@ -16,9 +16,7 @@ const Join = ({ skills = [] }) => {
 
   const router = useRouter();
 
-  async function handleCreateAccountClick(e, email) {
-    e.preventDefault();
-
+  async function handleCreateAccountClick(email) {
     const { didToken } = await login(email);
 
     const userData = await getUserInfo(didToken);

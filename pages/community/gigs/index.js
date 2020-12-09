@@ -1,70 +1,37 @@
 import { useContext, useState, useEffect } from 'react';
 import Link from 'next/link';
-import { TokenContext, UserInfoContext } from '../../../components/Store';
 import GigCard from '../../../components/gig/GigCard';
 import SkillsDisplay from '../../../components/SkillsDisplay';
 
 import Layout from '../../../components/Layout';
+import { useGetUserInfo } from '../../../hooks/useGetUserInfo';
+import { acceptGig, getGigs } from '../../../api';
+import { useMagic } from '../../../components/Store';
 
 function Gigs() {
-  const [token] = useContext(TokenContext);
-  const [userInfo] = useContext(UserInfoContext);
+  const magic = useMagic();
+  const { data: userInfo } = useGetUserInfo();
   const [openGigs, setOpenGigs] = useState();
 
   useEffect(() => {
-    async function fetchGigs() {
-      try {
-        const resFetchGigs = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/gig?isOpen=true`,
-          {
-            method: 'GET',
-            headers: new Headers({
-              Authorization: `Bearer ${token}`,
-            }),
-          },
-        );
-        const openGigsResp = await resFetchGigs.json();
-        setOpenGigs(openGigsResp);
-      } catch (err) {
-        console.log(err);
-      }
-    }
-    fetchGigs();
+    (async () => {
+      const didToken = await magic.user.getIdToken();
+      const gigsResponse = await getGigs(didToken, { isOpen: true });
+      setOpenGigs(gigsResponse);
+    })();
   }, []);
 
-  const takeGig = async gigID => {
-    try {
-      const result = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/gig/${gigID}/accept`,
-        {
-          method: 'POST',
-          headers: new Headers({
-            Authorization: `Bearer ${token}`,
-          }),
-        },
-      );
-      const takenGig = await result.json();
-      console.log(result);
-      console.log('thetakengig', takenGig);
-    } catch (err) {
-      console.log(err);
-    }
+  const takeGig = async gigId => {
+    const didToken = await magic.user.getIdToken();
+    await acceptGig(didToken, gigId);
   };
 
+  // TODO: Loading
+  if (!userInfo) return null;
+
   return (
-    <Layout
-      navBar
-      flex
-      logo
-      splash={{
-        color: 'red',
-        variant: 'default',
-        alignment: 'left',
-        isTranslucent: false,
-        fullHeight: false,
-      }}
-    >
-      <div className="m-20 w-full">
+    <Layout>
+      <div className="m-20">
         <h1 className="underline text-black text-4xl">Open Gigs</h1>
         <div className="mt-10 grid grid-cols-3 gap-12 items-baseline">
           {typeof openGigs === 'undefined' ? (

@@ -1,18 +1,17 @@
-import { createContext, useState, useEffect } from 'react';
+import { createContext, useState, useEffect, useContext } from 'react';
 import { Magic } from 'magic-sdk';
 
 /* initializing context API values */
-export const MagicContext = createContext();
-export const LoggedInContext = createContext();
-export const LoadingContext = createContext();
-export const UserInfoContext = createContext();
-export const TokenContext = createContext();
+const MagicContext = createContext();
+
+export const useMagic = () => {
+  const [magic] = useContext(MagicContext);
+  return magic;
+};
 
 /* this function wraps our entire app within our context APIs so they all have access to their values */
 const Store = ({ children }) => {
   const [magic, setMagic] = useState();
-  const [userInfo, setUserInfo] = useState();
-  const [token, setToken] = useState('');
 
   useEffect(() => {
     /* We initialize Magic in `useEffect` so it has access to the global `window` object inside the browser */
@@ -44,11 +43,7 @@ const Store = ({ children }) => {
   return (
     // `children` (passed as props in this file) represents the component nested inside <Store /> in `/pages/index.js` and `/pages/login.js`
     <MagicContext.Provider value={[magic]}>
-      <UserInfoContext.Provider value={[userInfo, setUserInfo]}>
-        <TokenContext.Provider value={[token, setToken]}>
-          <div className="flex">{children}</div>
-        </TokenContext.Provider>
-      </UserInfoContext.Provider>
+      <div className="flex">{children}</div>
     </MagicContext.Provider>
   );
 };

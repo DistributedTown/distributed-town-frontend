@@ -1,10 +1,9 @@
-import { useContext } from 'react';
 import { useQuery } from 'react-query';
 import { getInvitation } from '../api';
-import { MagicContext } from '../components/Store';
+import { useMagic } from '../components/Store';
 
 export const useGetInvitation = () => {
-  const [magic] = useContext(MagicContext);
+  const magic = useMagic();
 
   return useQuery(
     'inviteLink',

@@ -1,23 +1,20 @@
-import { useContext, useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { BigNumber, ethers } from 'ethers';
 import Link from 'next/link';
-import {
-  MagicContext,
-  UserInfoContext,
-  TokenContext,
-} from '../../components/Store';
+import { useMagic } from '../../components/Store';
 
 import Layout from '../../components/Layout';
 import CheckupCard from '../../components/community/CheckupCard';
 import NoGSNCommunityAbi from '../../utils/NoGSNCommunity.json';
+import { useGetUserInfo } from '../../hooks/useGetUserInfo';
 
 function CommunityDashboard() {
-  const [userInfo] = useContext(UserInfoContext);
-  const [magic] = useContext(MagicContext);
-  const [token] = useContext(TokenContext);
+  const magic = useMagic();
+  const { data: userInfo } = useGetUserInfo();
   const [numOfMembers, setNumOfMembers] = useState();
   const [liquidityPoolBalance, setLiquidityPoolBalance] = useState();
 
+  // TODO: Move this to checkup card
   async function getCommunityInfo() {
     const provider = new ethers.providers.Web3Provider(magic.rpcProvider);
     try {
@@ -57,27 +54,21 @@ function CommunityDashboard() {
   }
 
   useEffect(() => {
+    if (!userInfo) return;
+
     (async () => {
       await getCommunityInfo();
     })();
-  }, []);
+  }, [userInfo]);
+
+  // TODO: Loading state
+  if (!userInfo) return null;
 
   return (
-    <Layout
-      navBar
-      flex
-      logo
-      splash={{
-        color: 'blue',
-        variant: 'default',
-        alignment: 'left',
-        isTranslucent: false,
-        fullHeight: false,
-      }}
-    >
-      <div className="w-full">
-        <div style={{ height: '90%' }} className="flex">
-          <div className="w-3/5">
+    <Layout>
+      <div className="h-full flex flex-col">
+        <div className="flex flex-grow flex-col md:flex-row gap-8">
+          <div className="md:w-3/5">
             <h1 className="mt-12 underline text-center text-black text-4xl">
               Community Dashboard
             </h1>
@@ -109,12 +100,11 @@ function CommunityDashboard() {
             numOfMembers={numOfMembers}
             liquidityPoolBalance={liquidityPoolBalance}
             communityId={userInfo.communityID}
-            token={token}
           />
         </div>
         <div className="flex justify-center mt-3">
           <Link href="/skillwallet">
-            <a className="px-64 py-2 border-2 border-denim">
+            <a className="w-full text-center py-2 border-2 border-denim">
               Go back to SkillWallet
             </a>
           </Link>

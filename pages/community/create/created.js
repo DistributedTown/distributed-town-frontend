@@ -12,7 +12,7 @@ function Created() {
   const [login] = useMagicLinkLogin();
   const { name: communityName, category: communityCategory } = router.query;
 
-  const handleCreateAccountClick = async (_, email) => {
+  const handleCreateAccountClick = async email => {
     await login(email);
     await router.push(
       `/community/create/pick-skills?communityName=${encodeURIComponent(

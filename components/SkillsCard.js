@@ -11,14 +11,18 @@ function SkillsCard({
       <div className="flex flex-wrap">
         {skills.map((skill, i) => {
           return (
-            <div className="flex flex-row w-1/2 h-1/2" key={i}>
+            <div
+              className="flex flex-row w-1/2 h-1/2 items-center justify-center text-base"
+              key={i}
+            >
               <input
                 type="checkbox"
+                className="mr-3"
                 onClick={() => selectSkill(i)}
                 checked={skill.selected}
                 disabled={!skill.selected && totalSelected === 3}
               />
-              <div className="flex flex-col p-2">
+              <div className="p-2">
                 <p>{typeof skill === 'string' ? skill : skill.skill}</p>
                 <input
                   type="range"

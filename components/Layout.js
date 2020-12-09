@@ -1,80 +1,38 @@
+import { useState } from 'react';
 import Head from 'next/head';
-import { useContext } from 'react';
 import { useRouter } from 'next/router';
-import { MagicContext } from './Store';
+import Link from 'next/link';
+import {
+  FaBars,
+  FaWallet,
+  FaUsers,
+  FaBell,
+  FaCog,
+  FaSignOutAlt,
+} from 'react-icons/fa';
+import { useMagic } from './Store';
 
-import NavLink from './NavLink';
-
-const colors = {
-  denim: '#146EAA',
-  alizarin: '#E63229',
-  'rain-forest': '#00825B',
-};
-
-const Layout = ({
-  flex = false,
-  splash,
-  bgImage = {},
-  logo,
-  navBar,
-  children,
-}) => {
-  const [magic] = useContext(MagicContext);
-
+const Layout = ({ children }) => {
+  const magic = useMagic();
   const router = useRouter();
-  /**
-   * Log user out of of the session with our app (clears the `auth` cookie)
-   * Log the user out of their session with Magic
-   */
+  const [showNav, setShowNav] = useState(false);
 
   const handleLogout = async () => {
-    try {
-      await magic.user.logout();
-      console.log(await magic.user.isLoggedIn()); // => `false`
-      router.push('/');
-    } catch (err) {
-      console.log(err);
-    }
+    await magic.user.logout();
+    router.push('/');
   };
 
-  const {
-    src: bgImageSrc,
-    alignment: bgImageAlignment,
-    size: bgImageSize,
-  } = bgImage;
-  let logoImage = null;
-  if (logo) {
-    logoImage = logo.withText ? '/dito-logo.svg' : '/isologo.svg';
-  }
-
-  let splashElement = null;
-  if (splash) {
-    if (splash.variant === 'quad') {
-      splashElement = (
-        <div
-          className="absolute h-64 w-48 border-r-2 border-denim"
-          style={{
-            background: `linear-gradient(-40deg, rgba(255, 255, 255, 1) 38%, ${
-              colors[splash.color]
-            } 38.5%)`,
-          }}
-        />
-      );
-    } else {
-      splashElement = (
-        <img
-          src={`/splash-${splash.color}-${splash.variant}.svg`}
-          className={`fixed top-0 ${splash.alignment}-0 ${
-            splash.isTranslucent ? 'opacity-75' : 'opacity-100'
-          }`}
-          style={{
-            ...(splash.isTranslucent ? { filter: 'blur(2px)' } : {}),
-            ...(splash.zIndex ? { zIndex: splash.zIndex } : {}),
-          }}
-        />
-      );
-    }
-  }
+  const navItems = [
+    { href: '/skillwallet', text: 'Skill Wallet', icon: <FaWallet /> },
+    { href: '/community', text: 'Dashboard', icon: <FaUsers /> },
+    { text: 'Notifications', icon: <FaBell /> },
+    { text: 'Settings', icon: <FaCog /> },
+    {
+      text: 'Logout',
+      onClick: handleLogout,
+      icon: <FaSignOutAlt />,
+    },
+  ];
 
   // if logged in show the nav menu, if not redirect to unlogged in index page.
   return (
@@ -82,52 +40,46 @@ const Layout = ({
       <Head>
         <title>DistributedTown</title>
       </Head>
-      <main
-        style={{
-          ...(bgImageSrc
-            ? {
-                backgroundImage: `url(${bgImage.src})`,
-                backgroundSize: `${bgImageSize || 50}%`,
-              }
-            : {}),
-        }}
-        className={`flex h-screen w-full bg-no-repeat ${
-          navBar ? 'bg-bgImage' : ''
-        } ${bgImageAlignment ? `bg-${bgImageAlignment}` : ''}`}
-      >
-        {splashElement}
-        {logoImage && (
-          <div
-            className={`pt-4 pl-${logo.withText ? '4' : '8'} fixed max-w-xxs`}
+      <main className="flex flex-col w-full h-screen md:flex-row">
+        <div className="md:hidden flex flex-row bg-denim text-white">
+          <button
+            className="absolute p-4"
+            type="button"
+            onClick={() => setShowNav(sn => !sn)}
           >
-            <img src={logoImage} alt="Logo" className="z-0" />
-          </div>
-        )}
-        {navBar && (
-          <nav className="flex flex-col h-screen w-48 max-w-sm p-4 pt-64 border-r-2 border-denim z-10">
-            {/* TODO: Show only if logged in */}
-            {!navBar.hideNav ? (
-              <ul className="flex flex-col w-full mt-8 text-xl">
-                <NavLink href="/skillwallet">Skill Wallet</NavLink>
-                <NavLink href="/community">Dashboard</NavLink>
-                <NavLink href="#">Notifications</NavLink>
-                <NavLink href="#">Settings</NavLink>
-                <NavLink href="#" onClick={e => handleLogout()}>
-                  Logout
-                </NavLink>
-              </ul>
-            ) : (
-              <ul className="flex flex-col w-full mt-8 text-xl justify-end items-center flex-1">
-                <NavLink href="/community/create">
-                  <img src="/create-people-button.svg" />
-                </NavLink>
-              </ul>
-            )}
-          </nav>
-        )}
-        <div className={`flex-1 h-full ${flex ? 'flex' : ''} z-10`}>
-          {children}
+            <FaBars />
+          </button>
+          <p className="p-3 flex-grow text-center font-bold">DITO</p>
         </div>
+        <div className="relative">
+          <nav
+            className={`bg-denim text-white w-full absolute overflow-hidden ${
+              showNav ? 'h-auto' : 'h-0'
+            } md:relative md:h-screen md:w-48 md:bg-white md:text-denim md:border-r-2  md:border-denim`}
+          >
+            <img className="hidden md:block p-4 mx-auto" src="/isologo.svg" />
+            {navItems.map(ni => (
+              <button
+                type="button"
+                key={ni.text}
+                className={`w-full px-4 py-1 text-center tracking-widest ${
+                  router.pathname === ni.href
+                    ? 'md:text-white md:bg-denim'
+                    : 'md:text-denim md:bg-white'
+                }`}
+                onClick={ni.onClick}
+              >
+                <Link href={ni.href || '#'}>
+                  <a className="flex gap-2 items-center justify-center md:justify-start">
+                    <span>{ni.icon}</span>
+                    <span>{ni.text}</span>
+                  </a>
+                </Link>
+              </button>
+            ))}
+          </nav>
+        </div>
+        <div className="flex-1 h-full">{children}</div>
       </main>
     </>
   );

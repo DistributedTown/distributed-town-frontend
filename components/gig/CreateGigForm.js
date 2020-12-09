@@ -1,72 +1,65 @@
-import useSWR from 'swr';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
+import { useForm } from 'react-hook-form';
+import { useQuery } from 'react-query';
 
-const fetcher = (...args) => fetch(...args).then(res => res.json());
+const CreateGigForm = ({ onSubmit, skill, isProject = false }) => {
+  const { register, handleSubmit, errors } = useForm();
 
-const CreateGigForm = ({
-  register,
-  handleSubmit,
-  onSubmit,
-  errors,
-  skill,
-  getValues,
-  creationState,
-}) => {
-  const [budgetRequired, setBudgetRequired] = useState();
+  const [budgetRequired, setBudgetRequired] = useState(0);
   const [selectedSkills, setSelectedSkills] = useState([]);
-  const [commitment, setCommitment] = useState(getValues('commitment'));
-  const { data, error } = useSWR(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/skill?skill=${encodeURIComponent(
-      skill,
-    )}`,
-    fetcher,
+  const [commitment, setCommitment] = useState(50);
+
+  const { data, error } = useQuery('skillTree', () =>
+    fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/skill?skill=${encodeURIComponent(
+        skill,
+      )}`,
+    ).then(res => res.json()),
   );
-  const [subCategories, setSubCategories] = useState();
 
-  const skillsList = [];
-  if (data) {
-    for (const category of data.categories) {
-      Array.prototype.push.apply(skillsList, category.skills);
-    }
-  }
-
-  const calculateBudgetRequired = (commitment, skillsSelected) => {
-    let totalCredits = 0;
-    for (const skill of skillsSelected) {
-      for (const subCategory of subCategories) {
-        if (subCategory.skills.indexOf(skill) !== -1) {
-          totalCredits += subCategory.credits;
-        }
-      }
-    }
-    const budgetRequired = (totalCredits * Number(commitment)) / 10;
-    setBudgetRequired(budgetRequired);
-    return null;
-  };
-
-  const getSelectedSkills = () => {
-    const selectedSkills = [];
-    for (skill of skillsList) {
-      if (getValues(skill)[0] === 'on' || getValues(skill)) {
-        selectedSkills.push(skill);
-      }
-    }
-    setSelectedSkills(selectedSkills);
-  };
+  const skillsList = useMemo(
+    () =>
+      ((data && data.categories) || []).flatMap(category => {
+        return category.skills.map(skillName => ({
+          name: skillName,
+          credits: category.credits,
+        }));
+      }),
+    [data],
+  );
 
   useEffect(() => {
-    if (data) setSubCategories(data.categories);
-  });
+    const totalCredits = selectedSkills
+      .map(s => s.credits)
+      .reduce((acc, curr) => acc + curr, 0);
+    const budget = (totalCredits * commitment) / 10;
+    setBudgetRequired(budget);
+  }, [commitment, selectedSkills]);
+
+  const toggleSkill = skill => {
+    setSelectedSkills(prev => {
+      if (prev.find(s => s.name === skill.name)) {
+        return prev.filter(s => s.name !== skill.name);
+      }
+      return [...prev, skill];
+    });
+  };
 
   return (
     <form
       className="flex flex-col pl-4 border-l-2 border-denim mt-6 mb-24"
-      onSubmit={handleSubmit(onSubmit)}
+      onSubmit={handleSubmit(data =>
+        onSubmit({
+          ...data,
+          skills: selectedSkills.map(s => s.name),
+          creditsOffered: parseInt(data.creditsOffered),
+        }),
+      )}
     >
       <div className="flex flex-col">
         <div className="flex justify-between">
-          <label className="font-bold  text-xl underline" htmlFor="gigTitle">
-            Gig Title
+          <label className="font-bold  text-xl underline" htmlFor="title">
+            Title
           </label>
           <p className="text-dove-gray">
             Hint: a short, clear title will catch contributors’ attention. Just
@@ -75,21 +68,18 @@ const CreateGigForm = ({
         </div>
         <input
           className="border border-dove-gray py-3 mb-5 px-2 "
-          id="gigTitle"
-          name="gigTitle"
+          id="title"
+          name="title"
           ref={register({ required: true })}
         />
-        {errors.gigTitle && (
+        {errors.title && (
           <span className="text-red-600">This field is required</span>
         )}
       </div>
       <div className="flex flex-col">
         <div className="flex justify-between">
-          <label
-            className="font-bold  text-xl underline"
-            htmlFor="gigDescription"
-          >
-            Gig Description
+          <label className="font-bold  text-xl underline" htmlFor="description">
+            Description
           </label>
           <p className="text-dove-gray">
             Hint: be as detailed as possible, and be nice - there are real
@@ -99,11 +89,11 @@ const CreateGigForm = ({
         <textarea
           style={{ border: ' 1px solid #707070' }}
           className="border border-dove-gray py-6 px-2"
-          id="gigDescription"
-          name="gigDescription"
+          id="Description"
+          name="Description"
           ref={register({ required: true })}
         />
-        {errors.gigDescription && (
+        {errors.Description && (
           <span className="text-red-600">This field is required</span>
         )}
       </div>
@@ -116,27 +106,22 @@ const CreateGigForm = ({
               <br />
               breaking it down in 2+ gigs, or starting a new project.
             </h2>
-            <div className=" mt-5 px-4 overflow-scroll h-20 border-2 border-blue-600">
+            <div className="h-full mt-5 px-4 overflow-scroll h-20 border-2 border-blue-600">
               {error && <p>Couldn't fetch skills</p>}
               {skillsList ? (
-                skillsList.map((skill, i) => {
+                skillsList.map(s => {
                   return (
-                    <div key={skill} className="flex items-center">
+                    <label key={s.name} className="flex items-center">
                       <input
                         type="checkbox"
-                        key={skill}
-                        id={skill}
-                        name={skill}
-                        ref={register}
-                        onChange={e => {
-                          getSelectedSkills();
-                          calculateBudgetRequired(commitment, selectedSkills);
+                        onChange={() => {
+                          toggleSkill(s);
                         }}
                       />
                       <div className="flex flex-col font-bold pl-2">
-                        <p>{skill}</p>
+                        <p>{s.name}</p>
                       </div>
-                    </div>
+                    </label>
                   );
                 })
               ) : (
@@ -151,7 +136,7 @@ const CreateGigForm = ({
             <h2 className="text-dove-gray">
               Hint: the effort needed for this task. This value
               <br />
-              influences the DiTo set as a reward for your gig!
+              influences the DiTo reward.
             </h2>
             <input
               id="commitment"
@@ -159,15 +144,11 @@ const CreateGigForm = ({
               style={{ width: '250px' }}
               className="bg-white h-32 py-3 w-32"
               type="range"
-              ref={register({ required: true })}
+              value={commitment}
               onChange={e => {
                 setCommitment(e.target.value);
-                calculateBudgetRequired(e.target.value, selectedSkills);
               }}
             />
-            {errors.commitment && (
-              <span className="text-red-600">This field is required</span>
-            )}
           </div>
         </div>
 
@@ -175,18 +156,8 @@ const CreateGigForm = ({
           <div className="flex flex-col flex-1 px-10 py-12">
             <h1 className="font-bold text-xl underline">Budget needed</h1>
             <h2 className="text-dove-gray">
-              Hint: the amount of DiTo
-              <br />
-              you offer for this gig.
+              Hint: the amount of DiTo you offer.
             </h2>
-            <input
-              id="creditsOffered"
-              name="creditsOffered"
-              type="number"
-              ref={register}
-              value={budgetRequired}
-              hidden
-            />
             <p className="border-black border-2 p-4 text-xl mt-2">
               {budgetRequired}
             </p>
@@ -194,20 +165,13 @@ const CreateGigForm = ({
           </div>
         </div>
       </div>
-      {creationState === undefined ? (
-        <button
-          type="submit"
-          className="py-3 text-lg underline bg-alizarin text-white w-full"
-        >
-          Publish your gig!
-        </button>
-      ) : creationState === 1 ? (
-        <p>Loading, please wait</p>
-      ) : creationState === 2 ? (
-        <p>Can't create gig, community is not yet active</p>
-      ) : (
-        <p>An error occured, please try again</p>
-      )}
+      <button
+        type="submit"
+        className="py-3 text-lg underline bg-alizarin text-white w-full"
+      >
+        Publish
+      </button>
+      {/* TODO: Display error */}
     </form>
   );
 };

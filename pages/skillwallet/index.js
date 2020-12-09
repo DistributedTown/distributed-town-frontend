@@ -1,65 +1,29 @@
 import Link from 'next/link';
 
-import { useContext, useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 
-import { useRouter } from 'next/router';
-import {
-  MagicContext,
-  LoggedInContext,
-  UserInfoContext,
-  TokenContext,
-} from '../../components/Store';
+import { useMagic } from '../../components/Store';
 
 import Layout from '../../components/Layout';
+import { getGigs } from '../../api';
+import { useGetUserInfo } from '../../hooks/useGetUserInfo';
+import { useGetDitoBalance } from '../../hooks/useGetDitoBalance';
 
 function SkillWallet() {
-  // TODO: Fetch necessary data (community and user info)
-  const [userInfo] = useContext(UserInfoContext);
-  const [loggedIn] = useContext(LoggedInContext);
-  const [magic] = useContext(MagicContext);
-  const [token, setToken] = useContext(TokenContext);
+  const magic = useMagic();
   const [pastGigs, setPastGigs] = useState([]);
-  const ditoBalance = (userInfo && userInfo.ditoBalance) || 0;
-  const router = useRouter();
-
-  async function fetchOpenCloseGigs(authToken, isOpen) {
-    try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/gig?isOpen=${isOpen}`,
-        {
-          method: 'GET',
-          headers: {
-            Authorization: `Bearer ${authToken}`,
-            'Content-Type': 'application/json',
-          },
-        },
-      );
-      const gigs = await response.json();
-      setPastGigs(gigs);
-    } catch (err) {
-      console.log(err);
-    }
-  }
+  const { data: ditoBalance } = useGetDitoBalance();
+  const { data: userInfo } = useGetUserInfo();
 
   useEffect(() => {
     (async () => {
-      try {
-        const currentToken = await magic.user.getIdToken();
-        const storedToken = token;
-
-        if (loggedIn && currentToken !== storedToken) {
-          setToken(currentToken);
-        }
-
-        await fetchOpenCloseGigs(currentToken, true);
-      } catch (err) {
-        console.error(err);
-      }
+      const didToken = await magic.user.getIdToken();
+      const gigs = await getGigs(didToken, { isOpen: true });
+      setPastGigs(gigs);
     })();
   }, []);
 
   if (!userInfo) {
-    router.push('/');
     return null;
   }
 
@@ -80,9 +44,9 @@ function SkillWallet() {
           <h1 className="underline text-black text-4xl">Skill Wallet</h1>
         </div>
 
-        <div className="w-full flex flex-row space-y-8">
+        <div className="w-full grid md:grid-cols-2">
           {/*  WALLET CARD  */}
-          <div className="flex flex-col w-2/7 p-3 rounded-lg border border-denim m-3">
+          <div className="row-span-2 p-3 rounded-lg border border-denim m-3">
             <div className="flex flex-col">
               {/* PROFILE */}
               <div className="flex h-3/8 text-white bg-black rounded p-3 mb-3">
@@ -97,11 +61,13 @@ function SkillWallet() {
               {/*  <!--COMMUNITIES--> */}
               <div className="h-2/8 flex px-3 py-4 mb-4 flex-col items-center justify-center border border-denim">
                 <h1 className="lg:text-3xl xs:text-xs text-xl w-3/4 font-bold ">
-                  My Community
+                  Your community:
                 </h1>
-                <div className="bg-denim py-3 w-3/4 text-white text-center">
-                  <p>DITO #23</p>
-                </div>
+                <Link href="community">
+                  <div className="bg-denim py-3 w-3/4 text-white text-center cursor-pointer">
+                    <p>DITO #23</p>
+                  </div>
+                </Link>
               </div>
               {/*  <!--QR-CODE--> */}
               <div className="flex h-2/8 p-4 items-center justify-center border border-denim">

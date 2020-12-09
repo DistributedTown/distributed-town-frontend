@@ -1,16 +1,19 @@
 import Head from 'next/head';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 import { useMagicLinkLogin } from '../hooks/useMagicLinkLogin';
 
 const Index = () => {
   // TODO: Loading while logging in to API after magic link
   const [login] = useMagicLinkLogin();
+  const router = useRouter();
 
   const onLoginSubmit = async event => {
     event.preventDefault();
     const email = event.target.email.value;
-    login(email);
+    await login(email);
+    await router.push('/skillwallet');
   };
 
   return (

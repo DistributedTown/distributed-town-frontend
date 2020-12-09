@@ -1,52 +1,33 @@
 import { useContext, useState, useEffect } from 'react';
 import Link from 'next/link';
-import { TokenContext, UserInfoContext } from '../../../components/Store';
+import { useMagic } from '../../../components/Store';
 import ProjectCard from '../../../components/project/ProjectCard';
 import SkillsDisplay from '../../../components/SkillsDisplay';
 
 import Layout from '../../../components/Layout';
+import { getProjects } from '../../../api';
+import { useGetUserInfo } from '../../../hooks/useGetUserInfo';
 
 function Projects() {
-  const [token] = useContext(TokenContext);
-  const [userInfo] = useContext(UserInfoContext);
+  const { data: userInfo } = useGetUserInfo();
   const [projects, setProjects] = useState();
+  const magic = useMagic();
 
   useEffect(() => {
-    async function fetchProjects() {
-      try {
-        const resFetchProjects = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/gig?isOpen=true&isProject=true`,
-          {
-            method: 'GET',
-            headers: new Headers({
-              Authorization: `Bearer ${token}`,
-            }),
-          },
-        );
-        const openProjectsResp = await resFetchProjects.json();
-        setProjects(openProjectsResp);
-      } catch (err) {
-        console.log(err);
-      }
-    }
-    fetchProjects();
+    (async () => {
+      const didToken = await magic.user.getIdToken();
+      const projectsResponse = await getProjects(didToken);
+      setProjects(projectsResponse);
+    })();
   }, []);
 
+  // TODO: Loading
+  if (!userInfo) return null;
+
   return (
-    <Layout
-      navBar
-      flex
-      logo
-      splash={{
-        color: 'blue',
-        variant: 'default',
-        alignment: 'left',
-        isTranslucent: false,
-        fullHeight: false,
-      }}
-    >
+    <Layout>
       <div className="flex">
-        <div className="m-12 w-full overflow-scroll">
+        <div className="m-20">
           <h1 className="underline text-black text-4xl">Open Projects</h1>
           <div className="mt-5 grid grid-cols-3 gap-12 items-baseline mb-40">
             {typeof projects === 'undefined' ? (

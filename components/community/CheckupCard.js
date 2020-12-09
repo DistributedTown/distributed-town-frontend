@@ -1,42 +1,32 @@
 import { useState, useEffect } from 'react';
+import { getCommunityById } from '../../api';
+import { useMagic } from '../Store';
 
 export default function CheckupCard({
   numOfMembers,
   liquidityPoolBalance,
   communityId,
-  token,
 }) {
-  const bgImage = { src: '/background-image.svg', alignment: 'left', size: 60 };
-  const [scarcityScore, setScarcityScore] = useState();
-  const [communityName, seCommunityName] = useState();
+  const magic = useMagic();
+  const [community, setCommunity] = useState({});
 
   useEffect(() => {
-    (async function() {
-      const community = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/community/${communityId}`,
-        {
-          method: 'GET',
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
-      );
-      const communityDetails = await community.json();
-      console.log(communityDetails);
-      setScarcityScore(communityDetails.scarcityScore);
-      seCommunityName(communityDetails.name);
+    (async () => {
+      const didToken = await magic.user.getIdToken();
+      const communityResponse = getCommunityById(didToken, communityId);
+      setCommunity(communityResponse);
     })();
   }, []);
   return (
     <div
       style={{
-        backgroundImage: `url(${bgImage.src})`,
+        backgroundImage: 'url(/background-image.svg)',
       }}
-      className="flex w-2/5 justify-center items-center"
+      className="flex w-full md:w-2/5 justify-center items-center py-8"
     >
       <div className="flex flex-col border-2 border-blue-600 w-7/12">
         <div className="bg-blue-600 p-4">
-          <h2>{communityName}</h2>
+          <h2>{community.name}</h2>
           <p>Check-up Card</p>
         </div>
         <div className="flex flex-col justify-center bg-white p-4 space-y-4">
@@ -58,7 +48,7 @@ export default function CheckupCard({
           </div>
           <div className="flex flex-col border-2 border-blue-600 p-4">
             <p>Scarcity score</p>
-            <p>{scarcityScore}</p>
+            <p>{community.scarcityScore}</p>
           </div>
         </div>
       </div>

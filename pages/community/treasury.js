@@ -1,22 +1,18 @@
-import { useContext, useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { BigNumber, ethers } from 'ethers';
 import { useForm } from 'react-hook-form';
 import Link from 'next/link';
-import {
-  MagicContext,
-  UserInfoContext,
-  TokenContext,
-} from '../../components/Store';
+import { useMagic } from '../../components/Store';
 import Layout from '../../components/Layout';
 import CommunityTreasuryForm from '../../components/treasury/CommunityTreasuryForm';
 import CheckupCard from '../../components/community/CheckupCard';
 
 import NoGSNCommunityAbi from '../../utils/NoGSNCommunity.json';
+import { useGetUserInfo } from '../../hooks/useGetUserInfo';
 
 function CommunityTreasury() {
-  const [userInfo, setUserInfo] = useContext(UserInfoContext);
-  const [magic] = useContext(MagicContext);
-  const [token] = useContext(TokenContext);
+  const { data: userInfo } = useGetUserInfo();
+  const magic = useMagic();
 
   const { register, handleSubmit, errors } = useForm();
 
@@ -219,7 +215,6 @@ function CommunityTreasury() {
             numOfMembers={numOfMembers}
             liquidityPoolBalance={liquidityPoolBalance}
             communityId={userInfo.communityID}
-            token={token}
           />
         </div>
         <div className="w-11/12 fixed flex bottom-0 justify-center mt-3 border-t-2 border-gray-600 bg-white z-10">

@@ -2,12 +2,12 @@ import { useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import RegistrationModal from '../../components/registration/RegistrationModal';
 import {
-  MagicContext,
+  useMagic,
   LoggedInContext,
   TokenContext,
   UserInfoContext,
 } from '../../components/Store';
-import bgImages from '../../utils/bgImages.js';
+import bgImages from '../../utils/bgImages';
 
 import {
   setUserJourney,
@@ -17,7 +17,7 @@ import {
 const Join = props => {
   const [, setToken] = useContext(TokenContext);
   const [, setLoggedIn] = useContext(LoggedInContext);
-  const [magic] = useContext(MagicContext);
+  const magic = useMagic();
   const [userInfo, setUserInfo] = useContext(UserInfoContext);
   const [loading, setLoading] = useState(false);
 

@@ -1,6 +1,5 @@
-import { useContext } from 'react';
 import { useMutation } from 'react-query';
-import { MagicContext } from '../components/Store';
+import { useMagic } from '../components/Store';
 import { createCommunityAndUser } from '../api';
 import {
   createCommunity as createCommunityContract,
@@ -8,7 +7,7 @@ import {
 } from '../contracts/community';
 
 export const useCreateCommunity = () => {
-  const [magic] = useContext(MagicContext);
+  const magic = useMagic();
 
   return useMutation(
     async ({ name, category, user }) => {

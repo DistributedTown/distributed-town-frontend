@@ -1,24 +1,17 @@
-import { useContext } from 'react';
 import { QRCode } from 'react-qrcode-logo';
-import { useRouter } from 'next/router';
-import { UserInfoContext } from '../../components/Store';
+import { useGetUserInfo } from '../../hooks/useGetUserInfo';
+import { useGetDitoBalance } from '../../hooks/useGetDitoBalance';
 
 function QR() {
-  const userInfo = useContext(UserInfoContext);
-  const user = userInfo[0];
-  const router = useRouter();
+  const { data: userInfo } = useGetUserInfo();
+  const { data: ditoBalance } = useGetDitoBalance();
+
   return (
     <div className="flex w-full h-screen">
-      <button
-        className="absolute bg-white py-2 px-4 m-2 rounded"
-        onClick={() => router.push('/skillwallet')}
-      >
-        Go back
-      </button>
       <div className="flex flex-col px-40 py-64 justify-center items-center bg-denim w-1/2">
         <div className="bg-ripe-lemon w-56 h-56 p-4 flex justify-center items-center">
           <QRCode
-            value={user._id}
+            value={userInfo._id}
             logoImage="/isologo.svg"
             logoWidth={60}
             logoHeight={60}
@@ -41,15 +34,15 @@ function QR() {
           <div className="bg-black p-4 flex justify-around items-center rounded-xl w-full">
             <p className="text-white flex flex-col">
               <span className="text-4xl">👨</span>
-              <span>{user.username}</span>
+              <span>{userInfo._id}</span>
             </p>
             <div className="flex flex-col w-1/2 p-3 items-center justify-start text-white">
               <span>DiTo</span>
               <img src="/dito-tokens.svg" />
               <h2 className="font-bold">
-                {user.ditoBalance === -1
+                {ditoBalance === -1
                   ? 'Loading dito balance...'
-                  : user.ditoBalance || 0}
+                  : ditoBalance || 0}
               </h2>
             </div>
           </div>

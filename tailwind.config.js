@@ -17,15 +17,6 @@ module.exports = {
         'ripe-lemon': '#F1CF22',
         orange: '#FFA400',
       },
-      maxWidth: {
-        xxs: '12rem',
-      },
-      backgroundPosition: {
-        bgImage: '12rem',
-      },
-      padding: {
-        radio: '0.125rem',
-      },
     },
     variants: {},
     plugins: [],

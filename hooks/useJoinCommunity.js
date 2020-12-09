@@ -1,11 +1,10 @@
-import { useContext } from 'react';
 import { useMutation } from 'react-query';
-import { MagicContext } from '../components/Store';
+import { useMagic } from '../components/Store';
 import { getUserInfo, updateUserCommunityID } from '../api';
 import { joinCommunity as joinCommunityContract } from '../contracts/community';
 
 export const useJoinCommunity = () => {
-  const [magic] = useContext(MagicContext);
+  const magic = useMagic();
 
   async function joinCommunity(community) {
     const didToken = await magic.user.getIdToken();

@@ -1,10 +1,9 @@
 import { useMutation } from 'react-query';
-import { useContext } from 'react';
 import { fundUser, login } from '../api';
-import { MagicContext } from '../components/Store';
+import { useMagic } from '../components/Store';
 
 export const useMagicLinkLogin = () => {
-  const [magic] = useContext(MagicContext);
+  const magic = useMagic();
 
   const loginHandler = async email => {
     // TODO: Validate email in form
