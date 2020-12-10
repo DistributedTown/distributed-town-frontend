@@ -1,69 +1,9 @@
-import { useState, useEffect } from 'react';
-import { BigNumber, ethers } from 'ethers';
 import Link from 'next/link';
-import { useMagic } from '../../components/Store';
 
 import Layout from '../../components/Layout';
 import CheckupCard from '../../components/community/CheckupCard';
-import NoGSNCommunityAbi from '../../utils/NoGSNCommunity.json';
-import { useGetUserInfo } from '../../hooks/useGetUserInfo';
 
 function CommunityDashboard() {
-  const magic = useMagic();
-  const { data: userInfo } = useGetUserInfo();
-  const [numOfMembers, setNumOfMembers] = useState();
-  const [liquidityPoolBalance, setLiquidityPoolBalance] = useState();
-
-  // TODO: Move this to checkup card
-  async function getCommunityInfo() {
-    const provider = new ethers.providers.Web3Provider(magic.rpcProvider);
-    try {
-      const contractAddress = userInfo.communityContract.address;
-      const contractABI = NoGSNCommunityAbi.abi;
-      const contract = new ethers.Contract(
-        contractAddress,
-        contractABI,
-        provider,
-      );
-
-      // Send transaction to smart contract to update message and wait to finish
-      const [nUsers, investedBalanceInfo] = await Promise.all([
-        contract.numberOfMembers(),
-        contract.getInvestedBalanceInfo(),
-      ]);
-
-      console.log(BigNumber.from(nUsers).toNumber(), '1');
-      console.log(
-        ethers.utils.formatUnits(investedBalanceInfo.investedBalance, 18),
-        '2',
-      );
-
-      setNumOfMembers(BigNumber.from(nUsers).toNumber());
-      setLiquidityPoolBalance(
-        Math.round(
-          (Number(
-            ethers.utils.formatUnits(investedBalanceInfo.investedBalance, 18),
-          ) +
-            Number.EPSILON) *
-            100,
-        ) / 100,
-      );
-    } catch (err) {
-      console.error(err);
-    }
-  }
-
-  useEffect(() => {
-    if (!userInfo) return;
-
-    (async () => {
-      await getCommunityInfo();
-    })();
-  }, [userInfo]);
-
-  // TODO: Loading state
-  if (!userInfo) return null;
-
   return (
     <Layout>
       <div className="h-full flex flex-col">
@@ -96,11 +36,7 @@ function CommunityDashboard() {
               </Link>
             </div>
           </div>
-          <CheckupCard
-            numOfMembers={numOfMembers}
-            liquidityPoolBalance={liquidityPoolBalance}
-            communityId={userInfo.communityID}
-          />
+          <CheckupCard />
         </div>
         <div className="flex justify-center mt-3">
           <Link href="/skillwallet">

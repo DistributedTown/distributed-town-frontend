@@ -1,22 +1,8 @@
-import { useState, useEffect } from 'react';
-import { getCommunityById } from '../../api';
-import { useMagic } from '../Store';
+import { useGetCommunityInfo } from '../../hooks/useGetCommunityInfo';
 
-export default function CheckupCard({
-  numOfMembers,
-  liquidityPoolBalance,
-  communityId,
-}) {
-  const magic = useMagic();
-  const [community, setCommunity] = useState({});
+export default function CheckupCard() {
+  const { data: community } = useGetCommunityInfo();
 
-  useEffect(() => {
-    (async () => {
-      const didToken = await magic.user.getIdToken();
-      const communityResponse = getCommunityById(didToken, communityId);
-      setCommunity(communityResponse);
-    })();
-  }, []);
   return (
     <div
       style={{
@@ -26,13 +12,13 @@ export default function CheckupCard({
     >
       <div className="flex flex-col border-2 border-blue-600 w-7/12">
         <div className="bg-blue-600 p-4">
-          <h2>{community.name}</h2>
+          <h2>{!community ? 'Loading' : community.communityInfo.name}</h2>
           <p>Check-up Card</p>
         </div>
         <div className="flex flex-col justify-center bg-white p-4 space-y-4">
           <div className="flex flex-row justify-between">
             <p>Members</p>
-            <p>{numOfMembers === -1 ? 'Loading members...' : numOfMembers}</p>
+            <p>{!community ? 'Loading' : community.numberOfMembers}</p>
           </div>
           <div className="flex flex-row justify-between">
             <p>Open Proposals</p>
@@ -40,15 +26,13 @@ export default function CheckupCard({
           </div>
           <div className="flex flex-row justify-between">
             <p>Liquidity Pool</p>
-            <p>
-              {liquidityPoolBalance === -1
-                ? 'Loading liquidity pool balance...'
-                : liquidityPoolBalance}
-            </p>
+            <p>{!community ? 'Loading' : community.liquidityPoolBalance}</p>
           </div>
           <div className="flex flex-col border-2 border-blue-600 p-4">
             <p>Scarcity score</p>
-            <p>{community.scarcityScore}</p>
+            <p>
+              {!community ? 'Loading' : community.communityInfo.scarcityScore}
+            </p>
           </div>
         </div>
       </div>
