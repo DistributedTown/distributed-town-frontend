@@ -28,16 +28,7 @@ function SkillWallet() {
   }
 
   return (
-    <Layout
-      flex
-      navBar
-      logo
-      splash={{
-        color: 'denim',
-        variant: 'quad',
-        alignment: 'left',
-      }}
-    >
+    <Layout>
       <div className="w-full flex flex-col h-full overflow-scroll">
         {/* MAIN TITLE  */}
         <div className="w-1/8 ml-5 my-4">
@@ -49,11 +40,9 @@ function SkillWallet() {
           <div className="row-span-2 p-3 rounded-lg border border-denim m-3">
             <div className="flex flex-col">
               {/* PROFILE */}
-              <div className="flex h-3/8 text-white bg-black rounded p-3 mb-3">
-                <div className="flex w-1/3 items-center justify-center">
-                  <p className="text-4xl">👨</p>
-                </div>
-                <div className="flex flex-col w-1/8 items-left   justify-start">
+              <div className="flex gap-3 text-white bg-black rounded p-3 mb-3">
+                <div className="w-24 h-24 bg-white rounded-full" />
+                <div className="grid content-center">
                   <h3 className="text-white font-bold">{userInfo.username}</h3>
                   <h3 className="text-white">{userInfo.email}</h3>
                 </div>
