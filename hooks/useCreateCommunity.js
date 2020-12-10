@@ -9,28 +9,25 @@ import {
 export const useCreateCommunity = () => {
   const magic = useMagic();
 
-  return useMutation(
-    async ({ name, category, user }) => {
-      // TODO: Create contract should join the user automatically instead of needing to call join after that.
-      // call the smart contract to create community
-      const communityAddress = await createCommunityContract(magic.rpcProvider);
+  const createCommunityMutation = async ({ name, category, user }) => {
+    const communityAddress = await createCommunityContract(magic.rpcProvider);
 
-      await joinCommunity(
-        magic.rpcProvider,
-        communityAddress,
-        calculateDitos(user.skills),
-      );
+    await joinCommunity(
+      magic.rpcProvider,
+      communityAddress,
+      calculateDitos(user.skills),
+    );
 
-      const community = {
-        address: communityAddress,
-        name,
-        category,
-      };
-      const didToken = await magic.user.getIdToken();
-      await createCommunityAndUser(didToken, community, user);
-    },
-    { throwOnError: true },
-  );
+    const community = {
+      address: communityAddress,
+      name,
+      category,
+    };
+    const didToken = await magic.user.getIdToken();
+    await createCommunityAndUser(didToken, community, user);
+  };
+
+  return useMutation(createCommunityMutation, { throwOnError: true });
 };
 
 // FIXME: Security concern

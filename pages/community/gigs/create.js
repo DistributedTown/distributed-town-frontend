@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import Link from 'next/link';
 
 import { useRouter } from 'next/router';
 import CreateGigForm from '../../../components/gig/CreateGigForm';
@@ -44,18 +43,7 @@ function CreateGig() {
   if (!userInfo) return null;
 
   return (
-    <Layout
-      navBar
-      flex
-      logo
-      splash={{
-        color: 'red',
-        variant: 'default',
-        alignment: 'left',
-        isTranslucent: false,
-        fullHeight: false,
-      }}
-    >
+    <Layout>
       <div className="w-full p-8 h-full overflow-scroll bg-white">
         <h1 className="underline text-black text-4xl">Create New Gig</h1>
         <CreateGigForm
@@ -63,13 +51,6 @@ function CreateGig() {
           communityCategory={communityCategory}
           skill={userInfo.skills[0].skill}
         />
-      </div>
-      <div className="w-11/12 fixed flex bottom-0 justify-center mt-3 border-t-2 border-gray-600 bg-white z-10">
-        <Link href="/community">
-          <a className="px-64 py-2 my-2 font-bold text-xl border-2 border-denim">
-            Back to Dashboard
-          </a>
-        </Link>
       </div>
     </Layout>
   );

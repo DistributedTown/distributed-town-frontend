@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 
-import Layout from '../../../components/Layout';
 import NicknameSelection from '../../../components/NicknameSelection';
 import Button from '../../../components/Button';
 
@@ -58,23 +57,14 @@ function CommunityCreate() {
   };
 
   return (
-    <Layout
-      navBar={{ hideNav: true }}
-      flex
-      splash={{
-        color: 'green',
-        variant: 'default',
-        alignment: 'left',
-      }}
-      logo
-      bgImage={{ src: '/background-image.svg', alignment: 'left', size: 40 }}
-    >
-      <div className="flex flex-wrap justify-between h-full w-full">
+    <div className="flex flex-col">
+      <div className="flex flex-col md:flex-row md:items-center">
         <div
-          className="flex w-1/2 justify-center items-center space-y-8 p-8 flex-grow-0 h-full overflow-auto"
-          style={{ backdropFilter: 'blur(5px)' }}
+          className="p-8 bg-cover bg-center w-full h-full grid content-center md:w-1/2"
+          style={{ backgroundImage: 'url(/background-image.svg)' }}
         >
           <NicknameSelection
+            className="mx-auto"
             onChange={e => setCommunityName(e.target.value)}
             value={communityName}
             title="Welcome to Distributed Town!"
@@ -90,7 +80,7 @@ function CommunityCreate() {
             inputLabel="Community Name"
           />
         </div>
-        <div className="flex flex-col text-center py-24 px-8 pb-32 flex-grow w-1/2 overflow-auto h-full">
+        <div className="p-8 text-center md:w-1/2">
           <h1 className="font-bold text-3xl">Choose the perfect Community</h1>
           <p className="text-xl px-16 mt-2 mb-8">
             Read the short description and pick the best type of community for
@@ -102,46 +92,46 @@ function CommunityCreate() {
 
               return (
                 <div
-                  className="rounded-xl border-4 border-black w-2/5 m-4"
+                  className={`rounded-xl border-4 border-black w-2/5 m-4 overflow-hidden bg-${color}`}
                   onClick={() => setSelectedCategory(category)}
                   key={name}
                 >
-                  <div
-                    className={`bg-${color} text-white text-3xl font-bold border-b-4 rounded-md p-2 border-black leading-7`}
-                  >
+                  <div className="text-white text-3xl font-bold border-b-4 p-2 border-black leading-7">
                     {name}
                   </div>
-                  <div
-                    className={`m-2 border-${color} border rounded-md p-1 leading-4 text-left ${
-                      (selectedCategory && selectedCategory.name) ===
-                      category.name
-                        ? `bg-${color} text-white`
-                        : ''
-                    }`}
-                  >
-                    <p className="text-sm text-center mb-2">{subtitle}</p>
-                    <ol className="list-decimal list-inside my-2 text-xs">
-                      {description.map((desc, index) => {
-                        return <li key={index}>{desc}</li>;
-                      })}
-                    </ol>
+                  <div className="bg-white p-2 h-full">
+                    <div
+                      className={`border-${color} border rounded-md p-1 leading-4 text-left ${
+                        (selectedCategory && selectedCategory.name) ===
+                        category.name
+                          ? `bg-${color} text-white`
+                          : ''
+                      }`}
+                    >
+                      <p className="text-sm text-center mb-2">{subtitle}</p>
+                      <ol className="list-decimal list-inside my-2 text-xs">
+                        {description.map((desc, index) => {
+                          return <li key={index}>{desc}</li>;
+                        })}
+                      </ol>
+                    </div>
                   </div>
                 </div>
               );
             })}
           </div>
         </div>
-        <div className="flex justify-center items-center w-full absolute bottom-0 p-4 bg-white border-black border-t">
-          <Button
-            className="font-black font-bold text-2xl px-32"
-            color="rain-forest"
-            onClick={handleCreateCommunity}
-          >
-            Next: Launch & Get Community Credits!
-          </Button>
-        </div>
       </div>
-    </Layout>
+      <div className="flex justify-center items-center w-full bottom-0 p-4 bg-white border-black border-t">
+        <Button
+          className="font-black font-bold text-2xl px-32"
+          color="rain-forest"
+          onClick={handleCreateCommunity}
+        >
+          Next: Launch & Get Community Credits!
+        </Button>
+      </div>
+    </div>
   );
 }
 

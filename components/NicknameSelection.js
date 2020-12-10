@@ -6,8 +6,9 @@ const NicknameSelection = ({
   placeholderText = '',
   value = '',
   onChange,
+  className = '',
 }) => (
-  <div className="flex flex-col items-center w-3/4">
+  <div className={`flex flex-col items-center w-3/4 ${className}`}>
     <div className="text-gray-900 font-bold text-3xl mb-8 text-center">
       {title}
     </div>

@@ -59,8 +59,8 @@ const Join = ({ skills = [] }) => {
           <div className="text-center grid grid-flow-row grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 py-8">
             {skills.map(skill => (
               <button
-                key={skill}
                 type="button"
+                key={skill}
                 onClick={() => setChosenSkill(skill)}
                 className="bg-gray-200 rounded rounded-full flex items-center justify-center p-2"
               >

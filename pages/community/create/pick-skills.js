@@ -14,7 +14,6 @@ function PickSkills() {
       category: communityCategory,
       user,
     });
-    // TODO: Rename to community/joined
     await router.push('/signup/completed');
   };
 

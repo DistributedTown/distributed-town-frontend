@@ -36,6 +36,17 @@ export const useGetCommunityInfo = () => {
         contract.getInvestedBalanceInfo(),
       ]);
 
+      let investedTokenAPY = BigNumber.from(
+        investedBalanceInfo.investedTokenAPY,
+      ).toString();
+      // 26 because uint256 returned from Aave are Rays which are decimals written as 27 digits long integers
+      investedTokenAPY = Number(
+        `${investedTokenAPY.substring(
+          0,
+          investedTokenAPY.length - 26,
+        )}.${investedTokenAPY.substring(investedTokenAPY.length - 26)}`,
+      );
+
       const numberOfMembers = BigNumber.from(nUsers).toNumber();
       const liquidityPoolBalance =
         Math.round(
@@ -51,6 +62,7 @@ export const useGetCommunityInfo = () => {
         communityAddress,
         numberOfMembers,
         liquidityPoolBalance,
+        liquidityPoolAPY: investedTokenAPY,
       };
     },
     { enabled: !!userInfo },

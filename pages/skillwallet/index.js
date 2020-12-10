@@ -64,7 +64,7 @@ function SkillWallet() {
                   Show{' '}
                   <Link href="/skillwallet/qr">
                     <a className="underline text-denim">Wallet's QR-Code</a>
-                  </Link>
+                  </Link>{' '}
                   to help a different community.
                 </p>
               </div>

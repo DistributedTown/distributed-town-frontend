@@ -21,14 +21,6 @@ const Store = ({ children }) => {
         chainId: 8888, // Your own node's chainId
       });
 
-      // const loggedIn = await m.user.isLoggedIn();
-      // if (!loggedIn) {
-      //   const { email } = JSON.parse(sessionStorage.getItem('user')) || {};
-      //   if (email) {
-      //     await m.auth.loginWithMagicLink({ email });
-      //   }
-      // }
-
       setMagic(m);
     })();
   }, []);

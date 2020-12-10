@@ -22,14 +22,7 @@ function Created() {
   };
 
   return (
-    <Layout
-      logo
-      splash={{
-        color: 'rain-forest',
-        variant: 'quad',
-        alignment: 'left',
-      }}
-    >
+    <div className="w-full">
       <div className="w-full flex flex-col items-center justify-between space-y-8 pt-32 h-full">
         <div className="flex-1 text-center flex items-center flex-col">
           <h1 className="text-5xl font-bold">Congrats!</h1>
@@ -67,7 +60,7 @@ function Created() {
           </div>
         </div>
       )}
-    </Layout>
+    </div>
   );
 }
 

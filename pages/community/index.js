@@ -38,13 +38,6 @@ function CommunityDashboard() {
           </div>
           <CheckupCard />
         </div>
-        <div className="flex justify-center mt-3">
-          <Link href="/skillwallet">
-            <a className="w-full text-center py-2 border-2 border-denim">
-              Go back to SkillWallet
-            </a>
-          </Link>
-        </div>
       </div>
     </Layout>
   );
