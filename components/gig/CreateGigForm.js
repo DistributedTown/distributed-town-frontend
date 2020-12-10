@@ -52,7 +52,7 @@ const CreateGigForm = ({ onSubmit, skill, isProject = false }) => {
         onSubmit({
           ...data,
           skills: selectedSkills.map(s => s.name),
-          creditsOffered: parseInt(data.creditsOffered),
+          creditsOffered: parseInt(budgetRequired, 10),
         }),
       )}
     >
@@ -78,7 +78,7 @@ const CreateGigForm = ({ onSubmit, skill, isProject = false }) => {
       </div>
       <div className="flex flex-col">
         <div className="flex justify-between">
-          <label className="font-bold  text-xl underline" htmlFor="description">
+          <label className="font-bold text-xl underline" htmlFor="description">
             Description
           </label>
           <p className="text-dove-gray">
@@ -87,13 +87,13 @@ const CreateGigForm = ({ onSubmit, skill, isProject = false }) => {
           </p>
         </div>
         <textarea
-          style={{ border: ' 1px solid #707070' }}
+          style={{ border: '1px solid #707070' }}
           className="border border-dove-gray py-6 px-2"
-          id="Description"
-          name="Description"
+          id="description"
+          name="description"
           ref={register({ required: true })}
         />
-        {errors.Description && (
+        {errors.description && (
           <span className="text-red-600">This field is required</span>
         )}
       </div>
