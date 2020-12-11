@@ -1,7 +1,9 @@
 import { useContext, useState, useEffect } from 'react';
 import Link from 'next/link';
+import { FaPlus, FaPlusCircle } from 'react-icons/fa';
 import GigCard from '../../../components/gig/GigCard';
 import SkillsDisplay from '../../../components/SkillsDisplay';
+import Button from '../../../components/Button';
 
 import Layout from '../../../components/Layout';
 import { useGetUserInfo } from '../../../hooks/useGetUserInfo';
@@ -31,9 +33,9 @@ function Gigs() {
 
   return (
     <Layout>
-      <div className="m-20">
+      <div className="grid m-8 gap-8">
         <h1 className="underline text-black text-4xl">Open Gigs</h1>
-        <div className="mt-10 grid grid-cols-3 gap-12 items-baseline">
+        <div className="mt-5 grid lg:grid-cols-2 xl:grid-cols-3 gap-12 items-baseline">
           {typeof openGigs === 'undefined' ? (
             <div>
               <h2>Loading Open Gigs...</h2>
@@ -46,17 +48,15 @@ function Gigs() {
             })
           )}
         </div>
-        <div className="flex w-full mt-20">
-          <Link href="/community/gigs/create">
-            <div className="flex py-5 justify-center w-2/6 mr-20 border-2 border-blue-600">
-              <a className="flex flex-col items-center">
-                <p className="text-2xl mb-2">Create new gig</p>
-                <img src="/plusbutton.svg" />
-              </a>
-            </div>
-          </Link>
-          <SkillsDisplay skills={userInfo.skills} />
-        </div>
+        <Link href="/community/gigs/create">
+          <Button>
+            <a className="flex gap-2 justify-center items-center">
+              <p className="text-2xl mb-2">Create new gig</p>
+              <FaPlusCircle />
+            </a>
+          </Button>
+        </Link>
+        <SkillsDisplay skills={userInfo.skills} />
       </div>
     </Layout>
   );

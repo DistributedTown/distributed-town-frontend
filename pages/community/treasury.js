@@ -111,11 +111,10 @@ function CommunityTreasury() {
   return (
     <Layout>
       <div className="flex flex-col lg:flex-row">
-        <div className="flex flex-col items-center w-full">
+        <div className="flex flex-col items-center w-full py-4">
           <h1 className="mt-5 underline text-black text-center text-4xl">
             Community Treasury
           </h1>
-
           <CommunityTreasuryForm
             register={register}
             errors={errors}

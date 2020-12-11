@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import Card from '../Card';
+import Button from '../Button';
 
 const CommunityTreasuryForm = ({
   register,
@@ -11,8 +13,8 @@ const CommunityTreasuryForm = ({
 }) => {
   const [returns, setReturns] = useState(0);
   return (
-    <form className="lg:mb-20" onSubmit={handleSubmit(onSubmit)}>
-      <div className="flex flex-col border-2 border-denim px-8 py-4 mt-8">
+    <form className="p-8 lg:mb-20" onSubmit={handleSubmit(onSubmit)}>
+      <Card className="flex flex-col border-2 border-denim  mt-8">
         <h1 className="flex font-bold underline justify-center">
           Add funds to Treasury
         </h1>
@@ -72,7 +74,6 @@ const CommunityTreasuryForm = ({
               Community APY
             </h2>
             <div className="mb-3 relative max-w-xl rounded-full h-8 border-2 border-denim overflow-hidden">
-              <div className="w-full h-full bg-white absolute" />
               <div
                 id="bar"
                 className="font-bold text-white pr-2 text-right transition-all ease-out duration-1000 h-full bg-denim relative w-24"
@@ -129,7 +130,6 @@ const CommunityTreasuryForm = ({
               Your intial investment plus
             </p>
             <div className="mb-3 relative max-w-xl rounded-full h-8 border-2 border-denim overflow-hidden">
-              <div className="w-full h-full bg-white absolute" />
               <div
                 id="bar"
                 className="font-bold text-white pr-2 text-right transition-all ease-out duration-1000 h-full bg-denim relative w-48"
@@ -137,7 +137,7 @@ const CommunityTreasuryForm = ({
                 ${Math.round((returns + Number.EPSILON) * 100) / 100}
               </div>
             </div>
-            <p className="text-left text-sm  text-dove-gray">
+            <p className="text-left text-sm text-dove-gray">
               It is based on the size of your <br />
               staking, and the amount of DiTo <br />
               you own!
@@ -146,10 +146,12 @@ const CommunityTreasuryForm = ({
           </div>
         </div>
         <div className="flex w-full bg-white">
-          <button
+          <Button
             type="submit"
             disabled={stakingStage > 0}
-            className=" w-full my-3 py-2 bg-blue-600 text-white text-xl underline"
+            filled
+            textColor="white"
+            className="w-full text-xl"
           >
             {stakingStage === 0
               ? 'Stake now!'
@@ -162,9 +164,9 @@ const CommunityTreasuryForm = ({
               : stakingStage === 4
               ? 'Staking complete, please refresh page to see new values!'
               : 'Error has occured while processing transaction, please refresh.'}
-          </button>
+          </Button>
         </div>
-      </div>
+      </Card>
     </form>
   );
 };

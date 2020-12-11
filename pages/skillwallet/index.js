@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-import { FaQrcode } from 'react-icons/fa';
+import { FaQrcode, FaUser } from 'react-icons/fa';
 
 import Layout from '../../components/Layout';
 import { useGetGigs } from '../../hooks/useGetGigs';
@@ -19,18 +19,21 @@ function SkillWallet() {
 
   return (
     <Layout>
-      <div className="w-full flex flex-col h-full overflow-scroll">
-        {/* MAIN TITLE  */}
-
-        <div className="grid md:grid-cols-2 gap-6 m-6">
-          <div className="col-span-1 md:col-span-2">
+      <div className="w-full flex flex-col h-full">
+        {/* Layout */}
+        <div className="grid lg:grid-cols-2 gap-6 m-6">
+          {/* MAIN TITLE  */}
+          <div className="col-span-1 lg:col-span-2">
             <h1 className="underline text-black text-4xl">Skill Wallet</h1>
           </div>
+
           {/*  WALLET CARD  */}
           <Card className="row-span-2 content-between flex flex-col gap-10">
             {/* PROFILE */}
             <Card filled color="black" className="flex gap-6 text-white">
-              <div className="w-24 h-24 bg-white rounded-full" />
+              <div className="flex justify-center items-center w-24 h-24 bg-white rounded-full text-black">
+                <FaUser size="5rem" />
+              </div>
               <div className="grid content-center">
                 <h3 className="text-white font-bold">
                   {userInfo ? userInfo.username : '...'}
