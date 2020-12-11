@@ -8,7 +8,7 @@ const ProjectCard = ({ key, project }) => {
       <div className="flex justify-between border-t-2 border-gray-400 p-2">
         <div>
           <p className="font-bold text-lg">Skills needed: </p>
-          {project.skillsNeeded.map((skill, j) => (
+          {(project.skillsNeeded || []).map((skill, j) => (
             <span key={j} className=" text-red-500">{`#${skill}  `}</span>
           ))}
         </div>

@@ -1,6 +1,10 @@
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { FaPlus, FaUsers } from 'react-icons/fa';
+import Button from '../components/Button';
+import Card from '../components/Card';
+import TextField from '../components/TextField';
 
 import { useMagicLinkLogin } from '../hooks/useMagicLinkLogin';
 
@@ -26,39 +30,31 @@ const Index = () => {
         <h1 className="text-4xl m-8 font-bold text-center">
           This is <span className="underline">Your Community</span>
         </h1>
-        <div className="p-4 border-2 border-denim flex flex-col mx-0 sm:mx-8 sm:p-8">
-          <div className="border-2 border-denim p-4 text-center font-bold">
-            <Link href="/community/create">
-              <a className="flex justify-around items-center text-xl">
-                Create
-                <img src="/create-plus-button.svg" alt="create community" />
+        <Card className="p-4 border-2 border-denim flex flex-col mx-0 sm:mx-8 sm:p-8 gap-4">
+          <Link href="/community/create">
+            <Button>
+              <a className="flex gap-4 justify-center items-center text-xl">
+                <span>Create</span>
+                <FaPlus />
               </a>
-            </Link>
-          </div>
-          <div className="mt-2 border-2 border-denim p-4 text-center font-bold">
-            <Link href="/community/join">
-              <a className="flex justify-around items-center text-xl px-8">
-                Join
-                <img src="/create-people-button.svg" alt="join community" />
+            </Button>
+          </Link>
+          <Link href="/community/join">
+            <Button>
+              <a className="flex gap-4 justify-center items-center text-xl">
+                <span>Join</span>
+                <FaUsers />
               </a>
-            </Link>
-          </div>
+            </Button>
+          </Link>
           {/* TODO: Don't show if logged in */}
-          <form
-            className="mt-4 border-2 border-denim p-4 grid justify-center sm:mt-8"
-            onSubmit={onLoginSubmit}
-          >
+          <form onSubmit={onLoginSubmit} className="flex gap-4 flex-nowrap">
             <label>
               <span className="mr-2 font-bold text-xl">Login</span>
-              <input
-                className="border border-denim p-1 px-2"
-                placeholder="yourmail@me.io"
-                name="email"
-                type="email"
-              />
+              <TextField name="email" type="email" />
             </label>
           </form>
-        </div>
+        </Card>
       </div>
     </div>
   );
@@ -68,17 +64,17 @@ function Info({ className }) {
   return (
     <div className={className}>
       <Logo />
-      <div className="relative z-10 p-8 bg-white m-4 border border-black lg:w-1/2 lg:justify-self-center lg:align-self-center">
-        <p className="text-center">
+      <Card className="relative z-10 m-4 lg:w-1/2 lg:justify-self-center lg:align-self-center grid gap-8 text-center">
+        <p className="text-xl">
           <strong>Distributed Town</strong> is a new financial infrastructure
           for public goods, designed for the real world.
-          <br />
-          <br />
+        </p>
+        <p className="text-gray-700">
           It’s built upon mutual, collaborative economics between individuals
           and communities - and a universal identity management based on skills,
           rather than personal data.
         </p>
-      </div>
+      </Card>
       <style jsx>{`
         .info {
           background-image: url('/background-image.svg');

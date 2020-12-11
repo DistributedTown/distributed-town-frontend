@@ -32,18 +32,7 @@ const Join = ({ skills = [] }) => {
   }
 
   return (
-    <Layout
-      className="h-screen w-full"
-      logo={{ withText: true }}
-      splash={{
-        color: 'blue',
-        variant: '1',
-        alignment: 'right',
-        isTranslucent: false,
-        fullHeight: false,
-        zIndex: -1,
-      }}
-    >
+    <div className="w-full h-full">
       <div className="firstPage">
         <Link href="#">
           <a className="text-white fixed top-0 right-0 hover:underline p-8 text-2xl font-bold">
@@ -79,7 +68,7 @@ const Join = ({ skills = [] }) => {
           onChooseDifferentCommunity={() => setChosenSkill('')}
         />
       </div>
-    </Layout>
+    </div>
   );
 };
 

@@ -11,7 +11,7 @@ const CommunityTreasuryForm = ({
 }) => {
   const [returns, setReturns] = useState(0);
   return (
-    <form className="z-0 lg:mb-20" onSubmit={handleSubmit(onSubmit)}>
+    <form className="lg:mb-20" onSubmit={handleSubmit(onSubmit)}>
       <div className="flex flex-col border-2 border-denim px-8 py-4 mt-8">
         <h1 className="flex font-bold underline justify-center">
           Add funds to Treasury

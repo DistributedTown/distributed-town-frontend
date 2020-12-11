@@ -3,7 +3,7 @@ import bgImages from '../../utils/bgImages';
 import RegistrationForm from './RegistrationForm';
 
 const RegistrationModal = ({
-  chosenSkill = '',
+  chosenSkill = 'default',
   handleCreateAccountClick,
   onChooseDifferentCommunity,
 }) => {
@@ -16,13 +16,13 @@ const RegistrationModal = ({
         <div className="flex flex-col container hidden sm:block">
           <img
             src={backgroundImageSrc}
-            className="h-full object-cover hidden sm:block"
+            className="h-full object-cover object-center hidden sm:block"
           />
         </div>
         <div className="flex flex-col justify-center items-center space-y-8 w-full bg-white flex-grow p-8 h-screen">
           <img
             src={backgroundImageSrc}
-            className="absolute block sm:hidden top-0 h-full w-full object-cover"
+            className="absolute block sm:hidden top-0 h-full w-full object-cover object-center"
           />
           <div className="p-4 bg-white rounded flex flex-col flex-row space-y-4 z-10">
             <div className="flex flex-col justify-center mt-6 items-center">

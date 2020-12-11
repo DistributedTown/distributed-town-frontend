@@ -1,14 +1,14 @@
-import { useGetCommunityInfo } from '../../hooks/useGetCommunityInfo';
+import { useGetCommunity } from '../../hooks/useGetCommunity';
 
 export default function CheckupCard() {
-  const { data: community } = useGetCommunityInfo();
+  const { data: community } = useGetCommunity();
 
   return (
     <div
       style={{
         backgroundImage: 'url(/background-image.svg)',
       }}
-      className="flex w-full md:w-2/5 justify-center items-center py-8"
+      className="flex w-full md:w-2/5 justify-center items-center py-8 bg-cover bg-center"
     >
       <div className="flex flex-col border-2 border-blue-600 w-7/12">
         <div className="bg-blue-600 p-4">

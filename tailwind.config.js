@@ -18,7 +18,11 @@ module.exports = {
         orange: '#FFA400',
       },
     },
-    variants: {},
+    variants: {
+      extend: {
+        opacity: ['disabled'],
+      },
+    },
     plugins: [],
   },
 };

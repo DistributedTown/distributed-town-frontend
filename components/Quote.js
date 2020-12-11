@@ -7,6 +7,9 @@ const Quote = ({ quote }) => (
       &ldquo;
     </div>
     <p className="mb-4">{quote}</p>
+    <div className="stylistic-quote-mark text-right" aria-hidden="true">
+      &ldquo;
+    </div>
   </blockquote>
 );
 

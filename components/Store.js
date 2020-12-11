@@ -41,5 +41,3 @@ const Store = ({ children }) => {
 };
 
 export default Store;
-
-// http://localhost:3000/community/invite?communityId=01eqdy3jndzjx3rgz2fd4e371p&communityName=Blabla

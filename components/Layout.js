@@ -43,13 +43,16 @@ const Layout = ({ children }) => {
       <main className="flex flex-col w-full h-screen md:flex-row">
         <div className="md:hidden flex flex-row bg-denim text-white">
           <button
-            className="absolute p-4"
+            className="absolute p-6 focus:outline-none"
             type="button"
             onClick={() => setShowNav(sn => !sn)}
           >
             <FaBars />
           </button>
-          <p className="p-3 flex-grow text-center font-bold">DITO</p>
+          <img
+            src="/dito-logo.svg"
+            className="h-16 p-2 flex-grow text-center"
+          />
         </div>
         <div className="relative">
           <nav

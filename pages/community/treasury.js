@@ -8,13 +8,13 @@ import CheckupCard from '../../components/community/CheckupCard';
 
 import NoGSNCommunityAbi from '../../utils/NoGSNCommunity.json';
 import { useGetUserInfo } from '../../hooks/useGetUserInfo';
-import { useGetCommunityInfo } from '../../hooks/useGetCommunityInfo';
+import { useGetCommunity } from '../../hooks/useGetCommunity';
 
 function CommunityTreasury() {
   const { data: userInfo } = useGetUserInfo();
   const magic = useMagic();
 
-  const { data: communityInfo } = useGetCommunityInfo();
+  const { data: communityInfo } = useGetCommunity();
   const { register, handleSubmit, errors } = useForm();
 
   const [availableDAI, setAvailableDAI] = useState();
@@ -111,7 +111,7 @@ function CommunityTreasury() {
   return (
     <Layout>
       <div className="flex flex-col lg:flex-row">
-        <div className="flex flex-col items-center w-full z-0 ">
+        <div className="flex flex-col items-center w-full">
           <h1 className="mt-5 underline text-black text-center text-4xl">
             Community Treasury
           </h1>

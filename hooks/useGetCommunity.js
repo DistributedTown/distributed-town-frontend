@@ -5,7 +5,7 @@ import { getCommunityById } from '../api';
 import { useMagic } from '../components/Store';
 import { useGetUserInfo } from './useGetUserInfo';
 
-export const useGetCommunityInfo = () => {
+export const useGetCommunity = () => {
   const magic = useMagic();
   const { data: userInfo } = useGetUserInfo();
 

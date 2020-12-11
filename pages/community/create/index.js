@@ -124,7 +124,7 @@ function CommunityCreate() {
       </div>
       <div className="flex justify-center items-center w-full bottom-0 p-4 bg-white border-black border-t">
         <Button
-          className="font-black font-bold text-2xl px-32"
+          className="font-black text-2xl px-32"
           color="rain-forest"
           onClick={handleCreateCommunity}
         >

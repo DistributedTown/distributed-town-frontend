@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import Layout from '../../../components/Layout';
 import RegistrationModal from '../../../components/registration/RegistrationModal';
 import { useMagicLinkLogin } from '../../../hooks/useMagicLinkLogin';
+import Button from '../../../components/Button';
 
 function Created() {
   const router = useRouter();
@@ -33,23 +34,20 @@ function Created() {
             <p className="text-orange mt-4">96000 DiTo</p>
           </div>
         </div>
-        <div className="w-full flex justify-center bottom-0 right-0 border-2 border-gray-400 px-48">
-          <div className="border-alizarin border-2 mr-8 p-2 w-64 w-full">
-            <button
-              type="button"
-              onClick={() => setShowRegistrationModal(true)}
-              className="border-2 border-rain-forest p-2 w-full text-3xl font-bold"
-            >
-              Pick your Skills
-            </button>
-          </div>
+        <div className="w-full flex justify-center border-2 border-gray-400 p-2">
+          <Button
+            type="button"
+            onClick={() => setShowRegistrationModal(true)}
+            className="border-2 border-rain-forest p-2 text-3xl font-bold"
+          >
+            Pick your Skills
+          </Button>
         </div>
       </div>
       <div
         className={`modalBackground modalVisible-${showRegistrationModal} bg-white`}
       >
         <RegistrationModal
-          chosenSkill={communityCategory}
           handleCreateAccountClick={handleCreateAccountClick}
         />
       </div>
