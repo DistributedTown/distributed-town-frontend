@@ -20,8 +20,8 @@ const Invitation = () => {
 
   return (
     <RegistrationModal
-      // TODO: community skill
-      chosenSkill={communitySkill || 'Music'}
+      communityName={communityName}
+      chosenSkill={communitySkill}
       handleCreateAccountClick={handleCreateAccountClick}
     />
   );

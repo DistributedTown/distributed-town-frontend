@@ -3,6 +3,7 @@ import bgImages from '../../utils/bgImages';
 import RegistrationForm from './RegistrationForm';
 
 const RegistrationModal = ({
+  communityName,
   chosenSkill = 'default',
   handleCreateAccountClick,
   onChooseDifferentCommunity,
@@ -31,7 +32,8 @@ const RegistrationModal = ({
                 setEmail={setEmail}
                 title="Welcome to Dito"
                 email={email}
-                subtitle={`You will be joining a ${chosenSkill} community`}
+                subtitle={`You will be joining ${communityName ||
+                  `a ${chosenSkill} community`}`}
                 cta="Create Account"
                 placeholderText="Please enter your email"
               />
