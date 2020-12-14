@@ -14,7 +14,7 @@ function PickSkills() {
       category: communityCategory,
       user,
     });
-    await router.push('/signup/completed');
+    await router.push('/community/create/completed');
   };
 
   return (

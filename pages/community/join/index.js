@@ -2,11 +2,10 @@ import { useState } from 'react';
 import Link from 'next/link';
 
 import { useRouter } from 'next/router';
-import Quote from '../../components/Quote';
-import RegistrationModal from '../../components/registration/RegistrationModal';
-import Layout from '../../components/Layout';
-import { getUserInfo } from '../../api';
-import { useMagicLinkLogin } from '../../hooks/useMagicLinkLogin';
+import Quote from '../../../components/Quote';
+import RegistrationModal from '../../../components/registration/RegistrationModal';
+import { getUserInfo } from '../../../api';
+import { useMagicLinkLogin } from '../../../hooks/useMagicLinkLogin';
 
 const Join = ({ skills = [] }) => {
   const [login] = useMagicLinkLogin();
@@ -26,7 +25,9 @@ const Join = ({ skills = [] }) => {
       router.push('/skillwallet');
     } else {
       router.push(
-        `/signup/pick-skills?categorySkill=${encodeURIComponent(chosenSkill)}`,
+        `/community/join/pick-skills?categorySkill=${encodeURIComponent(
+          chosenSkill,
+        )}`,
       );
     }
   }

@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { useJoinCommunity } from '../../hooks/useJoinCommunity';
+import { useJoinCommunity } from '../../../hooks/useJoinCommunity';
 
-import CommunityCard from '../../components/CommunityCard';
-import { useGetCommunities } from '../../hooks/useGetCommunities';
+import CommunityCard from '../../../components/CommunityCard';
+import { useGetCommunities } from '../../../hooks/useGetCommunities';
+import Button from '../../../components/Button';
 
 function ChooseCommunity() {
   const [communities, setCommunities] = useState([]);
@@ -22,7 +23,7 @@ function ChooseCommunity() {
 
   const handleJoinClick = async () => {
     await joinCommunity(chosenCommunity);
-    await router.push('/signup/completed');
+    await router.push('/community/join/completed');
   };
 
   const joinDisabled = !chosenCommunity || joiningCommunity;
@@ -50,14 +51,13 @@ function ChooseCommunity() {
           more rare they are, the more credits you’ll get!
         </p>
         {/* TODO: Loading */}
-        <button
+        <Button
           className="w-full border-2 border-gray-400 p-2 text-center disabled:opacity-50"
-          type="button"
           onClick={handleJoinClick}
           disabled={joinDisabled}
         >
           Join and get your credits!
-        </button>
+        </Button>
       </div>
     </div>
   );
