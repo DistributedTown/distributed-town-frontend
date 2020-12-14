@@ -42,11 +42,7 @@ export default function WelcomeToCommunity({ showInviteButton = false }) {
             Invite new Members
           </Button>
         )}
-        <Button
-          type="button"
-          onClick={() => router.push('/skillwallet')}
-          className="text-2xl"
-        >
+        <Button filled onClick={() => router.push('/skillwallet')}>
           Check your SkillWallet
         </Button>
       </div>

@@ -1,5 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Card from '../Card';
+import Button from '../Button';
+import TextField from '../TextField';
 
 const RegistrationForm = ({
   cta,
@@ -14,7 +17,7 @@ const RegistrationForm = ({
   <div
     className={`max-w-sm  rounded w-full lg:max-w-full lg:flex ${className}`}
   >
-    <div className="border border-gray-400 rounded p-4 flex flex-col justify-between leading-normal">
+    <Card>
       <div className="mb-8">
         <div className="text-gray-900 font-bold text-xl mb-2">{title}</div>
         <p className="text-gray-700 text-base">{subtitle}</p>
@@ -25,9 +28,9 @@ const RegistrationForm = ({
             e.preventDefault();
             onSubmit();
           }}
+          className="flex flex-col gap-3"
         >
-          <input
-            className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full my-4 py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
+          <TextField
             id="email"
             type="email"
             value={email}
@@ -35,15 +38,12 @@ const RegistrationForm = ({
             onChange={e => setEmail(e.target.value)}
             required
           />
-          <button
-            className="bg-denim hover:bg-blue-700 text-white font-bold w-full py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-            type="submit"
-          >
+          <Button filled type="submit">
             {cta}
-          </button>
+          </Button>
         </form>
       </div>
-    </div>
+    </Card>
   </div>
 );
 

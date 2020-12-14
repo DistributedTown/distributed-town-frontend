@@ -34,11 +34,11 @@ function Created() {
             <p className="text-orange mt-4">96000 DiTo</p>
           </div>
         </div>
-        <div className="w-full flex justify-center border-2 border-gray-400 p-2">
+        <div className="w-full flex justify-center p-2">
           <Button
+            filled
             type="button"
             onClick={() => setShowRegistrationModal(true)}
-            className="border-2 border-rain-forest p-2 text-3xl font-bold"
           >
             Pick your Skills
           </Button>

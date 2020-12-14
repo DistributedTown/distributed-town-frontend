@@ -5,7 +5,11 @@ export default function Card({
   className,
   filled = false,
   color = 'denim',
+  onClick,
 }) {
+  if (filled) {
+    className += ' text-white';
+  }
   const classes = classNames(
     'p-6',
     'border-2',
@@ -18,5 +22,9 @@ export default function Card({
     className,
   );
 
-  return <div className={classes}>{children}</div>;
+  return (
+    <div onClick={onClick} className={classes}>
+      {children}
+    </div>
+  );
 }

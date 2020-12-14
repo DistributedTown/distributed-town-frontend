@@ -49,7 +49,7 @@ function Gigs() {
           )}
         </div>
         <Link href="/community/gigs/create">
-          <Button>
+          <Button filled>
             <a className="flex gap-2 justify-center items-center">
               <p className="text-2xl mb-2">Create new gig</p>
               <FaPlusCircle />

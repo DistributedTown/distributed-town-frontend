@@ -25,7 +25,7 @@ const RegistrationModal = ({
             src={backgroundImageSrc}
             className="absolute block sm:hidden top-0 h-full w-full object-cover object-center"
           />
-          <div className="p-4 bg-white rounded flex flex-col flex-row space-y-4 z-10">
+          <div className="p-4 bg-white flex flex-col flex-row space-y-4 z-10">
             <div className="flex flex-col justify-center mt-6 items-center">
               <RegistrationForm
                 onSubmit={() => handleCreateAccountClick(email)}

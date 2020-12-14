@@ -51,7 +51,11 @@ const Index = () => {
           <form onSubmit={onLoginSubmit} className="flex gap-4 flex-nowrap">
             <label>
               <span className="mr-2 font-bold text-xl">Login</span>
-              <TextField name="email" type="email" />
+              <TextField
+                name="email"
+                type="email"
+                placeholder="yourmail@me.io"
+              />
             </label>
           </form>
         </Card>

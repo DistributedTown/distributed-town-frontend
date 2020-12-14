@@ -51,11 +51,7 @@ function ChooseCommunity() {
           more rare they are, the more credits you’ll get!
         </p>
         {/* TODO: Loading */}
-        <Button
-          className="w-full border-2 border-gray-400 p-2 text-center disabled:opacity-50"
-          onClick={handleJoinClick}
-          disabled={joinDisabled}
-        >
+        <Button filled onClick={handleJoinClick} disabled={joinDisabled}>
           Join and get your credits!
         </Button>
       </div>

@@ -1,6 +1,9 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { useQuery } from 'react-query';
+import Button from '../Button';
+import Card from '../Card';
+import TextField from '../TextField';
 
 const CreateGigForm = ({ onSubmit, skill, isProject = false }) => {
   const { register, handleSubmit, errors } = useForm();
@@ -47,7 +50,7 @@ const CreateGigForm = ({ onSubmit, skill, isProject = false }) => {
 
   return (
     <form
-      className="flex flex-col pl-4 border-l-2 border-denim mt-6 mb-24"
+      className="flex flex-col gap-6 py-8"
       onSubmit={handleSubmit(data =>
         onSubmit({
           ...data,
@@ -57,8 +60,8 @@ const CreateGigForm = ({ onSubmit, skill, isProject = false }) => {
       )}
     >
       <div className="flex flex-col">
-        <div className="flex justify-between">
-          <label className="font-bold  text-xl underline" htmlFor="title">
+        <div className="flex justify-between gap-8">
+          <label className="font-bold text-xl" htmlFor="title">
             Title
           </label>
           <p className="text-dove-gray">
@@ -66,19 +69,14 @@ const CreateGigForm = ({ onSubmit, skill, isProject = false }) => {
             be honest please.
           </p>
         </div>
-        <input
-          className="border border-dove-gray py-3 mb-5 px-2 "
-          id="title"
-          name="title"
-          ref={register({ required: true })}
-        />
+        <TextField id="title" name="title" ref={register({ required: true })} />
         {errors.title && (
           <span className="text-red-600">This field is required</span>
         )}
       </div>
       <div className="flex flex-col">
-        <div className="flex justify-between">
-          <label className="font-bold text-xl underline" htmlFor="description">
+        <div className="flex justify-between gap-8">
+          <label className="font-bold text-xl" htmlFor="description">
             Description
           </label>
           <p className="text-dove-gray">
@@ -86,9 +84,7 @@ const CreateGigForm = ({ onSubmit, skill, isProject = false }) => {
             people on the other side ;)
           </p>
         </div>
-        <textarea
-          style={{ border: '1px solid #707070' }}
-          className="border border-dove-gray py-6 px-2"
+        <TextField
           id="description"
           name="description"
           ref={register({ required: true })}
@@ -97,80 +93,67 @@ const CreateGigForm = ({ onSubmit, skill, isProject = false }) => {
           <span className="text-red-600">This field is required</span>
         )}
       </div>
-      <div className="flex">
-        <div className="p-2">
-          <div className="px-10 py-12">
-            <h1 className="font-bold text-xl underline">Skills needed</h1>
-            <h2 className="text-dove-gray">
-              Hint: If the gig requires many different skills, consider
-              <br />
-              breaking it down in 2+ gigs, or starting a new project.
-            </h2>
-            <div className="h-full mt-5 px-4 overflow-scroll h-20 border-2 border-blue-600">
-              {error && <p>Couldn't fetch skills</p>}
-              {skillsList ? (
-                skillsList.map(s => {
-                  return (
-                    <label key={s.name} className="flex items-center">
-                      <input
-                        type="checkbox"
-                        onChange={() => {
-                          toggleSkill(s);
-                        }}
-                      />
-                      <div className="flex flex-col font-bold pl-2">
-                        <p>{s.name}</p>
-                      </div>
-                    </label>
-                  );
-                })
-              ) : (
-                <p>loading</p>
-              )}
-            </div>
-          </div>
+      <div className="flex flex-col md:flex-row gap-10">
+        <div className="flex flex-col gap-4">
+          <h1 className="font-bold text-xl">Skills needed</h1>
+          <h2 className="text-dove-gray">
+            Hint: If the gig requires many different skills, consider
+            <br />
+            breaking it down in 2+ gigs, or starting a new project.
+          </h2>
+          <Card>
+            {error && <p>Couldn't fetch skills</p>}
+            {skillsList ? (
+              skillsList.map(s => {
+                return (
+                  <label key={s.name} className="flex items-center">
+                    <input
+                      type="checkbox"
+                      onChange={() => {
+                        toggleSkill(s);
+                      }}
+                    />
+                    <div className="flex flex-col font-bold pl-2">
+                      <p>{s.name}</p>
+                    </div>
+                  </label>
+                );
+              })
+            ) : (
+              <p>loading</p>
+            )}
+          </Card>
         </div>
-        <div className="p-2">
-          <div className="px-10 py-12">
-            <h1 className="font-bold  text-xl underline">Commitment</h1>
-            <h2 className="text-dove-gray">
-              Hint: the effort needed for this task. This value
-              <br />
-              influences the DiTo reward.
-            </h2>
-            <input
-              id="commitment"
-              name="commitment"
-              style={{ width: '250px' }}
-              className="bg-white h-32 py-3 w-32"
-              type="range"
-              value={commitment}
-              onChange={e => {
-                setCommitment(e.target.value);
-              }}
-            />
-          </div>
+        <div className="flex flex-col gap-4">
+          <h1 className="font-bold text-xl">Commitment</h1>
+          <h2 className="text-dove-gray">
+            Hint: the effort needed for this task. This value
+            <br />
+            influences the DiTo reward.
+          </h2>
+          {/* TODO: Fix color */}
+          <input
+            id="commitment"
+            name="commitment"
+            type="range"
+            value={commitment}
+            onChange={e => setCommitment(e.target.value)}
+          />
         </div>
-
-        <div className=" sm:w-1/2 lg:w-1/3 p-2">
-          <div className="flex flex-col flex-1 px-10 py-12">
-            <h1 className="font-bold text-xl underline">Budget needed</h1>
-            <h2 className="text-dove-gray">
-              Hint: the amount of DiTo you offer.
-            </h2>
-            <p className="border-black border-2 p-4 text-xl mt-2">
-              {budgetRequired}
-            </p>
+        <div className="flex flex-col gap-4">
+          <h1 className="font-bold text-xl">Budget needed</h1>
+          <h2 className="text-dove-gray">
+            Hint: the amount of DiTo you offer.
+          </h2>
+          <div className="flex flex-col">
+            <TextField value={budgetRequired} />
             <h2 className="text-right">DiTo</h2>
           </div>
         </div>
       </div>
-      <button
-        type="submit"
-        className="py-3 text-lg underline bg-alizarin text-white w-full"
-      >
+      <Button filled type="submit">
         Publish
-      </button>
+      </Button>
       {/* TODO: Display error */}
     </form>
   );
