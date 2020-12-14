@@ -35,10 +35,7 @@ export default function WelcomeToCommunity({ showInviteButton = false }) {
       <div className="w-full flex justify-center gap-4 bottom-0 right-0 py-4 px-48">
         {/* TODO: Only on create */}
         {showInviteButton && (
-          <Button
-            onClick={onInviteClick}
-            className="border-rain-forest text-2xl"
-          >
+          <Button onClick={onInviteClick} color="rain-forest">
             Invite new Members
           </Button>
         )}

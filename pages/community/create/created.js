@@ -9,8 +9,7 @@ import Button from '../../../components/Button';
 function Created() {
   const router = useRouter();
   const [showRegistrationModal, setShowRegistrationModal] = useState(false);
-  const [loading] = useState(false);
-  const [login] = useMagicLinkLogin();
+  const [login, { isLoading }] = useMagicLinkLogin();
   const { name: communityName, category: communityCategory } = router.query;
 
   const handleCreateAccountClick = async email => {
@@ -48,16 +47,10 @@ function Created() {
         className={`modalBackground modalVisible-${showRegistrationModal} bg-white`}
       >
         <RegistrationModal
+          loading={isLoading}
           handleCreateAccountClick={handleCreateAccountClick}
         />
       </div>
-      {loading && (
-        <div className="fixed inset-0 h-screen w-screen bg-opacity-50 bg-black flex justify-center items-center">
-          <div className="w-48 h-48 bg-white rounded flex justify-center items-center">
-            Signing you in...
-          </div>
-        </div>
-      )}
     </div>
   );
 }

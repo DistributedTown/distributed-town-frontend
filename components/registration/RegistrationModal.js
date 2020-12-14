@@ -3,6 +3,7 @@ import bgImages from '../../utils/bgImages';
 import RegistrationForm from './RegistrationForm';
 
 const RegistrationModal = ({
+  loading,
   communityName,
   chosenSkill = 'default',
   handleCreateAccountClick,
@@ -28,6 +29,7 @@ const RegistrationModal = ({
           <div className="p-4 bg-white flex flex-col flex-row space-y-4 z-10">
             <div className="flex flex-col justify-center mt-6 items-center">
               <RegistrationForm
+                loading={loading}
                 onSubmit={() => handleCreateAccountClick(email)}
                 setEmail={setEmail}
                 title="Welcome to Dito"

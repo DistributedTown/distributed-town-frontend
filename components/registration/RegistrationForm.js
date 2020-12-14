@@ -13,6 +13,7 @@ const RegistrationForm = ({
   placeholderText,
   email,
   className = '',
+  loading,
 }) => (
   <div
     className={`max-w-sm  rounded w-full lg:max-w-full lg:flex ${className}`}
@@ -38,7 +39,7 @@ const RegistrationForm = ({
             onChange={e => setEmail(e.target.value)}
             required
           />
-          <Button filled type="submit">
+          <Button filled loading={loading} type="submit">
             {cta}
           </Button>
         </form>

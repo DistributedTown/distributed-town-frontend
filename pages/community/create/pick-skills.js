@@ -5,7 +5,7 @@ import { useCreateCommunity } from '../../../hooks/useCreateCommunity';
 function PickSkills() {
   const router = useRouter();
   const { communityName, communityCategory } = router.query;
-  const [createCommunity] = useCreateCommunity();
+  const [createCommunity, { isLoading }] = useCreateCommunity();
 
   const handleSubmit = async ({ username, skills }) => {
     const user = { username, skills };
@@ -19,6 +19,7 @@ function PickSkills() {
 
   return (
     <SkillPicker
+      isSubmitting={isLoading}
       communityCategory={communityCategory}
       onSubmit={handleSubmit}
     />

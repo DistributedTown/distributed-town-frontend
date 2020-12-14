@@ -50,6 +50,7 @@ function CommunityCreate() {
   const router = useRouter();
 
   const handleCreateCommunity = async () => {
+    // TODO: Handle validation, error display and loading
     await router.push(
       `/community/create/created?name=${encodeURIComponent(
         communityName,
@@ -116,6 +117,7 @@ function CommunityCreate() {
                   ) : (
                     <Button
                       color={color}
+                      filled
                       onClick={() => setSelectedCategory(category)}
                     >
                       Select
@@ -130,8 +132,8 @@ function CommunityCreate() {
       <div className="flex justify-center items-center w-full bottom-0 p-4 bg-white">
         <Button
           filled
-          className="font-black text-2xl px-32"
           onClick={handleCreateCommunity}
+          disabled={!communityName || !selectedCategory}
         >
           Create Community
         </Button>

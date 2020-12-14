@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import classNames from 'classnames';
 
 import { FaQrcode, FaUser } from 'react-icons/fa';
 
@@ -9,6 +10,19 @@ import { useGetDitoBalance } from '../../hooks/useGetDitoBalance';
 import { useGetCommunity } from '../../hooks/useGetCommunity';
 import Card from '../../components/Card';
 import Button from '../../components/Button';
+
+function PlaceholderLoading({
+  className,
+  color = 'gray-400',
+  width = '100%',
+  height = '1.8rem',
+}) {
+  const classes = classNames(
+    `w-full h-full rounded-xl animate-pulse bg-${color}`,
+    className,
+  );
+  return <div className={classes} style={{ width, height }} />;
+}
 
 function SkillWallet() {
   const { data: ditoBalance } = useGetDitoBalance();
@@ -34,12 +48,24 @@ function SkillWallet() {
               <div className="flex justify-center items-center w-24 h-24 bg-white rounded-full text-black">
                 <FaUser size="5rem" />
               </div>
-              <div className="grid content-center">
+              <div className="flex flex-col justify-center gap-2">
                 <h3 className="text-white font-bold">
-                  {userInfo ? userInfo.username : '...'}
+                  {userInfo ? (
+                    userInfo.username
+                  ) : (
+                    <PlaceholderLoading color="white" width="10rem" />
+                  )}
                 </h3>
                 <h3 className="text-white">
-                  {userInfo ? userInfo.email : '...'}
+                  {userInfo ? (
+                    userInfo.email
+                  ) : (
+                    <PlaceholderLoading
+                      color="white"
+                      height="1rem"
+                      width="80%"
+                    />
+                  )}
                 </h3>
               </div>
             </Card>

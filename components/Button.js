@@ -1,4 +1,5 @@
 import classNames from 'classnames';
+import { FaCircleNotch } from 'react-icons/fa';
 
 function Button({
   filled,
@@ -6,6 +7,8 @@ function Button({
   textColor = 'black',
   className,
   children,
+  disabled,
+  loading,
   ...rest
 }) {
   // TODO: Refactor
@@ -13,6 +16,7 @@ function Button({
     textColor = 'white';
   }
 
+  const isDisabled = disabled || loading;
   const classes = classNames(
     'px-4',
     'py-2',
@@ -20,7 +24,9 @@ function Button({
     'border-2',
     'font-bold',
     'focus:outline-none',
-    'focus:shadow-outline',
+    'focus:ring',
+    { 'opacity-50': isDisabled },
+    { 'cursor-not-allowed': isDisabled },
     `border-${color}`,
     `text-${textColor}`,
     // TODO: Hover doesn't work
@@ -30,8 +36,15 @@ function Button({
   );
 
   return (
-    <button className={classes} type="button" {...rest}>
-      {children}
+    <button className={classes} type="button" disabled={isDisabled} {...rest}>
+      <div className="flex gap-2 items-center justify-center">
+        {loading && (
+          <FaCircleNotch
+            className={`animate-spin text-${filled ? 'white' : color}`}
+          />
+        )}
+        {children}
+      </div>
     </button>
   );
 }

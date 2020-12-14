@@ -9,12 +9,14 @@ import TextField from './TextField';
 import Card from './Card';
 
 export default function SkillPicker({
+  isSubmitting,
   categorySkill,
   communityCategory,
   onSubmit,
 }) {
   const [skillTree, setSkillTree] = useState([]);
   const [username, setUsername] = useState('');
+  const isDisabled = !username || getSelectedSkills().length === 0;
 
   useEffect(() => {
     const getSkillTree = async () => {
@@ -151,7 +153,12 @@ export default function SkillPicker({
         </div>
       </div>
       <div className="flex justify-center items-center w-full p-4 bg-white">
-        <Button filled onClick={handleSubmit}>
+        <Button
+          filled
+          loading={isSubmitting}
+          disabled={isDisabled}
+          onClick={handleSubmit}
+        >
           Pick skills
         </Button>
       </div>
