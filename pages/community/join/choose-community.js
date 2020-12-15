@@ -9,7 +9,7 @@ import Button from '../../../components/Button';
 function ChooseCommunity() {
   const [communities, setCommunities] = useState([]);
   const [chosenCommunity, setChosenCommunity] = useState(null);
-  const [joinCommunity, { isLoading: joiningCommunity }] = useJoinCommunity();
+  const [joinCommunity, { isLoading: isJoining }] = useJoinCommunity();
   const { refetch: getCommunities } = useGetCommunities();
 
   useEffect(() => {
@@ -26,10 +26,8 @@ function ChooseCommunity() {
     await router.push('/community/join/completed');
   };
 
-  const joinDisabled = !chosenCommunity || joiningCommunity;
-
   return (
-    <div className="flex flex-col md:flex-row">
+    <div className="flex flex-col md:flex-row w-full">
       <div
         className="flex flex-col space-y-8 container mx-auto bg-cover bg-center p-8 md:h-screen overflow-y-auto"
         style={{ backgroundImage: 'url(/background-image.svg)' }}
@@ -51,7 +49,12 @@ function ChooseCommunity() {
           more rare they are, the more credits you’ll get!
         </p>
         {/* TODO: Loading */}
-        <Button filled onClick={handleJoinClick} disabled={joinDisabled}>
+        <Button
+          filled
+          onClick={handleJoinClick}
+          disabled={!chosenCommunity}
+          loading={isJoining}
+        >
           Join and get your credits!
         </Button>
       </div>

@@ -5,14 +5,20 @@ import SkillPicker from '../../../components/SkillPicker';
 function PickSkills() {
   const router = useRouter();
   const { categorySkill } = router.query;
-  const [createUser] = useCreateUser();
+  const [createUser, { isLoading }] = useCreateUser();
 
   const onSubmit = async ({ username, skills }) => {
     await createUser({ username, communityID: '', skills });
     await router.push('/community/join/choose-community');
   };
 
-  return <SkillPicker categorySkill={categorySkill} onSubmit={onSubmit} />;
+  return (
+    <SkillPicker
+      isSubmitting={isLoading}
+      categorySkill={categorySkill}
+      onSubmit={onSubmit}
+    />
+  );
 }
 
 export default PickSkills;

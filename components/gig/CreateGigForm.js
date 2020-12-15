@@ -1,24 +1,25 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
-import { useQuery } from 'react-query';
+import { useGetSkills } from '../../hooks/useGetSkills';
+import { useGetCommunity } from '../../hooks/useGetCommunity';
 import Button from '../Button';
 import Card from '../Card';
 import TextField from '../TextField';
 
-const CreateGigForm = ({ onSubmit, skill, isProject = false }) => {
+const CreateGigForm = ({ isSubmitting, onSubmit, isProject = false }) => {
   const { register, handleSubmit, errors } = useForm();
+  const { data: community, isLoading: loadingCommunity } = useGetCommunity();
+  const communityCategory = community && community.communityInfo.category;
 
   const [budgetRequired, setBudgetRequired] = useState(0);
   const [selectedSkills, setSelectedSkills] = useState([]);
   const [commitment, setCommitment] = useState(50);
 
-  const { data, error } = useQuery('skillTree', () =>
-    fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/skill?skill=${encodeURIComponent(
-        skill,
-      )}`,
-    ).then(res => res.json()),
+  const { data, error, isLoading: loadingSkills } = useGetSkills(
+    { category: communityCategory },
+    { enabled: communityCategory },
   );
+  const loading = loadingSkills || loadingCommunity;
 
   const skillsList = useMemo(
     () =>
@@ -94,7 +95,7 @@ const CreateGigForm = ({ onSubmit, skill, isProject = false }) => {
         )}
       </div>
       <div className="flex flex-col md:flex-row gap-10">
-        <div className="flex flex-col gap-4">
+        <div className="flex-1 flex flex-col gap-4">
           <h1 className="font-bold text-xl">Skills needed</h1>
           <h2 className="text-dove-gray">
             Hint: If the gig requires many different skills, consider
@@ -103,6 +104,7 @@ const CreateGigForm = ({ onSubmit, skill, isProject = false }) => {
           </h2>
           <Card>
             {error && <p>Couldn't fetch skills</p>}
+            {loading && 'Loading skills'}
             {skillsList ? (
               skillsList.map(s => {
                 return (
@@ -124,7 +126,7 @@ const CreateGigForm = ({ onSubmit, skill, isProject = false }) => {
             )}
           </Card>
         </div>
-        <div className="flex flex-col gap-4">
+        <div className="flex-1 flex flex-col gap-4">
           <h1 className="font-bold text-xl">Commitment</h1>
           <h2 className="text-dove-gray">
             Hint: the effort needed for this task. This value
@@ -140,7 +142,7 @@ const CreateGigForm = ({ onSubmit, skill, isProject = false }) => {
             onChange={e => setCommitment(e.target.value)}
           />
         </div>
-        <div className="flex flex-col gap-4">
+        <div className="flex-1 flex flex-col gap-4">
           <h1 className="font-bold text-xl">Budget needed</h1>
           <h2 className="text-dove-gray">
             Hint: the amount of DiTo you offer.
@@ -151,7 +153,7 @@ const CreateGigForm = ({ onSubmit, skill, isProject = false }) => {
           </div>
         </div>
       </div>
-      <Button filled type="submit">
+      <Button filled type="submit" loading={isSubmitting}>
         Publish
       </Button>
       {/* TODO: Display error */}

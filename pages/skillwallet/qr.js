@@ -1,6 +1,7 @@
 import { QRCode } from 'react-qrcode-logo';
 import { useGetUserInfo } from '../../hooks/useGetUserInfo';
 import { useGetDitoBalance } from '../../hooks/useGetDitoBalance';
+import Card from '../../components/Card';
 
 function QR() {
   const { data: userInfo } = useGetUserInfo();
@@ -9,7 +10,7 @@ function QR() {
   return (
     <div className="flex w-full h-screen">
       <div className="flex flex-col px-40 py-64 justify-center items-center bg-denim w-1/2">
-        <div className="bg-ripe-lemon w-56 h-56 p-4 flex justify-center items-center">
+        <div className="bg-ripe-lemon w-56 h-56 p-4 flex justify-center items-center rounded-xl">
           <QRCode
             value={userInfo._id}
             logoImage="/isologo.svg"
@@ -19,18 +20,17 @@ function QR() {
             size={180}
           />
         </div>
-        <div className="bg-white p-2 mt-10">
-          Scan <span className="underline text-denim ">Wallet’s QR-Code</span>{' '}
-          to verify new member.
-        </div>
+        <Card className="bg-white p-2 mt-10">
+          Scan Wallet’s QR-Code to verify new member.
+        </Card>
       </div>
       <div className="flex w-1/2 justify-center items-center">
-        <div className="rounded border border-black py-12 px-8 flex flex-col justify-center items-center">
+        <Card className="flex flex-col justify-center items-center">
           <h3 className="text-2xl">Accepting Community</h3>
-          <div className="bg-denim py-3 w-3/4 text-white text-center my-4">
+          <Card filled className="my-4">
             <p>DITO #23</p>
-          </div>
-          <h3 className="text-2xl mt-12 mb-4">Accepting Member</h3>
+          </Card>
+          <h3 className="text-2xl mb-4">Accepting Member</h3>
           <div className="bg-black p-4 flex justify-around items-center rounded-xl w-full">
             <p className="text-white flex flex-col">
               <span className="text-4xl">👨</span>
@@ -46,7 +46,7 @@ function QR() {
               </h2>
             </div>
           </div>
-        </div>
+        </Card>
       </div>
     </div>
   );

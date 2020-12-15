@@ -8,7 +8,7 @@ import { getUserInfo } from '../../../api';
 import { useMagicLinkLogin } from '../../../hooks/useMagicLinkLogin';
 
 const Join = ({ skills = [] }) => {
-  const [login] = useMagicLinkLogin();
+  const [login, { isLoading }] = useMagicLinkLogin();
 
   const [chosenSkill, setChosenSkill] = useState('');
   const showRegistrationModal = !!chosenSkill;
@@ -16,20 +16,12 @@ const Join = ({ skills = [] }) => {
   const router = useRouter();
 
   async function handleCreateAccountClick(email) {
-    const { didToken } = await login(email);
-
-    const userData = await getUserInfo(didToken);
-    const hasSkills = userData.skills && userData.skills.length > 0;
-
-    if (hasSkills) {
-      router.push('/skillwallet');
-    } else {
-      router.push(
-        `/community/join/pick-skills?categorySkill=${encodeURIComponent(
-          chosenSkill,
-        )}`,
-      );
-    }
+    await login(email);
+    await router.push(
+      `/community/join/pick-skills?categorySkill=${encodeURIComponent(
+        chosenSkill,
+      )}`,
+    );
   }
 
   return (
@@ -64,6 +56,7 @@ const Join = ({ skills = [] }) => {
         className={`modalBackground modalVisible-${showRegistrationModal} bg-white`}
       >
         <RegistrationModal
+          loading={isLoading}
           chosenSkill={chosenSkill}
           handleCreateAccountClick={handleCreateAccountClick}
           onChooseDifferentCommunity={() => setChosenSkill('')}
