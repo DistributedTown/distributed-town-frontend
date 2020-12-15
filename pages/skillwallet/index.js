@@ -128,7 +128,7 @@ function SkillWallet() {
               <div className="flex flex-wrap">
                 {pastGigs.map((gig, i) => {
                   return (
-                    <Card key={i} className="flex">
+                    <Card key={i} className="flex" outlined>
                       <div className="w-1/2">
                         <h3 className="text-lg">{gig.title}</h3>
                         <p className="text-xs mb-4">{gig.description}</p>
