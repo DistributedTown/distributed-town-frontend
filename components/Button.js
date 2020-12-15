@@ -25,11 +25,13 @@ function Button({
     'font-bold',
     'focus:outline-none',
     'focus:ring',
+    'shadow-md',
     { 'opacity-50': isDisabled },
     { 'cursor-not-allowed': isDisabled },
     `border-${color}`,
     `text-${textColor}`,
     // TODO: Hover doesn't work
+    { 'bg-white': !filled },
     { [`bg-${color}`]: filled },
     className,
   );

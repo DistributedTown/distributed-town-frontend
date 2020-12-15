@@ -2,6 +2,7 @@ import { useRouter } from 'next/router';
 import Layout from '../../../components/Layout';
 import CreateGigForm from '../../../components/gig/CreateGigForm';
 import { useCreateGig } from '../../../hooks/useCreateGig';
+import PageTitle from '../../../components/PageTitle';
 
 function CreateProject() {
   const router = useRouter();
@@ -15,7 +16,7 @@ function CreateProject() {
   return (
     <Layout>
       <div className="w-full p-8 h-full overflow-scroll">
-        <h1 className="underline text-black text-4xl">Create New Project</h1>
+        <PageTitle>Create New Project</PageTitle>
         <CreateGigForm
           isSubmitting={isSubmitting}
           onSubmit={onSubmit}

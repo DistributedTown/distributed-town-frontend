@@ -10,6 +10,7 @@ import { useGetDitoBalance } from '../../hooks/useGetDitoBalance';
 import { useGetCommunity } from '../../hooks/useGetCommunity';
 import Card from '../../components/Card';
 import Button from '../../components/Button';
+import PageTitle from '../../components/PageTitle';
 
 function PlaceholderLoading({
   className,
@@ -38,7 +39,7 @@ function SkillWallet() {
         <div className="grid lg:grid-cols-2 gap-6 m-6">
           {/* MAIN TITLE  */}
           <div className="col-span-1 lg:col-span-2">
-            <h1 className="underline text-black text-4xl">Skill Wallet</h1>
+            <PageTitle>Skill Wallet</PageTitle>
           </div>
 
           {/*  WALLET CARD  */}
@@ -84,7 +85,7 @@ function SkillWallet() {
               <p className="text-center">
                 Show your{' '}
                 <Link href="/skillwallet/qr">
-                  <a className="underline text-denim">Wallet's QR-Code</a>
+                  <a className="text-denim">Wallet's QR-Code</a>
                 </Link>
                 <br />
                 to help a different community.
@@ -106,7 +107,7 @@ function SkillWallet() {
             <h1 className="text-xl mb-6 text-center text-black">Badges</h1>
             <p className="pr-4 text-sm text-center mb-8">
               Badges will appear here once you validate your skills. Check the{' '}
-              <a className="text-denim underline" href="#">
+              <a className="text-denim" href="#">
                 Open Gigs
               </a>{' '}
               and validate your Skills now!

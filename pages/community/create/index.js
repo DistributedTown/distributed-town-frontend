@@ -60,7 +60,7 @@ function CommunityCreate() {
 
   return (
     <div className="flex flex-col">
-      <div className="flex flex-col md:flex-row md:items-center">
+      <div className="flex-1 flex flex-col md:flex-row md:items-center">
         <div
           className="p-8 bg-cover bg-center w-full h-full grid content-center md:w-1/2"
           style={{ backgroundImage: 'url(/background-image.svg)' }}
@@ -129,7 +129,7 @@ function CommunityCreate() {
           </div>
         </div>
       </div>
-      <div className="flex justify-center items-center w-full bottom-0 p-4 bg-white">
+      <div className="flex justify-center w-full p-4 bg-white">
         <Button
           filled
           onClick={handleCreateCommunity}

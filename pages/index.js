@@ -28,9 +28,9 @@ const Index = () => {
       <Info className="overflow-hidden h-full relative info w-full grid content-center lg:w-2/3 lg:h-full" />
       <div className="h-full flex flex-col justify-center items-center lg:w-1/3">
         <h1 className="text-4xl m-8 font-bold text-center">
-          This is <span className="underline">Your Community</span>
+          This is <span>Your Community</span>
         </h1>
-        <Card className="p-4 border-2 border-denim flex flex-col mx-0 sm:mx-8 sm:p-8 gap-4">
+        <Card className="p-4 flex flex-col mx-0 sm:mx-8 sm:p-8 gap-4">
           <Link href="/community/create">
             <Button>
               <a className="flex gap-4 justify-center items-center text-xl">

@@ -112,8 +112,7 @@ export default function SkillPicker({
         <div className="flex flex-col justify-center align-center text-center space-y-1 gap-2 p-8 flex-grow w-full overflow-auto h-full py-24">
           <h1 className="font-bold text-xl">Tell us about you!</h1>
           <p>
-            Pick your Skills (<span className="underline">between 1 and 3</span>
-            )
+            Pick your Skills (<span>between 1 and 3</span>)
           </p>
           <p>Select what you’re the best at, and receive Credits for it.</p>
           {skillTree.map((category, i) => {

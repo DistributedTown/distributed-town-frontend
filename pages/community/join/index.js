@@ -28,7 +28,7 @@ const Join = ({ skills = [] }) => {
     <div className="w-full h-full">
       <div className="firstPage">
         <Link href="#">
-          <a className="text-white fixed top-0 right-0 hover:underline p-8 text-2xl font-bold">
+          <a className="text-white fixed top-0 right-0 hover:p-8 text-2xl font-bold">
             what's this about?
           </a>
         </Link>
@@ -44,7 +44,7 @@ const Join = ({ skills = [] }) => {
                 type="button"
                 key={skill}
                 onClick={() => setChosenSkill(skill)}
-                className="bg-gray-200 rounded rounded-full flex items-center justify-center p-2"
+                className="bg-white shadow focus:ring focus:outline-none rounded-full flex items-center justify-center p-2"
               >
                 {skill}
               </button>

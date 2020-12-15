@@ -7,7 +7,7 @@ import InviteModal from './InviteModal';
 
 export default function WelcomeToCommunity({ showInviteButton = false }) {
   const { data: ditoBalance } = useGetDitoBalance();
-  const { data, refetch: getShareLink } = useGetInvitation();
+  const { data, isLoading: loadingShareLink } = useGetInvitation();
   const [showInviteModal, setShowInviteModal] = useState(false);
 
   const router = useRouter();
@@ -15,7 +15,6 @@ export default function WelcomeToCommunity({ showInviteButton = false }) {
   const { linkUrl: shareLink } = data || {};
 
   const onInviteClick = async () => {
-    await getShareLink();
     setShowInviteModal(true);
   };
 
@@ -24,7 +23,7 @@ export default function WelcomeToCommunity({ showInviteButton = false }) {
       <div className="flex-1 text-center flex items-center flex-col">
         <p className="text-5xl font-bold">Congrats!</p>
         <p className="text-4xl">You are now a member of DiTo!</p>
-        <div className="text-yellow-400 bg-red-600 rounded-full flex flex-col gap-2 p-8 items-center justify-center font-bold h-64 w-64 mt-6">
+        <div className="text-yellow-300 bg-red-500 shadow rounded-full flex flex-col gap-2 p-8 items-center justify-center font-bold h-64 w-64 mt-6">
           <p>Community credits:</p>
           <img alt="dito tokens" src="/dito-tokens.svg" />
           <p>
@@ -35,7 +34,11 @@ export default function WelcomeToCommunity({ showInviteButton = false }) {
       <div className="w-full flex justify-center gap-4 bottom-0 right-0 py-4 px-48">
         {/* TODO: Only on create */}
         {showInviteButton && (
-          <Button onClick={onInviteClick} color="rain-forest">
+          <Button
+            onClick={onInviteClick}
+            loading={loadingShareLink}
+            color="rain-forest"
+          >
             Invite new Members
           </Button>
         )}

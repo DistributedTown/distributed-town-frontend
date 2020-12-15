@@ -34,8 +34,9 @@ const Store = ({ children }) => {
 
   return (
     // `children` (passed as props in this file) represents the component nested inside <Store /> in `/pages/index.js` and `/pages/login.js`
+    // TODO: Should we remove div?
     <MagicContext.Provider value={[magic]}>
-      <div className="flex">{children}</div>
+      <div className="flex w-full h-full">{children}</div>
     </MagicContext.Provider>
   );
 };

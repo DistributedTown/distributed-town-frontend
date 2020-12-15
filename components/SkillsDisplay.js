@@ -1,9 +1,9 @@
 import Card from './Card';
 
-const SkillsDisplay = ({ skills }) => {
+const SkillsDisplay = ({ skills = [] }) => {
   return (
     <Card>
-      <h2 className="text-bold underline text-2xl text-center">Your skills</h2>
+      <h2 className="text-bold text-2xl text-center">Your skills</h2>
       <div className="grid grid-cols-2 gap-6 justify-center p-2">
         {skills.map((skill, i) => {
           const barcss = `font-bold text-white pr-2 text-right transition-all ease-out duration-1000 h-full bg-denim relative`;

@@ -9,6 +9,7 @@ import Layout from '../../../components/Layout';
 import { getProjects } from '../../../api';
 import { useGetUserInfo } from '../../../hooks/useGetUserInfo';
 import Button from '../../../components/Button';
+import PageTitle from '../../../components/PageTitle';
 
 function Projects() {
   const { data: userInfo } = useGetUserInfo();
@@ -29,7 +30,7 @@ function Projects() {
   return (
     <Layout>
       <div className="grid m-8 gap-8">
-        <h1 className="underline text-black text-4xl">Open Projects</h1>
+        <PageTitle>Open Projects</PageTitle>
         <div className="mt-5 grid lg:grid-cols-2 xl:grid-cols-3 gap-12 items-baseline mb-40">
           {typeof projects === 'undefined' ? (
             <div>

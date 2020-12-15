@@ -56,18 +56,18 @@ const Layout = ({ children }) => {
         </div>
         <div className="relative">
           <nav
-            className={`bg-denim text-white w-full absolute overflow-hidden ${
+            className={`flex flex-col bg-denim text-white text-xl font-bold w-full absolute overflow-hidden ${
               showNav ? 'h-auto' : 'h-0'
-            } md:relative md:h-screen md:w-48 md:bg-white md:text-denim md:border-r-2  md:border-denim`}
+            } md:relative md:h-screen md:w-60 md:bg-white md:text-denim shadow`}
           >
-            <img className="hidden md:block p-4 mx-auto" src="/isologo.svg" />
+            <img className="hidden md:block p-8 mx-auto" src="/isologo.svg" />
             {navItems.map(ni => (
               <button
                 type="button"
                 key={ni.text}
-                className={`w-full px-4 py-1 text-center tracking-widest ${
+                className={`m-1 px-4 py-1 text-center tracking-widest ${
                   router.pathname === ni.href
-                    ? 'md:text-white md:bg-denim'
+                    ? 'md:text-white md:bg-denim md:shadow rounded'
                     : 'md:text-denim md:bg-white'
                 }`}
                 onClick={ni.onClick}

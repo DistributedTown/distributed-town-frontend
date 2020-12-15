@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import Card from '../Card';
 import Button from '../Button';
+import TextField from '../TextField';
 
 const CommunityTreasuryForm = ({
   register,
@@ -14,16 +15,11 @@ const CommunityTreasuryForm = ({
   const [returns, setReturns] = useState(0);
   return (
     <form className="p-8 lg:mb-20" onSubmit={handleSubmit(onSubmit)}>
-      <Card className="flex flex-col border-2 border-denim  mt-8">
-        <h1 className="flex font-bold underline justify-center">
-          Add funds to Treasury
-        </h1>
+      <Card className="flex flex-col mt-8">
+        <h1 className="flex font-bold justify-center">Add funds to Treasury</h1>
         <div className="flex">
           <div className="flex flex-col w-1/2 p-3">
-            <h2
-              htmlFor="currency"
-              className="font-bold underline text-center mb-3"
-            >
+            <h2 htmlFor="currency" className="font-bold text-center mb-3">
               Currency
             </h2>
             <div className="flex justify-around">
@@ -70,9 +66,7 @@ const CommunityTreasuryForm = ({
           </div>
 
           <div className="flex flex-col w-1/2 p-3">
-            <h2 className="font-bold underline text-center mb-3">
-              Community APY
-            </h2>
+            <h2 className="font-bold text-center mb-3">Community APY</h2>
             <div className="mb-3 relative max-w-xl rounded-full h-8 border-2 border-denim overflow-hidden">
               <div
                 id="bar"
@@ -98,12 +92,10 @@ const CommunityTreasuryForm = ({
         </div>
         <div className="flex">
           <div className="flex flex-col w-1/2 p-3">
-            <label className="font-bold underline text-center mb-3">
-              Amount
-            </label>
-            <input
-              className="justify-center text-center border border-denim h-16"
+            <label className="font-bold text-center mb-3">Amount</label>
+            <TextField
               type="number"
+              className="text-center"
               id="amount"
               name="amount"
               min="1"
@@ -123,9 +115,7 @@ const CommunityTreasuryForm = ({
           </div>
 
           <div className="flex flex-col w-1/2 p-3">
-            <h2 className="text-center font-bold underline mb-3">
-              Your return
-            </h2>
+            <h2 className="text-center font-bold mb-3">Your return</h2>
             <p className="text-left text-dove-gray">
               Your intial investment plus
             </p>

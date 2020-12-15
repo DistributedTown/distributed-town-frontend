@@ -51,7 +51,7 @@ const CreateGigForm = ({ isSubmitting, onSubmit, isProject = false }) => {
 
   return (
     <form
-      className="flex flex-col gap-6 py-8"
+      className="mt-8"
       onSubmit={handleSubmit(data =>
         onSubmit({
           ...data,
@@ -60,103 +60,109 @@ const CreateGigForm = ({ isSubmitting, onSubmit, isProject = false }) => {
         }),
       )}
     >
-      <div className="flex flex-col">
-        <div className="flex justify-between gap-8">
-          <label className="font-bold text-xl" htmlFor="title">
-            Title
-          </label>
-          <p className="text-dove-gray">
-            Hint: a short, clear title will catch contributors’ attention. Just
-            be honest please.
-          </p>
-        </div>
-        <TextField id="title" name="title" ref={register({ required: true })} />
-        {errors.title && (
-          <span className="text-red-600">This field is required</span>
-        )}
-      </div>
-      <div className="flex flex-col">
-        <div className="flex justify-between gap-8">
-          <label className="font-bold text-xl" htmlFor="description">
-            Description
-          </label>
-          <p className="text-dove-gray">
-            Hint: be as detailed as possible, and be nice - there are real
-            people on the other side ;)
-          </p>
-        </div>
-        <TextField
-          id="description"
-          name="description"
-          ref={register({ required: true })}
-        />
-        {errors.description && (
-          <span className="text-red-600">This field is required</span>
-        )}
-      </div>
-      <div className="flex flex-col md:flex-row gap-10">
-        <div className="flex-1 flex flex-col gap-4">
-          <h1 className="font-bold text-xl">Skills needed</h1>
-          <h2 className="text-dove-gray">
-            Hint: If the gig requires many different skills, consider
-            <br />
-            breaking it down in 2+ gigs, or starting a new project.
-          </h2>
-          <Card>
-            {error && <p>Couldn't fetch skills</p>}
-            {loading && 'Loading skills'}
-            {skillsList ? (
-              skillsList.map(s => {
-                return (
-                  <label key={s.name} className="flex items-center">
-                    <input
-                      type="checkbox"
-                      onChange={() => {
-                        toggleSkill(s);
-                      }}
-                    />
-                    <div className="flex flex-col font-bold pl-2">
-                      <p>{s.name}</p>
-                    </div>
-                  </label>
-                );
-              })
-            ) : (
-              <p>loading</p>
-            )}
-          </Card>
-        </div>
-        <div className="flex-1 flex flex-col gap-4">
-          <h1 className="font-bold text-xl">Commitment</h1>
-          <h2 className="text-dove-gray">
-            Hint: the effort needed for this task. This value
-            <br />
-            influences the DiTo reward.
-          </h2>
-          {/* TODO: Fix color */}
-          <input
-            id="commitment"
-            name="commitment"
-            type="range"
-            value={commitment}
-            onChange={e => setCommitment(e.target.value)}
+      <Card className="flex flex-col gap-6 py-8">
+        <div className="flex flex-col">
+          <div className="flex justify-between gap-8">
+            <label className="font-bold text-xl" htmlFor="title">
+              Title
+            </label>
+            <p className="text-dove-gray">
+              Hint: a short, clear title will catch contributors’ attention.
+              Just be honest please.
+            </p>
+          </div>
+          <TextField
+            id="title"
+            name="title"
+            ref={register({ required: true })}
           />
+          {errors.title && (
+            <span className="text-red-600">This field is required</span>
+          )}
         </div>
-        <div className="flex-1 flex flex-col gap-4">
-          <h1 className="font-bold text-xl">Budget needed</h1>
-          <h2 className="text-dove-gray">
-            Hint: the amount of DiTo you offer.
-          </h2>
-          <div className="flex flex-col">
-            <TextField value={budgetRequired} />
-            <h2 className="text-right">DiTo</h2>
+        <div className="flex flex-col">
+          <div className="flex justify-between gap-8">
+            <label className="font-bold text-xl" htmlFor="description">
+              Description
+            </label>
+            <p className="text-dove-gray">
+              Hint: be as detailed as possible, and be nice - there are real
+              people on the other side ;)
+            </p>
+          </div>
+          <TextField
+            id="description"
+            name="description"
+            ref={register({ required: true })}
+          />
+          {errors.description && (
+            <span className="text-red-600">This field is required</span>
+          )}
+        </div>
+        <div className="flex flex-col md:flex-row gap-10">
+          <div className="flex-1 flex flex-col gap-4">
+            <h1 className="font-bold text-xl">Skills needed</h1>
+            <h2 className="text-dove-gray">
+              Hint: If the gig requires many different skills, consider
+              <br />
+              breaking it down in 2+ gigs, or starting a new project.
+            </h2>
+            <Card outlined>
+              {error && <p>Couldn't fetch skills</p>}
+              {loading && 'Loading skills'}
+              {skillsList ? (
+                skillsList.map(s => {
+                  return (
+                    <label key={s.name} className="flex items-center">
+                      <input
+                        type="checkbox"
+                        onChange={() => {
+                          toggleSkill(s);
+                        }}
+                      />
+                      <div className="flex flex-col font-bold pl-2">
+                        <p>{s.name}</p>
+                      </div>
+                    </label>
+                  );
+                })
+              ) : (
+                <p>loading</p>
+              )}
+            </Card>
+          </div>
+          <div className="flex-1 flex flex-col gap-4">
+            <h1 className="font-bold text-xl">Commitment</h1>
+            <h2 className="text-dove-gray">
+              Hint: the effort needed for this task. This value
+              <br />
+              influences the DiTo reward.
+            </h2>
+            {/* TODO: Fix color */}
+            <input
+              id="commitment"
+              name="commitment"
+              type="range"
+              value={commitment}
+              onChange={e => setCommitment(e.target.value)}
+            />
+          </div>
+          <div className="flex-1 flex flex-col gap-4">
+            <h1 className="font-bold text-xl">Budget needed</h1>
+            <h2 className="text-dove-gray">
+              Hint: the amount of DiTo you offer.
+            </h2>
+            <div className="flex flex-col">
+              <TextField value={budgetRequired} />
+              <h2 className="text-right">DiTo</h2>
+            </div>
           </div>
         </div>
-      </div>
-      <Button filled type="submit" loading={isSubmitting}>
-        Publish
-      </Button>
-      {/* TODO: Display error */}
+        <Button filled type="submit" loading={isSubmitting}>
+          Publish
+        </Button>
+        {/* TODO: Display error */}
+      </Card>
     </form>
   );
 };

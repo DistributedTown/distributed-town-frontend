@@ -3,6 +3,7 @@ import Link from 'next/link';
 import Layout from '../../components/Layout';
 import CheckupCard from '../../components/community/CheckupCard';
 import Button from '../../components/Button';
+import PageTitle from '../../components/PageTitle';
 
 function CommunityDashboard() {
   return (
@@ -10,9 +11,9 @@ function CommunityDashboard() {
       <div className="h-full flex flex-col">
         <div className="flex flex-grow flex-col md:flex-row gap-8">
           <div className="grid content-center md:w-3/5">
-            <h1 className="mt-12 underline text-center text-black text-4xl">
+            <PageTitle className="mt-12 text-center">
               Community Dashboard
-            </h1>
+            </PageTitle>
             <h2 className="mt-10 font-bold text-xl text-center">
               Administration
             </h2>

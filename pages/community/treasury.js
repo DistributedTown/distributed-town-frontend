@@ -5,6 +5,7 @@ import { useMagic } from '../../components/Store';
 import Layout from '../../components/Layout';
 import CommunityTreasuryForm from '../../components/treasury/CommunityTreasuryForm';
 import CheckupCard from '../../components/community/CheckupCard';
+import PageTitle from '../../components/PageTitle';
 
 import NoGSNCommunityAbi from '../../utils/NoGSNCommunity.json';
 import { useGetUserInfo } from '../../hooks/useGetUserInfo';
@@ -106,15 +107,15 @@ function CommunityTreasury() {
   }, []);
 
   // TODO: Loading
-  if (!communityInfo) return 'Loading';
+  if (!communityInfo) return null;
 
   return (
     <Layout>
-      <div className="flex flex-col lg:flex-row">
+      <div className="flex flex-col lg:flex-row h-full">
         <div className="flex flex-col items-center w-full py-4">
-          <h1 className="mt-5 underline text-black text-center text-4xl">
+          <PageTitle className="mt-5 text-black text-center text-4xl">
             Community Treasury
-          </h1>
+          </PageTitle>
           <CommunityTreasuryForm
             register={register}
             errors={errors}

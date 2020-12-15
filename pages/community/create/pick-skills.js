@@ -17,6 +17,8 @@ function PickSkills() {
     await router.push('/community/create/completed');
   };
 
+  if (!communityName || !communityCategory) return null;
+
   return (
     <SkillPicker
       isSubmitting={isLoading}

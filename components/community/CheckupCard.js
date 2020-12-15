@@ -11,7 +11,7 @@ export default function CheckupCard() {
       }}
       className="flex w-full justify-center items-center py-8 bg-cover bg-center"
     >
-      <Card className="flex flex-col border-2 border-blue-600 w-7/12">
+      <Card className="flex flex-col w-7/12">
         <Card filled className="text-white">
           <h2>{!community ? 'Loading' : community.communityInfo.name}</h2>
           <p>Check-up Card</p>

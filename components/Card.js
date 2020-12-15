@@ -5,6 +5,7 @@ export default function Card({
   className,
   filled = false,
   color = 'denim',
+  outlined = false,
   onClick,
 }) {
   if (filled) {
@@ -12,10 +13,13 @@ export default function Card({
   }
   const classes = classNames(
     'p-6',
-    'border-2',
+    // 'border-2',
+    'shadow',
     `border-${color}`,
     'rounded-xl',
+    'border-denim',
     {
+      'border-2': outlined,
       [`bg-white`]: !filled,
       [`bg-${color}`]: filled,
     },

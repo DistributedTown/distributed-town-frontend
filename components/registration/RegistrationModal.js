@@ -14,19 +14,19 @@ const RegistrationModal = ({
 
   return (
     <div className="modalWrapper">
-      <div className="flex flex-col sm:flex-row">
+      <div className="flex flex-col sm:flex-row bg-gray-100">
         <div className="flex flex-col container hidden sm:block">
           <img
             src={backgroundImageSrc}
             className="h-full object-cover object-center hidden sm:block"
           />
         </div>
-        <div className="flex flex-col justify-center items-center space-y-8 w-full bg-white flex-grow p-8 h-screen">
+        <div className="flex flex-col justify-center items-center space-y-8 w-full flex-grow p-8 h-screen">
           <img
             src={backgroundImageSrc}
             className="absolute block sm:hidden top-0 h-full w-full object-cover object-center"
           />
-          <div className="p-4 bg-white flex flex-col flex-row space-y-4 z-10">
+          <div className="p-4 flex flex-col flex-row space-y-4 z-10">
             <div className="flex flex-col justify-center mt-6 items-center">
               <RegistrationForm
                 loading={loading}
@@ -43,7 +43,7 @@ const RegistrationModal = ({
                 <a
                   onClick={onChooseDifferentCommunity}
                   href="#"
-                  className=" pt-2 text-gray-500 underline"
+                  className=" pt-2 text-gray-500 "
                 >
                   Select a different community
                 </a>
