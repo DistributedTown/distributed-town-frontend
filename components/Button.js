@@ -25,7 +25,6 @@ function Button({
     'font-bold',
     'focus:outline-none',
     'focus:ring',
-    'hover:opacity-90',
     { 'opacity-50': isDisabled },
     { 'cursor-not-allowed': isDisabled },
     `border-${color}`,
