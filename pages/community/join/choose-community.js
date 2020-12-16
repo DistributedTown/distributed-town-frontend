@@ -7,19 +7,24 @@ import { useGetCommunities } from '../../../hooks/useGetCommunities';
 import Button from '../../../components/Button';
 
 function ChooseCommunity() {
+  const router = useRouter();
   const [communities, setCommunities] = useState([]);
   const [chosenCommunity, setChosenCommunity] = useState(null);
   const [joinCommunity, { isLoading: isJoining }] = useJoinCommunity();
-  const { refetch: getCommunities } = useGetCommunities();
+  // TODO: Refactor
+  const { refetch: getCommunities } = useGetCommunities({
+    category: router.query.category,
+  });
 
   useEffect(() => {
+    const { category } = router.query;
+    if (!category) return;
+
     (async () => {
-      const comms = await getCommunities();
+      const comms = await getCommunities({ category });
       setCommunities(comms || []);
     })();
-  }, []);
-
-  const router = useRouter();
+  }, [router.query.category]);
 
   const handleJoinClick = async () => {
     await joinCommunity(chosenCommunity);

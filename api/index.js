@@ -1,4 +1,5 @@
 import { BigNumber, ethers } from 'ethers';
+import queryString from 'query-string';
 import ditoContractAbi from '../utils/ditoTokenContractAbi.json';
 import NoGSNCommunityAbi from '../utils/NoGSNCommunity.json';
 
@@ -32,8 +33,12 @@ export const getCommunityById = (didToken, id) => {
   }).then(res => res.json());
 };
 
-export const getCommunities = () => {
-  return fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/community`, {
+export const getCommunities = filter => {
+  console.log('FILTER', filter);
+  const { category } = filter;
+  const qs = queryString.stringify({ category });
+
+  return fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/community?${qs}`, {
     method: 'GET',
   }).then(res => res.json());
 };

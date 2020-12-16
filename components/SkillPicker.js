@@ -16,6 +16,9 @@ export default function SkillPicker({
 }) {
   const [skillTree, setSkillTree] = useState([]);
   const [username, setUsername] = useState('');
+  // TODO: Refactor
+  // This is used to pass the category to the next page so we can get the correct list to choose from.
+  const [category, setCategory] = useState('');
   const isDisabled = !username || getSelectedSkills().length === 0;
 
   useEffect(() => {
@@ -35,6 +38,7 @@ export default function SkillPicker({
         c.skills = c.skills.map(skill => ({ skill }));
       });
       setSkillTree(skillTreeResponse.categories);
+      setCategory(skillTreeResponse.main);
     };
 
     getSkillTree();
@@ -78,7 +82,7 @@ export default function SkillPicker({
   }
 
   const handleSubmit = async () => {
-    onSubmit({ username, skills: getSelectedSkills() });
+    onSubmit({ username, skills: getSelectedSkills(), category });
   };
 
   return (
