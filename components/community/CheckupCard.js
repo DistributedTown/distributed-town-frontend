@@ -1,60 +1,42 @@
-import { useState, useEffect } from "react"
+import { useGetCommunity } from '../../hooks/useGetCommunity';
+import Card from '../Card';
 
-export default function CheckupCard({ numOfMembers, liquidityPoolBalance, communityId, token }) {
-  const bgImage = { src: "/background-image.svg", alignment: "left", size: 60 }
-  const [scarcityScore, setScarcityScore] = useState();
-  const [communityName, seCommunityName] = useState()
+export default function CheckupCard() {
+  const { data: community } = useGetCommunity();
 
-  useEffect(() => {
-    (async function () {
-      let community = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/community/${communityId}`,
-        {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        }
-      );
-      const communityDetails = await community.json();
-      console.log(communityDetails)
-      setScarcityScore(communityDetails.scarcityScore);
-      seCommunityName(communityDetails.name)
-
-    })();
-  }, []);
   return (
-    <div style={{
-      backgroundImage: `url(${bgImage.src})`,
-    }} className="flex w-2/5 justify-center items-center">
-      <div className="flex flex-col border-2 border-blue-600 w-7/12">
-        <div className="bg-blue-600 p-4">
-          <h2>{communityName}</h2>
+    <div
+      style={{
+        backgroundImage: 'url(/background-image.svg)',
+      }}
+      className="flex w-full justify-center items-center py-8 bg-cover bg-center"
+    >
+      <Card className="flex flex-col w-7/12">
+        <Card filled className="text-white">
+          <h2>{!community ? 'Loading' : community.communityInfo.name}</h2>
           <p>Check-up Card</p>
-        </div>
+        </Card>
         <div className="flex flex-col justify-center bg-white p-4 space-y-4">
           <div className="flex flex-row justify-between">
             <p>Members</p>
-            <p>{numOfMembers === -1 ? "Loading members..." : numOfMembers}</p>
+            <p>{!community ? 'Loading' : community.numberOfMembers}</p>
           </div>
-          <div className="flex flex-row justify-between">
+          <div className="flex justify-between">
             <p>Open Proposals</p>
             <p>0</p>
           </div>
-          <div className="flex flex-row justify-between">
+          <div className="flex justify-between">
             <p>Liquidity Pool</p>
+            <p>{!community ? 'Loading' : community.liquidityPoolBalance}</p>
+          </div>
+          <div className="flex justify-between font-bold">
+            <p>Scarcity score</p>
             <p>
-              {liquidityPoolBalance === -1
-                ? "Loading liquidity pool balance..."
-                : liquidityPoolBalance}
+              {!community ? 'Loading' : community.communityInfo.scarcityScore}
             </p>
           </div>
-          <div className="flex flex-col border-2 border-blue-600 p-4">
-            <p>Scarcity score</p>
-            <p>{scarcityScore}</p>
-          </div>
         </div>
-      </div>
+      </Card>
     </div>
   );
 }

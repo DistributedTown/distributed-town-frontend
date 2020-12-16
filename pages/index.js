@@ -1,169 +1,112 @@
-import SkillPill from "../components/SkillPill";
-import Quote from "../components/Quote";
-import RegistrationModal from "../components/registration/RegistrationModal";
-import Link from "next/link";
+import Head from 'next/head';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { FaPlus, FaUsers } from 'react-icons/fa';
+import Button from '../components/Button';
+import Card from '../components/Card';
+import TextField from '../components/TextField';
 
-import { useContext, useEffect, useState } from "react";
-import Store, {
-  MagicContext,
-  LoggedInContext,
-  LoadingContext,
-  TokenContext,
-  UserInfoContext,
-} from "../components/Store";
-import Layout from "../components/Layout";
-import { setUserJourney } from "../utils/userJourneyManager";
+import { useMagicLinkLogin } from '../hooks/useMagicLinkLogin';
 
 const Index = () => {
-  const [loggedIn, setLoggedIn] = useContext(LoggedInContext);
-  const [magic] = useContext(MagicContext);
-  const [, setToken] = useContext(TokenContext);
-  const [loading, setLoading] = useState(false);
+  // TODO: Loading while logging in to API after magic link
+  const [login] = useMagicLinkLogin();
+  const router = useRouter();
 
-  const authenticateWithDb = async (DIDT) => {
-    /* Pass the Decentralized ID token in the Authorization header to the database */
-
-    return await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user/login`, {
-      method: "POST",
-      headers: new Headers({
-        Authorization: "Bearer " + DIDT,
-      }),
-    });
-  };
-
-  const loginHandler = async (event) => {
+  const onLoginSubmit = async event => {
     event.preventDefault();
-    const { email: emailInput } = event.target;
-    const email = emailInput.value;
-    try {
-      if (email.trim() === "") {
-        throw new Error("Please enter a valid email address");
-      }
-      const DIDT = await magic.auth.loginWithMagicLink({ email });
-      setLoading(true);
-      let user = await authenticateWithDb(DIDT);
-      setUserJourney({
-        journey: "login",
-        step: "login",
-      });
-      if (user) {
-        setToken(DIDT);
-        setLoggedIn(true);
-      } else {
-        throw new Error("Something went wrong, please try again!");
-      }
-    } catch (error) {
-      console.log(error.message);
-      alert(error.message);
-    }
+    const email = event.target.email.value;
+    await login(email);
+    await router.push('/skillwallet');
   };
 
   return (
-    <Layout
-      flex
-      bgImage={{ src: "/background-image.svg", alignment: "left", size: 60 }}
-      className="h-screen w-full flex"
-      logo={{ withText: true }}
-      splash={{
-        color: "blue",
-        variant: "default",
-        alignment: "left",
-        isTranslucent: true,
-      }}
-    >
-      <div className="h-full w-3/5 flex justify-center items-center">
-        <div className="p-8 bg-white flex justify-center items-center w-2/4 m-auto border border-black">
-          <p className="text-center">
-            <strong>Distributed Town</strong> is a new financial infrastructure
-            for public goods, designed for the real world.
-            <br />
-            <br />
-            It’s built upon mutual, collaborative economics between individuals
-            and communities - and a universal identity management based on
-            skills, rather than personal data.
-          </p>
-        </div>
-      </div>
-      <div className="h-full w-2/5 flex flex-col justify-center items-center">
-        <h1 className="text-4xl m-12 font-bold">
-          This is <span className="underline">your Community</span>
+    <div className="flex flex-col items-center w-screen lg:flex-row lg:h-screen mx-auto">
+      <Head>
+        <title>Distributed Town</title>
+      </Head>
+      <Info className="overflow-hidden h-full relative info w-full grid content-center lg:w-2/3 lg:h-full" />
+      <div className="h-full flex flex-col justify-center items-center lg:w-1/3">
+        <h1 className="text-4xl m-8 font-bold text-center">
+          This is <span>Your Community</span>
         </h1>
-
-        <div className="pt-8 pb-4 px-2 border-2 border-denim flex flex-col md:w-4/5 xl:w-3/5">
-          <div className="border-2 border-red p-1">
-            <div className="border-2 border-denim p-4 text-center font-bold">
-              <Link href="/community/create">
-                <a
-                  className="flex justify-around items-center text-xl px-8"
-                  onClick={() => {
-                    setUserJourney({
-                      journey: "community",
-                      step: "category",
-                    });
-                  }}
-                >
-                  Create
-                  <img src="/create-plus-button.svg" />
-                </a>
-              </Link>
-            </div>
-          </div>
-          <div className="border-2 border-red p-1 mt-2">
-            <div className="border-2 border-denim p-4 text-center font-bold">
-              <Link href="/community/join">
-                <a
-                  className="flex justify-around items-center text-xl px-8"
-                  onClick={() => {
-                    setUserJourney({
-                      journey: "join",
-                      step: "start",
-                    });
-                  }}
-                >
-                  Join
-                  <img src="/create-people-button.svg" />
-                </a>
-              </Link>
-            </div>
-          </div>
-          {!loggedIn && (
-            <div className="border-2 border-red p-1 mt-8">
-              <form
-                className="border-2 border-denim p-4 flex justify-between items-center font-bold text-xl"
-                onSubmit={loginHandler}
-              >
-                Login{" "}
-                <input
-                  className="border border-denim p-1 w-3/4"
-                  placeholder="yourmail@me.io"
-                  name="email"
-                  type="email"
-                />
-              </form>
-            </div>
-          )}
-        </div>
+        <Card className="p-4 flex flex-col mx-0 sm:mx-8 sm:p-8 gap-4">
+          <Link href="/community/create">
+            <Button>
+              <a className="flex gap-4 justify-center items-center text-xl">
+                <span>Create</span>
+                <FaPlus />
+              </a>
+            </Button>
+          </Link>
+          <Link href="/community/join">
+            <Button>
+              <a className="flex gap-4 justify-center items-center text-xl">
+                <span>Join</span>
+                <FaUsers />
+              </a>
+            </Button>
+          </Link>
+          {/* TODO: Don't show if logged in */}
+          <form onSubmit={onLoginSubmit} className="flex gap-4 flex-nowrap">
+            <label>
+              <span className="mr-2 font-bold text-xl">Login</span>
+              <TextField
+                name="email"
+                type="email"
+                placeholder="yourmail@me.io"
+              />
+            </label>
+          </form>
+        </Card>
       </div>
-      {loading && (
-        <div className="fixed inset-0 h-screen w-screen bg-opacity-50 bg-black flex justify-center items-center">
-          <div className="w-48 h-48 bg-white rounded flex justify-center items-center">
-            Signing you in...
-          </div>
-        </div>
-      )}
-    </Layout>
+    </div>
   );
 };
 
-export async function getServerSideProps(context) {
-  let skills = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/skill`, {
-    method: "GET",
-  });
-  skills = await skills.json();
+function Info({ className }) {
+  return (
+    <div className={className}>
+      <Logo />
+      <Card className="relative z-10 m-4 lg:w-1/2 lg:justify-self-center lg:align-self-center grid gap-8 text-center">
+        <p className="text-xl">
+          <strong>Distributed Town</strong> is a new financial infrastructure
+          for public goods, designed for the real world.
+        </p>
+        <p className="text-gray-700">
+          It’s built upon mutual, collaborative economics between individuals
+          and communities - and a universal identity management based on skills,
+          rather than personal data.
+        </p>
+      </Card>
+      <style jsx>{`
+        .info {
+          background-image: url('/background-image.svg');
+          background-size: cover;
+          background-position: center;
+        }
+      `}</style>
+    </div>
+  );
+}
 
-  return {
-    props: { skills }, // will be passed to the page component as props
-  };
+const logoImage = '/dito-logo.svg';
+function Logo() {
+  return (
+    <div className="relative p-4 lg:absolute">
+      <img src={logoImage} alt="Logo" className="relative z-10" />
+      <img
+        alt=""
+        src="/splash-blue-default.svg"
+        className="absolute top-0 left-0 opacity-75 z-0"
+        style={{
+          filter: 'blur(2px)',
+          width: '100%',
+          transformOrigin: 'top left',
+        }}
+      />
+    </div>
+  );
 }
 
 export default Index;

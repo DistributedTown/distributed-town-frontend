@@ -1,53 +1,35 @@
-import { useState, useEffect, useContext } from "react";
-import { TokenContext } from "./Store";
+import Card from './Card';
 
-function CommunityCard({ selectCommunity, selected, _id }) {
-  const [token] = useContext(TokenContext);
+function CommunityCard({ onSelectCommunity, selected, community }) {
+  const { name, members, scarcityScore } = community;
+
   function getCardState(members) {
-    if (members === 24) return "Not accepting";
-    if (!selected) return "Can join";
-    if (selected) return "Joined!";
+    if (members === 24) return 'Not accepting';
+    if (!selected) return 'Can join';
+    if (selected) return 'Selected!';
   }
-  const [communityDetails, setCommunityDetails] = useState();
-
-  useEffect(() => {
-    (async function() {
-      let community = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/community/${_id}`,
-        {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        }
-      );
-      const communityDetails = await community.json();
-      setCommunityDetails(communityDetails);
-    })();
-  }, []);
-
-  if (!communityDetails) {
-    return null;
-  }
-
-  const { name, members, scarcityScore } = communityDetails;
 
   return (
-    <div
-      className="flex flex-col border-2 border-denim bg-white cursor-pointer"
-      onClick={selectCommunity}
+    <Card
+      className="cursor-pointer flex flex-col gap-4"
+      onClick={onSelectCommunity}
     >
-      <div className="grid grid-cols-2 p-4 border-b-2 border-denim">
+      <Card
+        filled
+        className={`grid grid-cols-2 p-4 border-b-2 border-denim ${
+          selected ? 'bg-denim text-white' : ''
+        }`}
+      >
         <h2>{name}</h2>
         <p>{getCardState(members)}</p>
-      </div>
-      <div className="grid grid-cols-2 p-4">
+      </Card>
+      <div className="grid grid-cols-4">
         <p>Members</p>
         <p>{members}</p>
         <p>Scarcity score</p>
         <p>{scarcityScore}</p>
       </div>
-    </div>
+    </Card>
   );
 }
 

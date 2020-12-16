@@ -1,29 +1,32 @@
+import Card from './Card';
+
 function SkillsCard({
   title,
   skills,
   selectSkill,
   setSkillLevel,
-  totalSelected
+  totalSelected,
 }) {
   return (
-    <div className="flex flex-col border border-denim px-3 py-2 text-xs">
-      <h2 className="text-center font-bold pb-2">{title}</h2>
-      <div className="flex flex-wrap">
+    <Card className="px-2 py-2 text-xs">
+      <h2 className="text-center font-bold">{title}</h2>
+      <div className="grid grid-cols-2">
         {skills.map((skill, i) => {
           return (
-            <div className="flex flex-row w-1/2 h-1/2" key={i}>
+            <div className="flex items-center justify-center" key={i}>
               <input
                 type="checkbox"
+                className="mr-3"
                 onClick={() => selectSkill(i)}
                 checked={skill.selected}
                 disabled={!skill.selected && totalSelected === 3}
               />
-              <div className="flex flex-col p-2">
-                <p>{typeof skill === "string" ? skill : skill.skill}</p>
+              <div className="p-2">
+                <p>{typeof skill === 'string' ? skill : skill.skill}</p>
                 <input
                   type="range"
                   value={
-                    typeof skill === "string"
+                    typeof skill === 'string'
                       ? 0
                       : skill.selected
                       ? skill.level
@@ -39,7 +42,7 @@ function SkillsCard({
           );
         })}
       </div>
-    </div>
+    </Card>
   );
 }
 

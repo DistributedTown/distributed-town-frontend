@@ -1,106 +1,57 @@
-import {
-    MagicContext,
-    LoggedInContext,
-    TokenContext,
-    UserInfoContext,
-} from "../../../components/Store";
-import GigCard from "../../../components/gig/GigCard"
-import SkillsDisplay from "../../../components/SkillsDisplay"
+import { useContext, useState, useEffect } from 'react';
+import Link from 'next/link';
+import { FaPlus, FaPlusCircle } from 'react-icons/fa';
+import GigCard from '../../../components/gig/GigCard';
+import SkillsDisplay from '../../../components/SkillsDisplay';
+import Button from '../../../components/Button';
 
-import { useContext, useState, useEffect } from "react";
-
-import Link from 'next/link'
-import Layout from "../../../components/Layout";
+import Layout from '../../../components/Layout';
+import { useGetUserInfo } from '../../../hooks/useGetUserInfo';
+import PageTitle from '../../../components/PageTitle';
+import { useGetGigs } from '../../../hooks/useGetGigs';
+import { useTakeGig } from '../../../hooks/useTakeGig';
 
 function Gigs() {
-    const [token, setToken] = useContext(TokenContext);
-    const [userInfo, setUserInfo] = useContext(UserInfoContext);
-    const [openGigs, setOpenGigs] = useState();
+  const { data: userInfo } = useGetUserInfo();
+  const [takeGig, { isLoading: isTakingGig }] = useTakeGig();
+  const { data: gigs } = useGetGigs();
 
-    useEffect(() => {
-        async function fetchGigs() {
-            try {
-                let resFetchGigs = await fetch(
-                    `${process.env.NEXT_PUBLIC_API_URL}/api/gig?isOpen=true`,
-                    {
-                        method: "GET",
-                        headers: new Headers({
-                            Authorization: "Bearer " + token,
-                        }),
-                    }
-                );
-                const openGigsResp = await resFetchGigs.json();
-                setOpenGigs(openGigsResp);
-            } catch (err) {
-                console.log(err);
-            }
-        }
-        fetchGigs();
-    }, []);
-
-    const takeGig = async (gigID) => {
-        try {
-            let result = await fetch(
-                `${process.env.NEXT_PUBLIC_API_URL}/api/gig/${gigID}/accept`,
-                {
-                    method: "POST",
-                    headers: new Headers({
-                        Authorization: "Bearer " + token,
-                    }),
-                }
-            );
-            const takenGig = await result.json();
-            console.log(result);
-            console.log('thetakengig', takenGig)
-        } catch (err) {
-            console.log(err);
-        }
-    };
-
-
-    return (
-        <Layout
-            navBar
-            flex
-            logo
-            splash={{
-                color: "red",
-                variant: "default",
-                alignment: "left",
-                isTranslucent: false,
-                fullHeight: false
-            }}
-        >
-            <div className="m-20 w-full">
-                <h1 className="underline text-black text-4xl">Open Gigs</h1>
-                <div className="mt-10 grid grid-cols-3 gap-12 items-baseline">
-                    {typeof openGigs === "undefined" ? (
-                        <div>
-                            <h2>Loading Open Gigs...</h2>
-                        </div>
-                    ) : openGigs.length === 0 ? (
-                        <h2>There are no Open Gigs.</h2>
-                    ) : (openGigs.map((gig) => {
-                        return (
-                            <GigCard key={gig._id} gig={gig} takeGig={takeGig} />
-                        );
-                    })
-                            )}
-                </div>
-                <div className="flex w-full mt-20">
-                    <Link href='/community/gigs/create'>
-                        <div className="flex py-5 justify-center w-2/6 mr-20 border-2 border-blue-600">
-                            <a className="flex flex-col items-center">
-                                <p className="text-2xl mb-2">Create new gig</p>
-                                <img src="/plusbutton.svg" />
-                            </a>
-                        </div>
-                    </Link>
-                    <SkillsDisplay skills={userInfo.skills} />
-                </div>
-            </div >
-        </Layout>
-    );
+  return (
+    <Layout>
+      <div className="grid m-8 gap-8">
+        <PageTitle>Open Gigs</PageTitle>
+        <div className="mt-5 grid lg:grid-cols-2 xl:grid-cols-3 gap-12 items-baseline">
+          {typeof gigs === 'undefined' ? (
+            <div>
+              <h2>Loading Open Gigs...</h2>
+            </div>
+          ) : gigs.length === 0 ? (
+            <h2>There are no Open Gigs.</h2>
+          ) : (
+            gigs.map(gig => {
+              return (
+                <GigCard
+                  isLoading={isTakingGig}
+                  key={gig._id}
+                  gig={gig}
+                  takeGig={takeGig}
+                />
+              );
+            })
+          )}
+        </div>
+        <Link href="/community/gigs/create">
+          <Button filled>
+            <a className="flex gap-2 justify-center items-center">
+              <p className="text-2xl mb-2">Create new gig</p>
+              <FaPlusCircle />
+            </a>
+          </Button>
+        </Link>
+        <SkillsDisplay skills={userInfo && userInfo.skills} />
+      </div>
+    </Layout>
+  );
 }
 
 export default Gigs;

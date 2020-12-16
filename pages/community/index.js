@@ -1,105 +1,43 @@
-import {
-  MagicContext,
-  LoggedInContext,
-  LoadingContext,
-  UserInfoContext,
-  TokenContext
-} from "../../components/Store";
-import { useContext, useState, useEffect } from "react";
-import { BigNumber, ethers } from "ethers";
-import Link from "next/link";
+import Link from 'next/link';
 
-import Layout from "../../components/Layout";
-import Button from "../../components/Button";
-import CheckupCard from "../../components/community/CheckupCard";
-import communityContractAbi from "../../utils/communityContractAbi.json";
-import NoGSNCommunityAbi from "../../utils/NoGSNCommunity.json";
-
-import { Router, useRouter } from "next/router";
+import Layout from '../../components/Layout';
+import CheckupCard from '../../components/community/CheckupCard';
+import Button from '../../components/Button';
+import PageTitle from '../../components/PageTitle';
 
 function CommunityDashboard() {
-  const [userInfo, setUserInfo] = useContext(UserInfoContext);
-  const [magic] = useContext(MagicContext);
-  const [token] = useContext(TokenContext);
-  const [numOfMembers, setNumOfMembers] = useState();
-  const [liquidityPoolBalance, setLiquidityPoolBalance] = useState();
-
-
-  async function getCommunityInfo() {
-    const provider = new ethers.providers.Web3Provider(magic.rpcProvider);
-    try {
-      const contractAddress = userInfo.communityContract.address;
-      const contractABI = NoGSNCommunityAbi.abi;
-      const contract = new ethers.Contract(
-        contractAddress,
-        contractABI,
-        provider
-      );
-
-      // Send transaction to smart contract to update message and wait to finish
-      const [nUsers, investedBalanceInfo] = await Promise.all([
-        contract.numberOfMembers(),
-        contract.getInvestedBalanceInfo()
-      ]);
-
-
-      console.log(BigNumber.from(nUsers).toNumber(), '1')
-      console.log(ethers.utils.formatUnits(investedBalanceInfo.investedBalance, 18), '2')
-
-      setNumOfMembers(BigNumber.from(nUsers).toNumber());
-      setLiquidityPoolBalance(
-        Math.round((Number(ethers.utils.formatUnits(investedBalanceInfo.investedBalance, 18)) + Number.EPSILON) * 100) / 100
-      );
-    } catch (err) {
-      console.error(err);
-    }
-  }
-
-
-  useEffect(() => {
-    (async () => {
-      await getCommunityInfo();
-    })();
-  }, []);
-
   return (
-    <Layout
-      navBar
-      flex
-      logo
-      splash={{
-        color: "blue",
-        variant: "default",
-        alignment: "left",
-        isTranslucent: false,
-        fullHeight: false
-      }}
-    >
-      <div className="w-full">
-        <div style={{ height: '90%' }} className="flex">
-          <div className="w-3/5">
-            <h1 className="mt-12 underline text-center text-black text-4xl">Community Dashboard</h1>
-            <h2 className="mt-10 font-bold text-xl text-center">Administration</h2>
-            <div style={{ height: '40%' }} className="flex flex-col mt-8 items-center justify-around">
-              <Link href="/community/treasury">
-                <a className="w-2/3 text-center py-2 border-2 border-denim">Community Treasury</a>
-              </Link>
+    <Layout>
+      <div className="h-full flex flex-col">
+        <div className="flex flex-grow flex-col md:flex-row gap-8">
+          <div className="grid content-center md:w-3/5">
+            <PageTitle className="mt-12 text-center">
+              Community Dashboard
+            </PageTitle>
+            <h2 className="mt-10 font-bold text-xl text-center">
+              Administration
+            </h2>
+            <div className="flex flex-col w-2/3 gap-10 mt-8 m-auto">
               <Link href="/community/gigs">
-                <a className="w-2/3 text-center py-2 border-2 border-denim">Open Gigs</a>
+                <Button>
+                  <a>Open Gigs</a>
+                </Button>
+              </Link>
+              <Link href="/community/treasury">
+                <Button disabled>
+                  <a>Community Treasury</a>
+                </Button>
               </Link>
               <Link href="/community/projects">
-                <a className="w-2/3 text-center py-2 border-2 border-denim">Projects & Proposals</a>
+                {/* TODO: Coming soon! */}
+                <Button disabled>
+                  <a>Projects & Proposals</a>
+                </Button>
               </Link>
             </div>
           </div>
-          <CheckupCard numOfMembers={numOfMembers} liquidityPoolBalance={liquidityPoolBalance} communityId={userInfo.communityID} token={token} />
+          <CheckupCard />
         </div>
-        <div className="flex justify-center mt-3">
-          <Link href="/skillwallet">
-            <a className="px-64 py-2 border-2 border-denim">Go back to SkillWallet</a>
-          </Link>
-        </div>
-
       </div>
     </Layout>
   );
