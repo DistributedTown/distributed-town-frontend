@@ -28,7 +28,11 @@ function ChooseCommunity() {
 
   const handleJoinClick = async () => {
     await joinCommunity(chosenCommunity);
-    await router.push('/community/join/completed');
+    await router.push(
+      `/community/join/completed?communityName=${encodeURIComponent(
+        chosenCommunity.name,
+      )}`,
+    );
   };
 
   return (

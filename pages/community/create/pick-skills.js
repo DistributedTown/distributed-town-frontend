@@ -14,7 +14,11 @@ function PickSkills() {
       category: communityCategory,
       user,
     });
-    await router.push('/community/create/completed');
+    await router.push(
+      `/community/create/completed?communityName=${encodeURIComponent(
+        communityName,
+      )}`,
+    );
   };
 
   if (!communityName || !communityCategory) return null;
