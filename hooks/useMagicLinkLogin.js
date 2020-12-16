@@ -10,8 +10,7 @@ export const useMagicLinkLogin = () => {
 
     await login(didToken);
     const { publicAddress } = await magic.user.getMetadata();
-    const res = await fundUser(publicAddress);
-    console.log('RESPONSE', res);
+    await fundUser(publicAddress);
 
     return { didToken };
   };

@@ -5,6 +5,7 @@ import {
   createCommunity as createCommunityContract,
   joinCommunity,
 } from '../contracts/community';
+import calculateDitosFromSkils from '../utils/calculateDitosFromSkills';
 
 export const useCreateCommunity = () => {
   const magic = useMagic();
@@ -15,7 +16,7 @@ export const useCreateCommunity = () => {
     await joinCommunity(
       magic.rpcProvider,
       communityAddress,
-      calculateDitos(user.skills),
+      calculateDitosFromSkils(user.skills),
     );
 
     const community = {
@@ -29,15 +30,3 @@ export const useCreateCommunity = () => {
 
   return useMutation(createCommunityMutation, { throwOnError: true });
 };
-
-// FIXME: Security concern
-// TODO: This should be calculated and done in the backend
-function calculateDitos(skills = []) {
-  let amountOfRedeemableDitos = 0;
-  for (const { redeemableDitos } of skills) {
-    amountOfRedeemableDitos += redeemableDitos || 0;
-  }
-  const baseDitos = 2000;
-  const totalDitos = amountOfRedeemableDitos + baseDitos;
-  return totalDitos;
-}

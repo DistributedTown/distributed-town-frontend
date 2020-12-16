@@ -2,6 +2,7 @@ import { useMutation } from 'react-query';
 import { useMagic } from '../components/Store';
 import { getUserInfo, updateUserCommunityID } from '../api';
 import { joinCommunity as joinCommunityContract } from '../contracts/community';
+import calculateDitosFromSkills from '../utils/calculateDitosFromSkills';
 
 export const useJoinCommunity = () => {
   const magic = useMagic();
@@ -10,15 +11,7 @@ export const useJoinCommunity = () => {
     const didToken = await magic.user.getIdToken();
     const userInfo = await getUserInfo(didToken);
 
-    // TODO: This should not be done on the frontend
-    let amountOfRedeemableDitos = 0;
-    for (const { redeemableDitos } of userInfo.skills) {
-      amountOfRedeemableDitos += redeemableDitos || 0;
-    }
-
-    // Send transaction to smart contract to update message and wait to finish
-    const baseDitos = 2000;
-    const totalDitos = amountOfRedeemableDitos + baseDitos;
+    const totalDitos = calculateDitosFromSkills(userInfo.skills);
 
     await joinCommunityContract(
       magic.rpcProvider,
