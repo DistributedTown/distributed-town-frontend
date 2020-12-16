@@ -16,6 +16,7 @@ export const useCreateGig = () => {
       };
 
       const didToken = await magic.user.getIdToken();
+      // TODO: Throw on !ok
       await createGig(didToken, gigData);
     },
     {

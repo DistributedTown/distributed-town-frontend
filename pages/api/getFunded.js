@@ -3,6 +3,7 @@ import { ethers } from 'ethers';
 export default async function handler(req, res) {
   try {
     // TODO: move in env
+    // `https://rpc-mainnet.maticvigil.com/v1/${process.env.MATICVIGIL_PROJECT_ID}`;
     const INFURA_PROVIDER_URL =
       'https://ropsten.infura.io/v3/6a96a40694e24de3b6313b71ca71786b';
     const WALLET_MNEMONIC =

@@ -13,6 +13,15 @@ export const useMagic = () => {
 const Store = ({ children }) => {
   const [magic, setMagic] = useState();
 
+  // TODO:
+  // const network =
+  //   process.env.NEXT_PUBLIC_BLOCKCHAIN === "ETH"
+  //     ? "ropsten"
+  //     : {
+  //         rpcUrl: `https://rpc-mainnet.maticvigil.com/v1/${process.env.NEXT_PUBLIC_MATICVIGIL_KEY}`,
+  //         chainId: 137, // Your own node's chainId
+  //       };
+
   useEffect(() => {
     /* We initialize Magic in `useEffect` so it has access to the global `window` object inside the browser */
     (async () => {
