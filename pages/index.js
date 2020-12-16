@@ -109,15 +109,4 @@ function Logo() {
   );
 }
 
-export async function getServerSideProps() {
-  let skills = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/skill`, {
-    method: 'GET',
-  });
-  skills = await skills.json();
-
-  return {
-    props: { skills }, // will be passed to the page component as props
-  };
-}
-
 export default Index;

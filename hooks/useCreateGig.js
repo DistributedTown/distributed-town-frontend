@@ -18,6 +18,10 @@ export const useCreateGig = () => {
       const didToken = await magic.user.getIdToken();
       await createGig(didToken, gigData);
     },
-    { throwOnError: true },
+    {
+      throwOnError: true,
+      // TODO: Remove queries
+      // onSuccess: () => queryCache.removeQueries(),
+    },
   );
 };

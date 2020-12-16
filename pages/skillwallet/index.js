@@ -46,8 +46,8 @@ function SkillWallet() {
           <Card className="row-span-2 content-between flex flex-col gap-10">
             {/* PROFILE */}
             <Card filled color="black" className="flex gap-6 text-white">
-              <div className="flex justify-center items-center w-24 h-24 bg-white rounded-full text-black">
-                <FaUser size="5rem" />
+              <div className="flex justify-center items-center w-24 h-24 bg-white rounded-full text-denim">
+                <FaUser size="4.5rem" />
               </div>
               <div className="flex flex-col justify-center gap-2">
                 <h3 className="text-white font-bold">
@@ -125,7 +125,7 @@ function SkillWallet() {
           <Card>
             <h1 className="text-xl mb-6 text-center text-black">Past Gigs</h1>
             {pastGigs ? (
-              <div className="flex flex-wrap">
+              <div className="flex flex-wrap gap-4">
                 {pastGigs.map((gig, i) => {
                   return (
                     <Card key={i} className="flex" outlined>

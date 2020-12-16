@@ -18,18 +18,19 @@ function CommunityDashboard() {
               Administration
             </h2>
             <div className="flex flex-col w-2/3 gap-10 mt-8 m-auto">
-              <Link href="/community/treasury">
-                <Button>
-                  <a>Community Treasury</a>
-                </Button>
-              </Link>
               <Link href="/community/gigs">
                 <Button>
                   <a>Open Gigs</a>
                 </Button>
               </Link>
+              <Link href="/community/treasury">
+                <Button disabled>
+                  <a>Community Treasury</a>
+                </Button>
+              </Link>
               <Link href="/community/projects">
-                <Button>
+                {/* TODO: Coming soon! */}
+                <Button disabled>
                   <a>Projects & Proposals</a>
                 </Button>
               </Link>

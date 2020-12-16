@@ -54,7 +54,7 @@ function CommunityCreate() {
     await router.push(
       `/community/create/created?name=${encodeURIComponent(
         communityName,
-      )}&category=${encodeURIComponent(selectedCategory.name)}`,
+      )}&category=${encodeURIComponent(selectedCategory)}`,
     );
   };
 
@@ -69,13 +69,9 @@ function CommunityCreate() {
             <div className="text-gray-900 font-bold text-3xl mb-8 text-center">
               Welcome to Distributed Town!
             </div>
-            <p className="text-lg mb-6">
-              <span>
-                This is your first Community. Pick up a simple, intuitive{' '}
-                <strong>name</strong> (i.e.: your-project-name, or
-                yourcommunity-city) and a good <strong>avatar</strong> to make
-                it cozier!
-              </span>
+            <p className="text-lg mb-6 text-center">
+              This is your first Community. Pick up a simple, intuitive{' '}
+              <strong>name</strong>.
             </p>
             <TextField
               id="communityName"
@@ -110,7 +106,7 @@ function CommunityCreate() {
                       </ul>
                     </div>
                   </div>
-                  {selectedCategory && selectedCategory.name === name ? (
+                  {selectedCategory === name ? (
                     <Button disabled color={color} filled>
                       Selected
                     </Button>
@@ -118,7 +114,7 @@ function CommunityCreate() {
                     <Button
                       color={color}
                       filled
-                      onClick={() => setSelectedCategory(category)}
+                      onClick={() => setSelectedCategory(name)}
                     >
                       Select
                     </Button>

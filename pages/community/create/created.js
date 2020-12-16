@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 
-import Layout from '../../../components/Layout';
 import RegistrationModal from '../../../components/registration/RegistrationModal';
 import { useMagicLinkLogin } from '../../../hooks/useMagicLinkLogin';
 import Button from '../../../components/Button';
