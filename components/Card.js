@@ -17,7 +17,6 @@ export default function Card({
     'shadow',
     `border-${color}`,
     'rounded-xl',
-    'border-denim',
     {
       'border-2': outlined,
       [`bg-white`]: !filled,
