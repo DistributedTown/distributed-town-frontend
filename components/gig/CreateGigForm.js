@@ -63,7 +63,6 @@ const CreateGigForm = ({ isSubmitting, onSubmit, isProject = false }) => {
           <TextField
             id="title"
             name="title"
-            {...(isProject ? {} : { color: 'red-500' })}
             ref={register({ required: true })}
           />
           {errors.title && (
@@ -83,7 +82,6 @@ const CreateGigForm = ({ isSubmitting, onSubmit, isProject = false }) => {
           <TextField
             id="description"
             name="description"
-            {...(isProject ? {} : { color: 'red-500' })}
             ref={register({ required: true })}
           />
           {errors.description && (
@@ -98,7 +96,7 @@ const CreateGigForm = ({ isSubmitting, onSubmit, isProject = false }) => {
               <br />
               breaking it down in 2+ gigs, or starting a new project.
             </h2>
-            <Card {...(isProject ? {} : { color: 'red-500' })} outlined>
+            <Card outlined>
               {error && <p>Couldn't fetch skills</p>}
               {skillTree
                 ? skillTree.categories.map(category => (
@@ -109,6 +107,7 @@ const CreateGigForm = ({ isSubmitting, onSubmit, isProject = false }) => {
                           <label key={skill} className="flex items-center">
                             <input
                               type="checkbox"
+                              step="1"
                               onChange={() => {
                                 toggleSkill({
                                   name: skill,
@@ -139,6 +138,7 @@ const CreateGigForm = ({ isSubmitting, onSubmit, isProject = false }) => {
               id="commitment"
               name="commitment"
               type="range"
+              step="10"
               value={commitment}
               onChange={e => setCommitment(e.target.value)}
             />
@@ -149,16 +149,12 @@ const CreateGigForm = ({ isSubmitting, onSubmit, isProject = false }) => {
               Hint: the amount of DiTo you offer.
             </h2>
             <div className="flex flex-col">
-              <TextField
-                value={budgetRequired}
-                {...(isProject ? {} : { color: 'red-500' })}
-              />
+              <TextField value={budgetRequired} />
               <h2 className="text-right">DiTo</h2>
             </div>
           </div>
         </div>
         <Button
-          className="self-center"
           filled
           type="submit"
           loading={isSubmitting}

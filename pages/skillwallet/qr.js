@@ -38,9 +38,9 @@ function QR() {
           </Card>
           <h3 className="text-2xl mb-4">Accepting Member</h3>
           <div className="bg-black p-4 flex justify-around items-center rounded-xl w-full">
-            <p className="text-white flex flex-col">
+            <p className="text-white flex flex-col justify-center items-center">
               <span className="text-4xl">👨</span>
-              <span>{userInfo ? userInfo._id : '...'}</span>
+              <span>{userInfo ? userInfo.username : '...'}</span>
             </p>
             <div className="flex flex-col w-1/2 p-3 items-center justify-start text-white">
               <span>DiTo</span>

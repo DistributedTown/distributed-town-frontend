@@ -59,7 +59,7 @@ function CommunityCreate() {
   };
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col w-full">
       <div className="flex-1 flex flex-col md:flex-row md:items-center">
         <div
           className="p-8 bg-cover bg-center w-full h-full grid content-center md:w-1/2"

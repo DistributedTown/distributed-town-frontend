@@ -27,7 +27,7 @@ export default function WelcomeToCommunity({
         <p className="text-5xl font-bold">Congrats!</p>
         <p className="text-4xl">You are now a member of {communityName}!</p>
         <div className="text-yellow-300 bg-red-500 shadow rounded-full flex flex-col gap-2 p-8 items-center justify-center font-bold h-64 w-64 mt-6">
-          <p>Community credits:</p>
+          <p>You received:</p>
           <img alt="dito tokens" src="/dito-tokens.svg" />
           <p>
             {ditoBalance ? `${ditoBalance} DiTo` : 'Loading dito balance...'}
