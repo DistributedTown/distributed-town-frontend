@@ -30,7 +30,7 @@ function SkillWallet() {
   const { data: userInfo } = useGetUserInfo();
   const { data: community } = useGetCommunity();
   // TODO: Are these pastGigs?
-  const { data: pastGigs } = useGetGigs();
+  const { data: pastGigs } = useGetGigs({ isOpen: false });
 
   return (
     <Layout>
@@ -125,38 +125,43 @@ function SkillWallet() {
           <Card>
             <h1 className="text-xl mb-6 text-center text-black">Past Gigs</h1>
             {pastGigs ? (
-              <div className="flex flex-wrap gap-4">
-                {pastGigs.map((gig, i) => {
-                  return (
-                    <Card key={i} className="flex" outlined>
-                      <div className="w-1/2">
-                        <h3 className="text-lg">{gig.title}</h3>
-                        <p className="text-xs mb-4">{gig.description}</p>
-                        <h3>Skills Used</h3>
-                        <ul className="flex-wrap text-xs list-disc ml-6">
-                          {gig.skills.map((skill, index) => (
-                            <li key={index}>{skill}</li>
-                          ))}
-                        </ul>
-                      </div>
-                      <div className="w-1/2">
-                        <div className="flex flex-col mb-4">
-                          <h3 className="font-bold text-xs lg:text-base text-carrot">
-                            Rate Received
-                          </h3>
-                          <h3 className="text-black">7/10</h3>
+              <>
+                {pastGigs.length === 0 && (
+                  <p className="text-center">No past gigs</p>
+                )}
+                <div className="flex flex-wrap gap-4">
+                  {pastGigs.map((gig, i) => {
+                    return (
+                      <Card key={i} className="flex" outlined>
+                        <div className="w-1/2">
+                          <h3 className="text-lg">{gig.title}</h3>
+                          <p className="text-xs mb-4">{gig.description}</p>
+                          <h3>Skills Used</h3>
+                          <ul className="flex-wrap text-xs list-disc ml-6">
+                            {gig.skills.map((skill, index) => (
+                              <li key={index}>{skill}</li>
+                            ))}
+                          </ul>
                         </div>
-                        <div className="flex flex-col">
-                          <h3 className="font-bold text-xs lg:text-base text-carrot">
-                            Credits Received
-                          </h3>
-                          <h3 className="text-black">6 Dito</h3>
+                        <div className="w-1/2">
+                          <div className="flex flex-col mb-4">
+                            <h3 className="font-bold text-xs lg:text-base text-carrot">
+                              Rate Received
+                            </h3>
+                            <h3 className="text-black">7/10</h3>
+                          </div>
+                          <div className="flex flex-col">
+                            <h3 className="font-bold text-xs lg:text-base text-carrot">
+                              Credits Received
+                            </h3>
+                            <h3 className="text-black">6 Dito</h3>
+                          </div>
                         </div>
-                      </div>
-                    </Card>
-                  );
-                })}
-              </div>
+                      </Card>
+                    );
+                  })}
+                </div>
+              </>
             ) : (
               <h1 className="text-center text-black">Loading gigs...</h1>
             )}
