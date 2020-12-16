@@ -8,28 +8,16 @@ import TextField from '../TextField';
 
 const CreateGigForm = ({ isSubmitting, onSubmit, isProject = false }) => {
   const { register, handleSubmit, errors } = useForm();
-  const { data: community, isLoading: loadingCommunity } = useGetCommunity();
+  const { data: community } = useGetCommunity();
   const communityCategory = community && community.communityInfo.category;
 
   const [budgetRequired, setBudgetRequired] = useState(0);
   const [selectedSkills, setSelectedSkills] = useState([]);
   const [commitment, setCommitment] = useState(50);
 
-  const { data, error, isLoading: loadingSkills } = useGetSkills(
+  const { data: skillTree, error } = useGetSkills(
     { category: communityCategory },
     { enabled: communityCategory },
-  );
-  const loading = loadingSkills || loadingCommunity;
-
-  const skillsList = useMemo(
-    () =>
-      ((data && data.categories) || []).flatMap(category => {
-        return category.skills.map(skillName => ({
-          name: skillName,
-          credits: category.credits,
-        }));
-      }),
-    [data],
   );
 
   useEffect(() => {
@@ -49,6 +37,7 @@ const CreateGigForm = ({ isSubmitting, onSubmit, isProject = false }) => {
     });
   };
 
+  // TODO: Refactor color passing
   return (
     <form
       className="mt-8"
@@ -109,26 +98,32 @@ const CreateGigForm = ({ isSubmitting, onSubmit, isProject = false }) => {
             </h2>
             <Card outlined>
               {error && <p>Couldn't fetch skills</p>}
-              {loading && 'Loading skills'}
-              {skillsList ? (
-                skillsList.map(s => {
-                  return (
-                    <label key={s.name} className="flex items-center">
-                      <input
-                        type="checkbox"
-                        onChange={() => {
-                          toggleSkill(s);
-                        }}
-                      />
-                      <div className="flex flex-col font-bold pl-2">
-                        <p>{s.name}</p>
+              {skillTree
+                ? skillTree.categories.map(category => (
+                    <div>
+                      <div className="font-bold">{category.subCat}</div>
+                      <div className="pl-6">
+                        {category.skills.map(skill => (
+                          <label key={skill} className="flex items-center">
+                            <input
+                              type="checkbox"
+                              step="1"
+                              onChange={() => {
+                                toggleSkill({
+                                  name: skill,
+                                  credits: category.credits,
+                                });
+                              }}
+                            />
+                            <div className="flex flex-col pl-2">
+                              <p>{skill}</p>
+                            </div>
+                          </label>
+                        ))}
                       </div>
-                    </label>
-                  );
-                })
-              ) : (
-                <p>loading</p>
-              )}
+                    </div>
+                  ))
+                : 'Loading skills'}
             </Card>
           </div>
           <div className="flex-1 flex flex-col gap-4">
@@ -143,6 +138,7 @@ const CreateGigForm = ({ isSubmitting, onSubmit, isProject = false }) => {
               id="commitment"
               name="commitment"
               type="range"
+              step="10"
               value={commitment}
               onChange={e => setCommitment(e.target.value)}
             />
@@ -158,7 +154,12 @@ const CreateGigForm = ({ isSubmitting, onSubmit, isProject = false }) => {
             </div>
           </div>
         </div>
-        <Button filled type="submit" loading={isSubmitting}>
+        <Button
+          filled
+          type="submit"
+          loading={isSubmitting}
+          {...(isProject ? {} : { color: 'red-500' })}
+        >
           Publish
         </Button>
         {/* TODO: Display error */}

@@ -107,9 +107,9 @@ function SkillWallet() {
             <h1 className="text-xl mb-6 text-center text-black">Badges</h1>
             <p className="pr-4 text-sm text-center mb-8">
               Badges will appear here once you validate your skills. Check the{' '}
-              <a className="text-denim" href="#">
-                Open Gigs
-              </a>{' '}
+              <Link href="/community/gigs">
+                <a className="text-denim">Open Gigs</a>
+              </Link>{' '}
               and validate your Skills now!
             </p>
 
