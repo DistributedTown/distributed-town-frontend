@@ -70,7 +70,13 @@ export default function SkillPicker({
 
   function getSelectedSkills() {
     const skills = skillTree
-      .flatMap(category => category.skills || [])
+      .flatMap(
+        c =>
+          c.skills.map(s => ({
+            ...s,
+            redeemableDitos: c.credits,
+          })) || [],
+      )
       .filter(skill => skill.selected)
       .map(skill => ({ ...skill, level: skill.level || 0 }));
 
