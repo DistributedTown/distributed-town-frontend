@@ -1,6 +1,10 @@
 import { createContext, useState, useEffect, useContext } from 'react';
 import { Magic } from 'magic-sdk';
 
+/* eslint-disable prefer-destructuring */
+const NEXT_PUBLIC_RPC_URL = process.env.NEXT_PUBLIC_RPC_URL;
+const NEXT_PUBLIC_CHAIN_ID = process.env.NEXT_PUBLIC_CHAIN_ID;
+
 /* initializing context API values */
 const MagicContext = createContext();
 
@@ -13,21 +17,18 @@ export const useMagic = () => {
 const Store = ({ children }) => {
   const [magic, setMagic] = useState();
 
-  // TODO:
-  // const network =
-  //   process.env.NEXT_PUBLIC_BLOCKCHAIN === "ETH"
-  //     ? "ropsten"
-  //     : {
-  //         rpcUrl: `https://rpc-mainnet.maticvigil.com/v1/${process.env.NEXT_PUBLIC_MATICVIGIL_KEY}`,
-  //         chainId: 137, // Your own node's chainId
-  //       };
-
   useEffect(() => {
+    const network = !NEXT_PUBLIC_RPC_URL
+      ? 'ropsten'
+      : {
+          rpcUrl: NEXT_PUBLIC_RPC_URL,
+          chainId: NEXT_PUBLIC_CHAIN_ID,
+        };
+
     /* We initialize Magic in `useEffect` so it has access to the global `window` object inside the browser */
     (async () => {
       const m = new Magic('pk_test_1C5A2BC69B7C18E5', {
-        network: 'ropsten',
-        chainId: 8888, // Your own node's chainId
+        network,
       });
 
       setMagic(m);

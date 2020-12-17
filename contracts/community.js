@@ -68,8 +68,13 @@ export const createCommunity = async rpcProvider => {
 
   // TODO: Create contract should join the user automatically instead of needing to call join after that.
   // call the smart contract to create community
+  console.log(
+    'REGISTRY ADDRESS',
+    process.env.NEXT_PUBLIC_COMMUNITIES_REGISTRY_ADDRESS,
+  );
   const contract = new ethers.Contract(
-    '0xe141f6C659bEA31d39cD043539E426D53bF3D7d8',
+    // TODO: Extract in env.js and refactor
+    process.env.NEXT_PUBLIC_COMMUNITIES_REGISTRY_ADDRESS,
     communitiesABI,
     signer,
   );
