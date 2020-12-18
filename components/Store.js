@@ -31,6 +31,8 @@ const Store = ({ children }) => {
         network,
       });
 
+      m.user.getMetadata().then(res => console.log(res));
+
       setMagic(m);
     })();
   }, []);
