@@ -13,7 +13,8 @@ export default async function handler(req, res) {
 
     const txPayload = {
       to: publicAddress,
-      value: ethers.utils.parseEther('0.01'),
+      // TODO: This should be different depending on the network
+      value: ethers.utils.parseEther('0.1'),
     };
 
     // Signing a transaction
@@ -34,9 +35,8 @@ export default async function handler(req, res) {
     // Sending ether
     const tx = await wallet.sendTransaction(txPayload);
 
-    console.log('Waiting for transaction to finish');
-    await tx.wait();
-    console.log('RESPONSE', tx);
+    console.log('Transaction', tx);
+    console.log('Waiting for transaction to finish', await tx.wait());
 
     res.status(200).end();
   } catch (err) {
