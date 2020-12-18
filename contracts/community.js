@@ -68,10 +68,6 @@ export const createCommunity = async rpcProvider => {
 
   // TODO: Create contract should join the user automatically instead of needing to call join after that.
   // call the smart contract to create community
-  console.log(
-    'REGISTRY ADDRESS',
-    process.env.NEXT_PUBLIC_COMMUNITIES_REGISTRY_ADDRESS,
-  );
   const contract = new ethers.Contract(
     // TODO: Extract in env.js and refactor
     process.env.NEXT_PUBLIC_COMMUNITIES_REGISTRY_ADDRESS,
@@ -79,12 +75,8 @@ export const createCommunity = async rpcProvider => {
     signer,
   );
 
-  const estimatedGas = await contract.estimateGas.createCommunity();
-  const createTx = await contract.createCommunity({
-    // 500k gas
-    gasLimit: ethers.BigNumber.from(estimatedGas).toNumber(), // 3896496,
-    gasPrice: 7910854493,
-  });
+  const createTx = await contract.createCommunity();
+
   // Wait for transaction to finish
   const communityTransactionResult = await createTx.wait();
   const { events } = communityTransactionResult;
