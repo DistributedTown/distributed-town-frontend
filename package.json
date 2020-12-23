@@ -32,6 +32,7 @@
     "react-icons": "^4.1.0",
     "react-qrcode-logo": "^2.2.1",
     "react-query": "^2.26.3",
+    "react-transition-group": "^4.4.1",
     "swr": "^0.3.8"
   },
   "devDependencies": {
