@@ -109,14 +109,16 @@ export default function SkillPicker({
               This is the first step to join a global community of local people
               or the other way around :)
             </p>
-            <TextField
-              id="nickname"
-              type="text"
-              value={username}
-              placeholder="Your Nickname"
-              onChange={e => setUsername(e.target.value)}
-              required
-            />
+            <label className="flex flex-col">
+              <strong>User Nickname </strong>
+              <TextField
+                id="nickname"
+                type="text"
+                value={username}
+                onChange={e => setUsername(e.target.value)}
+                required
+              />
+            </label>
           </Card>
         </div>
         <div className="flex flex-col justify-center align-center text-center space-y-1 gap-2 p-8 flex-grow w-full overflow-auto h-full py-24">

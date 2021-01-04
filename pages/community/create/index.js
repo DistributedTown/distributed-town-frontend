@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { useRouter } from 'next/router';
+import useLocalStorage from '../../../hooks/useLocalStorage';
 
 import Button from '../../../components/Button';
 import TextField from '../../../components/TextField';
 import Card from '../../../components/Card';
+import TextArea from '../../../components/TextArea';
 
 const communityCategories = [
   {
@@ -44,18 +46,26 @@ const communityCategories = [
   },
 ];
 
+export const useCreateCommunityState = () => {
+  return useLocalStorage('create-community', {});
+};
+
 function CommunityCreate() {
   const [communityName, setCommunityName] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState();
+  const [communityDescription, setCommunityDescription] = useState('');
+  const [communityCategory, setCommunityCategory] = useState();
   const router = useRouter();
+  const [, setCreateState] = useCreateCommunityState();
 
   const handleCreateCommunity = async () => {
     // TODO: Handle validation, error display and loading
-    await router.push(
-      `/community/create/created?name=${encodeURIComponent(
-        communityName,
-      )}&category=${encodeURIComponent(selectedCategory)}`,
-    );
+
+    setCreateState({
+      communityName,
+      communityDescription,
+      communityCategory,
+    });
+    await router.push(`/community/create/created`);
   };
 
   return (
@@ -73,14 +83,26 @@ function CommunityCreate() {
               This is your first Community. Pick up a simple, intuitive{' '}
               <strong>name</strong>.
             </p>
-            <TextField
-              id="communityName"
-              type="text"
-              value={communityName}
-              placeholder="Community name"
-              onChange={e => setCommunityName(e.target.value)}
-              required
-            />
+            <label className="flex flex-col w-full md:w-2/3">
+              <strong>Name </strong>
+              <TextField
+                id="communityName"
+                type="text"
+                value={communityName}
+                onChange={e => setCommunityName(e.target.value)}
+                required
+                className="w-full"
+              />
+            </label>
+            <label className="flex flex-col w-full md:w-2/3">
+              <strong>Description</strong>
+              <TextArea
+                id="communityDescription"
+                value={communityDescription}
+                onChange={e => setCommunityDescription(e.target.value)}
+                className="w-full"
+              />
+            </label>
           </Card>
         </div>
         <div className="p-8 text-center md:w-1/2">
@@ -106,7 +128,7 @@ function CommunityCreate() {
                       </ul>
                     </div>
                   </div>
-                  {selectedCategory === name ? (
+                  {communityCategory === name ? (
                     <Button disabled color={color} filled>
                       Selected
                     </Button>
@@ -114,7 +136,7 @@ function CommunityCreate() {
                     <Button
                       color={color}
                       filled
-                      onClick={() => setSelectedCategory(name)}
+                      onClick={() => setCommunityCategory(name)}
                     >
                       Select
                     </Button>
@@ -129,7 +151,7 @@ function CommunityCreate() {
         <Button
           filled
           onClick={handleCreateCommunity}
-          disabled={!communityName || !selectedCategory}
+          disabled={!communityName || !communityCategory}
         >
           Create Community
         </Button>

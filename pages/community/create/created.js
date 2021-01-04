@@ -4,20 +4,17 @@ import { useRouter } from 'next/router';
 import RegistrationModal from '../../../components/registration/RegistrationModal';
 import { useMagicLinkLogin } from '../../../hooks/useMagicLinkLogin';
 import Button from '../../../components/Button';
+import { useCreateCommunityState } from '.';
 
 function Created() {
   const router = useRouter();
   const [showRegistrationModal, setShowRegistrationModal] = useState(false);
   const [login, { isLoading }] = useMagicLinkLogin();
-  const { name: communityName, category: communityCategory } = router.query;
+  const [{ communityName }] = useCreateCommunityState();
 
   const handleCreateAccountClick = async email => {
     await login(email);
-    await router.push(
-      `/community/create/pick-skills?communityName=${encodeURIComponent(
-        communityName,
-      )}&communityCategory=${encodeURIComponent(communityCategory)}`,
-    );
+    await router.push(`/community/create/pick-skills`);
   };
 
   return (

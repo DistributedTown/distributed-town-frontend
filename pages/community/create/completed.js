@@ -1,11 +1,9 @@
-import { useRouter } from 'next/router';
+import { useCreateCommunityState } from '.';
 import Layout from '../../../components/Layout';
 import WelcomeToCommunity from '../../../components/WelcomeToCommunity';
 
 function CreateCompleted() {
-  const {
-    query: { communityName },
-  } = useRouter();
+  const [{ communityName }] = useCreateCommunityState();
 
   return (
     <Layout>
