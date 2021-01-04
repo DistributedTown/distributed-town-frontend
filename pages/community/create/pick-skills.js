@@ -4,31 +4,29 @@ import SkillPicker from '../../../components/SkillPicker';
 import { useCreateCommunity } from '../../../hooks/useCreateCommunity';
 
 function PickSkills() {
-  const [
-    { communityName, communityCategory, communityDescription },
-    setCreateState,
-  ] = useCreateCommunityState();
+  const [community] = useCreateCommunityState();
   const [createCommunity, { isLoading }] = useCreateCommunity();
   const router = useRouter();
 
   const handleSubmit = async ({ username, skills }) => {
     const user = { username, skills };
     await createCommunity({
-      name: communityName,
-      category: communityCategory,
+      name: community.name,
+      category: community.category,
+      description: community.description,
       user,
     });
     await router.push(`/community/create/completed`);
   };
 
-  if (!communityName || !communityCategory || !communityCategory) {
+  if (!community.name || !community.category || !community.description) {
     router.push(`/community/create`);
   }
 
   return (
     <SkillPicker
       isSubmitting={isLoading}
-      communityCategory={communityCategory}
+      communityCategory={community.category}
       onSubmit={handleSubmit}
     />
   );

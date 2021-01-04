@@ -10,7 +10,7 @@ function Created() {
   const router = useRouter();
   const [showRegistrationModal, setShowRegistrationModal] = useState(false);
   const [login, { isLoading }] = useMagicLinkLogin();
-  const [{ communityName }] = useCreateCommunityState();
+  const [community] = useCreateCommunityState();
 
   const handleCreateAccountClick = async email => {
     await login(email);
@@ -22,7 +22,7 @@ function Created() {
       <div className="w-full flex flex-col items-center justify-between space-y-8 pt-32 h-full">
         <div className="flex-1 text-center flex items-center flex-col">
           <h1 className="text-5xl font-bold">Congrats!</h1>
-          <h2 className="text-4xl">You have founded {communityName}!</h2>
+          <h2 className="text-4xl">You have founded {community.name}!</h2>
           <p className="text-orange text-3xl mt-8">Your community now has:</p>
           <div className="bg-rain-forest rounded-full flex flex-col p-8 items-center justify-center h-64 w-64 mt-4">
             <img src="/dito-tokens.svg" />

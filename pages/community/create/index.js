@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
+import { useForm } from 'react-hook-form';
 import useLocalStorage from '../../../hooks/useLocalStorage';
 
 import Button from '../../../components/Button';
@@ -51,25 +52,31 @@ export const useCreateCommunityState = () => {
 };
 
 function CommunityCreate() {
-  const [communityName, setCommunityName] = useState('');
-  const [communityDescription, setCommunityDescription] = useState('');
-  const [communityCategory, setCommunityCategory] = useState();
+  const { register, handleSubmit, setValue, watch } = useForm();
+  const selectedCategory = watch('category');
   const router = useRouter();
   const [, setCreateState] = useCreateCommunityState();
 
-  const handleCreateCommunity = async () => {
+  const handleCreateCommunity = async data => {
     // TODO: Handle validation, error display and loading
-
+    const { name, description, category } = data;
     setCreateState({
-      communityName,
-      communityDescription,
-      communityCategory,
+      name,
+      description,
+      category,
     });
     await router.push(`/community/create/created`);
   };
 
+  useEffect(() => {
+    register('category', { required: true });
+  }, [register]);
+
   return (
-    <div className="flex flex-col w-full">
+    <form
+      className="flex flex-col w-full"
+      onSubmit={handleSubmit(handleCreateCommunity)}
+    >
       <div className="flex-1 flex flex-col md:flex-row md:items-center">
         <div
           className="p-8 bg-cover bg-center w-full h-full grid content-center md:w-1/2"
@@ -86,10 +93,10 @@ function CommunityCreate() {
             <label className="flex flex-col w-full md:w-2/3">
               <strong>Name </strong>
               <TextField
-                id="communityName"
+                id="name"
+                name="name"
                 type="text"
-                value={communityName}
-                onChange={e => setCommunityName(e.target.value)}
+                ref={register({ required: true })}
                 required
                 className="w-full"
               />
@@ -97,9 +104,10 @@ function CommunityCreate() {
             <label className="flex flex-col w-full md:w-2/3">
               <strong>Description</strong>
               <TextArea
-                id="communityDescription"
-                value={communityDescription}
-                onChange={e => setCommunityDescription(e.target.value)}
+                required
+                name="description"
+                maxLength="280"
+                ref={register({ required: true, maxLength: 280 })}
                 className="w-full"
               />
             </label>
@@ -128,7 +136,7 @@ function CommunityCreate() {
                       </ul>
                     </div>
                   </div>
-                  {communityCategory === name ? (
+                  {selectedCategory === name ? (
                     <Button disabled color={color} filled>
                       Selected
                     </Button>
@@ -136,7 +144,7 @@ function CommunityCreate() {
                     <Button
                       color={color}
                       filled
-                      onClick={() => setCommunityCategory(name)}
+                      onClick={() => setValue('category', name)}
                     >
                       Select
                     </Button>
@@ -148,15 +156,11 @@ function CommunityCreate() {
         </div>
       </div>
       <div className="flex justify-center w-full p-4 bg-white">
-        <Button
-          filled
-          onClick={handleCreateCommunity}
-          disabled={!communityName || !communityCategory}
-        >
+        <Button filled type="submit">
           Create Community
         </Button>
       </div>
-    </div>
+    </form>
   );
 }
 
