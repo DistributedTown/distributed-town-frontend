@@ -2,6 +2,7 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { FaPlus, FaUsers } from 'react-icons/fa';
+import Blob from '../components/Blob';
 import Button from '../components/Button';
 import Card from '../components/Card';
 import Logo from '../components/Logo';
@@ -26,7 +27,7 @@ const Index = () => {
       <Head>
         <title>Distributed Town</title>
       </Head>
-      <Info className="h-full relative info w-full grid content-center lg:w-3/5 lg:h-full" />
+      <Info className="h-full relative info w-full grid content-center lg:w-3/5 lg:h-full " />
       <div className="h-full flex flex-col justify-center items-center lg:w-2/5">
         <h1 className="text-4xl m-8 font-bold text-center">
           This is <span>Your Community</span>
@@ -68,7 +69,7 @@ const Index = () => {
 function Info({ className }) {
   return (
     <div className={className}>
-      <Logo className="static pb-0 lg:absolute" />
+      <LogoWithBlob />
       <Card className="relative lg:w-1/2 lg:justify-self-center lg:align-self-center grid gap-8 text-center m-8">
         <p className="text-xl">
           <strong>Distributed Town</strong> is a new financial infrastructure
@@ -87,6 +88,23 @@ function Info({ className }) {
           background-position: center;
         }
       `}</style>
+    </div>
+  );
+}
+
+function LogoWithBlob() {
+  return (
+    <div className="relative lg:absolute lg:overflow-hidden lg:h-96 w-72">
+      <Logo className="relative pb-0 z-10" />
+      <Blob
+        className="absolute opacity-70"
+        style={{
+          top: '-130px',
+          left: '-70px',
+          filter: 'blur(3.5px)',
+          transform: 'scale(1.3)',
+        }}
+      />
     </div>
   );
 }
