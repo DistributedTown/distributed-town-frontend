@@ -74,15 +74,15 @@ function CommunityCreate() {
 
   return (
     <form
-      className="flex flex-col w-full"
+      className="flex flex-col w-full h-screen"
       onSubmit={handleSubmit(handleCreateCommunity)}
     >
       <div className="flex-1 flex flex-col md:flex-row md:items-center">
         <div
-          className="p-8 bg-cover bg-center w-full h-full grid content-center md:w-1/2"
+          className="p-8 bg-cover bg-center w-full h-full grid content-center md:w-1/3"
           style={{ backgroundImage: 'url(/background-image.svg)' }}
         >
-          <Card className="flex flex-col items-center w-3/4 mx-auto">
+          <Card className="flex flex-col items-center mx-auto">
             <div className="text-gray-900 font-bold text-3xl mb-8 text-center">
               Welcome to Distributed Town!
             </div>
@@ -113,7 +113,7 @@ function CommunityCreate() {
             </label>
           </Card>
         </div>
-        <div className="p-8 text-center md:w-1/2">
+        <div className="p-2 text-center md:w-2/3">
           <h1 className="font-bold text-3xl mb-8">Select community type</h1>
           <div className="flex flex-wrap justify-center gap-4">
             {communityCategories.map(category => {
