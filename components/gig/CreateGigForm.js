@@ -6,7 +6,7 @@ import Button from '../Button';
 import Card from '../Card';
 import TextField from '../TextField';
 
-const CreateGigForm = ({ isSubmitting, onSubmit, isProject = false }) => {
+const CreateGigForm = ({ isSubmitting, onSubmit }) => {
   const { register, handleSubmit, errors } = useForm();
   const { data: community } = useGetCommunity();
   const communityCategory = community && community.communityInfo.category;
@@ -154,12 +154,7 @@ const CreateGigForm = ({ isSubmitting, onSubmit, isProject = false }) => {
             </div>
           </div>
         </div>
-        <Button
-          filled
-          type="submit"
-          loading={isSubmitting}
-          {...(isProject ? {} : { color: 'red-500' })}
-        >
+        <Button filled type="submit" loading={isSubmitting}>
           Publish
         </Button>
         {/* TODO: Display error */}
