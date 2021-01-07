@@ -6,7 +6,7 @@ import ToastsProvider from '../components/ToastsProvider';
 // This default export is required in a new `pages/_app.js` file.
 export default function App({ Component, pageProps }) {
   return (
-    <div className="max-w-screen-xl mx-auto">
+    <div className="mx-auto">
       <ToastsProvider>
         <Store>
           <Component {...pageProps} />
