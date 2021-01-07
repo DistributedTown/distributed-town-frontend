@@ -21,7 +21,7 @@ const Index = () => {
   };
 
   return (
-    <div className="flex flex-col items-center w-screen lg:flex-row lg:h-screen mx-auto">
+    <div className="flex flex-col items-center lg:flex-row lg:h-screen mx-auto">
       <Head>
         <title>Distributed Town</title>
       </Head>

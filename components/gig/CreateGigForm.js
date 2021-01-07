@@ -88,8 +88,8 @@ const CreateGigForm = ({ isSubmitting, onSubmit }) => {
             <span className="text-red-600">This field is required</span>
           )}
         </div>
-        <div className="flex flex-col md:flex-row gap-10">
-          <div className="flex-1 flex flex-col gap-4">
+        <div className="flex flex-col flex-wrap md:flex-row gap-10">
+          <div className="flex flex-col gap-4">
             <h1 className="font-bold text-xl">Skills needed</h1>
             <h2 className="text-dove-gray">
               Hint: If the gig requires many different skills, consider

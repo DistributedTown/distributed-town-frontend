@@ -34,7 +34,7 @@ const Layout = ({ children }) => {
       <Head>
         <title>DistributedTown</title>
       </Head>
-      <main className="flex flex-col w-full h-screen md:flex-row">
+      <main className="flex flex-col w-full min-h-screen md:flex-row">
         <div className="md:hidden flex flex-row bg-denim text-white">
           <button
             className="absolute p-6 focus:outline-none"
@@ -52,7 +52,7 @@ const Layout = ({ children }) => {
           <nav
             className={`flex flex-col bg-denim text-white text-xl font-bold w-full absolute overflow-hidden ${
               showNav ? 'h-auto' : 'h-0'
-            } md:relative md:h-screen md:w-60 md:bg-white md:text-denim shadow`}
+            } md:relative md:h-full md:w-60 md:bg-white md:text-denim shadow`}
           >
             <img className="hidden md:block p-8 mx-auto" src="/isologo.svg" />
             {navItems.map(ni => (
