@@ -3,11 +3,11 @@ import Layout from '../../../components/Layout';
 import WelcomeToCommunity from '../../../components/WelcomeToCommunity';
 
 function CreateCompleted() {
-  const [{ communityName }] = useCreateCommunityState();
+  const [community] = useCreateCommunityState();
 
   return (
     <Layout>
-      <WelcomeToCommunity showInviteButton communityName={communityName} />
+      <WelcomeToCommunity showInviteButton communityName={community.name} />
     </Layout>
   );
 }

@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import RegistrationModal from '../../../components/registration/RegistrationModal';
+import RegistrationModal from '../../../components/RegistrationModal';
 import { useMagicLinkLogin } from '../../../hooks/useMagicLinkLogin';
 
 const Invitation = () => {

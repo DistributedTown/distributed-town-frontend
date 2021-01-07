@@ -26,7 +26,7 @@ export default function WelcomeToCommunity({
       <div className="flex-1 text-center flex items-center flex-col">
         <p className="text-5xl font-bold">Congrats!</p>
         <p className="text-4xl">You are now a member of {communityName}!</p>
-        <div className="text-yellow-300 bg-red-500 shadow rounded-full flex flex-col gap-2 p-8 items-center justify-center font-bold h-64 w-64 mt-6">
+        <div className="text-yellow-300 bg-denim shadow rounded-full flex flex-col gap-2 p-8 items-center justify-center font-bold h-64 w-64 mt-6">
           <p>You received:</p>
           <img alt="dito tokens" src="/dito-tokens.svg" />
           <p>
@@ -37,11 +37,7 @@ export default function WelcomeToCommunity({
       <div className="w-full flex justify-center gap-4 bottom-0 right-0 py-4 px-48">
         {/* TODO: Only on create */}
         {showInviteButton && (
-          <Button
-            onClick={onInviteClick}
-            loading={loadingShareLink}
-            color="rain-forest"
-          >
+          <Button onClick={onInviteClick} loading={loadingShareLink}>
             Invite new Members
           </Button>
         )}

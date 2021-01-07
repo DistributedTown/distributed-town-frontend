@@ -3,8 +3,7 @@ import Link from 'next/link';
 
 import { useRouter } from 'next/router';
 import Quote from '../../../components/Quote';
-import RegistrationModal from '../../../components/registration/RegistrationModal';
-import { getUserInfo } from '../../../api';
+import RegistrationModal from '../../../components/RegistrationModal';
 import { useMagicLinkLogin } from '../../../hooks/useMagicLinkLogin';
 
 const Join = ({ skills = [] }) => {

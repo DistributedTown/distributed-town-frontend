@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 
-import RegistrationModal from '../../../components/registration/RegistrationModal';
+import RegistrationModal from '../../../components/RegistrationModal';
 import { useMagicLinkLogin } from '../../../hooks/useMagicLinkLogin';
 import Button from '../../../components/Button';
 import { useCreateCommunityState } from '.';
@@ -23,10 +23,10 @@ function Created() {
         <div className="flex-1 text-center flex items-center flex-col">
           <h1 className="text-5xl font-bold">Congrats!</h1>
           <h2 className="text-4xl">You have founded {community.name}!</h2>
-          <p className="text-orange text-3xl mt-8">Your community now has:</p>
-          <div className="bg-rain-forest rounded-full flex flex-col p-8 items-center justify-center h-64 w-64 mt-4">
-            <img src="/dito-tokens.svg" />
-            <p className="text-orange mt-4">96000 DiTo</p>
+          <div className="text-yellow-300 bg-denim shadow rounded-full flex flex-col gap-2 p-8 items-center justify-center font-bold h-64 w-64 mt-6">
+            <p>Your community now has:</p>
+            <img alt="dito tokens" src="/dito-tokens.svg" />
+            <p>96000 DiTo</p>
           </div>
         </div>
         <div className="w-full flex justify-center p-4">

@@ -121,7 +121,7 @@ export default function SkillPicker({
             </label>
           </Card>
         </div>
-        <div className="flex flex-col justify-center align-center text-center space-y-1 gap-2 p-8 flex-grow w-full overflow-auto h-full py-24">
+        <div className="flex flex-col justify-center align-center text-center space-y-1 gap-2 p-8 flex-grow w-full overflow-auto h-full">
           <h1 className="font-bold text-xl">Tell us about you!</h1>
           <p>
             Pick your Skills (<span>between 1 and 3</span>)
@@ -145,7 +145,7 @@ export default function SkillPicker({
           })}
           <Card
             filled
-            className="h-32 flex flex-row items-center justify-between"
+            className="h-24 flex flex-row items-center justify-between"
           >
             <p className="flex w-1/2 items-center justify-center">
               Your selection
