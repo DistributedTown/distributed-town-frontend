@@ -25,8 +25,8 @@ const Index = () => {
       <Head>
         <title>Distributed Town</title>
       </Head>
-      <Info className="overflow-hidden h-full relative info w-full grid content-center lg:w-2/3 lg:h-full" />
-      <div className="h-full flex flex-col justify-center items-center lg:w-1/3">
+      <Info className="overflow-hidden h-full relative info w-full grid content-center lg:w-3/5 lg:h-full" />
+      <div className="h-full flex flex-col justify-center items-center lg:w-2/5">
         <h1 className="text-4xl m-8 font-bold text-center">
           This is <span>Your Community</span>
         </h1>
