@@ -7,6 +7,7 @@ import Button from './Button';
 import { getSkillTreeByCategory, getSkillTreeBySkill } from '../api';
 import TextField from './TextField';
 import Card from './Card';
+import Logo from './Logo';
 
 export default function SkillPicker({
   isSubmitting,
@@ -95,13 +96,16 @@ export default function SkillPicker({
     <div className="flex flex-col justify-between h-screen w-full relative">
       <div className="flex-1 flex flex-col md:flex-row">
         <div
-          className="flex w-1/2 justify-center items-center space-y-8 p-8 w-full bg-cover bg-center"
+          className="flex flex-col w-1/2 justify-center items-center space-y-8 p-8 w-full bg-cover bg-center"
           style={{
             backdropFilter: 'blur(5px)',
             backgroundImage: 'url(/background-image.svg)',
           }}
         >
-          <Card className="flex flex-col items-center w-3/4">
+          <div className="md:absolute grid md:top-0 md:left-0">
+            <Logo className={[{ 'p-8': false }, 'md:p-8 p-0']} />
+          </div>
+          <Card className="flex flex-col items-center ">
             <div className="text-gray-900 font-bold text-3xl mb-8 text-center">
               Welcome to Distributed Town!
             </div>
