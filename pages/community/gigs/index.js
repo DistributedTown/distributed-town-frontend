@@ -9,11 +9,9 @@ import Layout from '../../../components/Layout';
 import { useGetUserInfo } from '../../../hooks/useGetUserInfo';
 import PageTitle from '../../../components/PageTitle';
 import { useGetGigs } from '../../../hooks/useGetGigs';
-import { useTakeGig } from '../../../hooks/useTakeGig';
 
 function Gigs() {
   const { data: userInfo } = useGetUserInfo();
-  const [takeGig, { isLoading: isTakingGig }] = useTakeGig();
   const { data: gigs } = useGetGigs();
 
   return (
@@ -29,14 +27,7 @@ function Gigs() {
             <h2>There are no Open Gigs.</h2>
           ) : (
             gigs.map(gig => {
-              return (
-                <GigCard
-                  isLoading={isTakingGig}
-                  key={gig._id}
-                  gig={gig}
-                  takeGig={takeGig}
-                />
-              );
+              return <GigCard key={gig._id} gig={gig} />;
             })
           )}
         </div>
