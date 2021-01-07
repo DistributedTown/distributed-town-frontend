@@ -6,6 +6,7 @@ import Quote from '../../../components/Quote';
 import RegistrationModal from '../../../components/RegistrationModal';
 import { useMagicLinkLogin } from '../../../hooks/useMagicLinkLogin';
 import Logo from '../../../components/Logo';
+import Button from '../../../components/Button';
 
 const Join = ({ skills = [] }) => {
   const [login, { isLoading }] = useMagicLinkLogin();
@@ -45,14 +46,13 @@ const Join = ({ skills = [] }) => {
           {/* <div className="text-center grid grid-flow-row grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 py-8"> */}
           <div className="text-center flex flex-wrap justify-center gap-4 py-8">
             {skills.map(skill => (
-              <button
-                type="button"
+              <Button
                 key={skill}
                 onClick={() => setChosenSkill(skill)}
-                className="bg-white shadow focus:ring focus:outline-none rounded-full flex items-center justify-center px-6 py-3"
+                className="rounded-full"
               >
                 {skill}
-              </button>
+              </Button>
             ))}
           </div>
         </div>
