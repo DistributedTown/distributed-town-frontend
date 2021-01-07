@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 import Quote from '../../../components/Quote';
 import RegistrationModal from '../../../components/RegistrationModal';
 import { useMagicLinkLogin } from '../../../hooks/useMagicLinkLogin';
+import Logo from '../../../components/Logo';
 
 const Join = ({ skills = [] }) => {
   const [login, { isLoading }] = useMagicLinkLogin();
@@ -25,25 +26,30 @@ const Join = ({ skills = [] }) => {
 
   return (
     <div className="w-full h-full">
-      <div className="firstPage">
-        <Link href="#">
-          <a className="text-white fixed top-0 right-0 hover:p-8 text-2xl font-bold">
-            what's this about?
-          </a>
-        </Link>
-        <div className="w-full h-full flex flex-col items-center space-y-8 px-4 mt-12">
+      <div>
+        <div className="flex flex-row justify-between items-center">
+          <Logo className="p-8" />
+          <Link href="#">
+            <a className="text-black text-2xl font-bold">what's this about?</a>
+          </Link>
+        </div>
+        <div className="w-full h-full flex flex-col items-center space-y-8 px-4">
           <Quote quote="Have you ever thought, 'I would like to contribute, but …'" />
-          <p className="w-2/3 lg:w-1/3 text-gray-500">
-            Distributed Town (DiTo) lets you create or join a community with one
-            click. No name, location or bank account necessary.
+          <p className="text-gray-500 text-center">
+            Distributed Town (DiTo) lets you <strong>create</strong> or{' '}
+            <strong>join</strong> a community with one click.
+            <br />
+            No <strong>name</strong>, <strong>location</strong> or{' '}
+            <strong>bank account</strong> necessary.
           </p>
-          <div className="text-center grid grid-flow-row grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 py-8">
+          {/* <div className="text-center grid grid-flow-row grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 py-8"> */}
+          <div className="text-center flex flex-wrap justify-center gap-4 py-8">
             {skills.map(skill => (
               <button
                 type="button"
                 key={skill}
                 onClick={() => setChosenSkill(skill)}
-                className="bg-white shadow focus:ring focus:outline-none rounded-full flex items-center justify-center p-2"
+                className="bg-white shadow focus:ring focus:outline-none rounded-full flex items-center justify-center px-6 py-3"
               >
                 {skill}
               </button>
@@ -51,16 +57,13 @@ const Join = ({ skills = [] }) => {
           </div>
         </div>
       </div>
-      <div
-        className={`modalBackground modalVisible-${showRegistrationModal} bg-white`}
-      >
-        <RegistrationModal
-          loading={isLoading}
-          chosenSkill={chosenSkill}
-          handleCreateAccountClick={handleCreateAccountClick}
-          onChooseDifferentCommunity={() => setChosenSkill('')}
-        />
-      </div>
+      <RegistrationModal
+        show={showRegistrationModal}
+        loading={isLoading}
+        chosenSkill={chosenSkill}
+        handleCreateAccountClick={handleCreateAccountClick}
+        onChooseDifferentCommunity={() => setChosenSkill('')}
+      />
     </div>
   );
 };

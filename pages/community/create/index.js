@@ -7,6 +7,7 @@ import Button from '../../../components/Button';
 import TextField from '../../../components/TextField';
 import Card from '../../../components/Card';
 import TextArea from '../../../components/TextArea';
+import Logo from '../../../components/Logo';
 
 const communityCategories = [
   {
@@ -82,6 +83,7 @@ function CommunityCreate() {
           className="p-8 bg-cover bg-center w-full h-full grid content-center md:w-1/3"
           style={{ backgroundImage: 'url(/background-image.svg)' }}
         >
+          <Logo className="pt-0 pl-0 md:absolute" />
           <Card className="flex flex-col items-center mx-auto">
             <div className="text-gray-900 font-bold text-3xl mb-8 text-center">
               Welcome to Distributed Town!

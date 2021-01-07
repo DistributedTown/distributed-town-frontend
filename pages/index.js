@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import { FaPlus, FaUsers } from 'react-icons/fa';
 import Button from '../components/Button';
 import Card from '../components/Card';
+import Logo from '../components/Logo';
 import TextField from '../components/TextField';
 
 import { useMagicLinkLogin } from '../hooks/useMagicLinkLogin';
@@ -21,11 +22,11 @@ const Index = () => {
   };
 
   return (
-    <div className="flex flex-col items-center lg:flex-row lg:h-screen mx-auto">
+    <div className="flex flex-col items-center lg:flex-row lg:min-h-screen mx-auto">
       <Head>
         <title>Distributed Town</title>
       </Head>
-      <Info className="overflow-hidden h-full relative info w-full grid content-center lg:w-3/5 lg:h-full" />
+      <Info className="h-full relative info w-full grid content-center lg:w-3/5 lg:h-full" />
       <div className="h-full flex flex-col justify-center items-center lg:w-2/5">
         <h1 className="text-4xl m-8 font-bold text-center">
           This is <span>Your Community</span>
@@ -67,8 +68,8 @@ const Index = () => {
 function Info({ className }) {
   return (
     <div className={className}>
-      <Logo />
-      <Card className="relative z-10 m-4 lg:w-1/2 lg:justify-self-center lg:align-self-center grid gap-8 text-center">
+      <Logo className="static pb-0 lg:absolute" />
+      <Card className="relative lg:w-1/2 lg:justify-self-center lg:align-self-center grid gap-8 text-center m-8">
         <p className="text-xl">
           <strong>Distributed Town</strong> is a new financial infrastructure
           for public goods, designed for the real world.
@@ -86,25 +87,6 @@ function Info({ className }) {
           background-position: center;
         }
       `}</style>
-    </div>
-  );
-}
-
-const logoImage = '/dito-logo.svg';
-function Logo() {
-  return (
-    <div className="relative p-4 lg:absolute">
-      <img src={logoImage} alt="Logo" className="relative z-10" />
-      <img
-        alt=""
-        src="/splash-blue-default.svg"
-        className="absolute top-0 left-0 opacity-75 z-0"
-        style={{
-          filter: 'blur(2px)',
-          width: '100%',
-          transformOrigin: 'top left',
-        }}
-      />
     </div>
   );
 }

@@ -10,8 +10,8 @@ function QR() {
   const { data: community } = useGetCommunity();
 
   return (
-    <div className="flex w-full h-screen">
-      <div className="flex flex-col px-40 py-64 justify-center items-center bg-denim w-1/2">
+    <div className="flex flex-col md:flex-row w-full h-screen">
+      <div className="flex flex-col p-8 justify-center items-center bg-denim md:w-1/2">
         <div className="bg-ripe-lemon w-56 h-56 p-4 flex justify-center items-center rounded-xl">
           {userInfo ? (
             <QRCode
@@ -30,7 +30,7 @@ function QR() {
           Scan Wallet’s QR-Code to verify new member.
         </Card>
       </div>
-      <div className="flex w-1/2 justify-center items-center">
+      <div className="flex md:w-1/2 p-8 justify-center items-center">
         <Card className="flex flex-col justify-center items-center">
           <h3 className="text-2xl">Accepting Community</h3>
           <Card filled className="my-4">
