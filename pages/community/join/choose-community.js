@@ -36,28 +36,26 @@ function ChooseCommunity() {
   };
 
   return (
-    <div className="flex flex-col md:flex-row w-full">
+    <div className="flex flex-col w-full h-screen">
       <div
-        className="flex flex-col space-y-8 container mx-auto bg-cover bg-center p-8 md:h-screen overflow-y-auto"
+        className="flex-1 flex flex-col space-y-8 mx-auto bg-cover bg-center p-8 w-full overflow-y-scroll"
         style={{ backgroundImage: 'url(/background-image.svg)' }}
       >
-        <h1 className="text-xl font-bold">Here's a few communities for you!</h1>
-        {communities.map((community, i) => (
-          <CommunityCard
-            key={i}
-            community={community}
-            selected={community === chosenCommunity}
-            onSelectCommunity={() => setChosenCommunity(community)}
-          />
-        ))}
+        <h1 className="text-2xl font-bold">
+          Here's a few communities for you!
+        </h1>
+        <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+          {communities.map((community, i) => (
+            <CommunityCard
+              key={i}
+              community={community}
+              selected={community === chosenCommunity}
+              onSelectCommunity={() => setChosenCommunity(community)}
+            />
+          ))}
+        </div>
       </div>
-      <div className="flex flex-col justify-between space-y-8 w-full flex-grow p-8 ">
-        <h1>The credit you will earn with your skills</h1>
-        <p>
-          Your skills are your main asset. And the only thing that matters. The
-          more rare they are, the more credits you’ll get!
-        </p>
-        {/* TODO: Loading */}
+      <div className="flex justify-center w-full p-4 bg-white">
         <Button
           filled
           onClick={handleJoinClick}
