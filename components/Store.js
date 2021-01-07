@@ -43,7 +43,7 @@ const Store = ({ children }) => {
     <>
       <div
         key="loading"
-        className={`w-screen h-screen absolute bg-white grid place-content-center ${
+        className={`w-screen h-screen top-0 left-0 absolute bg-white grid place-content-center ${
           loading ? 'visible' : 'invisible'
         } transition-opacity opacity-${loading ? 100 : 0}`}
       >
