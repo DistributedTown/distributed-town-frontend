@@ -3,7 +3,6 @@ import {
   FaArrowDown,
   FaBuilding,
   FaDiscord,
-  FaFacebook,
   FaGithub,
   FaLink,
   FaPalette,
@@ -41,7 +40,11 @@ export default function Landing() {
 function Header() {
   return (
     <div className="container p-8 mx-auto flex flex-col justify-between sm:flex-row sm:items-center">
-      <Logo />
+      <Link href="/landing">
+        <a>
+          <Logo />
+        </a>
+      </Link>
       <Link href="/">
         <Button className="hidden sm:block">Open App</Button>
       </Link>
@@ -176,7 +179,11 @@ function Footer() {
     <div className="bg-white">
       <div className="container mx-auto p-8 flex flex-col gap-8">
         <div className="flex flex-col gap-8 sm:flex-row justify-between">
-          <Logo />
+          <Link href="/landing">
+            <a>
+              <Logo />
+            </a>
+          </Link>
           {/* Footer nav */}
           <nav className="flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-16">
             {sections.map(section => (
