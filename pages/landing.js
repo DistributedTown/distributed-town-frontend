@@ -203,8 +203,8 @@ function Footer() {
           </nav>
         </div>
         <div className="flex flex-col justify-between gap-4">
-          <span className="text-center">© 2021 DiTo.</span>
-          <div className="flex gap-4 text-gray-500 self-center">
+          <span className="sm:text-center">© 2021 DiTo.</span>
+          <div className="flex flex-col sm:flex-row sm:justify-center gap-1 sm:gap-4 text-gray-500">
             <a>Terms & Conditions</a>
             <a>Privacy Policy</a>
           </div>
