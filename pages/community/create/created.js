@@ -21,7 +21,7 @@ function Created() {
   return (
     <div className="w-full h-screen">
       <div className="flex flex-col h-full">
-        <Logo className="mr-auto" />
+        <Logo className="p-8 mr-auto" />
         <div className="flex-1 text-center flex flex-col justify-center items-center pb-8">
           <h1 className="text-5xl font-bold">Congratulations!</h1>
           <h2 className="text-4xl">You have founded {community.name}!</h2>

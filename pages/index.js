@@ -23,7 +23,7 @@ const Index = () => {
   };
 
   return (
-    <div className="flex flex-col items-center lg:flex-row lg:min-h-screen mx-auto">
+    <div className="flex flex-col flex-1 items-center lg:flex-row lg:min-h-screen mx-auto">
       <Head>
         <title>Distributed Town</title>
       </Head>
@@ -70,7 +70,7 @@ function Info({ className }) {
   return (
     <div className={className}>
       <LogoWithBlob />
-      <Card className="relative lg:w-1/2 lg:justify-self-center lg:align-self-center grid gap-8 text-center m-8">
+      <Card className="relative lg:w-1/2 lg:justify-self-center lg:align-self-center grid gap-8 text-center">
         <p className="text-xl">
           <strong>Distributed Town</strong> is a new financial infrastructure
           for public goods, designed for the real world.
@@ -95,7 +95,7 @@ function Info({ className }) {
 function LogoWithBlob() {
   return (
     <div className="relative lg:absolute lg:overflow-hidden lg:h-96 w-72">
-      <Logo className="relative pb-0 z-10" />
+      <Logo className="relative p-8 pb-0 z-10" />
       <Blob
         className="absolute opacity-70"
         style={{

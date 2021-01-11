@@ -31,7 +31,9 @@ const Join = ({ skills = [] }) => {
         <div className="flex flex-row justify-between items-center">
           <Logo className="p-8" />
           <Link href="#">
-            <a className="text-black text-2xl font-bold">what's this about?</a>
+            <a className="text-black text-2xl font-bold p-8">
+              what's this about?
+            </a>
           </Link>
         </div>
         <div className="w-full h-full flex flex-col items-center space-y-8 px-4">
