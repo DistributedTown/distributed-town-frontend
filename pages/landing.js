@@ -1,8 +1,10 @@
+import Link from 'next/link';
 import {
   FaArrowDown,
-  FaArrowsAltV,
   FaBuilding,
   FaDiscord,
+  FaFacebook,
+  FaGithub,
   FaLink,
   FaPalette,
 } from 'react-icons/fa';
@@ -40,7 +42,9 @@ function Header() {
   return (
     <div className="container p-8 mx-auto flex flex-col justify-between sm:flex-row sm:items-center">
       <Logo />
-      <Button className="hidden sm:block">Open App</Button>
+      <Link href="/">
+        <Button className="hidden sm:block">Open App</Button>
+      </Link>
     </div>
   );
 }
@@ -57,9 +61,11 @@ function HeroSection() {
         maxime ipsa, eos rerum accusantium! Nulla vero dolorem iure cupiditate
         aliquam recusandae eligendi.
       </p>
-      <Button className="self-center" filled>
-        Create a Community
-      </Button>
+      <Link href="/community/create">
+        <Button className="self-center" filled>
+          Create a Community
+        </Button>
+      </Link>
       <FaArrowDown
         size="2em"
         className="mt-8 animate-bounce self-center text-gray-500"
@@ -136,11 +142,33 @@ function Footer() {
   const sections = [
     {
       name: 'Product',
-      links: [{ title: 'Blog' }, { title: 'FAQs' }],
+      links: [
+        { title: 'Blog', href: '#' },
+        { title: 'FAQs', href: '#' },
+      ],
     },
     {
       name: 'Community',
-      links: [{ title: 'Discord' }, { title: 'Facebook' }],
+      links: [
+        {
+          title: (
+            <span className="flex flex-row items-center gap-2">
+              <FaDiscord />
+              Discord
+            </span>
+          ),
+          href: '#',
+        },
+        {
+          title: (
+            <span className="flex flex-row items-center gap-2">
+              <FaGithub />
+              Github
+            </span>
+          ),
+          href: 'https://github.com/DistributedTown',
+        },
+      ],
     },
   ];
 
@@ -153,11 +181,13 @@ function Footer() {
           <nav className="flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-16">
             {sections.map(section => (
               <div>
-                <div className="text-2xl">{section.name}</div>
-                <ul>
+                <div className="text-2xl mb-2">{section.name}</div>
+                <ul className="flex flex-col gap-1">
                   {section.links.map(link => (
                     <li>
-                      <a className="text-lg text-gray-600">{link.title}</a>
+                      <a className="text-lg text-gray-600" href={link.href}>
+                        {link.title}
+                      </a>
                     </li>
                   ))}
                 </ul>
