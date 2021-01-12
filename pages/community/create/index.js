@@ -123,7 +123,7 @@ function CommunityCreate() {
 
               return (
                 <Card
-                  className="flex flex-col gap-4 overflow-hidden md:w-5/12"
+                  className="flex flex-col overflow-hidden flex-y-4 md:w-5/12"
                   key={name}
                   color={color}
                 >

@@ -38,7 +38,7 @@ function ToastsProvider({ children }) {
 
   return (
     <ToastsContext.Provider value={[toasts, setToasts]}>
-      <div className="fixed z-50 m-6 bottom-0 flex flex-col gap-3">
+      <div className="fixed bottom-0 z-50 flex flex-col m-6 space-y-3">
         <TransitionGroup component={null}>
           {toasts.map(toast => (
             <Transition key={toast.timestamp} in appear exit timeout={duration}>

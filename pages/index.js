@@ -32,10 +32,10 @@ const Index = () => {
         <h1 className="m-8 text-4xl font-bold text-center">
           This is <span>Your Community</span>
         </h1>
-        <Card className="flex flex-col gap-4 p-4 mx-0 mb-4 sm:mx-8 sm:p-8">
+        <Card className="flex flex-col p-4 mx-0 mb-4 space-y-4 sm:mx-8 sm:p-8">
           <Link href="/community/create">
             <Button>
-              <a className="flex items-center justify-center gap-4 text-xl">
+              <a className="flex items-center justify-center space-x-4 text-xl">
                 <span>Create</span>
                 <FaPlus />
               </a>
@@ -43,14 +43,14 @@ const Index = () => {
           </Link>
           <Link href="/community/join">
             <Button>
-              <a className="flex items-center justify-center gap-4 text-xl">
+              <a className="flex items-center justify-center space-x-4 text-xl">
                 <span>Join</span>
                 <FaUsers />
               </a>
             </Button>
           </Link>
           {/* TODO: Don't show if logged in */}
-          <form onSubmit={onLoginSubmit} className="flex gap-4 flex-nowrap">
+          <form onSubmit={onLoginSubmit} className="flex space-x-4 flex-nowrap">
             <label>
               <span className="mr-2 text-xl font-bold">Login</span>
               <TextField

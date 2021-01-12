@@ -29,9 +29,9 @@ function Projects() {
 
   return (
     <Layout>
-      <div className="grid m-8 gap-8">
+      <div className="grid gap-8 m-8">
         <PageTitle>Open Projects</PageTitle>
-        <div className="mt-5 grid lg:grid-cols-2 xl:grid-cols-3 gap-12 items-baseline mb-40">
+        <div className="grid items-baseline gap-12 mt-5 mb-40 lg:grid-cols-2 xl:grid-cols-3">
           {typeof projects === 'undefined' ? (
             <div>
               <h2>Loading projects...</h2>
@@ -46,8 +46,8 @@ function Projects() {
         </div>
         <Link href="/community/projects/create">
           <Button filled>
-            <a className="flex gap-2 justify-center items-center">
-              <p className="text-2xl mb-2">Create new project</p>
+            <a className="flex items-center justify-center space-x-2">
+              <p className="mb-2 text-2xl">Create new project</p>
               <FaPlusCircle />
             </a>
           </Button>

@@ -6,10 +6,10 @@ function CommunityCard({ onSelectCommunity, selected, community }) {
 
   return (
     <Card
-      className="cursor-pointer flex flex-col gap-4"
+      className="flex flex-col space-y-4 cursor-pointer"
       onClick={onSelectCommunity}
     >
-      <Card outlined className="grid grid-cols-2 items-center gap-4">
+      <Card outlined className="grid items-center grid-cols-2 gap-4">
         <h2 className="font-bold">{name}</h2>
         <Button filled disabled={selected || members === 24}>
           {selected ? 'Selected' : 'Select'}

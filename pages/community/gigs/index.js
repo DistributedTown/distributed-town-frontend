@@ -16,9 +16,9 @@ function Gigs() {
 
   return (
     <Layout>
-      <div className="grid m-8 gap-8">
+      <div className="grid gap-8 m-8">
         <PageTitle>Open Gigs</PageTitle>
-        <div className="mt-5 grid lg:grid-cols-2 xl:grid-cols-3 gap-12 items-baseline">
+        <div className="grid items-baseline gap-12 mt-5 lg:grid-cols-2 xl:grid-cols-3">
           {typeof gigs === 'undefined' ? (
             <div>
               <h2>Loading Open Gigs...</h2>
@@ -33,8 +33,8 @@ function Gigs() {
         </div>
         <Link href="/community/gigs/create">
           <Button filled>
-            <a className="flex gap-2 justify-center items-center">
-              <p className="text-2xl mb-2">Create new gig</p>
+            <a className="flex items-center justify-center space-x-2">
+              <p className="mb-2 text-2xl">Create new gig</p>
               <FaPlusCircle />
             </a>
           </Button>

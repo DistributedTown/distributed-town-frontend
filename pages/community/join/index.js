@@ -38,7 +38,6 @@ const Join = ({ skills = [] }) => {
             No <strong>name</strong>, <strong>location</strong> or{' '}
             <strong>bank account</strong> necessary.
           </p>
-          {/* <div className="grid grid-flow-row grid-cols-2 gap-4 py-8 text-center sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5"> */}
           <div className="flex flex-wrap justify-center gap-4 py-8 text-center">
             {skills.map(skill => (
               <Button

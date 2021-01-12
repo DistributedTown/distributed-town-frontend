@@ -49,10 +49,10 @@ const CreateGigForm = ({ isSubmitting, onSubmit }) => {
         }),
       )}
     >
-      <Card className="flex flex-col gap-6 py-8">
+      <Card className="flex flex-col py-8 space-y-6">
         <div className="flex flex-col">
-          <div className="flex justify-between gap-8">
-            <label className="font-bold text-xl" htmlFor="title">
+          <div className="flex justify-between space-x-8">
+            <label className="text-xl font-bold" htmlFor="title">
               Title
             </label>
             <p className="text-dove-gray">
@@ -70,8 +70,8 @@ const CreateGigForm = ({ isSubmitting, onSubmit }) => {
           )}
         </div>
         <div className="flex flex-col">
-          <div className="flex justify-between gap-8">
-            <label className="font-bold text-xl" htmlFor="description">
+          <div className="flex justify-between space-x-8">
+            <label className="text-xl font-bold" htmlFor="description">
               Description
             </label>
             <p className="text-dove-gray">
@@ -88,9 +88,9 @@ const CreateGigForm = ({ isSubmitting, onSubmit }) => {
             <span className="text-red-600">This field is required</span>
           )}
         </div>
-        <div className="flex flex-col flex-wrap md:flex-row gap-10">
-          <div className="flex flex-col gap-4">
-            <h1 className="font-bold text-xl">Skills needed</h1>
+        <div className="flex flex-col flex-wrap gap-10 md:flex-row">
+          <div className="flex flex-col space-y-4">
+            <h1 className="text-xl font-bold">Skills needed</h1>
             <h2 className="text-dove-gray">
               Hint: If the gig requires many different skills, consider
               <br />
@@ -126,8 +126,8 @@ const CreateGigForm = ({ isSubmitting, onSubmit }) => {
                 : 'Loading skills'}
             </Card>
           </div>
-          <div className="flex-1 flex flex-col gap-4">
-            <h1 className="font-bold text-xl">Commitment</h1>
+          <div className="flex flex-col flex-1 space-y-4">
+            <h1 className="text-xl font-bold">Commitment</h1>
             <h2 className="text-dove-gray">
               Hint: the effort needed for this task. This value
               <br />
@@ -143,8 +143,8 @@ const CreateGigForm = ({ isSubmitting, onSubmit }) => {
               onChange={e => setCommitment(e.target.value)}
             />
           </div>
-          <div className="flex-1 flex flex-col gap-4">
-            <h1 className="font-bold text-xl">Budget needed</h1>
+          <div className="flex flex-col flex-1 space-y-4">
+            <h1 className="text-xl font-bold">Budget needed</h1>
             <h2 className="text-dove-gray">
               Hint: the amount of DiTo you offer.
             </h2>

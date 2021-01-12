@@ -27,18 +27,18 @@ export default function Landing() {
       links: [
         {
           title: (
-            <span className="flex flex-row items-center gap-2">
+            <span className="flex flex-row items-center space-x-2">
               <FaDiscord />
-              Discord
+              <span>Discord</span>
             </span>
           ),
           href: 'https://discord.gg/WR7PbswvTr',
         },
         {
           title: (
-            <span className="flex flex-row items-center gap-2">
+            <span className="flex flex-row items-center space-x-2">
               <FaGithub />
-              Github
+              <span>Github</span>
             </span>
           ),
           href: 'https://github.com/DistributedTown',

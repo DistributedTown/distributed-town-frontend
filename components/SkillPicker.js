@@ -93,23 +93,23 @@ export default function SkillPicker({
   };
 
   return (
-    <div className="flex flex-col justify-between h-screen w-full relative">
-      <div className="flex-1 flex flex-col md:flex-row">
+    <div className="relative flex flex-col justify-between w-full h-screen">
+      <div className="flex flex-col flex-1 md:flex-row">
         <div
-          className="flex flex-col w-1/2 justify-center items-center space-y-8 p-8 w-full bg-cover bg-center"
+          className="flex flex-col items-center justify-center w-1/2 w-full p-8 space-y-8 bg-center bg-cover"
           style={{
             backdropFilter: 'blur(5px)',
             backgroundImage: 'url(/background-image.svg)',
           }}
         >
-          <div className="md:absolute grid md:top-0 md:left-0">
+          <div className="grid md:absolute md:top-0 md:left-0">
             <Logo className={[{ 'p-8': false }, 'md:p-8 p-0']} />
           </div>
           <Card className="flex flex-col items-center ">
-            <div className="text-gray-900 font-bold text-3xl mb-8 text-center">
+            <div className="mb-8 text-3xl font-bold text-center text-gray-900">
               Welcome to Distributed Town!
             </div>
-            <p className="text-center text-base text-xl leading-8 mb-6">
+            <p className="mb-6 text-base text-xl leading-8 text-center">
               This is the first step to join a global community of local people
               or the other way around :)
             </p>
@@ -125,8 +125,8 @@ export default function SkillPicker({
             </label>
           </Card>
         </div>
-        <div className="flex flex-col justify-center align-center text-center space-y-1 gap-2 p-8 flex-grow w-full overflow-auto h-full">
-          <h1 className="font-bold text-xl">Tell us about you!</h1>
+        <div className="flex flex-col justify-center flex-grow w-full h-full p-8 space-y-1 space-y-2 overflow-auto text-center align-center">
+          <h1 className="text-xl font-bold">Tell us about you!</h1>
           <p>
             Pick your Skills (<span>between 1 and 3</span>)
           </p>
@@ -149,9 +149,9 @@ export default function SkillPicker({
           })}
           <Card
             filled
-            className="h-24 flex flex-row items-center justify-between"
+            className="flex flex-row items-center justify-between h-24"
           >
-            <p className="flex w-1/2 items-center justify-center">
+            <p className="flex items-center justify-center w-1/2">
               Your selection
             </p>
             <div className="w-1/2">
@@ -167,7 +167,7 @@ export default function SkillPicker({
           </Card>
         </div>
       </div>
-      <div className="flex justify-center items-center w-full p-4 bg-white">
+      <div className="flex items-center justify-center w-full p-4 bg-white">
         <Button
           filled
           loading={isSubmitting}

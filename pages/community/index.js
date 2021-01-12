@@ -8,16 +8,16 @@ import PageTitle from '../../components/PageTitle';
 function CommunityDashboard() {
   return (
     <Layout>
-      <div className="h-full flex flex-col">
-        <div className="flex flex-grow flex-col md:flex-row gap-8 md:gap-0">
-          <div className="grid content-center md:w-3/5 p-8">
+      <div className="flex flex-col h-full">
+        <div className="flex flex-col flex-grow flex-y-8 md:flex-row md:flex-y-0">
+          <div className="grid content-center p-8 md:w-3/5">
             <PageTitle className="mt-12 text-center">
               Community Dashboard
             </PageTitle>
-            <h2 className="mt-10 font-bold text-xl text-center">
+            <h2 className="mt-10 text-xl font-bold text-center">
               Administration
             </h2>
-            <div className="flex flex-col gap-10 mt-8">
+            <div className="flex flex-col mt-8 flex-y-10">
               <Link href="/community/gigs">
                 <Button>
                   <a>Open Gigs</a>

@@ -23,21 +23,21 @@ const RegistrationModal = ({
     show && (
       <div className="fixed inset-0">
         <div className="flex flex-col bg-gray-100">
-          <div className="flex flex-col justify-center items-center space-y-8 w-full flex-grow p-8 h-screen">
+          <div className="flex flex-col items-center justify-center flex-grow w-full h-screen p-8 space-y-8">
             <img
               src={backgroundImageSrc}
-              className="absolute block top-0 h-full w-full object-cover object-center"
+              className="absolute top-0 block object-cover object-center w-full h-full"
             />
-            <div className="p-4 flex flex-col flex-row space-y-4 z-10">
-              <div className="flex flex-col justify-center mt-6 items-center">
-                <div className="max-w-sm rounded w-full lg:max-w-full lg:flex">
+            <div className="z-10 flex flex-row flex-col p-4 space-y-4">
+              <div className="flex flex-col items-center justify-center mt-6">
+                <div className="w-full max-w-sm rounded lg:max-w-full lg:flex">
                   <Card className="text-center">
                     <div className="mb-6">
-                      {/* <div className="text-gray-900 font-bold text-xl">
+                      {/* <div className="text-xl font-bold text-gray-900">
                       Welcome to
                     </div> */}
                       <Logo className="mx-auto" />
-                      <p className="text-gray-700 text-base mt-6">
+                      <p className="mt-6 text-base text-gray-700">
                         {`You will be joining ${communityName ||
                           `${getArticle(
                             chosenSkill,
@@ -50,10 +50,10 @@ const RegistrationModal = ({
                           e.preventDefault();
                           handleCreateAccountClick(email);
                         }}
-                        className="flex flex-col gap-6"
+                        className="flex flex-col space-y-6"
                       >
                         <label>
-                          <span className="mr-2 font-bold text-xl">Email</span>
+                          <span className="mr-2 text-xl font-bold">Email</span>
                           <TextField
                             id="email"
                             type="email"
@@ -68,7 +68,7 @@ const RegistrationModal = ({
                         </Button>
                       </form>
                     </div>
-                    <div className="mt-4 w-full justify-self-end">
+                    <div className="w-full mt-4 justify-self-end">
                       {onChooseDifferentCommunity && (
                         <button
                           type="button"

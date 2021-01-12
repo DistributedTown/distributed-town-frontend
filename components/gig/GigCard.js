@@ -6,8 +6,8 @@ const GigCard = ({ key, gig }) => {
   const [takeGig, { isLoading }] = useTakeGig();
 
   return (
-    <Card key={key} className="flex flex-col gap-3">
-      <div className="flex justify-between border-b-2 border-gray-400 p-2">
+    <Card key={key} className="flex flex-col space-y-3">
+      <div className="flex justify-between p-2 border-b-2 border-gray-400">
         <p>{gig.title}</p>
         <p>
           <span className="text-carrot">DiTo offered:</span>{' '}
