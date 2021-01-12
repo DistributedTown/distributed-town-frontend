@@ -14,7 +14,8 @@ export const useMagic = () => {
 };
 
 /* this function wraps our entire app within our context APIs so they all have access to their values */
-const Store = ({ children }) => {
+const MagicStore = ({ children }) => {
+  console.log('LOADING MAGIC STORE');
   const [magic, setMagic] = useState();
 
   useEffect(() => {
@@ -47,7 +48,7 @@ const Store = ({ children }) => {
           loading ? 'visible' : 'invisible'
         } transition-opacity opacity-${loading ? 100 : 0}`}
       >
-        <div className="rounded w-5 h-5 bg-denim animate-spin" />
+        <div className="w-5 h-5 rounded bg-denim animate-spin" />
       </div>
       {!loading && (
         <MagicContext.Provider value={[magic]}>
@@ -58,4 +59,4 @@ const Store = ({ children }) => {
   );
 };
 
-export default Store;
+export default MagicStore;

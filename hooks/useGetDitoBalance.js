@@ -1,5 +1,5 @@
 import { useQuery } from 'react-query';
-import { useMagic } from '../components/Store';
+import { useMagic } from '../components/MagicStore';
 import { getCommunityById } from '../api';
 import { useGetUserInfo } from './useGetUserInfo';
 import {

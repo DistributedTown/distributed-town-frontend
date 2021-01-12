@@ -1,5 +1,5 @@
 import '../tailwind.css';
-import Store from '../components/Store';
+import MagicStore from '../components/MagicStore';
 import '../public/App.css';
 import ToastsProvider from '../components/ToastsProvider';
 
@@ -7,9 +7,13 @@ import ToastsProvider from '../components/ToastsProvider';
 export default function App({ Component, pageProps }) {
   return (
     <ToastsProvider>
-      <Store>
+      {pageProps.disableMagicLinks ? (
         <Component {...pageProps} />
-      </Store>
+      ) : (
+        <MagicStore>
+          <Component {...pageProps} />
+        </MagicStore>
+      )}
     </ToastsProvider>
   );
 }

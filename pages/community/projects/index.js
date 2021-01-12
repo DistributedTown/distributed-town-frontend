@@ -1,7 +1,7 @@
 import { useContext, useState, useEffect } from 'react';
 import Link from 'next/link';
 import { FaPlusCircle } from 'react-icons/fa';
-import { useMagic } from '../../../components/Store';
+import { useMagic } from '../../../components/MagicStore';
 import ProjectCard from '../../../components/project/ProjectCard';
 import SkillsDisplay from '../../../components/SkillsDisplay';
 

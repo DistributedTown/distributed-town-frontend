@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { ethers } from 'ethers';
 import { useForm } from 'react-hook-form';
-import { useMagic } from '../../components/Store';
+import { useMagic } from '../../components/MagicStore';
 import Layout from '../../components/Layout';
 import CommunityTreasuryForm from '../../components/treasury/CommunityTreasuryForm';
 import CheckupCard from '../../components/community/CheckupCard';

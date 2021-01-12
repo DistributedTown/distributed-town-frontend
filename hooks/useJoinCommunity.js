@@ -1,5 +1,5 @@
 import { useMutation } from 'react-query';
-import { useMagic } from '../components/Store';
+import { useMagic } from '../components/MagicStore';
 import { getUserInfo, updateUserCommunityID } from '../api';
 import { joinCommunity as joinCommunityContract } from '../contracts/community';
 import calculateDitosFromSkills from '../utils/calculateDitosFromSkills';

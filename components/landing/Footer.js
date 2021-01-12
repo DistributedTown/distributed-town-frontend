@@ -48,11 +48,11 @@ export default function Footer() {
           {/* Footer nav */}
           <nav className="flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-16">
             {sections.map(section => (
-              <div>
+              <div key={section.name}>
                 <div className="mb-2 text-2xl">{section.name}</div>
                 <ul className="flex flex-col gap-1">
-                  {section.links.map(link => (
-                    <li>
+                  {section.links.map((link, i) => (
+                    <li key={i}>
                       <a className="text-lg text-gray-600" href={link.href}>
                         {link.title}
                       </a>

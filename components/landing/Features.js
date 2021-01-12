@@ -51,7 +51,10 @@ export default function Features() {
         Three community types to choose from
       </h1>
       {features.map(feature => (
-        <div className="flex flex-col gap-2 p-8 bg-white rounded-2xl">
+        <div
+          key={feature.title}
+          className="flex flex-col gap-2 p-8 bg-white rounded-2xl"
+        >
           <feature.icon size="4rem" className="self-center mb-6 text-denim" />
           <h2 className="text-2xl text-center">{feature.title}</h2>
           <p className="text-xl text-center text-gray-600">{feature.text}</p>
