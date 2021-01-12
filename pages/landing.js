@@ -42,7 +42,7 @@ function Header() {
     <div className="container p-8 mx-auto flex flex-col justify-between sm:flex-row sm:items-center">
       <Link href="/landing">
         <a>
-          <Logo />
+          <Logo className="mx-auto sm:mx-0" />
         </a>
       </Link>
       <Link href="/">
