@@ -78,17 +78,17 @@ function CommunityCreate() {
       className="flex flex-col w-full h-screen"
       onSubmit={handleSubmit(handleCreateCommunity)}
     >
-      <div className="flex-1 flex flex-col md:flex-row md:items-center">
+      <div className="flex flex-col flex-1 md:flex-row md:items-center">
         <div
-          className="p-8 bg-cover bg-center w-full h-full grid content-center md:w-1/3"
+          className="grid content-center w-full h-full p-8 bg-center bg-cover md:w-1/3"
           style={{ backgroundImage: 'url(/background-image.svg)' }}
         >
-          <Logo className="pt-0 pl-0 md:absolute" />
+          <Logo className="pb-8 md:absolute" />
           <Card className="flex flex-col items-center mx-auto">
-            <div className="text-gray-900 font-bold text-3xl mb-8 text-center">
+            <div className="mb-8 text-3xl font-bold text-center text-gray-900">
               Welcome to Distributed Town!
             </div>
-            <p className="text-lg mb-6 text-center">
+            <p className="mb-6 text-lg text-center">
               This is your first Community. Pick up a simple, intuitive{' '}
               <strong>name</strong>.
             </p>
@@ -116,22 +116,22 @@ function CommunityCreate() {
           </Card>
         </div>
         <div className="p-2 text-center md:w-2/3">
-          <h1 className="font-bold text-3xl mb-8">Select community type</h1>
+          <h1 className="mb-8 text-3xl font-bold">Select community type</h1>
           <div className="flex flex-wrap justify-center gap-4">
             {communityCategories.map(category => {
               const { name, color, subtitle, description } = category;
 
               return (
                 <Card
-                  className="w-5/12 overflow-hidden flex flex-col gap-4"
+                  className="flex flex-col w-5/12 gap-4 overflow-hidden"
                   key={name}
                   color={color}
                 >
                   <h1 className={`text-${color} font-black text-xl`}>{name}</h1>
-                  <div className="bg-white h-full">
+                  <div className="h-full bg-white">
                     <div className="text-left">
-                      <p className="text-sm text-center mb-2">{subtitle}</p>
-                      <ul className="list-disc text-xs">
+                      <p className="mb-2 text-sm text-center">{subtitle}</p>
+                      <ul className="text-xs list-disc">
                         {description.map((desc, index) => {
                           return <li key={index}>{desc}</li>;
                         })}

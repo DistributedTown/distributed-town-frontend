@@ -23,19 +23,19 @@ const Index = () => {
   };
 
   return (
-    <div className="flex flex-col flex-1 items-center lg:flex-row lg:min-h-screen mx-auto">
+    <div className="flex flex-col items-center flex-1 mx-auto lg:flex-row lg:min-h-screen">
       <Head>
         <title>Distributed Town</title>
       </Head>
-      <Info className="h-full relative info w-full grid content-center lg:w-3/5 lg:h-full " />
-      <div className="h-full flex flex-col justify-center items-center lg:w-2/5">
-        <h1 className="text-4xl m-8 font-bold text-center">
+      <Info className="relative grid content-center w-full info lg:w-3/5 lg:h-full " />
+      <div className="flex flex-col items-center justify-center h-full lg:w-2/5">
+        <h1 className="m-8 text-4xl font-bold text-center">
           This is <span>Your Community</span>
         </h1>
-        <Card className="p-4 flex flex-col mx-0 sm:mx-8 sm:p-8 gap-4">
+        <Card className="flex flex-col gap-4 p-4 mx-0 mb-4 sm:mx-8 sm:p-8">
           <Link href="/community/create">
             <Button>
-              <a className="flex gap-4 justify-center items-center text-xl">
+              <a className="flex items-center justify-center gap-4 text-xl">
                 <span>Create</span>
                 <FaPlus />
               </a>
@@ -43,7 +43,7 @@ const Index = () => {
           </Link>
           <Link href="/community/join">
             <Button>
-              <a className="flex gap-4 justify-center items-center text-xl">
+              <a className="flex items-center justify-center gap-4 text-xl">
                 <span>Join</span>
                 <FaUsers />
               </a>
@@ -52,7 +52,7 @@ const Index = () => {
           {/* TODO: Don't show if logged in */}
           <form onSubmit={onLoginSubmit} className="flex gap-4 flex-nowrap">
             <label>
-              <span className="mr-2 font-bold text-xl">Login</span>
+              <span className="mr-2 text-xl font-bold">Login</span>
               <TextField
                 name="email"
                 type="email"
@@ -70,7 +70,7 @@ function Info({ className }) {
   return (
     <div className={className}>
       <LogoWithBlob />
-      <Card className="relative lg:w-1/2 lg:justify-self-center lg:align-self-center grid gap-8 text-center">
+      <Card className="relative grid gap-8 mx-4 mb-4 text-center lg:w-1/2 lg:justify-self-center lg:align-self-center">
         <p className="text-xl">
           <strong>Distributed Town</strong> is a new financial infrastructure
           for public goods, designed for the real world.
@@ -95,7 +95,7 @@ function Info({ className }) {
 function LogoWithBlob() {
   return (
     <div className="relative lg:absolute lg:overflow-hidden lg:h-96 w-72">
-      <Logo className="relative p-8 pb-0 z-10" />
+      <Logo className="relative z-10 p-8" />
       <Blob
         className="absolute opacity-70"
         style={{
