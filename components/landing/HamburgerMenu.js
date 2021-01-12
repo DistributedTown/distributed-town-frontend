@@ -1,23 +1,37 @@
-import { useState } from 'react';
+import debounce from 'lodash/debounce';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { FaBars, FaTimes } from 'react-icons/fa';
 import Button from '../Button';
 
 export default function HamburgerMenu() {
   const [open, setOpen] = useState(false);
+  const toggleOpen = () => setOpen(o => !o);
   const [circlePos, setCirclePos] = useState('80% 92%');
+  const buttonRef = useRef();
 
-  const makeCirclePositionButtonCenter = el => {
-    if (!el) return;
-    const { left, top, width, height } = el.getBoundingClientRect();
-    setCirclePos(`${left + width / 2}px ${top + height / 2}px`);
-  };
+  const moveCirclePosToButtonCenter = useCallback(
+    debounce(() => {
+      if (!buttonRef.current) return;
+      const {
+        left,
+        top,
+        width,
+        height,
+      } = buttonRef.current.getBoundingClientRect();
+      setCirclePos(`${left + width / 2}px ${top + height / 2}px`);
+    }, 50),
+  );
+  useEffect(() => {
+    window.onresize = moveCirclePosToButtonCenter;
+    moveCirclePosToButtonCenter();
+  }, []);
 
   return (
     <div className="sm:hidden">
       <div
         className="fixed z-50 p-4 text-white transition rounded-full shadow-lg bottom-8 right-8 bg-denim"
-        onClick={() => setOpen(o => !o)}
-        ref={makeCirclePositionButtonCenter}
+        onClick={toggleOpen}
+        ref={buttonRef}
       >
         {open ? <FaTimes size="1.6rem" /> : <FaBars size="1.6rem" />}
       </div>
