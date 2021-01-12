@@ -1,8 +1,9 @@
 import Header from '../components/landing/Header';
 import HeroSection from '../components/landing/HeroSection';
 import Features from '../components/landing/Features';
-import FullBlock from '../components/landing/FullBlock';
+import FullBlock, { FullBlockWhite } from '../components/landing/FullBlock';
 import Footer from '../components/landing/Footer';
+import PictureBlock from '../components/landing/PictureBlock';
 
 export default function Landing() {
   return (
@@ -13,6 +14,9 @@ export default function Landing() {
       </div>
       <Features />
       <FullBlock />
+      <PictureBlock />
+      <PictureBlock flip />
+      <FullBlockWhite />
       <Footer />
     </div>
   );
