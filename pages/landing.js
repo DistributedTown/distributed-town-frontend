@@ -15,8 +15,10 @@ export default function Landing() {
       </div>
       <Features />
       <FullBlock />
-      <PictureBlock />
-      <PictureBlock flip filled imageSrc={bgImages['community life']} />
+      <div className="flex flex-col sm:gap-12">
+        <PictureBlock />
+        <PictureBlock flip filled imageSrc={bgImages['community life']} />
+      </div>
       <FullBlockWhite />
       <Footer />
     </div>
