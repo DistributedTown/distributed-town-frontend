@@ -1,9 +1,10 @@
 import { FaAccusoft, FaAddressBook } from 'react-icons/fa';
+import bgImages from '../../utils/bgImages';
 import Button from '../Button';
 
 export default function PictureBlock({
   flip = false,
-  imageSrc = '/background-image.svg',
+  imageSrc = bgImages['governance & consensus'],
 }) {
   return (
     <div className="container mx-auto">

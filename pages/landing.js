@@ -4,6 +4,7 @@ import Features from '../components/landing/Features';
 import FullBlock, { FullBlockWhite } from '../components/landing/FullBlock';
 import Footer from '../components/landing/Footer';
 import PictureBlock from '../components/landing/PictureBlock';
+import bgImages from '../utils/bgImages';
 
 export default function Landing() {
   return (
@@ -15,7 +16,7 @@ export default function Landing() {
       <Features />
       <FullBlock />
       <PictureBlock />
-      <PictureBlock flip />
+      <PictureBlock flip filled imageSrc={bgImages['community life']} />
       <FullBlockWhite />
       <Footer />
     </div>

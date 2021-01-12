@@ -1,3 +1,4 @@
+import { FaHandsHelping } from 'react-icons/fa';
 import Button from '../Button';
 
 export default function FullBlock() {
@@ -27,6 +28,7 @@ export function FullBlockWhite() {
   return (
     <div className="flex flex-col gap-12 px-8 py-16 text-center bg-white">
       <div className="container flex flex-col gap-8 mx-auto">
+        <FaHandsHelping className="self-center" size="7rem" />
         <h2 className="max-w-3xl mx-auto text-3xl font-bold sm:text-5xl">
           Laboris duis deserunt id culpa est anim.
         </h2>
