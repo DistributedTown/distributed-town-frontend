@@ -4,7 +4,7 @@ import Button from '../Button';
 
 export default function HeroSection() {
   return (
-    <div className="container flex flex-col justify-center flex-1 gap-8 p-4 mx-auto sm:my-10">
+    <div className="container flex flex-col justify-center flex-1 p-4 mx-auto space-y-8 sm:my-10">
       <h1 className="text-4xl font-bold text-center sm:text-6xl">
         Lorem ipsum <br className="invisible md:visible" />
         dolor sit amet

@@ -4,19 +4,19 @@ import Logo from '../Logo';
 export default function Footer({ sections }) {
   return (
     <div className="bg-white">
-      <div className="container flex flex-col gap-8 p-8 mx-auto">
-        <div className="flex flex-col justify-between gap-8 sm:flex-row">
+      <div className="container flex flex-col p-8 mx-auto space-y-8">
+        <div className="flex flex-col justify-between space-y-8 sm:flex-row sm:space-y-0 sm:space-x-8">
           <Link href="/landing">
             <a>
               <Logo />
             </a>
           </Link>
           {/* Footer nav */}
-          <nav className="flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-16">
+          <nav className="flex flex-col space-y-4 sm:flex-row sm:items-center sm:space-y-0 sm:space-x-16">
             {sections.map(section => (
               <div key={section.name}>
                 <div className="mb-2 text-2xl">{section.name}</div>
-                <ul className="flex flex-col gap-1">
+                <ul className="flex flex-col space-y-1">
                   {section.links.map((link, i) => (
                     <li key={i}>
                       <Link href={link.href}>
@@ -29,9 +29,9 @@ export default function Footer({ sections }) {
             ))}
           </nav>
         </div>
-        <div className="flex flex-col justify-between gap-4">
+        <div className="flex flex-col justify-between space-y-4">
           <span className="sm:text-center">© 2021 DiTo.</span>
-          <div className="flex flex-col gap-1 text-gray-500 sm:flex-row sm:justify-center sm:gap-4">
+          <div className="flex flex-col space-y-1 text-gray-500 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4">
             <a href="#">Terms & Conditions</a>
             <a href="#">Privacy Policy</a>
           </div>

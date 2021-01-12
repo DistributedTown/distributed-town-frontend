@@ -37,7 +37,7 @@ export default function HamburgerMenu({ links = [] }) {
         {open ? <FaTimes size="1.6rem" /> : <FaBars size="1.6rem" />}
       </div>
       <div
-        className="fixed z-40 flex flex-col justify-center w-screen h-screen gap-4 p-8 bg-white inset"
+        className="fixed z-40 flex flex-col justify-center w-screen h-screen p-8 space-y-4 bg-white inset"
         style={{
           clipPath: `circle(${open ? 150 : 0}% at ${circlePos})`,
           transition: 'clip-path .3s ease-in-out',

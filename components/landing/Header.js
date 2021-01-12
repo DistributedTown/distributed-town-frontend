@@ -10,7 +10,7 @@ export default function Header({ links = [] }) {
           <Logo className="mx-auto sm:mx-0" />
         </a>
       </Link>
-      <div className="hidden sm:flex sm:gap-12 sm:items-center">
+      <div className="hidden sm:flex sm:space-x-12 sm:items-center">
         {links.map(l => (
           <Link href={l.href}>
             <a className="font-bold text-gray-600">{l.title}</a>

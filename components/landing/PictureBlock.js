@@ -1,4 +1,4 @@
-import { FaAccusoft, FaAddressBook } from 'react-icons/fa';
+import { FaAddressBook } from 'react-icons/fa';
 import bgImages from '../../utils/bgImages';
 import Button from '../Button';
 
@@ -15,7 +15,7 @@ export default function PictureBlock({
           } sm:w-1/2`}
           src={imageSrc}
         />
-        <div className="flex flex-col items-center justify-center gap-4 p-8 text-center sm:w-1/2">
+        <div className="flex flex-col items-center justify-center p-8 space-y-4 text-center sm:w-1/2">
           <FaAddressBook size="3rem" />
           <h2 className="text-2xl">Adipisicing labore</h2>
           <p className="text-gray-600">

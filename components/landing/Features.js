@@ -46,14 +46,14 @@ export default function Features() {
     },
   ];
   return (
-    <div className="container flex flex-col flex-wrap justify-center gap-4 p-4 mx-auto md:grid md:grid-cols-3">
+    <div className="container flex flex-col flex-wrap justify-center p-4 mx-auto space-y-4 md:space-x-4 md:space-y-0 md:grid md:grid-cols-3">
       <h1 className="w-full mb-8 text-3xl text-center sm:text-5xl md:col-span-3">
         Three community types to choose from
       </h1>
       {features.map(feature => (
         <div
           key={feature.title}
-          className="flex flex-col gap-2 p-8 bg-white rounded-2xl"
+          className="flex flex-col p-8 space-y-2 bg-white rounded-2xl"
         >
           <feature.icon size="4rem" className="self-center mb-6 text-denim" />
           <h2 className="text-2xl text-center">{feature.title}</h2>
