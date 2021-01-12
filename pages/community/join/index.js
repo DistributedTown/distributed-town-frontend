@@ -38,12 +38,12 @@ const Join = ({ skills = [] }) => {
             No <strong>name</strong>, <strong>location</strong> or{' '}
             <strong>bank account</strong> necessary.
           </p>
-          <div className="flex flex-wrap justify-center gap-4 py-8 text-center">
+          <div className="flex flex-wrap justify-center py-8 text-center">
             {skills.map(skill => (
               <Button
                 key={skill}
                 onClick={() => setChosenSkill(skill)}
-                className="rounded-full"
+                className="m-2 rounded-full"
               >
                 {skill}
               </Button>

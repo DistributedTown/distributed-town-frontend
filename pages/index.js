@@ -50,7 +50,10 @@ const Index = () => {
             </Button>
           </Link>
           {/* TODO: Don't show if logged in */}
-          <form onSubmit={onLoginSubmit} className="flex space-x-4 flex-nowrap">
+          <form
+            onSubmit={onLoginSubmit}
+            className="flex space-x-4 whitespace-nowrap"
+          >
             <label>
               <span className="mr-2 text-xl font-bold">Login</span>
               <TextField

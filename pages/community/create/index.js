@@ -80,7 +80,7 @@ function CommunityCreate() {
     >
       <div className="flex flex-col flex-1 md:flex-row md:items-center">
         <div
-          className="grid content-center w-full h-full p-8 bg-center bg-cover md:w-1/3"
+          className="grid content-center w-full h-full p-8 bg-center bg-cover md:flex-1"
           style={{ backgroundImage: 'url(/background-image.svg)' }}
         >
           <Logo className="pb-8 md:absolute" />
@@ -115,45 +115,25 @@ function CommunityCreate() {
             </label>
           </Card>
         </div>
-        <div className="p-2 text-center md:w-2/3">
+        <div className="p-2 text-center md:flex-1">
           <h1 className="mb-8 text-3xl font-bold">Select community type</h1>
-          <div className="flex flex-col flex-wrap justify-center gap-4 md:flex-row">
-            {communityCategories.map(category => {
-              const { name, color, subtitle, description } = category;
-
-              return (
-                <Card
-                  className="flex flex-col overflow-hidden flex-y-4 md:w-5/12"
-                  key={name}
-                  color={color}
-                >
-                  <h1 className={`text-${color} font-black text-xl`}>{name}</h1>
-                  <div className="h-full bg-white">
-                    <div className="text-left">
-                      <p className="mb-2 text-sm text-center">{subtitle}</p>
-                      <ul className="text-xs list-disc">
-                        {description.map((desc, index) => {
-                          return <li key={index}>{desc}</li>;
-                        })}
-                      </ul>
-                    </div>
-                  </div>
-                  {selectedCategory === name ? (
-                    <Button disabled color={color} filled>
-                      Selected
-                    </Button>
-                  ) : (
-                    <Button
-                      color={color}
-                      filled
-                      onClick={() => setValue('category', name)}
-                    >
-                      Select
-                    </Button>
-                  )}
-                </Card>
-              );
-            })}
+          <div className="grid justify-center gap-4 md:justify-items-center">
+            <CategoryCard
+              category={communityCategories[0]}
+              selected={communityCategories[0].name === selectedCategory}
+              onSelect={categoryName => setValue('category', categoryName)}
+            />
+            <CategoryCard
+              category={communityCategories[1]}
+              selected={communityCategories[1].name === selectedCategory}
+              onSelect={categoryName => setValue('category', categoryName)}
+            />
+            <CategoryCard
+              className="md:col-span-2"
+              category={communityCategories[2]}
+              selected={communityCategories[2].name === selectedCategory}
+              onSelect={categoryName => setValue('category', categoryName)}
+            />
           </div>
         </div>
       </div>
@@ -163,6 +143,39 @@ function CommunityCreate() {
         </Button>
       </div>
     </form>
+  );
+}
+
+function CategoryCard({ category, selected, onSelect, className }) {
+  const { name, color, subtitle, description } = category;
+
+  return (
+    <Card
+      className={`flex flex-col space-y-4 overflow-hidden ${className}`}
+      key={name}
+      color={color}
+    >
+      <h1 className={`text-${color} font-black text-xl`}>{name}</h1>
+      <div className="h-full bg-white">
+        <div className="text-left">
+          <p className="mb-2 text-sm text-center">{subtitle}</p>
+          <ul className="text-xs font-light list-disc">
+            {description.map((desc, index) => {
+              return <li key={index}>{desc}</li>;
+            })}
+          </ul>
+        </div>
+      </div>
+      {selected ? (
+        <Button disabled color={color} filled>
+          Selected
+        </Button>
+      ) : (
+        <Button color={color} filled onClick={() => onSelect(name)}>
+          Select
+        </Button>
+      )}
+    </Card>
   );
 }
 
