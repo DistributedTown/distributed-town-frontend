@@ -28,25 +28,25 @@ const Join = ({ skills = [] }) => {
   return (
     <div className="w-full h-full">
       <div>
-        <div className="flex flex-row justify-between items-center">
+        <div className="flex flex-col items-center justify-between sm:flex-row">
           <Logo className="p-8" />
           <Link href="#">
-            <a className="text-black text-2xl font-bold p-8">
+            <a className="p-8 text-2xl font-bold text-black">
               what's this about?
             </a>
           </Link>
         </div>
-        <div className="w-full h-full flex flex-col items-center space-y-8 px-4">
+        <div className="flex flex-col items-center w-full h-full px-4 space-y-8">
           <Quote quote="Have you ever thought, 'I would like to contribute, but …'" />
-          <p className="text-gray-500 text-center">
+          <p className="text-center text-gray-500">
             Distributed Town (DiTo) lets you <strong>create</strong> or{' '}
             <strong>join</strong> a community with one click.
             <br />
             No <strong>name</strong>, <strong>location</strong> or{' '}
             <strong>bank account</strong> necessary.
           </p>
-          {/* <div className="text-center grid grid-flow-row grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 py-8"> */}
-          <div className="text-center flex flex-wrap justify-center gap-4 py-8">
+          {/* <div className="grid grid-flow-row grid-cols-2 gap-4 py-8 text-center sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5"> */}
+          <div className="flex flex-wrap justify-center gap-4 py-8 text-center">
             {skills.map(skill => (
               <Button
                 key={skill}

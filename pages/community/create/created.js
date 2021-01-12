@@ -21,11 +21,11 @@ function Created() {
   return (
     <div className="w-full h-screen">
       <div className="flex flex-col h-full">
-        <Logo className="p-8 mr-auto" />
-        <div className="flex-1 text-center flex flex-col justify-center items-center pb-8">
-          <h1 className="text-5xl font-bold">Congratulations!</h1>
-          <h2 className="text-4xl">You have founded {community.name}!</h2>
-          <div className="text-yellow-300 bg-denim shadow rounded-full flex flex-col gap-2 p-8 items-center justify-center font-bold h-64 w-64 mt-6">
+        <Logo className="p-8 mx-auto md:ml-0" />
+        <div className="flex flex-col items-center justify-center flex-1 pb-8 text-center">
+          <h1 className="text-3xl font-bold sm:text-5xl">Congratulations!</h1>
+          <h2 className="sm:text-4xl">You have founded {community.name}!</h2>
+          <div className="flex flex-col items-center justify-center w-64 h-64 gap-2 p-8 mt-6 font-bold text-yellow-300 rounded-full shadow bg-denim">
             <p>Your community now has:</p>
             <img alt="dito tokens" src="/dito-tokens.svg" />
             <p>96000 DiTo</p>

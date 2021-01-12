@@ -117,13 +117,13 @@ function CommunityCreate() {
         </div>
         <div className="p-2 text-center md:w-2/3">
           <h1 className="mb-8 text-3xl font-bold">Select community type</h1>
-          <div className="flex flex-wrap justify-center gap-4">
+          <div className="flex flex-col flex-wrap justify-center gap-4 md:flex-row">
             {communityCategories.map(category => {
               const { name, color, subtitle, description } = category;
 
               return (
                 <Card
-                  className="flex flex-col w-5/12 gap-4 overflow-hidden"
+                  className="flex flex-col gap-4 overflow-hidden md:w-5/12"
                   key={name}
                   color={color}
                 >
