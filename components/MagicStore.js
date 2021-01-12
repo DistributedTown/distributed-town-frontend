@@ -15,7 +15,6 @@ export const useMagic = () => {
 
 /* this function wraps our entire app within our context APIs so they all have access to their values */
 const MagicStore = ({ children }) => {
-  console.log('LOADING MAGIC STORE');
   const [magic, setMagic] = useState();
 
   useEffect(() => {
