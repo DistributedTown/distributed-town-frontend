@@ -1,4 +1,5 @@
 import Head from 'next/head';
+import { FaDiscord, FaGithub } from 'react-icons/fa';
 import Header from '../components/landing/Header';
 import HeroSection from '../components/landing/HeroSection';
 import Features from '../components/landing/Features';
@@ -9,15 +10,52 @@ import bgImages from '../utils/bgImages';
 import HamburgerMenu from '../components/landing/HamburgerMenu';
 
 export default function Landing() {
+  const topNavLinks = [
+    { title: 'Docs', href: 'https://docs.distributed.town/' },
+  ];
+
+  const footerSections = [
+    {
+      name: 'Product',
+      links: [
+        { title: 'Blog', href: 'https://medium.com/@distributed-town' },
+        { title: 'Documentation', href: 'https://docs.distributed.town/' },
+      ],
+    },
+    {
+      name: 'Community',
+      links: [
+        {
+          title: (
+            <span className="flex flex-row items-center gap-2">
+              <FaDiscord />
+              Discord
+            </span>
+          ),
+          href: 'https://discord.gg/WR7PbswvTr',
+        },
+        {
+          title: (
+            <span className="flex flex-row items-center gap-2">
+              <FaGithub />
+              Github
+            </span>
+          ),
+          href: 'https://github.com/DistributedTown',
+        },
+      ],
+    },
+  ];
+
   return (
     <>
       <Head>
         <title>Welcome to Distributed Town</title>
       </Head>
-      <HamburgerMenu />
+      <HamburgerMenu links={topNavLinks} />
       <div className="flex flex-col w-full space-y-8 md:space-y-16">
         <div className="flex flex-col">
-          <Header />
+          <Header links={topNavLinks} />
           <HeroSection />
         </div>
         <Features />
@@ -27,7 +65,7 @@ export default function Landing() {
           <PictureBlock flip filled imageSrc={bgImages['community life']} />
         </div>
         <FullBlockWhite />
-        <Footer />
+        <Footer sections={footerSections} />
       </div>
     </>
   );

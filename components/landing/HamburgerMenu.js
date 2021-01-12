@@ -1,9 +1,10 @@
+import Link from 'next/link';
 import debounce from 'lodash/debounce';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { FaBars, FaTimes } from 'react-icons/fa';
 import Button from '../Button';
 
-export default function HamburgerMenu() {
+export default function HamburgerMenu({ links = [] }) {
   const [open, setOpen] = useState(false);
   const toggleOpen = () => setOpen(o => !o);
   const [circlePos, setCirclePos] = useState('80% 92%');
@@ -42,9 +43,14 @@ export default function HamburgerMenu() {
           transition: 'clip-path .3s ease-in-out',
         }}
       >
-        <Button>FAQs</Button>
-        <Button>Open App</Button>
-        <Button filled>Create Community</Button>
+        {links.map(l => (
+          <Link href={l.href}>
+            <Button>{l.title}</Button>
+          </Link>
+        ))}
+        <Link href="/">
+          <Button>Open App</Button>
+        </Link>
       </div>
     </div>
   );

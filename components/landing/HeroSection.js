@@ -15,7 +15,7 @@ export default function HeroSection() {
         aliquam recusandae eligendi.
       </p>
       <Link href="/community/create">
-        <Button loading className="self-center" filled>
+        <Button className="self-center" filled>
           Create a Community
         </Button>
       </Link>

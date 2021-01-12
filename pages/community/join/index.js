@@ -28,14 +28,7 @@ const Join = ({ skills = [] }) => {
   return (
     <div className="w-full h-full">
       <div>
-        <div className="flex flex-col items-center justify-between sm:flex-row">
-          <Logo className="p-8" />
-          <Link href="#">
-            <a className="p-8 text-2xl font-bold text-black">
-              what's this about?
-            </a>
-          </Link>
-        </div>
+        <Logo className="p-8 mx-auto sm:ml-0" />
         <div className="flex flex-col items-center w-full h-full px-4 space-y-8">
           <Quote quote="Have you ever thought, 'I would like to contribute, but …'" />
           <p className="text-center text-gray-500">
