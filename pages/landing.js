@@ -10,24 +10,26 @@ import HamburgerMenu from '../components/landing/HamburgerMenu';
 
 export default function Landing() {
   return (
-    <div className="flex flex-col w-full gap-8 md:gap-16">
+    <>
       <Head>
         <title>Welcome to Distributed Town</title>
       </Head>
       <HamburgerMenu />
-      <div className="flex flex-col">
-        <Header />
-        <HeroSection />
+      <div className="flex flex-col w-full space-y-8 md:space-y-16">
+        <div className="flex flex-col">
+          <Header />
+          <HeroSection />
+        </div>
+        <Features />
+        <FullBlock />
+        <div className="flex flex-col sm:space-y-12">
+          <PictureBlock />
+          <PictureBlock flip filled imageSrc={bgImages['community life']} />
+        </div>
+        <FullBlockWhite />
+        <Footer />
       </div>
-      <Features />
-      <FullBlock />
-      <div className="flex flex-col sm:gap-12">
-        <PictureBlock />
-        <PictureBlock flip filled imageSrc={bgImages['community life']} />
-      </div>
-      <FullBlockWhite />
-      <Footer />
-    </div>
+    </>
   );
 }
 
