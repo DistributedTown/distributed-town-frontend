@@ -1,5 +1,4 @@
 import { FaBuilding, FaLink, FaPalette } from 'react-icons/fa';
-import Card from '../Card';
 
 export default function Features() {
   const features = [
@@ -52,14 +51,14 @@ export default function Features() {
         Three community types to choose from
       </h1>
       {features.map(feature => (
-        <Card className={['flex flex-col gap-2 p-8', { shadow: false }]}>
+        <div className="flex flex-col gap-2 p-8 bg-white rounded-2xl">
           <feature.icon size="4rem" className="self-center mb-6 text-denim" />
           <h2 className="text-2xl text-center">{feature.title}</h2>
           <p className="text-xl text-center text-gray-600">{feature.text}</p>
           {/* <p className="self-center font-light text-gray-600">
             {feature.details}
           </p> */}
-        </Card>
+        </div>
       ))}
     </div>
   );
