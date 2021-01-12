@@ -38,8 +38,8 @@ export default function Footer() {
 
   return (
     <div className="bg-white">
-      <div className="container mx-auto p-8 flex flex-col gap-8">
-        <div className="flex flex-col gap-8 sm:flex-row justify-between">
+      <div className="container flex flex-col gap-8 p-8 mx-auto">
+        <div className="flex flex-col justify-between gap-8 sm:flex-row">
           <Link href="/landing">
             <a>
               <Logo />
@@ -49,7 +49,7 @@ export default function Footer() {
           <nav className="flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-16">
             {sections.map(section => (
               <div>
-                <div className="text-2xl mb-2">{section.name}</div>
+                <div className="mb-2 text-2xl">{section.name}</div>
                 <ul className="flex flex-col gap-1">
                   {section.links.map(link => (
                     <li>
@@ -65,7 +65,7 @@ export default function Footer() {
         </div>
         <div className="flex flex-col justify-between gap-4">
           <span className="sm:text-center">© 2021 DiTo.</span>
-          <div className="flex flex-col sm:flex-row sm:justify-center gap-1 sm:gap-4 text-gray-500">
+          <div className="flex flex-col gap-1 text-gray-500 sm:flex-row sm:justify-center sm:gap-4">
             <a>Terms & Conditions</a>
             <a>Privacy Policy</a>
           </div>

@@ -4,7 +4,7 @@ import Logo from '../Logo';
 
 export default function Header() {
   return (
-    <div className="container p-8 mx-auto flex flex-col justify-between sm:flex-row sm:items-center">
+    <div className="container flex flex-col justify-between p-8 mx-auto sm:flex-row sm:items-center">
       <Link href="/landing">
         <a>
           <Logo className="mx-auto sm:mx-0" />

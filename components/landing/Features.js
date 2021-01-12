@@ -47,16 +47,16 @@ export default function Features() {
     },
   ];
   return (
-    <div className="container mx-auto flex flex-col md:grid md:grid-cols-3 flex-wrap justify-center gap-4 p-4">
-      <h1 className="text-center text-3xl sm:text-5xl mb-8 w-full md:col-span-3">
+    <div className="container flex flex-col flex-wrap justify-center gap-4 p-4 mx-auto md:grid md:grid-cols-3">
+      <h1 className="w-full mb-8 text-3xl text-center sm:text-5xl md:col-span-3">
         Three community types to choose from
       </h1>
       {features.map(feature => (
         <Card className={['flex flex-col gap-2 p-8', { shadow: false }]}>
-          <feature.icon size="4rem" className="text-denim mb-6 self-center" />
+          <feature.icon size="4rem" className="self-center mb-6 text-denim" />
           <h2 className="text-2xl text-center">{feature.title}</h2>
           <p className="text-xl text-center text-gray-600">{feature.text}</p>
-          {/* <p className="text-gray-600 font-light self-center">
+          {/* <p className="self-center font-light text-gray-600">
             {feature.details}
           </p> */}
         </Card>

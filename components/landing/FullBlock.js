@@ -1,8 +1,8 @@
 export default function FullBlock() {
   return (
-    <div className="bg-denim text-white text-center py-16 px-8 flex flex-col gap-12">
+    <div className="flex flex-col gap-12 px-8 py-16 text-center text-white bg-denim">
       <div className="container mx-auto">
-        <h2 className="font-bold text-3xl sm:text-5xl">
+        <h2 className="text-3xl font-bold sm:text-5xl">
           Sint minus doloribus commodi?
           <br />
           Odio, cumque, cupiditate.
