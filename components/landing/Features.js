@@ -7,7 +7,7 @@ export default function Features({ title, features, ctaText, ctaHref }) {
       <h1 className="w-full mb-8 text-3xl text-center sm:text-5xl md:col-span-3">
         {title}
       </h1>
-      <div className="flex flex-col p-4 mx-auto space-y-4 md:space-x-4 md:space-y-0 md:grid md:grid-cols-3">
+      <div className="flex flex-col p-4 mx-auto space-y-4 lg:space-x-4 lg:space-y-0 lg:grid lg:grid-cols-3">
         {features.map(feature => (
           <div
             key={feature.title}
