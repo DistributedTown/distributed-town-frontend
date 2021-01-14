@@ -11,7 +11,7 @@ export default function Features({ title, features, ctaText, ctaHref }) {
         {features.map(feature => (
           <div
             key={feature.title}
-            className="flex flex-col p-8 space-y-2 bg-white rounded-2xl"
+            className="flex flex-col justify-between p-8 space-y-2 bg-white rounded-2xl"
           >
             <feature.icon size="4rem" className="self-center mb-6 text-denim" />
             <h2 className="text-2xl text-center">{feature.title}</h2>
