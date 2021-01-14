@@ -12,7 +12,7 @@ export default function Header({ links = [] }) {
       </Link>
       <div className="hidden sm:flex sm:space-x-12 sm:items-center">
         {links.map(l => (
-          <Link href={l.href}>
+          <Link href={l.href} key={l.title}>
             {l.isButton ? (
               <Button>{l.title}</Button>
             ) : (
