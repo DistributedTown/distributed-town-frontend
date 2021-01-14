@@ -17,7 +17,7 @@ function CommunityDashboard() {
             <h2 className="mt-10 text-xl font-bold text-center">
               Administration
             </h2>
-            <div className="flex flex-col mt-8 flex-y-10">
+            <div className="flex flex-col mt-8 space-y-4">
               <Link href="/community/gigs">
                 <Button>
                   <a>Open Gigs</a>

@@ -76,7 +76,7 @@ const Layout = ({ children }) => {
             ))}
           </nav>
         </div>
-        <div className="flex-1 h-full">{children}</div>
+        <div className="flex-1 h-full overflow-y-auto">{children}</div>
       </main>
     </>
   );

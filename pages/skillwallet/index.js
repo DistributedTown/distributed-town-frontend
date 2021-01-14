@@ -126,11 +126,43 @@ function SkillWallet() {
             <h1 className="mb-6 text-xl text-center text-black">Past Gigs</h1>
             {pastGigs ? (
               <>
-                {pastGigs.length === 0 && (
+                {/* {pastGigs.length === 0 && (
                   <p className="text-center">No past gigs</p>
-                )}
-                <div className="flex flex-wrap gap-4">
-                  {pastGigs.map((gig, i) => {
+                )} */}
+                <div
+                  className="grid gap-6"
+                  style={{
+                    gridTemplateColumns:
+                      'repeat(auto-fill, minmax(300px, 1fr))',
+                  }}
+                >
+                  {[
+                    {
+                      title: 'Test',
+                      description: 'Test 2',
+                      skills: ['Skill 1', 'Skill 2'],
+                    },
+                    {
+                      title: 'Test',
+                      description: 'Test 2',
+                      skills: ['Skill 1', 'Skill 2'],
+                    },
+                    {
+                      title: 'Test',
+                      description: 'Test 2',
+                      skills: ['Skill 1', 'Skill 2'],
+                    },
+                    {
+                      title: 'Test',
+                      description: 'Test 2',
+                      skills: ['Skill 1', 'Skill 2'],
+                    },
+                    {
+                      title: 'Test',
+                      description: 'Test 2',
+                      skills: ['Skill 1', 'Skill 2'],
+                    },
+                  ].map((gig, i) => {
                     return (
                       <Card key={i} className="flex" outlined>
                         <div className="w-1/2">

@@ -88,7 +88,7 @@ const CreateGigForm = ({ isSubmitting, onSubmit }) => {
             <span className="text-red-600">This field is required</span>
           )}
         </div>
-        <div className="flex flex-col flex-wrap gap-10 md:flex-row">
+        <div className="flex flex-col space-y-4 lg:space-y-0 lg:space-x-4 lg:flex-row">
           <div className="flex flex-col space-y-4">
             <h1 className="text-xl font-bold">Skills needed</h1>
             <h2 className="text-dove-gray">
