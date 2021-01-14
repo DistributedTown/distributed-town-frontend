@@ -9,7 +9,7 @@ function CommunityDashboard() {
   return (
     <Layout>
       <div className="flex flex-col h-full">
-        <div className="flex flex-col flex-grow flex-y-8 md:flex-row md:flex-y-0">
+        <div className="flex flex-col flex-grow space-y-8 md:flex-row md:space-y-0">
           <div className="grid content-center p-8 md:w-3/5">
             <PageTitle className="mt-12 text-center">
               Community Dashboard

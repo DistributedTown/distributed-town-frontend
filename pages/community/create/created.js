@@ -25,7 +25,7 @@ function Created() {
         <div className="flex flex-col items-center justify-center flex-1 pb-8 text-center">
           <h1 className="text-3xl font-bold sm:text-5xl">Congratulations!</h1>
           <h2 className="sm:text-4xl">You have founded {community.name}!</h2>
-          <div className="flex flex-col items-center justify-center w-64 h-64 p-8 mt-6 font-bold text-yellow-300 rounded-full shadow flex-y-2 bg-denim">
+          <div className="flex flex-col items-center justify-center w-64 h-64 p-8 mt-6 space-y-2 font-bold text-yellow-300 rounded-full shadow bg-denim">
             <p>Your community now has:</p>
             <img alt="dito tokens" src="/dito-tokens.svg" />
             <p>96000 DiTo</p>
