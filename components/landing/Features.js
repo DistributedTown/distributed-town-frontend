@@ -16,7 +16,7 @@ export default function Features({ title, features, ctaText, ctaHref }) {
             <feature.icon size="4rem" className="self-center mb-6 text-denim" />
             <h2 className="text-2xl text-center">{feature.title}</h2>
             <p className="text-xl text-center text-gray-600">{feature.text}</p>
-            <p className="self-center font-light text-gray-600">
+            <p className="self-center font-light text-justify text-gray-600">
               {feature.details}
             </p>
           </div>
