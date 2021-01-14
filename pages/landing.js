@@ -25,7 +25,7 @@ const discordUrl = 'https://discord.gg/WR7PbswvTr';
 const docsUrl = 'https://docs.distributed.town/';
 
 export default function Landing() {
-  const topNavLinks = [{ title: 'Docs', href: docsUrl }];
+  const topNavLinks = [{ title: 'Docs', href: docsUrl, isButton: true }];
 
   const footerSections = [
     {

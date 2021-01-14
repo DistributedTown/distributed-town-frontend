@@ -13,12 +13,13 @@ export default function Header({ links = [] }) {
       <div className="hidden sm:flex sm:space-x-12 sm:items-center">
         {links.map(l => (
           <Link href={l.href}>
-            <a className="font-bold text-gray-600">{l.title}</a>
+            {l.isButton ? (
+              <Button>{l.title}</Button>
+            ) : (
+              <a className="font-bold text-gray-600">{l.title}</a>
+            )}
           </Link>
         ))}
-        <Link href="/">
-          <Button>Open App</Button>
-        </Link>
       </div>
     </div>
   );
