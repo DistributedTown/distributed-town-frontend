@@ -44,7 +44,7 @@ export default function HamburgerMenu({ links = [] }) {
         }}
       >
         {links.map(l => (
-          <Link href={l.href}>
+          <Link href={l.href} key={l.title}>
             <Button>{l.title}</Button>
           </Link>
         ))}
