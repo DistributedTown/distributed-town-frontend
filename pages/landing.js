@@ -22,18 +22,17 @@ import HamburgerMenu from '../components/landing/HamburgerMenu';
 import Button from '../components/Button';
 
 const discordUrl = 'https://discord.gg/WR7PbswvTr';
+const docsUrl = 'https://docs.distributed.town/';
 
 export default function Landing() {
-  const topNavLinks = [
-    { title: 'Docs', href: 'https://docs.distributed.town/' },
-  ];
+  const topNavLinks = [{ title: 'Docs', href: docsUrl }];
 
   const footerSections = [
     {
       name: 'Product',
       links: [
         { title: 'Blog', href: 'https://medium.com/@distributed-town' },
-        { title: 'Documentation', href: 'https://docs.distributed.town/' },
+        { title: 'Documentation', href: docsUrl },
       ],
     },
     {
@@ -98,6 +97,11 @@ export default function Landing() {
           <li>coordinate between the members of a DAO</li>
         </ul>
       ),
+      button: (
+        <Link href="/community/create">
+          <Button>Create</Button>
+        </Link>
+      ),
     },
     {
       icon: <FaPalette size="3rem" />,
@@ -111,6 +115,12 @@ export default function Landing() {
           <li>update gaming scores & rank</li>
         </ul>
       ),
+      imageSrc: bgImages['art, music & creativity'],
+      button: (
+        <Link href="/community/create">
+          <Button>Create</Button>
+        </Link>
+      ),
     },
     {
       icon: <FaBuilding size="3rem" />,
@@ -123,6 +133,12 @@ export default function Landing() {
           <li>organize & fund local projects</li>
           <li>divide tasks for mutual support</li>
         </ul>
+      ),
+      imageSrc: bgImages['community life'],
+      button: (
+        <Link href="/community/create">
+          <Button>Create</Button>
+        </Link>
       ),
     },
   ];
@@ -168,36 +184,12 @@ export default function Landing() {
           text="DistributedTown introduces a new financial paradigm based on Mutual Credit.
 The DITO Credits are a non-speculative currency that citizens can use to exchange value & services all across the network. It’s based on meritocracy and distribution – with no individual accumulation of wealth."
           ctaText="Read more"
-          ctaHref="#"
+          ctaHref={docsUrl}
         />
         <div className="flex flex-col sm:space-y-12">
-          <PictureBlock
-            {...categories[0]}
-            button={
-              <Link href="#">
-                <Button>Create</Button>
-              </Link>
-            }
-          />
-          <PictureBlock
-            {...categories[1]}
-            flip
-            filled
-            imageSrc={bgImages['community life']}
-            button={
-              <Link href="#">
-                <Button>Create</Button>
-              </Link>
-            }
-          />
-          <PictureBlock
-            {...categories[2]}
-            button={
-              <Link href="#">
-                <Button>Create</Button>
-              </Link>
-            }
-          />
+          <PictureBlock {...categories[0]} />
+          <PictureBlock {...categories[1]} flip filled />
+          <PictureBlock {...categories[2]} />
         </div>
         <FullBlockWhite
           icon={<FaHandsHelping className="self-center" size="7rem" />}
