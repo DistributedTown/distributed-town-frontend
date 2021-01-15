@@ -12,7 +12,7 @@ const Layout = ({ children }) => {
 
   const handleLogout = async () => {
     await magic.user.logout();
-    router.push('/');
+    router.push('/app-welcome');
   };
 
   const navItems = [

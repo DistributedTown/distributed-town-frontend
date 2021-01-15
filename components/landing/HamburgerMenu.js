@@ -48,7 +48,7 @@ export default function HamburgerMenu({ links = [] }) {
             <Button>{l.title}</Button>
           </Link>
         ))}
-        <Link href="/">
+        <Link href="/app-welcome">
           <Button>Open App</Button>
         </Link>
       </div>

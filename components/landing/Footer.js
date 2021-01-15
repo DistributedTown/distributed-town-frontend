@@ -6,7 +6,7 @@ export default function Footer({ sections }) {
     <div className="bg-white">
       <div className="container flex flex-col p-8 mx-auto space-y-8">
         <div className="flex flex-col justify-between space-y-8 sm:flex-row sm:space-y-0 sm:space-x-8">
-          <Link href="/landing">
+          <Link href="/">
             <a>
               <Logo />
             </a>

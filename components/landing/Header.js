@@ -5,7 +5,7 @@ import Logo from '../Logo';
 export default function Header({ links = [] }) {
   return (
     <div className="container flex flex-col justify-between p-8 mx-auto text-lg sm:flex-row sm:items-center">
-      <Link href="/landing">
+      <Link href="/">
         <a>
           <Logo className="mx-auto sm:mx-0" />
         </a>
