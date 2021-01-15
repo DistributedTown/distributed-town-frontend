@@ -25,7 +25,9 @@ function Button({
     'font-bold',
     'focus:outline-none',
     'focus:ring',
-    'shadow-md',
+    'shadow',
+    'hover:shadow-lg',
+    'transition',
     { 'opacity-50': isDisabled },
     { 'cursor-not-allowed': isDisabled },
     `border-${color}`,
@@ -38,13 +40,13 @@ function Button({
 
   return (
     <button className={classes} type="button" disabled={isDisabled} {...rest}>
-      <div className="flex gap-2 items-center justify-center">
+      <div className="flex items-center justify-center space-x-2">
         {loading && (
           <FaCircleNotch
             className={`animate-spin text-${filled ? 'white' : color}`}
           />
         )}
-        {children}
+        <span>{children}</span>
       </div>
     </button>
   );

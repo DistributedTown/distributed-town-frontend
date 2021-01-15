@@ -1,38 +1,37 @@
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 
-import RegistrationModal from '../../../components/registration/RegistrationModal';
+import RegistrationModal from '../../../components/RegistrationModal';
 import { useMagicLinkLogin } from '../../../hooks/useMagicLinkLogin';
 import Button from '../../../components/Button';
+import { useCreateCommunityState } from '.';
+import Logo from '../../../components/Logo';
 
 function Created() {
   const router = useRouter();
   const [showRegistrationModal, setShowRegistrationModal] = useState(false);
   const [login, { isLoading }] = useMagicLinkLogin();
-  const { name: communityName, category: communityCategory } = router.query;
+  const [community] = useCreateCommunityState();
 
   const handleCreateAccountClick = async email => {
     await login(email);
-    await router.push(
-      `/community/create/pick-skills?communityName=${encodeURIComponent(
-        communityName,
-      )}&communityCategory=${encodeURIComponent(communityCategory)}`,
-    );
+    await router.push(`/community/create/pick-skills`);
   };
 
   return (
-    <div className="w-full">
-      <div className="w-full flex flex-col items-center justify-between space-y-8 pt-32 h-full">
-        <div className="flex-1 text-center flex items-center flex-col">
-          <h1 className="text-5xl font-bold">Congrats!</h1>
-          <h2 className="text-4xl">You have founded {communityName}!</h2>
-          <p className="text-orange text-3xl mt-8">Your community now has:</p>
-          <div className="bg-rain-forest rounded-full flex flex-col p-8 items-center justify-center h-64 w-64 mt-4">
-            <img src="/dito-tokens.svg" />
-            <p className="text-orange mt-4">96000 DiTo</p>
+    <div className="w-full h-screen">
+      <div className="flex flex-col h-full">
+        <Logo className="p-8 mx-auto md:ml-0" />
+        <div className="flex flex-col items-center justify-center flex-1 pb-8 text-center">
+          <h1 className="text-3xl font-bold sm:text-5xl">Congratulations!</h1>
+          <h2 className="sm:text-4xl">You have founded {community.name}!</h2>
+          <div className="flex flex-col items-center justify-center w-64 h-64 p-8 mt-6 space-y-2 font-bold text-yellow-300 rounded-full shadow bg-denim">
+            <p>Your community now has:</p>
+            <img alt="dito tokens" src="/dito-tokens.svg" />
+            <p>96000 DiTo</p>
           </div>
         </div>
-        <div className="w-full flex justify-center p-4">
+        <div className="flex justify-center w-full p-4 bg-white">
           <Button
             filled
             type="button"
@@ -42,14 +41,11 @@ function Created() {
           </Button>
         </div>
       </div>
-      <div
-        className={`modalBackground modalVisible-${showRegistrationModal} bg-white`}
-      >
-        <RegistrationModal
-          loading={isLoading}
-          handleCreateAccountClick={handleCreateAccountClick}
-        />
-      </div>
+      <RegistrationModal
+        show={showRegistrationModal}
+        loading={isLoading}
+        handleCreateAccountClick={handleCreateAccountClick}
+      />
     </div>
   );
 }

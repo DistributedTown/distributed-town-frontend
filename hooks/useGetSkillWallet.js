@@ -1,12 +1,12 @@
 import { useQuery } from 'react-query';
-import { getUserInfo } from '../api';
+import { getSkillWallet } from '../api';
 import { useMagic } from '../components/MagicStore';
 
-export const useGetUserInfo = () => {
+export const useGetSkillWallet = () => {
   const magic = useMagic();
 
-  return useQuery('user', async () => {
+  return useQuery('skillWallet', async () => {
     const didToken = await magic.user.getIdToken();
-    return getUserInfo(didToken);
+    return getSkillWallet(didToken);
   });
 };

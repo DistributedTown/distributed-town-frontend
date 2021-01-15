@@ -1,5 +1,5 @@
 import { useMutation } from 'react-query';
-import { useMagic } from '../components/Store';
+import { useMagic } from '../components/MagicStore';
 import { createUser } from '../api';
 
 export const useCreateUser = () => {

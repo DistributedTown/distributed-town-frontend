@@ -1,9 +1,13 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
+import { useForm } from 'react-hook-form';
+import useLocalStorage from '../../../hooks/useLocalStorage';
 
 import Button from '../../../components/Button';
 import TextField from '../../../components/TextField';
 import Card from '../../../components/Card';
+import TextArea from '../../../components/TextArea';
+import Logo from '../../../components/Logo';
 
 const communityCategories = [
   {
@@ -44,97 +48,134 @@ const communityCategories = [
   },
 ];
 
-function CommunityCreate() {
-  const [communityName, setCommunityName] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState();
-  const router = useRouter();
+export const useCreateCommunityState = () => {
+  return useLocalStorage('create-community', {});
+};
 
-  const handleCreateCommunity = async () => {
+function CommunityCreate() {
+  const { register, handleSubmit, setValue, watch } = useForm();
+  const selectedCategory = watch('category');
+  const router = useRouter();
+  const [, setCreateState] = useCreateCommunityState();
+
+  const handleCreateCommunity = async data => {
     // TODO: Handle validation, error display and loading
-    await router.push(
-      `/community/create/created?name=${encodeURIComponent(
-        communityName,
-      )}&category=${encodeURIComponent(selectedCategory)}`,
-    );
+    const { name, description, category } = data;
+    setCreateState({
+      name,
+      description,
+      category,
+    });
+    await router.push(`/community/create/created`);
   };
 
+  useEffect(() => {
+    register('category', { required: true });
+  }, [register]);
+
   return (
-    <div className="flex flex-col w-full">
-      <div className="flex-1 flex flex-col md:flex-row md:items-center">
+    <form
+      className="flex flex-col w-full h-screen"
+      onSubmit={handleSubmit(handleCreateCommunity)}
+    >
+      <div className="flex flex-col flex-1 md:flex-row md:items-center">
         <div
-          className="p-8 bg-cover bg-center w-full h-full grid content-center md:w-1/2"
+          className="grid content-center w-full h-full p-8 bg-center bg-cover md:flex-1"
           style={{ backgroundImage: 'url(/background-image.svg)' }}
         >
-          <Card className="flex flex-col items-center w-3/4 mx-auto">
-            <div className="text-gray-900 font-bold text-3xl mb-8 text-center">
+          <Logo className="pb-8 md:absolute" />
+          <Card className="flex flex-col items-center mx-auto">
+            <div className="mb-8 text-3xl font-bold text-center text-gray-900">
               Welcome to Distributed Town!
             </div>
-            <p className="text-lg mb-6 text-center">
+            <p className="mb-6 text-lg text-center">
               This is your first Community. Pick up a simple, intuitive{' '}
               <strong>name</strong>.
             </p>
-            <TextField
-              id="communityName"
-              type="text"
-              value={communityName}
-              placeholder="Community name"
-              onChange={e => setCommunityName(e.target.value)}
-              required
-            />
+            <label className="flex flex-col w-full md:w-2/3">
+              <strong>Name </strong>
+              <TextField
+                id="name"
+                name="name"
+                type="text"
+                ref={register({ required: true })}
+                required
+                className="w-full"
+              />
+            </label>
+            <label className="flex flex-col w-full md:w-2/3">
+              <strong>Description</strong>
+              <TextArea
+                required
+                name="description"
+                maxLength="280"
+                ref={register({ required: true, maxLength: 280 })}
+                className="w-full"
+              />
+            </label>
           </Card>
         </div>
-        <div className="p-8 text-center md:w-1/2">
-          <h1 className="font-bold text-3xl mb-8">Select community type</h1>
-          <div className="flex flex-wrap justify-center gap-4">
-            {communityCategories.map(category => {
-              const { name, color, subtitle, description } = category;
-
-              return (
-                <Card
-                  className="w-5/12 overflow-hidden flex flex-col gap-4"
-                  key={name}
-                  color={color}
-                >
-                  <h1 className={`text-${color} font-black text-xl`}>{name}</h1>
-                  <div className="bg-white h-full">
-                    <div className="text-left">
-                      <p className="text-sm text-center mb-2">{subtitle}</p>
-                      <ul className="list-disc text-xs">
-                        {description.map((desc, index) => {
-                          return <li key={index}>{desc}</li>;
-                        })}
-                      </ul>
-                    </div>
-                  </div>
-                  {selectedCategory === name ? (
-                    <Button disabled color={color} filled>
-                      Selected
-                    </Button>
-                  ) : (
-                    <Button
-                      color={color}
-                      filled
-                      onClick={() => setSelectedCategory(name)}
-                    >
-                      Select
-                    </Button>
-                  )}
-                </Card>
-              );
-            })}
+        <div className="p-2 text-center md:flex-1">
+          <h1 className="mb-8 text-3xl font-bold">Select community type</h1>
+          <div className="grid justify-center gap-4 md:justify-items-center">
+            <CategoryCard
+              category={communityCategories[0]}
+              selected={communityCategories[0].name === selectedCategory}
+              onSelect={categoryName => setValue('category', categoryName)}
+            />
+            <CategoryCard
+              category={communityCategories[1]}
+              selected={communityCategories[1].name === selectedCategory}
+              onSelect={categoryName => setValue('category', categoryName)}
+            />
+            <CategoryCard
+              className="md:col-span-2"
+              category={communityCategories[2]}
+              selected={communityCategories[2].name === selectedCategory}
+              onSelect={categoryName => setValue('category', categoryName)}
+            />
           </div>
         </div>
       </div>
       <div className="flex justify-center w-full p-4 bg-white">
-        <Button
-          filled
-          onClick={handleCreateCommunity}
-          disabled={!communityName || !selectedCategory}
-        >
+        <Button filled type="submit">
           Create Community
         </Button>
       </div>
-    </div>
+    </form>
+  );
+}
+
+function CategoryCard({ category, selected, onSelect, className }) {
+  const { name, color, subtitle, description } = category;
+
+  return (
+    <Card
+      className={`flex flex-col space-y-4 overflow-hidden ${className}`}
+      key={name}
+      color={color}
+    >
+      <h1 className={`text-${color} font-black text-xl`}>{name}</h1>
+      <div className="h-full bg-white">
+        <div className="text-left">
+          <p className="mb-2 text-sm text-center">{subtitle}</p>
+          <ul className="text-xs font-light list-disc">
+            {description.map((desc, index) => {
+              return <li key={index}>{desc}</li>;
+            })}
+          </ul>
+        </div>
+      </div>
+      {selected ? (
+        <Button disabled color={color} filled>
+          Selected
+        </Button>
+      ) : (
+        <Button color={color} filled onClick={() => onSelect(name)}>
+          Select
+        </Button>
+      )}
+    </Card>
   );
 }
 

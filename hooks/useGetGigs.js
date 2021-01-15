@@ -1,6 +1,6 @@
 import { useQuery } from 'react-query';
 import { getGigs } from '../api';
-import { useMagic } from '../components/Store';
+import { useMagic } from '../components/MagicStore';
 
 export const useGetGigs = ({ isOpen } = { isOpen: true }) => {
   const magic = useMagic();

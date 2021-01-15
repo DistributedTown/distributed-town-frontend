@@ -14,7 +14,7 @@ export default async function handler(req, res) {
     const txPayload = {
       to: publicAddress,
       // TODO: This should be different depending on the network
-      value: ethers.utils.parseEther('0.1'),
+      value: ethers.utils.parseEther('0.3'),
     };
 
     // Signing a transaction

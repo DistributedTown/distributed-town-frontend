@@ -1,18 +1,19 @@
 import '../tailwind.css';
-
-import Store from '../components/Store';
+import MagicStore from '../components/MagicStore';
 import '../public/App.css';
 import ToastsProvider from '../components/ToastsProvider';
 
 // This default export is required in a new `pages/_app.js` file.
 export default function App({ Component, pageProps }) {
   return (
-    <div className="h-screen w-screen bg-gray-100">
-      <ToastsProvider>
-        <Store>
+    <ToastsProvider>
+      {pageProps.disableMagicLinks ? (
+        <Component {...pageProps} />
+      ) : (
+        <MagicStore>
           <Component {...pageProps} />
-        </Store>
-      </ToastsProvider>
-    </div>
+        </MagicStore>
+      )}
+    </ToastsProvider>
   );
 }

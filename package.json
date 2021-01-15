@@ -21,6 +21,7 @@
     "cookie": "^0.4.1",
     "ethers": "^5.0.17",
     "immer": "^8.0.0",
+    "lodash": "^4.17.20",
     "magic-sdk": "^2.0.2",
     "mongoose": "^5.9.18",
     "next": "^10.0.1",
@@ -32,6 +33,7 @@
     "react-icons": "^4.1.0",
     "react-qrcode-logo": "^2.2.1",
     "react-query": "^2.26.3",
+    "react-transition-group": "^4.4.1",
     "swr": "^0.3.8"
   },
   "devDependencies": {

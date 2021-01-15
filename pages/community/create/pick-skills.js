@@ -1,32 +1,32 @@
 import { useRouter } from 'next/router';
+import { useCreateCommunityState } from '.';
 import SkillPicker from '../../../components/SkillPicker';
 import { useCreateCommunity } from '../../../hooks/useCreateCommunity';
 
 function PickSkills() {
-  const router = useRouter();
-  const { communityName, communityCategory } = router.query;
+  const [community] = useCreateCommunityState();
   const [createCommunity, { isLoading }] = useCreateCommunity();
+  const router = useRouter();
 
   const handleSubmit = async ({ username, skills }) => {
     const user = { username, skills };
     await createCommunity({
-      name: communityName,
-      category: communityCategory,
+      name: community.name,
+      category: community.category,
+      description: community.description,
       user,
     });
-    await router.push(
-      `/community/create/completed?communityName=${encodeURIComponent(
-        communityName,
-      )}`,
-    );
+    await router.push(`/community/create/completed`);
   };
 
-  if (!communityName || !communityCategory) return null;
+  if (!community.name || !community.category || !community.description) {
+    router.push(`/community/create`);
+  }
 
   return (
     <SkillPicker
       isSubmitting={isLoading}
-      communityCategory={communityCategory}
+      communityCategory={community.category}
       onSubmit={handleSubmit}
     />
   );

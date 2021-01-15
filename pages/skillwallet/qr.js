@@ -3,22 +3,25 @@ import { useGetUserInfo } from '../../hooks/useGetUserInfo';
 import { useGetDitoBalance } from '../../hooks/useGetDitoBalance';
 import Card from '../../components/Card';
 import { useGetCommunity } from '../../hooks/useGetCommunity';
+import { useGetSkillWallet } from '../../hooks/useGetSkillWallet';
 
 function QR() {
   const { data: userInfo } = useGetUserInfo();
+  const { data: skillWallet } = useGetSkillWallet();
   const { data: ditoBalance } = useGetDitoBalance();
   const { data: community } = useGetCommunity();
 
   return (
-    <div className="flex w-full h-screen">
-      <div className="flex flex-col px-40 py-64 justify-center items-center bg-denim w-1/2">
-        <div className="bg-ripe-lemon w-56 h-56 p-4 flex justify-center items-center rounded-xl">
+    <div className="flex flex-col w-full h-screen md:flex-row">
+      <div className="flex flex-col items-center justify-center p-8 bg-denim md:w-1/2">
+        <div className="p-4 bg-ripe-lemon rounded-xl">
+          {/* TODO: Use skillWallet instead of user id when endpoint is implemented */}
           {userInfo ? (
             <QRCode
-              value={userInfo ? userInfo._id : '...'}
-              logoImage="/isologo.svg"
-              logoWidth={60}
-              logoHeight={60}
+              value={userInfo._id}
+              // logoImage="/isologo.svg"
+              // logoWidth={60}
+              // logoHeight={60}
               bgColor="transparent"
               size={180}
             />
@@ -26,23 +29,23 @@ function QR() {
             'Loading QR code.'
           )}
         </div>
-        <Card className="bg-white p-2 mt-10">
+        <Card className="p-2 mt-10 bg-white">
           Scan Wallet’s QR-Code to verify new member.
         </Card>
       </div>
-      <div className="flex w-1/2 justify-center items-center">
-        <Card className="flex flex-col justify-center items-center">
+      <div className="flex items-center justify-center p-8 md:w-1/2">
+        <Card className="flex flex-col items-center justify-center">
           <h3 className="text-2xl">Accepting Community</h3>
           <Card filled className="my-4">
             <p>{community ? community.communityInfo.name : '...'}</p>
           </Card>
-          <h3 className="text-2xl mb-4">Accepting Member</h3>
-          <div className="bg-black p-4 flex justify-around items-center rounded-xl w-full">
-            <p className="text-white flex flex-col justify-center items-center">
+          <h3 className="mb-4 text-2xl">Accepting Member</h3>
+          <div className="flex items-center justify-around w-full p-4 bg-black rounded-xl">
+            <p className="flex flex-col items-center justify-center text-white">
               <span className="text-4xl">👨</span>
               <span>{userInfo ? userInfo.username : '...'}</span>
             </p>
-            <div className="flex flex-col w-1/2 p-3 items-center justify-start text-white">
+            <div className="flex flex-col items-center justify-start w-1/2 p-3 text-white">
               <span>DiTo</span>
               <img src="/dito-tokens.svg" />
               <h2 className="font-bold">

@@ -21,9 +21,10 @@ export default function InviteModal({ open, onClose, shareLink }) {
       className={`fixed inset-0 h-screen w-screen bg-opacity-50 bg-black flex justify-center items-center ${
         open ? 'flex' : 'hidden'
       }`}
+      style={{ marginTop: 0 }}
       onClick={e => e.currentTarget === e.target && onClose()}
     >
-      <Card className="bg-white flex flex-col gap-6">
+      <Card className="flex flex-col space-y-6 bg-white">
         <Button>
           <a
             target="_blank"

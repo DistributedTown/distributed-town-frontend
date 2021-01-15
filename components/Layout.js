@@ -3,7 +3,7 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { FaBars, FaWallet, FaUsers, FaSignOutAlt } from 'react-icons/fa';
-import { useMagic } from './Store';
+import { useMagic } from './MagicStore';
 
 const Layout = ({ children }) => {
   const magic = useMagic();
@@ -12,7 +12,7 @@ const Layout = ({ children }) => {
 
   const handleLogout = async () => {
     await magic.user.logout();
-    router.push('/');
+    router.push('/app-welcome');
   };
 
   const navItems = [
@@ -34,8 +34,8 @@ const Layout = ({ children }) => {
       <Head>
         <title>DistributedTown</title>
       </Head>
-      <main className="flex flex-col w-full h-screen md:flex-row">
-        <div className="md:hidden flex flex-row bg-denim text-white">
+      <main className="flex flex-col w-full min-h-screen md:flex-row">
+        <div className="flex flex-row text-white md:hidden bg-denim">
           <button
             className="absolute p-6 focus:outline-none"
             type="button"
@@ -45,16 +45,16 @@ const Layout = ({ children }) => {
           </button>
           <img
             src="/dito-logo.svg"
-            className="h-16 p-2 flex-grow text-center"
+            className="flex-grow h-16 p-2 text-center"
           />
         </div>
         <div className="relative">
           <nav
             className={`flex flex-col bg-denim text-white text-xl font-bold w-full absolute overflow-hidden ${
               showNav ? 'h-auto' : 'h-0'
-            } md:relative md:h-screen md:w-60 md:bg-white md:text-denim shadow`}
+            } md:relative md:h-full md:w-60 md:bg-white md:text-denim shadow`}
           >
-            <img className="hidden md:block p-8 mx-auto" src="/isologo.svg" />
+            <img className="hidden p-8 mx-auto md:block" src="/isologo.svg" />
             {navItems.map(ni => (
               <button
                 type="button"
@@ -67,7 +67,7 @@ const Layout = ({ children }) => {
                 onClick={ni.onClick}
               >
                 <Link href={ni.href || '#'}>
-                  <a className="flex gap-2 items-center justify-center md:justify-start">
+                  <a className="flex items-center justify-center space-x-2 md:justify-start">
                     <span>{ni.icon}</span>
                     <span>{ni.text}</span>
                   </a>
@@ -76,7 +76,7 @@ const Layout = ({ children }) => {
             ))}
           </nav>
         </div>
-        <div className="flex-1 h-full">{children}</div>
+        <div className="flex-1 h-full overflow-y-auto">{children}</div>
       </main>
     </>
   );

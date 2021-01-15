@@ -2,7 +2,7 @@ import { BigNumber, ethers } from 'ethers';
 import { useQuery } from 'react-query';
 import NoGSNCommunityAbi from '../utils/NoGSNCommunity.json';
 import { getCommunityById } from '../api';
-import { useMagic } from '../components/Store';
+import { useMagic } from '../components/MagicStore';
 import { useGetUserInfo } from './useGetUserInfo';
 
 export const useGetCommunity = () => {

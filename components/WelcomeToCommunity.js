@@ -22,11 +22,11 @@ export default function WelcomeToCommunity({
   };
 
   return (
-    <div className="w-full flex flex-col items-center justify-between space-y-8 pt-32 h-full">
-      <div className="flex-1 text-center flex items-center flex-col">
+    <div className="flex flex-col items-center justify-between w-full h-full pt-32 space-y-8">
+      <div className="flex flex-col items-center flex-1 text-center">
         <p className="text-5xl font-bold">Congrats!</p>
         <p className="text-4xl">You are now a member of {communityName}!</p>
-        <div className="text-yellow-300 bg-red-500 shadow rounded-full flex flex-col gap-2 p-8 items-center justify-center font-bold h-64 w-64 mt-6">
+        <div className="flex flex-col items-center justify-center w-64 h-64 p-8 mt-6 space-y-2 font-bold text-yellow-300 rounded-full shadow bg-denim">
           <p>You received:</p>
           <img alt="dito tokens" src="/dito-tokens.svg" />
           <p>
@@ -34,14 +34,10 @@ export default function WelcomeToCommunity({
           </p>
         </div>
       </div>
-      <div className="w-full flex justify-center gap-4 bottom-0 right-0 py-4 px-48">
+      <div className="bottom-0 right-0 flex justify-center w-full px-48 py-4 space-x-4">
         {/* TODO: Only on create */}
         {showInviteButton && (
-          <Button
-            onClick={onInviteClick}
-            loading={loadingShareLink}
-            color="rain-forest"
-          >
+          <Button onClick={onInviteClick} loading={loadingShareLink}>
             Invite new Members
           </Button>
         )}

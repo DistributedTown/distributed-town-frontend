@@ -1,4 +1,4 @@
-import classNames from 'classnames';
+import classNames from 'classnames/dedupe';
 
 export default function Card({
   children,
@@ -8,9 +8,6 @@ export default function Card({
   outlined = false,
   onClick,
 }) {
-  if (filled) {
-    className += ' text-white';
-  }
   const classes = classNames(
     'p-6',
     // 'border-2',
@@ -21,6 +18,7 @@ export default function Card({
       'border-2': outlined,
       [`bg-white`]: !filled,
       [`bg-${color}`]: filled,
+      'text-white': filled,
     },
     className,
   );

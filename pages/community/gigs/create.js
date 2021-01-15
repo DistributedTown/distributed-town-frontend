@@ -15,7 +15,7 @@ function CreateGig() {
 
   return (
     <Layout>
-      <div className="w-full p-8 h-full overflow-scroll">
+      <div className="h-screen p-8">
         <PageTitle>Create New Gig</PageTitle>
         <CreateGigForm isSubmitting={isSubmitting} onSubmit={onSubmit} />
       </div>

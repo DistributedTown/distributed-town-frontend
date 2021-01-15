@@ -34,23 +34,23 @@ function SkillWallet() {
 
   return (
     <Layout>
-      <div className="w-full flex flex-col h-full">
+      <div className="flex flex-col w-full h-full">
         {/* Layout */}
-        <div className="grid lg:grid-cols-2 gap-6 m-6">
+        <div className="grid gap-6 m-6 lg:grid-cols-2">
           {/* MAIN TITLE  */}
           <div className="col-span-1 lg:col-span-2">
             <PageTitle>Skill Wallet</PageTitle>
           </div>
 
           {/*  WALLET CARD  */}
-          <Card className="row-span-2 content-between flex flex-col gap-10">
+          <Card className="flex flex-col content-between row-span-2 space-y-10">
             {/* PROFILE */}
-            <Card filled color="black" className="flex gap-6 text-white">
-              <div className="flex justify-center items-center w-24 h-24 bg-white rounded-full text-denim">
+            <Card filled color="black" className="flex space-x-6 text-white">
+              <div className="flex items-center justify-center w-24 h-24 bg-white rounded-full text-denim">
                 <FaUser size="4.5rem" />
               </div>
-              <div className="flex flex-col justify-center gap-2">
-                <h3 className="text-white font-bold">
+              <div className="flex flex-col justify-center space-y-2">
+                <h3 className="font-bold text-white">
                   {userInfo ? (
                     userInfo.username
                   ) : (
@@ -71,7 +71,7 @@ function SkillWallet() {
               </div>
             </Card>
             {/*  <!--COMMUNITIES--> */}
-            <div className="flex items-center justify-center gap-4">
+            <div className="flex items-center justify-center space-x-4">
               <p className="text-xl font-bold ">Your community:</p>
               <Link href="community">
                 <Button filled textColor="white">
@@ -80,7 +80,7 @@ function SkillWallet() {
               </Link>
             </div>
             {/*  <!--QR-CODE--> */}
-            <div className="flex items-center justify-center gap-6">
+            <div className="flex items-center justify-center space-x-6">
               <FaQrcode size="3rem" />
               <p className="text-center">
                 Show your{' '}
@@ -92,10 +92,10 @@ function SkillWallet() {
               </p>
             </div>
             {/*  <!--BALANCE--> */}
-            <div className="grid place-items-center grid-cols-2 mx-auto">
-              <p className="text-xl row-span-2">Your credits:</p>
+            <div className="grid grid-cols-2 mx-auto place-items-center">
+              <p className="row-span-2 text-xl">Your credits:</p>
               <img src="dito-tokens.svg" />
-              <h2 className="font-bold p-3">
+              <h2 className="p-3 font-bold">
                 {ditoBalance
                   ? `${ditoBalance} DiTo`
                   : 'Loading dito balance...'}
@@ -104,8 +104,8 @@ function SkillWallet() {
           </Card>
           {/*  <!--BADGES --> */}
           <Card>
-            <h1 className="text-xl mb-6 text-center text-black">Badges</h1>
-            <p className="pr-4 text-sm text-center mb-8">
+            <h1 className="mb-6 text-xl text-center text-black">Badges</h1>
+            <p className="pr-4 mb-8 text-sm text-center">
               Badges will appear here once you validate your skills. Check the{' '}
               <Link href="/community/gigs">
                 <a className="text-denim">Open Gigs</a>
@@ -113,7 +113,7 @@ function SkillWallet() {
               and validate your Skills now!
             </p>
 
-            <div className="flex gap-8 justify-center">
+            <div className="flex justify-center space-x-8">
               {/*  <!--BADGE--> */}
               <img src="Badge1.svg" className="w-20 h-20" />
               <img src="Badge2.svg" className="w-20 h-20" />
@@ -123,21 +123,27 @@ function SkillWallet() {
 
           {/*  <!--PAST GIGS --> */}
           <Card>
-            <h1 className="text-xl mb-6 text-center text-black">Past Gigs</h1>
+            <h1 className="mb-6 text-xl text-center text-black">Past Gigs</h1>
             {pastGigs ? (
               <>
                 {pastGigs.length === 0 && (
                   <p className="text-center">No past gigs</p>
                 )}
-                <div className="flex flex-wrap gap-4">
+                <div
+                  className="grid gap-6"
+                  style={{
+                    gridTemplateColumns:
+                      'repeat(auto-fill, minmax(300px, 1fr))',
+                  }}
+                >
                   {pastGigs.map((gig, i) => {
                     return (
                       <Card key={i} className="flex" outlined>
                         <div className="w-1/2">
                           <h3 className="text-lg">{gig.title}</h3>
-                          <p className="text-xs mb-4">{gig.description}</p>
+                          <p className="mb-4 text-xs">{gig.description}</p>
                           <h3>Skills Used</h3>
-                          <ul className="flex-wrap text-xs list-disc ml-6">
+                          <ul className="flex-wrap ml-6 text-xs list-disc">
                             {gig.skills.map((skill, index) => (
                               <li key={index}>{skill}</li>
                             ))}
@@ -145,13 +151,13 @@ function SkillWallet() {
                         </div>
                         <div className="w-1/2">
                           <div className="flex flex-col mb-4">
-                            <h3 className="font-bold text-xs lg:text-base text-carrot">
+                            <h3 className="text-xs font-bold lg:text-base text-carrot">
                               Rate Received
                             </h3>
                             <h3 className="text-black">7/10</h3>
                           </div>
                           <div className="flex flex-col">
-                            <h3 className="font-bold text-xs lg:text-base text-carrot">
+                            <h3 className="text-xs font-bold lg:text-base text-carrot">
                               Credits Received
                             </h3>
                             <h3 className="text-black">6 Dito</h3>

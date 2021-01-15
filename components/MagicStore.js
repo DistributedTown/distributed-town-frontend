@@ -14,7 +14,7 @@ export const useMagic = () => {
 };
 
 /* this function wraps our entire app within our context APIs so they all have access to their values */
-const Store = ({ children }) => {
+const MagicStore = ({ children }) => {
   const [magic, setMagic] = useState();
 
   useEffect(() => {
@@ -37,20 +37,25 @@ const Store = ({ children }) => {
     })();
   }, []);
 
-  if (!magic)
-    return (
-      <div className="w-screen h-screen grid place-content-center">
-        <div className="rounded w-5 h-5 bg-denim animate-spin " />
-      </div>
-    );
+  const loading = !magic;
 
   return (
-    // `children` (passed as props in this file) represents the component nested inside <Store /> in `/pages/index.js` and `/pages/login.js`
-    // TODO: Should we remove div?
-    <MagicContext.Provider value={[magic]}>
-      <div className="flex w-full h-full">{children}</div>
-    </MagicContext.Provider>
+    <>
+      <div
+        key="loading"
+        className={`w-full h-screen top-0 left-0 absolute bg-white grid place-content-center ${
+          loading ? 'visible' : 'invisible'
+        } transition-opacity opacity-${loading ? 100 : 0}`}
+      >
+        <div className="w-5 h-5 rounded bg-denim animate-spin" />
+      </div>
+      {!loading && (
+        <MagicContext.Provider value={[magic]}>
+          <div className="flex w-full h-full">{children}</div>
+        </MagicContext.Provider>
+      )}
+    </>
   );
 };
 
-export default Store;
+export default MagicStore;
