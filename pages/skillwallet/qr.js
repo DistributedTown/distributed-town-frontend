@@ -15,12 +15,13 @@ function QR() {
     <div className="flex flex-col w-full h-screen md:flex-row">
       <div className="flex flex-col items-center justify-center p-8 bg-denim md:w-1/2">
         <div className="flex items-center justify-center w-56 h-56 p-4 bg-ripe-lemon rounded-xl">
-          {skillWallet ? (
+          {/* TODO: Use skillWallet instead of user id when endpoint is implemented */}
+          {userInfo ? (
             <QRCode
-              value={JSON.stringify(skillWallet)}
-              logoImage="/isologo.svg"
-              logoWidth={60}
-              logoHeight={60}
+              value={userInfo._id}
+              // logoImage="/isologo.svg"
+              // logoWidth={60}
+              // logoHeight={60}
               bgColor="transparent"
               size={180}
             />
