@@ -14,7 +14,7 @@ function QR() {
   return (
     <div className="flex flex-col w-full h-screen md:flex-row">
       <div className="flex flex-col items-center justify-center p-8 bg-denim md:w-1/2">
-        <div className="flex items-center justify-center w-56 h-56 p-4 bg-ripe-lemon rounded-xl">
+        <div className="p-4 bg-ripe-lemon rounded-xl">
           {/* TODO: Use skillWallet instead of user id when endpoint is implemented */}
           {userInfo ? (
             <QRCode
