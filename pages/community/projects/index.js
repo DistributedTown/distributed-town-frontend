@@ -6,7 +6,7 @@ import ProjectCard from '../../../components/project/ProjectCard';
 import SkillsDisplay from '../../../components/SkillsDisplay';
 
 import Layout from '../../../components/Layout';
-import { getProjects } from '../../../api';
+import { getProjects } from '../../../api/gigs';
 import { useGetUserInfo } from '../../../hooks/useGetUserInfo';
 import Button from '../../../components/Button';
 import PageTitle from '../../../components/PageTitle';

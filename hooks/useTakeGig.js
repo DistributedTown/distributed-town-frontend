@@ -1,5 +1,5 @@
 import { useMutation } from 'react-query';
-import { acceptGig } from '../api';
+import { acceptGig } from '../api/gigs';
 import { useMagic } from '../components/MagicStore';
 
 export const useTakeGig = () => {

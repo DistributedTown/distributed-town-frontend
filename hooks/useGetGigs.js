@@ -1,5 +1,5 @@
 import { useQuery } from 'react-query';
-import { getGigs } from '../api';
+import { getGigs } from '../api/gigs';
 import { useMagic } from '../components/MagicStore';
 
 export const useGetGigs = ({ isOpen } = { isOpen: true }) => {
