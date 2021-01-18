@@ -20,7 +20,6 @@ import PictureBlock from '../components/landing/PictureBlock';
 import bgImages from '../utils/bgImages';
 import HamburgerMenu from '../components/landing/HamburgerMenu';
 import Button from '../components/Button';
-import LoginModal from '../components/LoginModal';
 
 const discordUrl = 'https://discord.gg/WR7PbswvTr';
 const docsUrl = 'https://docs.distributed.town/';
@@ -153,7 +152,6 @@ export default function Landing() {
       <div className="flex flex-col w-full space-y-8 md:space-y-16">
         <div className="flex flex-col">
           <Header links={topNavLinks} />
-          <LoginModal open />
           <HeroSection
             mainText={
               <>
