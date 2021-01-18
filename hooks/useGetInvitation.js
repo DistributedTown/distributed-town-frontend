@@ -1,5 +1,5 @@
 import { useQuery } from 'react-query';
-import { getInvitation } from '../api';
+import { getInvitation } from '../api/users';
 import { useMagic } from '../components/MagicStore';
 
 export const useGetInvitation = () => {

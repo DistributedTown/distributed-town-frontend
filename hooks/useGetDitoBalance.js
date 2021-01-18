@@ -1,6 +1,6 @@
 import { useQuery } from 'react-query';
 import { useMagic } from '../components/MagicStore';
-import { getCommunityById } from '../api';
+import { getCommunityById } from '../api/communities';
 import { useGetUserInfo } from './useGetUserInfo';
 import {
   getCommunityDitoTokensContract,

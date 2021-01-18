@@ -1,5 +1,5 @@
 import { useQuery } from 'react-query';
-import { getSkillWallet } from '../api';
+import { getSkillWallet } from '../api/skills';
 import { useMagic } from '../components/MagicStore';
 
 export const useGetSkillWallet = () => {

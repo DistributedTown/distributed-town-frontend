@@ -1,6 +1,6 @@
 import { useMutation } from 'react-query';
 import { useMagic } from '../components/MagicStore';
-import { createCommunityAndUser } from '../api';
+import { createCommunityAndUser } from '../api/communities';
 import {
   createCommunity as createCommunityContract,
   joinCommunity,

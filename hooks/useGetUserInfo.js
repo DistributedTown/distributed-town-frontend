@@ -1,5 +1,5 @@
 import { useQuery } from 'react-query';
-import { getUserInfo } from '../api';
+import { getUserInfo } from '../api/users';
 import { useMagic } from '../components/MagicStore';
 
 export const useGetUserInfo = () => {
