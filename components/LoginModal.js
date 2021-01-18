@@ -3,6 +3,7 @@ import Button from './Button';
 import Card from './Card';
 import TextField from './TextField';
 import Modal from './Modal';
+import Logo from './Logo';
 
 export default function LoginModal({
   open,
@@ -15,7 +16,8 @@ export default function LoginModal({
   return (
     <Modal open={open} onClose={onClose}>
       <Card className="flex flex-col space-y-6">
-        <h1 className="text-3xl font-bold text-center">Login</h1>
+        <Logo className="mx-auto w-44" />
+        <hr />
         <form
           className="flex flex-col space-y-2"
           onSubmit={e => {
@@ -24,16 +26,17 @@ export default function LoginModal({
           }}
         >
           <label className="flex flex-col space-y-2 sm:flex-row sm:space-y-0 sm:space-x-2 sm:items-center">
-            <span className="font-bold">Email</span>
+            <span className="font-bold text-gray-700">Email</span>
             <TextField
               type="email"
               required
               value={email}
+              placeholder="your.email@example.com"
               onChange={e => setEmail(e.target.value)}
             />
           </label>
           <Button filled type="submit">
-            Login
+            Login with Email
           </Button>
         </form>
         <hr />
