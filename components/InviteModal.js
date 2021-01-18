@@ -1,6 +1,7 @@
 import { FaFacebook, FaLink, FaLinkedin, FaTwitter } from 'react-icons/fa';
 import Button from './Button';
 import Card from './Card';
+import Modal from './Modal';
 
 export default function InviteModal({ open, onClose, shareLink }) {
   const handleCopyLinkToClipboard = () => {
@@ -17,13 +18,7 @@ export default function InviteModal({ open, onClose, shareLink }) {
   };
 
   return (
-    <div
-      className={`fixed inset-0 h-screen w-screen bg-opacity-50 bg-black flex justify-center items-center ${
-        open ? 'flex' : 'hidden'
-      }`}
-      style={{ marginTop: 0 }}
-      onClick={e => e.currentTarget === e.target && onClose()}
-    >
+    <Modal open={open} onClose={onClose}>
       <Card className="flex flex-col space-y-6 bg-white">
         <Button>
           <a
@@ -73,6 +68,6 @@ join my community - and let's work on something meaningful together! ${shareLink
           Copy link
         </Button>
       </Card>
-    </div>
+    </Modal>
   );
 }
