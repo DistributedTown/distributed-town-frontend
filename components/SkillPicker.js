@@ -4,7 +4,7 @@ import produce from 'immer';
 import SkillsCard from './SkillsCard';
 
 import Button from './Button';
-import { getSkillTreeByCategory, getSkillTreeBySkill } from '../api';
+import { getSkillTreeByCategory, getSkillTreeBySkill } from '../api/skills';
 import TextField from './TextField';
 import Card from './Card';
 import Logo from './Logo';

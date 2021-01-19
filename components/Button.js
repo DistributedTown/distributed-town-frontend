@@ -9,6 +9,7 @@ function Button({
   children,
   disabled,
   loading,
+  icon,
   ...rest
 }) {
   // TODO: Refactor
@@ -46,6 +47,7 @@ function Button({
             className={`animate-spin text-${filled ? 'white' : color}`}
           />
         )}
+        {icon}
         <span>{children}</span>
       </div>
     </button>

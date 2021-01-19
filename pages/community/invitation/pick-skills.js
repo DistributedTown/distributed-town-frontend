@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { getCommunityById } from '../../../api';
+import { getCommunityById } from '../../../api/communities';
 import SkillPicker from '../../../components/SkillPicker';
 import { useMagic } from '../../../components/MagicStore';
 import { useCreateUser } from '../../../hooks/useCreateUser';
