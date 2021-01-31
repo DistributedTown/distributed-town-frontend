@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { ethers } from 'ethers';
 import { useForm } from 'react-hook-form';
-import { useMagic } from '../../components/MagicStore';
 import Layout from '../../components/Layout';
 import CommunityTreasuryForm from '../../components/treasury/CommunityTreasuryForm';
 import CheckupCard from '../../components/community/CheckupCard';
@@ -13,7 +12,6 @@ import { useGetCommunity } from '../../hooks/useGetCommunity';
 
 function CommunityTreasury() {
   const { data: userInfo } = useGetUserInfo();
-  const magic = useMagic();
 
   const { data: communityInfo } = useGetCommunity();
   const { register, handleSubmit, errors } = useForm();
@@ -22,7 +20,7 @@ function CommunityTreasury() {
   const [stakingStage, setStakingStage] = useState(0);
 
   async function deposit(currency, amount) {
-    const provider = new ethers.providers.Web3Provider(magic.rpcProvider);
+    const provider = new ethers.providers.Web3Provider(web3.currentProvider);
     try {
       const signer = provider.getSigner();
       const contractAddress = userInfo.communityContract.address;
@@ -46,7 +44,7 @@ function CommunityTreasury() {
   }
 
   async function getBalance() {
-    const provider = new ethers.providers.Web3Provider(magic.rpcProvider);
+    const provider = new ethers.providers.Web3Provider(web3.currentProvider);
     try {
       const signer = provider.getSigner();
       const address = await signer.getAddress();
@@ -63,7 +61,7 @@ function CommunityTreasury() {
   }
 
   const approveStaking = async () => {
-    const provider = new ethers.providers.Web3Provider(magic.rpcProvider);
+    const provider = new ethers.providers.Web3Provider(web3.currentProvider);
 
     const signer = provider.getSigner();
     const mockDAIAbi =
@@ -81,7 +79,7 @@ function CommunityTreasury() {
   };
 
   const invest = async (currency, amount) => {
-    const provider = new ethers.providers.Web3Provider(magic.rpcProvider);
+    const provider = new ethers.providers.Web3Provider(web3.currentProvider);
     const signer = provider.getSigner();
     const contractAddress = userInfo.communityContract.address;
     const contractABI = NoGSNCommunityAbi.abi;

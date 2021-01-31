@@ -1,10 +1,11 @@
 import queryString from 'query-string';
+import { fundUser } from '../api/users';
 
-export const getCommunityById = (didToken, id) => {
+export const getCommunityById = (id) => {
   return fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/community/${id}`, {
     method: 'GET',
     headers: new Headers({
-      Authorization: `Bearer ${didToken}`,
+      skillWalletID: localStorage.getItem('skillWalletID')
     }),
   }).then(res => res.json());
 };
@@ -18,7 +19,7 @@ export const getCommunities = filter => {
   }).then(res => res.json());
 };
 
-export const createCommunityAndUser = async (didToken, community, user) => {
+export const createCommunityAndUser = async (community, user) => {
   const { address, category, name } = community;
   const payload = {
     category,
@@ -31,15 +32,18 @@ export const createCommunityAndUser = async (didToken, community, user) => {
     name,
     owner: {
       username: user.username,
-      skills: user.skills,
+      skillWallet: user.skills,
     },
   };
-  await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/community`, {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/community`, {
     method: 'POST',
     body: JSON.stringify(payload),
     headers: {
       'content-type': 'application/json',
-      Authorization: `Bearer ${didToken}`,
+      skillWalletID:localStorage.getItem('skillWalletID')
     },
-  }).then(res => res.json());
+  });
+  const json = await res.json();
+  console.log(json);
+  localStorage.setItem('skillWalletID', json.skillWalletID);
 };

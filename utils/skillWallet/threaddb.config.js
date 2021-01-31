@@ -1,15 +1,15 @@
 import { Client, createUserAuth, PrivateKey, ThreadID } from '@textile/hub'
 
 const skillWalletCollection = 'SkillWallet'
-const skillWalletThreadIDString = 'bafk42lwogxbt7moa7p7gdclynpvm3h7bnfnk56nzawnkftxdlkzmpri';
+const skillWalletThreadIDString = process.env.NEXT_PUBLIC_TEXTILE_THREAD_ID
 
 const keyInfo = {
-	key: 'bzri276u6qt5ppotid4sscghagm',
-	secret: 'bzcdqwxlxuqfoc3adtcbyasff2ef6opt37s2ucwq'
+	key: process.env.NEXT_PUBLIC_TEXTILE_KEY,
+	secret: process.env.NEXT_PUBLIC_TEXTILE_SECRET
 }
 
-const skillWalletThreadID = ThreadID.fromString(skillWalletThreadIDString);
-const skillWalletPrivateKey = 'bbaareqg7v63j3muqpmq4t6ox34cjpsslnqaasaiazjgdmg357cvtdfdz3mxq57zmw5hrkq2asjaayyupuyniwrl74srouwy5d2sqq4tfzmhpq'
+const skillWalletThreadID = ThreadID.fromString('bafk42lwogxbt7moa7p7gdclynpvm3h7bnfnk56nzawnkftxdlkzmpri');
+const skillWalletPrivateKey = process.env.NEXT_PUBLIC_TEXTILE_PRIV_KEY
 
 export async function initialize() {
 
@@ -19,9 +19,9 @@ export async function initialize() {
 	const identity = await PrivateKey.fromString(skillWalletPrivateKey);
 	await client.getToken(identity)
 
+	console.log('updated');
 	try {
 		console.log('collection exists');
-
 		await client.getCollectionInfo(skillWalletThreadID, skillWalletCollection);
 	} catch (err) {
 		console.log('creating collection');
@@ -55,14 +55,6 @@ async function auth(keyInfo) {
 	return userAuth
 }
 
-// interface Skill {
-//   skill: string;
-//   level: number;
-// }
-// interface SkillWallet {
-//   skillWallet: Skill[]
-// }
-
 const DiToSkillWalletSchema = {
 	"definitions": {},
 	"$schema": "http://json-schema.org/draft-07/schema#",
@@ -74,7 +66,8 @@ const DiToSkillWalletSchema = {
 	],
 	"properties": {
 		_id: { type: 'string' },
-		"skillWallet": {
+		communityID: { type: 'string' },
+		skillWallet: {
 			"$id": "#root/skillWallet",
 			"title": "Skillwallet",
 			"type": "array",

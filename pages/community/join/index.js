@@ -4,12 +4,12 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import Quote from '../../../components/Quote';
 import RegistrationModal from '../../../components/RegistrationModal';
-import { useMagicLinkLogin } from '../../../hooks/useMagicLinkLogin';
+import { useMetamaskLogin } from '../../../hooks/useMagicLinkLogin';
 import Logo from '../../../components/Logo';
 import Button from '../../../components/Button';
 
 const Join = ({ skills = [] }) => {
-  const [login, { isLoading }] = useMagicLinkLogin();
+  const [login, { isLoading }] = useMetamaskLogin();
 
   const [chosenSkill, setChosenSkill] = useState('');
   const showRegistrationModal = !!chosenSkill;
@@ -17,12 +17,8 @@ const Join = ({ skills = [] }) => {
   const router = useRouter();
 
   async function handleCreateAccountClick(email) {
-    await login(email);
-    await router.push(
-      `/community/join/pick-skills?categorySkill=${encodeURIComponent(
-        chosenSkill,
-      )}`,
-    );
+    // await login(email);
+
   }
 
   return (
@@ -42,7 +38,12 @@ const Join = ({ skills = [] }) => {
             {skills.map(skill => (
               <Button
                 key={skill}
-                onClick={() => setChosenSkill(skill)}
+                onClick={async () => {
+                  setChosenSkill(skill);
+                  await router.push(
+                    `/community/join/pick-skills?categorySkill=${skill}`,
+                  );
+                }}
                 className="m-2 rounded-full"
               >
                 {skill}
@@ -51,13 +52,13 @@ const Join = ({ skills = [] }) => {
           </div>
         </div>
       </div>
-      <RegistrationModal
+      {/* <RegistrationModal
         show={showRegistrationModal}
         loading={isLoading}
         chosenSkill={chosenSkill}
         handleCreateAccountClick={handleCreateAccountClick}
         onChooseDifferentCommunity={() => setChosenSkill('')}
-      />
+      /> */}
     </div>
   );
 };

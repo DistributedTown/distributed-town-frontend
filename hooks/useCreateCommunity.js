@@ -1,20 +1,21 @@
 import { useMutation } from 'react-query';
-import { useMagic } from '../components/MagicStore';
 import { createCommunityAndUser } from '../api/communities';
 import {
   createCommunity as createCommunityContract,
   joinCommunity,
 } from '../contracts/community';
 import calculateDitosFromSkils from '../utils/calculateDitosFromSkills';
+import { fundUser } from '../api/users';
 
 export const useCreateCommunity = () => {
-  const magic = useMagic();
+
 
   const createCommunityMutation = async ({ name, category, user }) => {
-    const communityAddress = await createCommunityContract(magic.rpcProvider);
+    await fundUser(window.ethereum.selectedAddress)
+
+    const communityAddress = await createCommunityContract();
 
     await joinCommunity(
-      magic.rpcProvider,
       communityAddress,
       calculateDitosFromSkils(user.skills),
     );
@@ -24,8 +25,7 @@ export const useCreateCommunity = () => {
       name,
       category,
     };
-    const didToken = await magic.user.getIdToken();
-    await createCommunityAndUser(didToken, community, user);
+    await createCommunityAndUser(community, user);
   };
 
   return useMutation(createCommunityMutation, { throwOnError: true });

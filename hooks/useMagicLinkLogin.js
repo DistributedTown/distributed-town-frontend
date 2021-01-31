@@ -1,18 +1,12 @@
 import { useMutation } from 'react-query';
-import { fundUser, login } from '../api/users';
-import { useMagic } from '../components/MagicStore';
+import { login } from '../api/users';
 
-export const useMagicLinkLogin = () => {
-  const magic = useMagic();
 
-  const loginHandler = async email => {
-    const didToken = await magic.auth.loginWithMagicLink({ email });
 
-    await login(didToken);
-    const { publicAddress } = await magic.user.getMetadata();
-    await fundUser(publicAddress);
+export const useMetamaskLogin = () => {
 
-    return { didToken };
+  const loginHandler = async () => {
+    await login()
   };
 
   return useMutation(loginHandler, { throwOnError: true });

@@ -6,19 +6,30 @@ import Blob from '../components/Blob';
 import Button from '../components/Button';
 import Card from '../components/Card';
 import Logo from '../components/Logo';
-import TextField from '../components/TextField';
-
-import { useMagicLinkLogin } from '../hooks/useMagicLinkLogin';
+import LoginModal from '../components/LoginModal';
+import { useMetamaskLogin } from '../hooks/useMagicLinkLogin';
+import { useState } from 'react';
+import SkillWallet from '../utils/skillWallet/skillWallet'
+import { getSkillWalletByID } from '../utils/skillWallet/threaddb.config';
 
 const Index = () => {
   // TODO: Loading while logging in to API after magic link
-  const [login] = useMagicLinkLogin();
+  const [login] = useMetamaskLogin();
+  const [showLoginPopUp, setShowLoginPopUp] = useState(false);
+
   const router = useRouter();
 
-  const onLoginSubmit = async event => {
-    event.preventDefault();
-    const email = event.target.email.value;
-    await login(email);
+
+  const onConnectWithMetamaskClick = async event => {
+    const addresses = await window.ethereum.enable()
+    localStorage.setItem('address', addresses[0]);
+    await SkillWallet.init(addresses[0]);
+    // await SkillWallet.store({
+    //   skillWallet: [{ skill: 'Teaching', level: 8 }, { skill: 'Gardening', level: 9 }]
+    // });
+    const res = await SkillWallet.get();
+    localStorage.setItem('skillWallet', JSON.stringify(res));
+    localStorage.setItem('skillWalletID', await SkillWallet.getSkillWalletID())
     await router.push('/skillwallet');
   };
 
@@ -49,20 +60,18 @@ const Index = () => {
               </a>
             </Button>
           </Link>
-          {/* TODO: Don't show if logged in */}
-          <form
-            onSubmit={onLoginSubmit}
-            className="flex space-x-4 whitespace-nowrap"
-          >
-            <label>
-              <span className="mr-2 text-xl font-bold">Login</span>
-              <TextField
-                name="email"
-                type="email"
-                placeholder="yourmail@me.io"
-              />
-            </label>
-          </form>
+
+          <Button onClick={() => setShowLoginPopUp(true)} enable={false}>
+            <a className="flex items-center justify-center space-x-4 text-xl">
+              <span>Login</span>
+            </a>
+          </Button>
+
+          <LoginModal
+            open={showLoginPopUp}
+            onClose={() => { setShowLoginPopUp(false) }}
+            onLoginWithMetamask={onConnectWithMetamaskClick}
+          />
         </Card>
       </div>
     </div>

@@ -1,7 +1,6 @@
 import { useContext, useState, useEffect } from 'react';
 import Link from 'next/link';
 import { FaPlusCircle } from 'react-icons/fa';
-import { useMagic } from '../../../components/MagicStore';
 import ProjectCard from '../../../components/project/ProjectCard';
 import SkillsDisplay from '../../../components/SkillsDisplay';
 
@@ -14,12 +13,10 @@ import PageTitle from '../../../components/PageTitle';
 function Projects() {
   const { data: userInfo } = useGetUserInfo();
   const [projects, setProjects] = useState();
-  const magic = useMagic();
 
   useEffect(() => {
     (async () => {
-      const didToken = await magic.user.getIdToken();
-      const projectsResponse = await getProjects(didToken);
+      const projectsResponse = await getProjects();
       setProjects(projectsResponse);
     })();
   }, []);

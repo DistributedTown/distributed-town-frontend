@@ -39,7 +39,7 @@ function Gigs() {
             </a>
           </Button>
         </Link>
-        <SkillsDisplay skills={userInfo && userInfo.skills} />
+        <SkillsDisplay skills={userInfo && userInfo.skillWallet} />
       </div>
     </Layout>
   );

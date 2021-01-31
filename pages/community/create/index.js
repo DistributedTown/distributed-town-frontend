@@ -66,8 +66,8 @@ function CommunityCreate() {
       description,
       category,
     });
-    await router.push(`/community/create/created`);
-  };
+   await router.push(`/community/create/pick-skills`);
+};
 
   useEffect(() => {
     register('category', { required: true });

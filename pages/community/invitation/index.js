@@ -1,11 +1,11 @@
 import { useRouter } from 'next/router';
 import RegistrationModal from '../../../components/RegistrationModal';
-import { useMagicLinkLogin } from '../../../hooks/useMagicLinkLogin';
+import { useMetamaskLogin } from '../../../hooks/useMagicLinkLogin';
 
 const Invitation = () => {
   const router = useRouter();
   const { communityId, communityName, communitySkill } = router.query;
-  const [login] = useMagicLinkLogin();
+  const [login] = useMetamaskLogin();
 
   const handleCreateAccountClick = async email => {
     await login(email);

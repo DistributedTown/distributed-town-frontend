@@ -16,11 +16,11 @@ export const getSkillTreeByCategory = category => {
   ).then(res => res.json());
 };
 
-export const getSkillWallet = didToken => {
+export const getSkillWallet = () => {
   return fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/skillWallet`, {
     headers: {
       'content-type': 'application/json',
-      Authorization: `Bearer ${didToken}`,
+      skillWalletID:localStorage.getItem('skillWalletID')
     },
   }).then(res => res.json());
 };
