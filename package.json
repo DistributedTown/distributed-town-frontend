@@ -45,7 +45,7 @@
     "react-query": "^2.26.3",
     "react-transition-group": "^4.4.1",
     "swr": "^0.3.8",
-    "ethereumjs-util":"7.0.7"
+    "ethereumjs-util": "7.0.7"
   },
   "devDependencies": {
     "babel-eslint": "^10.1.0",
