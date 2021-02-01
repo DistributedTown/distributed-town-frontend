@@ -10,9 +10,7 @@ export default function App({ Component, pageProps }) {
       {pageProps.disableMagicLinks ? (
         <Component {...pageProps} />
       ) : (
-        // <MagicStore>
           <Component {...pageProps} />
-        // <MagicStore>
       )}
     </ToastsProvider>
   );

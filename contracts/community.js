@@ -61,17 +61,13 @@ export const joinCommunity = async (
 };
 
 export const createCommunity = async () => {
-  console.log('create community')
   const provider = new ethers.providers.Web3Provider(window.ethereum);
-  console.log('4');
 
   if (!window.ethereum.selectedAddress)
     window.ethereum.enable()
 
   
   const signer = provider.getSigner();
-  console.log('1');
-  console.log(process.env.NEXT_PUBLIC_COMMUNITIES_REGISTRY_ADDRESS);
   // TODO: Create contract should join the user automatically instead of needing to call join after that.
   // call the smart contract to create community
   const contract = new ethers.Contract(
@@ -79,12 +75,9 @@ export const createCommunity = async () => {
     communitiesABI,
     signer,
   );
-  console.log('2');
 
-  console.log(contract);
 
   const createTx = await contract.createCommunity();
-  console.log('createTx');
 
   // Wait for transaction to finish
   const communityTransactionResult = await createTx.wait();
@@ -92,7 +85,6 @@ export const createCommunity = async () => {
   const communityCreatedEvent = events.find(
     e => e.event === 'CommunityCreated',
   );
-  console.log('CommunityCreated');
 
   if (!communityCreatedEvent) {
     throw new Error('Something went wrong');
