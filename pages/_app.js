@@ -7,11 +7,14 @@ import ToastsProvider from '../components/ToastsProvider';
 export default function App({ Component, pageProps }) {
   return (
     <ToastsProvider>
-      {pageProps.disableMagicLinks ? (
-        <Component {...pageProps} />
-      ) : (
+      <div className='flex w-full h-full"'>
+        {pageProps.disableMagicLinks ? (
           <Component {...pageProps} />
-      )}
+        ) : (
+            <Component {...pageProps} />
+          )}
+      </div>
+
     </ToastsProvider>
   );
 }

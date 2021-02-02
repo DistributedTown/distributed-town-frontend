@@ -61,10 +61,8 @@ export const joinCommunity = async (
 };
 
 export const createCommunity = async () => {
-  const provider = new ethers.providers.Web3Provider(window.ethereum);
+  const provider = new ethers.providers.Web3Provider(web3.currentProvider);
 
-  if (!window.ethereum.selectedAddress)
-    window.ethereum.enable()
 
   
   const signer = provider.getSigner();

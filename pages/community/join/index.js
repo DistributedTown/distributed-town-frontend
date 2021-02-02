@@ -3,23 +3,14 @@ import Link from 'next/link';
 
 import { useRouter } from 'next/router';
 import Quote from '../../../components/Quote';
-import RegistrationModal from '../../../components/RegistrationModal';
-import { useMetamaskLogin } from '../../../hooks/useMagicLinkLogin';
 import Logo from '../../../components/Logo';
 import Button from '../../../components/Button';
 
 const Join = ({ skills = [] }) => {
-  const [login, { isLoading }] = useMetamaskLogin();
 
   const [chosenSkill, setChosenSkill] = useState('');
-  const showRegistrationModal = !!chosenSkill;
 
   const router = useRouter();
-
-  async function handleCreateAccountClick(email) {
-    // await login(email);
-
-  }
 
   return (
     <div className="w-full h-full">

@@ -48,26 +48,25 @@ const communityCategories = [
   },
 ];
 
-export const useCreateCommunityState = () => {
-  return useLocalStorage('create-community', {});
-};
+// export const useCreateCommunityState = () => {
+//   return useLocalStorage('create-community', {});
+// };
 
 function CommunityCreate() {
   const { register, handleSubmit, setValue, watch } = useForm();
   const selectedCategory = watch('category');
   const router = useRouter();
-  const [, setCreateState] = useCreateCommunityState();
 
   const handleCreateCommunity = async data => {
     // TODO: Handle validation, error display and loading
     const { name, description, category } = data;
-    setCreateState({
+    localStorage.setItem('create-community', JSON.stringify({
       name,
       description,
       category,
-    });
-   await router.push(`/community/create/pick-skills`);
-};
+    }))
+    await router.push(`/community/create/pick-skills`);
+  };
 
   useEffect(() => {
     register('category', { required: true });
@@ -171,10 +170,10 @@ function CategoryCard({ category, selected, onSelect, className }) {
           Selected
         </Button>
       ) : (
-        <Button color={color} filled onClick={() => onSelect(name)}>
-          Select
-        </Button>
-      )}
+          <Button color={color} filled onClick={() => onSelect(name)}>
+            Select
+          </Button>
+        )}
     </Card>
   );
 }

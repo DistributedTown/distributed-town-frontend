@@ -5,14 +5,11 @@ import {
   joinCommunity,
 } from '../contracts/community';
 import calculateDitosFromSkils from '../utils/calculateDitosFromSkills';
-import { fundUser } from '../api/users';
 
 export const useCreateCommunity = () => {
 
 
   const createCommunityMutation = async ({ name, category, user }) => {
-    await fundUser(window.ethereum.selectedAddress)
-
     const communityAddress = await createCommunityContract();
 
     await joinCommunity(
