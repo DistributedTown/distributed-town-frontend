@@ -65,6 +65,7 @@ function CommunityCreate() {
       description,
       category,
     }))
+    localStorage.setItem('category', category);
     await router.push(`/community/create/pick-skills`);
   };
 

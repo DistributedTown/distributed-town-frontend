@@ -19,7 +19,7 @@ export const getCommunities = filter => {
   }).then(res => res.json());
 };
 
-export const createCommunityAndUser = async (community, user) => {
+export const createCommunity = async (community) => {
   const { address, category, name } = community;
   const payload = {
     category,
@@ -30,10 +30,7 @@ export const createCommunityAndUser = async (community, user) => {
       },
     ],
     name,
-    owner: {
-      username: user.username,
-      skillWallet: user.skills,
-    },
+    ownerID: localStorage.getItem('skillWalletID')
   };
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/community`, {
     method: 'POST',
@@ -45,5 +42,4 @@ export const createCommunityAndUser = async (community, user) => {
   });
   const json = await res.json();
   console.log(json);
-  localStorage.setItem('skillWalletID', json.skillWalletID);
 };

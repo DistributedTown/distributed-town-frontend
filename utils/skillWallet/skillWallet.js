@@ -8,7 +8,7 @@ import { IDX } from '@ceramicstudio/idx'
  * a user skill wallet with Metamask. 
  * Before using it, it should be initialized with a certain user address
  */
-export default class SkillWallet {
+ export default class SkillWallet {
 
     static isInitialized = false;
     static async init(address) {
@@ -35,6 +35,7 @@ export default class SkillWallet {
             skillWalletID: ids[0]
         }
         await this.idx.set('kjzl6cwe1jw149c99wfm211w3nu6btfa4dtitrztha06xt3yshdd695c0vm4tgl', skillWallet);
+        return ids[0];
     }
 
     static async get() {

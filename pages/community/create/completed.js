@@ -8,7 +8,7 @@ function CreateCompleted() {
   useEffect(() => {
     const com = localStorage.getItem('create-community');
     setCommunity(JSON.parse(com));
-  })
+  }, [])
 
   return (
     <Layout>

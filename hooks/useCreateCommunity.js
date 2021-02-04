@@ -1,5 +1,5 @@
 import { useMutation } from 'react-query';
-import { createCommunityAndUser } from '../api/communities';
+import { createCommunity } from '../api/communities';
 import {
   createCommunity as createCommunityContract,
   joinCommunity,
@@ -14,7 +14,7 @@ export const useCreateCommunity = () => {
 
     await joinCommunity(
       communityAddress,
-      calculateDitosFromSkils(user.skills),
+      calculateDitosFromSkils(user.skillWallet),
     );
 
     const community = {
@@ -22,7 +22,7 @@ export const useCreateCommunity = () => {
       name,
       category,
     };
-    await createCommunityAndUser(community, user);
+    await createCommunity(community);
   };
 
   return useMutation(createCommunityMutation, { throwOnError: true });
