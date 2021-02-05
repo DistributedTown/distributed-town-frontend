@@ -66,7 +66,7 @@ function CommunityCreate() {
       category,
     }))
     localStorage.setItem('category', category);
-    await router.push(`/community/create/pick-skills`);
+    await router.push(`/community/create/pick-skills?category=${encodeURIComponent(category)}`);
   };
 
   useEffect(() => {

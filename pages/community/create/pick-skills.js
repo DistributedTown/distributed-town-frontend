@@ -59,6 +59,7 @@ function PickSkills() {
     <SkillPicker
       isSubmitting={isLoading}
       onSubmit={handleSubmit}
+      communityCategory={router.query.category}
     />
   );
 }

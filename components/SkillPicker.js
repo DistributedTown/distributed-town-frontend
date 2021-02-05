@@ -12,6 +12,7 @@ import Logo from './Logo';
 export default function SkillPicker({
   isSubmitting,
   categorySkill,
+  communityCategory,
   onSubmit,
 }) {
   const [skillTree, setSkillTree] = useState([]);
@@ -23,7 +24,6 @@ export default function SkillPicker({
 
   useEffect(() => {
     const getSkillTree = async () => {
-      let communityCategory = localStorage.getItem('category');
       let skillTreeResponse;
       if (categorySkill) {
         skillTreeResponse = await getSkillTreeBySkill(categorySkill);
