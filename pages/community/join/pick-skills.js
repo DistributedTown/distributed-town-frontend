@@ -15,6 +15,10 @@ function PickSkills() {
   }
 
   const onSubmit = async ({ username, skills, category }) => {
+    if(!window.ethereum.selectedAddress) {
+      await window.ethereum.enable();
+    }
+
     const user = { username, skillWallet: skills };
     await createSkillWallet(user);
     await router.push(

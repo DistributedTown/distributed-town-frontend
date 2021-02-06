@@ -48,10 +48,6 @@ const communityCategories = [
   },
 ];
 
-// export const useCreateCommunityState = () => {
-//   return useLocalStorage('create-community', {});
-// };
-
 function CommunityCreate() {
   const { register, handleSubmit, setValue, watch } = useForm();
   const selectedCategory = watch('category');

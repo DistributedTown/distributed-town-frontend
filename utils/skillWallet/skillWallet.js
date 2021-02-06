@@ -8,7 +8,7 @@ import { IDX } from '@ceramicstudio/idx'
  * a user skill wallet with Metamask. 
  * Before using it, it should be initialized with a certain user address
  */
- export default class SkillWallet {
+export default class SkillWallet {
 
     static isInitialized = false;
     static async init(address) {

@@ -52,7 +52,6 @@ function PickSkills() {
     await SkillWallet.init(window.ethereum.selectedAddress);
     const skillWalletID = await SkillWallet.store(user);
     localStorage.setItem('skillWalletID', skillWalletID);
-    console.log(router.query.category);
   }
 
   return (
