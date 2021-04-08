@@ -29,7 +29,6 @@ function CommunityDashboard() {
                 </Button>
               </Link>
               <Link href="/community/projects">
-                {/* TODO: Coming soon! */}
                 <Button disabled>
                   <a>Projects & Proposals</a>
                 </Button>

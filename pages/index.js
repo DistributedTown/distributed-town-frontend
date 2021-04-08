@@ -7,17 +7,27 @@ import Button from '../components/Button';
 import Card from '../components/Card';
 import Logo from '../components/Logo';
 import LoginModal from '../components/LoginModal';
-import { useMetamaskLogin } from '../hooks/useMagicLinkLogin';
 import { useState } from 'react';
 
 const Index = () => {
   // TODO: Loading while logging in to API after magic link
-  const [login] = useMetamaskLogin();
   const [showLoginPopUp, setShowLoginPopUp] = useState(false);
 
   const router = useRouter();
+  
 
-  const onSkillWalletLogin = () => {}
+  const onSkillWalletLogin = async () => {
+    if (window.ethereum) {
+      try {
+        if (!window.ethereum.selectedAddress)
+          await window.ethereum.enable();
+        router.push('/community');
+        return;
+      } catch (e) {
+        router.push('/')
+      }
+    }
+  }
   return (
     <div className="flex flex-col items-center flex-1 mx-auto lg:flex-row lg:min-h-screen">
       <Head>

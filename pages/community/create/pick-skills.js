@@ -1,8 +1,6 @@
 import { useRouter } from 'next/router';
-// import { useCreateCommunityState } from '.';
 import SkillPicker from '../../../components/SkillPicker';
 import { useCreateCommunity } from '../../../hooks/useCreateCommunity';
-import { fundUser } from '../../../api/users';
 import { useEffect, useState } from 'react';
 
 function PickSkills() {

@@ -1,9 +1,5 @@
 import { QRCode } from 'react-qrcode-logo';
-import { useGetUserInfo } from '../../hooks/useGetUserInfo';
-import { useGetDitoBalance } from '../../hooks/useGetDitoBalance';
 import Card from '../../components/Card';
-import { useGetCommunity } from '../../hooks/useGetCommunity';
-import { useGetSkillWallet } from '../../hooks/useGetSkillWallet';
 
 function QR() {
   // const { data: userInfo } = useGetUserInfo();
@@ -19,8 +15,9 @@ function QR() {
           {(
             <QRCode
               value={`{
-                "tokenId":1,
-                "hash":"wnGO5Z60diJoOOQLkAEJ"
+                "address":"0xe5dfc64fad45122545b0a5b88726ff7858509600"
+                "tokenId":0,
+                "hash":"wnGO5OQLkAEJ"
               }`}
               logoImage="/isologo.svg"
               // logoWidth={60}

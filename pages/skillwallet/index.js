@@ -58,7 +58,11 @@ function SkillWallet() {
               <p className="text-xl font-bold ">Your community:</p>
               <Link href="community">
                 <Button filled textColor="white">
+                {userInfo ? (
                   <a>{userInfo.currentCommunity.name}</a>
+                  ) : (
+                    <a></a>
+                  )}
                 </Button>
               </Link>
             </div>
