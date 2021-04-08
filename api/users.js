@@ -32,7 +32,7 @@ export const login = () => {
 }
 
 export const getUserInfo = () => {
-  return fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/skillWallet/${window.ethereum.selectedAddress}`, {
+  return fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/skillWallet?address=${window.ethereum.selectedAddress}`, {
     method: 'GET',
   })
     .then(res => res.json());

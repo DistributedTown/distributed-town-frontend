@@ -26,11 +26,11 @@ function PlaceholderLoading({
 }
 
 function SkillWallet() {
-  const { data: ditoBalance } = useGetDitoBalance();
   const { data: userInfo } = useGetUserInfo();
-  const { data: community } = useGetCommunity();
+  // const { data: community } = useGetCommunity();
+  const pastGigs = [];
   // TODO: Are these pastGigs?
-  const { data: pastGigs } = useGetGigs({ isOpen: false });
+  // const { data: pastGigs } = useGetGigs({ isOpen: false });
 
   return (
     <Layout>
@@ -52,20 +52,9 @@ function SkillWallet() {
               <div className="flex flex-col justify-center space-y-2">
                 <h3 className="font-bold text-white">
                   {userInfo ? (
-                    userInfo.username
+                    userInfo.nickname
                   ) : (
                     <PlaceholderLoading color="white" width="10rem" />
-                  )}
-                </h3>
-                <h3 className="text-white">
-                  {userInfo ? (
-                    userInfo.email
-                  ) : (
-                    <PlaceholderLoading
-                      color="white"
-                      height="1rem"
-                      width="80%"
-                    />
                   )}
                 </h3>
               </div>
@@ -75,7 +64,7 @@ function SkillWallet() {
               <p className="text-xl font-bold ">Your community:</p>
               <Link href="community">
                 <Button filled textColor="white">
-                  <a>{community ? community.communityInfo.name : '...'}</a>
+                  <a>{userInfo.currentCommunity.name}</a>
                 </Button>
               </Link>
             </div>
@@ -96,8 +85,8 @@ function SkillWallet() {
               <p className="row-span-2 text-xl">Your credits:</p>
               <img src="dito-tokens.svg" />
               <h2 className="p-3 font-bold">
-                {ditoBalance
-                  ? `${ditoBalance} DiTo`
+                {userInfo
+                  ? `${userInfo.diToCredits} DiTo`
                   : 'Loading dito balance...'}
               </h2>
             </div>
