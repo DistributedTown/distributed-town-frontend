@@ -1,26 +1,39 @@
 import { useRouter } from 'next/router';
-import { useCreateUser } from '../../../hooks/useCreateUser';
 import SkillPicker from '../../../components/SkillPicker';
-import SkillWallet from '../../../utils/skillWallet/skillWallet';
+import { getSkillDisplayNames } from '../../../api/skills'
 
 function PickSkills() {
   const router = useRouter();
   const { categorySkill } = router.query;
-  const [createUser, { isLoading }] = useCreateUser();
-
-  const createSkillWallet = async (user) => {
-    await SkillWallet.init(window.ethereum.selectedAddress);
-    const skillWalletID = await SkillWallet.store(user);
-    localStorage.setItem('skillWalletID', skillWalletID);
-  }
 
   const onSubmit = async ({ username, skills, category }) => {
-    if(!window.ethereum.selectedAddress) {
-      await window.ethereum.enable();
-    }
+    localStorage.setItem('username', username);
+    const skillNames = await getSkillDisplayNames();
+    console.log(skillNames);
+    const formatedSkills = {
+      skill1: {
+        level: skills[0].level / 10,
+        displayStringId: skillNames.indexOf(skills[0].skill),
+        skillName: skills[0].skill
+      }
+    };
+    if(skills.length <= 3) {
+      formatedSkills.skill2 = {
+        level: skills[1]?.level / 10,
+        displayStringId: skillNames.indexOf(skills[1]?.skill),
+        skillName: skills[1].skill
+      } 
+    }; 
+    if(skills.length == 3) {
+      formatedSkills.skill3 = {
+        level: skills[2]?.level / 10,
+        displayStringId: skillNames.indexOf(skills[2]?.skill),
+        skillName: skills[2]?.skill
+      }
+    };
 
-    const user = { username, skillWallet: skills };
-    await createSkillWallet(user);
+    localStorage.setItem('skills', JSON.stringify(formatedSkills));
+
     await router.push(
       `/community/join/choose-community?category=${encodeURIComponent(
         category,
@@ -30,7 +43,7 @@ function PickSkills() {
 
   return (
     <SkillPicker
-      isSubmitting={isLoading}
+      isSubmitting={false}
       categorySkill={categorySkill}
       onSubmit={onSubmit}
     />

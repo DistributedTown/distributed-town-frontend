@@ -4,7 +4,6 @@ import SkillPicker from '../../../components/SkillPicker';
 import { useCreateCommunity } from '../../../hooks/useCreateCommunity';
 import { fundUser } from '../../../api/users';
 import { useEffect, useState } from 'react';
-import SkillWallet from '../../../utils/skillWallet/skillWallet';
 
 function PickSkills() {
   const router = useRouter();
@@ -32,27 +31,21 @@ function PickSkills() {
 
 
   const handleSubmit = async ({ username, skills }) => {
-    if (!window.ethereum.selectedAddress)
-      window.ethereum.enable()
+    console.log('handle submit');
+    localStorage.setItem('skillSet', skills);
 
-    await fundUser(window.ethereum.selectedAddress)
-    const user = { username, skillWallet: skills };
-    await createSkillWallet(user);
+    localStorage.setItem('username', username);
+   // await fundUser(window.ethereum.selectedAddress)
 
-    await createCommunity({
-      name: community.name,
-      category: community.category,
-      description: community.description,
-      user,
-    });
+    // TODO create community flow 
+    // await createCommunity({
+    //   name: community.name,
+    //   category: community.category,
+    //   description: community.description,
+    //   user,
+    // });
     await router.push(`/community/create/completed`);
   };
-
-  const createSkillWallet = async (user) => {
-    await SkillWallet.init(window.ethereum.selectedAddress);
-    const skillWalletID = await SkillWallet.store(user);
-    localStorage.setItem('skillWalletID', skillWalletID);
-  }
 
   return (
     <SkillPicker

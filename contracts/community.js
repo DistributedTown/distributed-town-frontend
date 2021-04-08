@@ -43,28 +43,66 @@ export const getDitoContractUserBalance = async (
   return ditoBalanceStr;
 };
 
+export const isLoggedIn = () => {
+  return false;
+}
+
 export const joinCommunity = async (
   communityContractAddress,
   ditos,
 ) => {
-  const provider = new ethers.providers.Web3Provider(web3.currentProvider);
-  const signer = provider.getSigner();
+
+  const provider = new ethers.providers.JsonRpcProvider(
+    process.env.NEXT_PUBLIC_RPC_URL
+  );
+  
+  // Wallet connected to a provider
+  console.log(process.env.NEXT_PUBLIC_MNEMONIC)
+  const senderWalletMnemonic = ethers.Wallet.fromMnemonic(
+    process.env.NEXT_PUBLIC_MNEMONIC,
+    "m/44'/60'/0'/0/0"
+  );
+
+  let signer = senderWalletMnemonic.connect(provider);
 
   const contract = new ethers.Contract(
-    communityContractAddress,
-    communityContractAbi,
+    process.env.NEXT_PUBLIC_COMMUNITIES_REGISTRY_ADDRESS,
+    communitiesABI,
     signer,
   );
 
-  const tx = await contract.join(ditos);
+  let tx = undefined;
+
+  // const communitiesCount = await contract.numOfCommunities();
+  // console.log(communitiesCount);
+
+  // const addresses = await contract.getCommunities();
+  // console.log(addresses);
+
+  // if (isLoggedIn) {
+  //   const skillWalletId = localStorage.getItem('skillWalletTokenId');
+  //   tx = await contract.joinExistingSW(communityContractAddress, skillWalletId, ditos);
+  // } else {
+  const skills = localStorage.getItem('skills');
+  const skillsJson = JSON.parse(skills);
+  const url = 'https://hub.textile.io/thread/bafkwfcy3l745x57c7vy3z2ss6ndokatjllz5iftciq4kpr4ez2pqg3i/buckets/bafzbeiaorr5jomvdpeqnqwfbmn72kdu7vgigxvseenjgwshoij22vopice';
+  console.log(skillsJson)
+  console.log(communityContractAddress)
+  console.log(ditos)
+  tx = await contract.joinNewMember(communityContractAddress, {
+    skill1: { level: 2, displayStringId: 1 },
+    skill2: { level: 3, displayStringId: 2 },
+    skill3: { level: 4, displayStringId: 3 }
+  }, url, ditos);
+
+
+  // }
   await tx.wait();
 };
 
 export const createCommunity = async () => {
   const provider = new ethers.providers.Web3Provider(web3.currentProvider);
 
-
-  
   const signer = provider.getSigner();
   // TODO: Create contract should join the user automatically instead of needing to call join after that.
   // call the smart contract to create community
@@ -73,7 +111,6 @@ export const createCommunity = async () => {
     communitiesABI,
     signer,
   );
-
 
   const createTx = await contract.createCommunity();
 

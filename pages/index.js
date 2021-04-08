@@ -9,8 +9,6 @@ import Logo from '../components/Logo';
 import LoginModal from '../components/LoginModal';
 import { useMetamaskLogin } from '../hooks/useMagicLinkLogin';
 import { useState } from 'react';
-import SkillWallet from '../utils/skillWallet/skillWallet'
-import { getSkillWalletByID } from '../utils/skillWallet/threaddb.config';
 
 const Index = () => {
   // TODO: Loading while logging in to API after magic link
@@ -19,20 +17,7 @@ const Index = () => {
 
   const router = useRouter();
 
-
-  const onConnectWithMetamaskClick = async event => {
-    const addresses = await window.ethereum.enable()
-    localStorage.setItem('address', addresses[0]);
-    await SkillWallet.init(addresses[0]);
-    // await SkillWallet.store({
-    //   skillWallet: [{ skill: 'Teaching', level: 8 }, { skill: 'Gardening', level: 9 }]
-    // });
-    const res = await SkillWallet.get();
-    localStorage.setItem('skillWallet', JSON.stringify(res));
-    localStorage.setItem('skillWalletID', await SkillWallet.getSkillWalletID())
-    await router.push('/skillwallet');
-  };
-
+  const onSkillWalletLogin = () => {}
   return (
     <div className="flex flex-col items-center flex-1 mx-auto lg:flex-row lg:min-h-screen">
       <Head>
@@ -45,7 +30,7 @@ const Index = () => {
         </h1>
         <Card className="flex flex-col p-4 mx-0 mb-4 space-y-4 sm:mx-8 sm:p-8">
           <Link href="/community/create">
-            <Button>
+            <Button disabled={true}>
               <a className="flex items-center justify-center space-x-4 text-xl">
                 <span>Create</span>
                 <FaPlus />
@@ -70,7 +55,7 @@ const Index = () => {
           <LoginModal
             open={showLoginPopUp}
             onClose={() => { setShowLoginPopUp(false) }}
-            onLoginWithMetamask={onConnectWithMetamaskClick}
+            onSkillWalletLogin={onSkillWalletLogin}
           />
         </Card>
       </div>
