@@ -3,7 +3,6 @@ export const getGigs = async (filter) => {
   return fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/gig${queryParams}`, {
     method: 'GET',
     headers: {
-      skillWalletID:localStorage.getItem('skillWalletID'),
       'Content-Type': 'application/json',
     },
   }).then(res => res.json());
@@ -15,7 +14,6 @@ export const getProjects = async () => {
     {
       method: 'GET',
       headers: {
-        skillWalletID:localStorage.getItem('skillWalletID'),
         'Content-Type': 'application/json',
       },
     },
@@ -24,10 +22,7 @@ export const getProjects = async () => {
 
 export const acceptGig = async (gigId) => {
   return fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/gig/${gigId}/accept`, {
-    method: 'POST',
-    headers: new Headers({
-      skillWalletID:localStorage.getItem('skillWalletID')
-    }),
+    method: 'POST'
   }).then(res => res.json());
 };
 
@@ -36,7 +31,6 @@ export const createGig = async (gig) => {
     method: 'POST',
     headers: new Headers({
       // TODO: add token
-      skillWalletID:localStorage.getItem('skillWalletID'),
       'Content-Type': 'application/json',
     }),
     body: JSON.stringify(gig),
