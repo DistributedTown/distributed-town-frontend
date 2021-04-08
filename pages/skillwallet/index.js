@@ -4,10 +4,7 @@ import classNames from 'classnames';
 import { FaQrcode, FaUser } from 'react-icons/fa';
 
 import Layout from '../../components/Layout';
-import { useGetGigs } from '../../hooks/useGetGigs';
 import { useGetUserInfo } from '../../hooks/useGetUserInfo';
-import { useGetDitoBalance } from '../../hooks/useGetDitoBalance';
-import { useGetCommunity } from '../../hooks/useGetCommunity';
 import Card from '../../components/Card';
 import Button from '../../components/Button';
 import PageTitle from '../../components/PageTitle';
@@ -27,10 +24,7 @@ function PlaceholderLoading({
 
 function SkillWallet() {
   const { data: userInfo } = useGetUserInfo();
-  // const { data: community } = useGetCommunity();
   const pastGigs = [];
-  // TODO: Are these pastGigs?
-  // const { data: pastGigs } = useGetGigs({ isOpen: false });
 
   return (
     <Layout>

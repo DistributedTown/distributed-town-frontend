@@ -48,69 +48,6 @@ export const isLoggedIn = () => {
   return false;
 }
 
-export const joinCommunity = async (
-  communityContractAddress,
-  ditos,
-) => {
-
-  const provider = new ethers.providers.JsonRpcProvider(
-    process.env.NEXT_PUBLIC_RPC_URL
-  );
-  
-  // Wallet connected to a provider
-  console.log(process.env.NEXT_PUBLIC_MNEMONIC)
-  const senderWalletMnemonic = ethers.Wallet.fromMnemonic(
-    process.env.NEXT_PUBLIC_MNEMONIC,
-    "m/44'/60'/0'/0/0"
-  );
-
-  let signer = senderWalletMnemonic.connect(provider);
-
-  const contract = new ethers.Contract(
-    process.env.NEXT_PUBLIC_COMMUNITIES_REGISTRY_ADDRESS,
-    communitiesABI,
-    signer,
-  );
-
-  let tx = undefined;
-
-  // const communitiesCount = await contract.numOfCommunities();
-  // console.log(communitiesCount);
-
-  // const addresses = await contract.getCommunities();
-  // console.log(addresses);
-
-  // if (isLoggedIn) {
-  //   const skillWalletId = localStorage.getItem('skillWalletTokenId');
-  //   tx = await contract.joinExistingSW(communityContractAddress, skillWalletId, ditos);
-  // } else {
-  const skills = localStorage.getItem('skills');
-  const skillsJson = JSON.parse(skills);
-  console.log(skillsJson)
-  console.log(communityContractAddress)
-  console.log(ditos)
-  const username = localStorage.getItem('username');
-  const metadataJson = {
-    name: `${username}'s SkillWallet`,
-    description: "Universal, self-sovereign IDs tied to skills & contributions rather than personal data.",
-    image: 'https://png.pngtree.com/png-clipart/20190619/original/pngtree-vector-avatar-icon-png-image_4017288.jpg',
-    properties: {
-      username, 
-      skills: skillsJson,
-    }
-  }
-  const url = await pushJSONDocument(metadataJson)
-  console.log(url);
-  // tx = await contract.joinNewMember(communityContractAddress, {
-  //   skill1: { level: 2, displayStringId: 1 },
-  //   skill2: { level: 3, displayStringId: 2 },
-  //   skill3: { level: 4, displayStringId: 3 }
-  // }, url, ditos);
-
-
-  // // }
-  // await tx.wait();
-};
 
 export const createCommunity = async () => {
   const provider = new ethers.providers.Web3Provider(web3.currentProvider);

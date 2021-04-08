@@ -1,12 +1,22 @@
 import queryString from 'query-string';
-import { fundUser } from '../api/users';
+
+export const join = async (payload) => {
+  console.log(payload);
+  const credits =  await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/community/join`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(payload),
+  });
+  const creditsJson = await credits.json();
+  return creditsJson.credits;
+}
+
 
 export const getCommunityById = (id) => {
   return fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/community/${id}`, {
-    method: 'GET',
-    headers: new Headers({
-      skillWalletID: localStorage.getItem('skillWalletID')
-    }),
+    method: 'GET'
   }).then(res => res.json());
 };
 
@@ -34,11 +44,7 @@ export const createCommunity = async (community) => {
   };
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/community`, {
     method: 'POST',
-    body: JSON.stringify(payload),
-    headers: {
-      'content-type': 'application/json',
-      skillWalletID:localStorage.getItem('skillWalletID')
-    },
+    body: JSON.stringify(payload)
   });
   const json = await res.json();
   console.log(json);

@@ -1,18 +1,14 @@
 import { useRouter } from 'next/router';
-import { useState } from 'react';
-import { useGetDitoBalance } from '../hooks/useGetDitoBalance';
-// import { useGetInvitation } from '../hooks/useGetInvitation';
+import { useEffect, useState } from 'react';
 import Button from './Button';
 import InviteModal from './InviteModal';
 
 export default function WelcomeToCommunity({
   communityName,
-  showInviteButton = false,
+  showInviteButton = false
 }) {
-  const { data: ditoBalance } = useGetDitoBalance();
-  // const { data, isLoading: loadingShareLink } = useGetInvitation();
   const [showInviteModal, setShowInviteModal] = useState(false);
-
+  const [ditoBalance, setDitoBalance] = useState(0);
   const router = useRouter();
 
   // const { linkUrl: shareLink } = data || {};
@@ -20,6 +16,11 @@ export default function WelcomeToCommunity({
   const onInviteClick = async () => {
     setShowInviteModal(true);
   };
+
+  useEffect(() => {
+    setDitoBalance(localStorage.getItem('credits'));
+  }, [])
+
 
   return (
     <div className="flex flex-col items-center justify-between w-full h-full pt-32 space-y-8">
