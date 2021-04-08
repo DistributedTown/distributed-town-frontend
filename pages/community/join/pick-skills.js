@@ -30,6 +30,8 @@ function PickSkills() {
         displayStringId: skillNames.indexOf(skills[2]?.skill),
         skillName: skills[2]?.skill
       }
+
+      
     };
 
     localStorage.setItem('skills', JSON.stringify(formatedSkills));

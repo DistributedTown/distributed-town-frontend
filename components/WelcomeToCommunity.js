@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useGetDitoBalance } from '../hooks/useGetDitoBalance';
-import { useGetInvitation } from '../hooks/useGetInvitation';
+// import { useGetInvitation } from '../hooks/useGetInvitation';
 import Button from './Button';
 import InviteModal from './InviteModal';
 
@@ -10,12 +10,12 @@ export default function WelcomeToCommunity({
   showInviteButton = false,
 }) {
   const { data: ditoBalance } = useGetDitoBalance();
-  const { data, isLoading: loadingShareLink } = useGetInvitation();
+  // const { data, isLoading: loadingShareLink } = useGetInvitation();
   const [showInviteModal, setShowInviteModal] = useState(false);
 
   const router = useRouter();
 
-  const { linkUrl: shareLink } = data || {};
+  // const { linkUrl: shareLink } = data || {};
 
   const onInviteClick = async () => {
     setShowInviteModal(true);
@@ -48,7 +48,7 @@ export default function WelcomeToCommunity({
       <InviteModal
         open={showInviteModal}
         onClose={() => setShowInviteModal(false)}
-        shareLink={shareLink}
+        shareLink={''}
       />
     </div>
   );

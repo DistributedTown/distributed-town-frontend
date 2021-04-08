@@ -32,11 +32,8 @@ export const login = () => {
 }
 
 export const getUserInfo = () => {
-  return fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user`, {
+  return fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/skillWallet/${window.ethereum.selectedAddress}`, {
     method: 'GET',
-    headers: new Headers({
-      skillWalletID:localStorage.getItem('skillWalletID')
-    }),
   })
     .then(res => res.json());
     // .then(arr => arr[0]);

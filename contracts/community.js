@@ -2,6 +2,7 @@ import { BigNumber, ethers } from 'ethers';
 import communityContractAbi from '../utils/communityContractAbi.json';
 import communitiesABI from '../utils/communitiesRegistryAbi.json';
 import ditoContractAbi from '../utils/ditoTokenContractAbi.json';
+import { pushJSONDocument } from '../utils/textile.hub';
 
 export const getCommunityDitoTokensContract = async (
   communityContractAddress,
@@ -85,19 +86,30 @@ export const joinCommunity = async (
   // } else {
   const skills = localStorage.getItem('skills');
   const skillsJson = JSON.parse(skills);
-  const url = 'https://hub.textile.io/thread/bafkwfcy3l745x57c7vy3z2ss6ndokatjllz5iftciq4kpr4ez2pqg3i/buckets/bafzbeiaorr5jomvdpeqnqwfbmn72kdu7vgigxvseenjgwshoij22vopice';
   console.log(skillsJson)
   console.log(communityContractAddress)
   console.log(ditos)
-  tx = await contract.joinNewMember(communityContractAddress, {
-    skill1: { level: 2, displayStringId: 1 },
-    skill2: { level: 3, displayStringId: 2 },
-    skill3: { level: 4, displayStringId: 3 }
-  }, url, ditos);
+  const username = localStorage.getItem('username');
+  const metadataJson = {
+    name: `${username}'s SkillWallet`,
+    description: "Universal, self-sovereign IDs tied to skills & contributions rather than personal data.",
+    image: 'https://png.pngtree.com/png-clipart/20190619/original/pngtree-vector-avatar-icon-png-image_4017288.jpg',
+    properties: {
+      username, 
+      skills: skillsJson,
+    }
+  }
+  const url = await pushJSONDocument(metadataJson)
+  console.log(url);
+  // tx = await contract.joinNewMember(communityContractAddress, {
+  //   skill1: { level: 2, displayStringId: 1 },
+  //   skill2: { level: 3, displayStringId: 2 },
+  //   skill3: { level: 4, displayStringId: 3 }
+  // }, url, ditos);
 
 
-  // }
-  await tx.wait();
+  // // }
+  // await tx.wait();
 };
 
 export const createCommunity = async () => {
