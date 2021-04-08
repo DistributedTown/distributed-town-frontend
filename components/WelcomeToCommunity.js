@@ -38,7 +38,7 @@ export default function WelcomeToCommunity({
       <div className="bottom-0 right-0 flex justify-center w-full px-48 py-4 space-x-4">
         {/* TODO: Only on create */}
         {showInviteButton && (
-          <Button onClick={onInviteClick} loading={loadingShareLink}>
+          <Button onClick={onInviteClick}>
             Invite new Members
           </Button>
         )}
