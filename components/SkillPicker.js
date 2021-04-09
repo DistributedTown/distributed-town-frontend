@@ -63,7 +63,7 @@ export default function SkillPicker({
         .find((_, cIndex) => cIndex === categoryIndex)
         .skills.find((_, sIndex) => sIndex === skillIndex);
 
-      skill.level = level;
+      skill.level = +level;
     });
 
     setSkillTree(newSkillTree);
@@ -79,7 +79,7 @@ export default function SkillPicker({
           })) || [],
       )
       .filter(skill => skill.selected)
-      .map(skill => ({ ...skill, level: skill.level || 0 }));
+      .map(skill => ({ ...skill, level: +skill.level || 0 }));
 
     return skills;
   }

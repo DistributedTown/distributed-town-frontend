@@ -1,9 +1,8 @@
 import { useMutation } from 'react-query';
 import { createGig } from '../api/gigs';
-import { useMagic } from '../components/MagicStore';
+import { storeGigHash } from '../contracts/gigs';
 
 export const useCreateGig = () => {
-  const magic = useMagic();
 
   return useMutation(
     async ({ title, description, skills, creditsOffered, isProject }) => {
@@ -15,9 +14,9 @@ export const useCreateGig = () => {
         isProject,
       };
 
-      const didToken = await magic.user.getIdToken();
       // TODO: Throw on !ok
-      await createGig(didToken, gigData);
+      const result = await createGig(gigData);
+      storeGigHash(result.hash);
     },
     {
       throwOnError: true,

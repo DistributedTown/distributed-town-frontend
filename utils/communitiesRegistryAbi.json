@@ -1,5 +1,16 @@
 [
   {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_skillWalletAddress",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  },
+  {
     "anonymous": false,
     "inputs": [
       {
@@ -20,7 +31,7 @@
         "type": "uint256"
       }
     ],
-    "name": "communities",
+    "name": "communityAddresses",
     "outputs": [
       {
         "internalType": "address",
@@ -29,25 +40,51 @@
       }
     ],
     "stateMutability": "view",
-    "type": "function",
-    "constant": true
+    "type": "function"
   },
   {
-    "inputs": [],
-    "name": "numOfCommunities",
-    "outputs": [
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "_url",
+        "type": "string"
+      },
       {
         "internalType": "uint256",
-        "name": "",
+        "name": "_ownerId",
         "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_ownerCredits",
+        "type": "uint256"
+      },
+      {
+        "internalType": "string",
+        "name": "_name",
+        "type": "string"
+      },
+      {
+        "internalType": "enum Types.Template",
+        "name": "_template",
+        "type": "uint8"
+      },
+      {
+        "internalType": "uint8",
+        "name": "_positionalValue1",
+        "type": "uint8"
+      },
+      {
+        "internalType": "uint8",
+        "name": "_positionalValue2",
+        "type": "uint8"
+      },
+      {
+        "internalType": "uint8",
+        "name": "_positionalValue3",
+        "type": "uint8"
       }
     ],
-    "stateMutability": "view",
-    "type": "function",
-    "constant": true
-  },
-  {
-    "inputs": [],
     "name": "createCommunity",
     "outputs": [
       {
@@ -60,14 +97,56 @@
     "type": "function"
   },
   {
+    "inputs": [],
+    "name": "getCommunities",
+    "outputs": [
+      {
+        "internalType": "address[]",
+        "name": "",
+        "type": "address[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [
       {
         "internalType": "address",
-        "name": "_communityAddress",
+        "name": "",
         "type": "address"
       }
     ],
-    "name": "addCommunity",
+    "name": "isCommunity",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "community",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "skillWalletTokenId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "credits",
+        "type": "uint256"
+      }
+    ],
+    "name": "joinExistingSW",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -76,20 +155,107 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "_user",
+        "name": "community",
         "type": "address"
+      },
+      {
+        "components": [
+          {
+            "components": [
+              {
+                "internalType": "uint64",
+                "name": "displayStringId",
+                "type": "uint64"
+              },
+              {
+                "internalType": "uint8",
+                "name": "level",
+                "type": "uint8"
+              }
+            ],
+            "internalType": "struct Types.Skill",
+            "name": "skill1",
+            "type": "tuple"
+          },
+          {
+            "components": [
+              {
+                "internalType": "uint64",
+                "name": "displayStringId",
+                "type": "uint64"
+              },
+              {
+                "internalType": "uint8",
+                "name": "level",
+                "type": "uint8"
+              }
+            ],
+            "internalType": "struct Types.Skill",
+            "name": "skill2",
+            "type": "tuple"
+          },
+          {
+            "components": [
+              {
+                "internalType": "uint64",
+                "name": "displayStringId",
+                "type": "uint64"
+              },
+              {
+                "internalType": "uint8",
+                "name": "level",
+                "type": "uint8"
+              }
+            ],
+            "internalType": "struct Types.Skill",
+            "name": "skill3",
+            "type": "tuple"
+          }
+        ],
+        "internalType": "struct Types.SkillSet",
+        "name": "skillSet",
+        "type": "tuple"
+      },
+      {
+        "internalType": "string",
+        "name": "uri",
+        "type": "string"
+      },
+      {
+        "internalType": "uint256",
+        "name": "credits",
+        "type": "uint256"
       }
     ],
-    "name": "currentCommunityOfUser",
+    "name": "joinNewMember",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "numOfCommunities",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "skillWalletAddress",
     "outputs": [
       {
         "internalType": "address",
-        "name": "communityAddress",
+        "name": "",
         "type": "address"
       }
     ],
     "stateMutability": "view",
-    "type": "function",
-    "constant": true
+    "type": "function"
   }
 ]

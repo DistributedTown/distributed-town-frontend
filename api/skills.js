@@ -16,11 +16,9 @@ export const getSkillTreeByCategory = category => {
   ).then(res => res.json());
 };
 
-export const getSkillWallet = didToken => {
-  return fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/skillWallet`, {
-    headers: {
-      'content-type': 'application/json',
-      Authorization: `Bearer ${didToken}`,
-    },
-  }).then(res => res.json());
-};
+export const getSkillDisplayNames = () => {
+  return fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/skill/names`, {
+    method: 'GET',
+  })
+    .then(res => res.json());
+}

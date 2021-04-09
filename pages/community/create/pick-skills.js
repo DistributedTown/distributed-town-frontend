@@ -1,33 +1,55 @@
 import { useRouter } from 'next/router';
-import { useCreateCommunityState } from '.';
 import SkillPicker from '../../../components/SkillPicker';
 import { useCreateCommunity } from '../../../hooks/useCreateCommunity';
+import { useEffect, useState } from 'react';
 
 function PickSkills() {
-  const [community] = useCreateCommunityState();
-  const [createCommunity, { isLoading }] = useCreateCommunity();
   const router = useRouter();
+  const [createCommunity, { isLoading }] = useCreateCommunity();
+  const [community, setCommunity] = useState();
+  useEffect(() => {
+    const item = JSON.parse(localStorage.getItem('create-community'));
+
+    if (!item) {
+      console.log('no item')
+      router.push(`/community/create`);
+      return;
+    }
+    if (!item.name || !item.category || !item.description) {
+      console.log('no item prop')
+      router.push(`/community/create`);
+      return;
+    }
+    setCommunity({
+      name: item.name,
+      category: item.category,
+      description: item.description
+    });
+  }, [])
+
 
   const handleSubmit = async ({ username, skills }) => {
-    const user = { username, skills };
-    await createCommunity({
-      name: community.name,
-      category: community.category,
-      description: community.description,
-      user,
-    });
+    console.log('handle submit');
+    localStorage.setItem('skillSet', skills);
+
+    localStorage.setItem('username', username);
+   // await fundUser(window.ethereum.selectedAddress)
+
+    // TODO create community flow 
+    // await createCommunity({
+    //   name: community.name,
+    //   category: community.category,
+    //   description: community.description,
+    //   user,
+    // });
     await router.push(`/community/create/completed`);
   };
-
-  if (!community.name || !community.category || !community.description) {
-    router.push(`/community/create`);
-  }
 
   return (
     <SkillPicker
       isSubmitting={isLoading}
-      communityCategory={community.category}
       onSubmit={handleSubmit}
+      communityCategory={router.query.category}
     />
   );
 }

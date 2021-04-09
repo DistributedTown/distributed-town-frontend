@@ -3,15 +3,13 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { FaBars, FaWallet, FaUsers, FaSignOutAlt } from 'react-icons/fa';
-import { useMagic } from './MagicStore';
 
 const Layout = ({ children }) => {
-  const magic = useMagic();
   const router = useRouter();
   const [showNav, setShowNav] = useState(false);
 
   const handleLogout = async () => {
-    await magic.user.logout();
+    // TODO logout
     router.push('/');
   };
 

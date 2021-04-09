@@ -35,9 +35,6 @@ const RegistrationModal = ({
                   <div className="w-full max-w-sm rounded lg:max-w-full lg:flex">
                     <Card className="text-center">
                       <div className="mb-6">
-                        {/* <div className="text-xl font-bold text-gray-900">
-                      Welcome to
-                    </div> */}
                         <Logo className="mx-auto" />
                         <p className="mt-6 text-base text-gray-700">
                           {`You will be joining ${communityName ||

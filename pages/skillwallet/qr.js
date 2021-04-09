@@ -1,39 +1,37 @@
 import { QRCode } from 'react-qrcode-logo';
-import { useGetUserInfo } from '../../hooks/useGetUserInfo';
-import { useGetDitoBalance } from '../../hooks/useGetDitoBalance';
 import Card from '../../components/Card';
-import { useGetCommunity } from '../../hooks/useGetCommunity';
-import { useGetSkillWallet } from '../../hooks/useGetSkillWallet';
 
 function QR() {
-  const { data: userInfo } = useGetUserInfo();
-  const { data: skillWallet } = useGetSkillWallet();
-  const { data: ditoBalance } = useGetDitoBalance();
-  const { data: community } = useGetCommunity();
+  // const { data: userInfo } = useGetUserInfo();
+  // const { data: skillWallet } = useGetSkillWallet();
+  // const { data: ditoBalance } = useGetDitoBalance();
+  // const { data: community } = useGetCommunity();
 
   return (
     <div className="flex flex-col w-full h-screen md:flex-row">
       <div className="flex flex-col items-center justify-center p-8 bg-denim md:w-1/2">
         <div className="p-4 bg-ripe-lemon rounded-xl">
           {/* TODO: Use skillWallet instead of user id when endpoint is implemented */}
-          {userInfo ? (
+          {(
             <QRCode
-              value={userInfo._id}
-              // logoImage="/isologo.svg"
+              value={`{
+                "address":"0xe5dfc64fad45122545b0a5b88726ff7858509600"
+                "tokenId":0,
+                "hash":"wnGO5OQLkAEJ"
+              }`}
+              logoImage="/isologo.svg"
               // logoWidth={60}
               // logoHeight={60}
               bgColor="transparent"
               size={180}
             />
-          ) : (
-            'Loading QR code.'
-          )}
+          ) }
         </div>
         <Card className="p-2 mt-10 bg-white">
           Scan Wallet’s QR-Code to verify new member.
         </Card>
       </div>
-      <div className="flex items-center justify-center p-8 md:w-1/2">
+      {/* <div className="flex items-center justify-center p-8 md:w-1/2">
         <Card className="flex flex-col items-center justify-center">
           <h3 className="text-2xl">Accepting Community</h3>
           <Card filled className="my-4">
@@ -57,6 +55,7 @@ function QR() {
           </div>
         </Card>
       </div>
+     */}
     </div>
   );
 }

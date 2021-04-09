@@ -1,11 +1,22 @@
 import queryString from 'query-string';
 
-export const getCommunityById = (didToken, id) => {
+export const join = async (payload) => {
+  console.log(payload);
+  const credits =  await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/community/join`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(payload),
+  });
+  const creditsJson = await credits.json();
+  return creditsJson.credits;
+}
+
+
+export const getCommunityById = (id) => {
   return fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/community/${id}`, {
-    method: 'GET',
-    headers: new Headers({
-      Authorization: `Bearer ${didToken}`,
-    }),
+    method: 'GET'
   }).then(res => res.json());
 };
 
@@ -18,7 +29,7 @@ export const getCommunities = filter => {
   }).then(res => res.json());
 };
 
-export const createCommunityAndUser = async (didToken, community, user) => {
+export const createCommunity = async (community) => {
   const { address, category, name } = community;
   const payload = {
     category,
@@ -29,17 +40,12 @@ export const createCommunityAndUser = async (didToken, community, user) => {
       },
     ],
     name,
-    owner: {
-      username: user.username,
-      skills: user.skills,
-    },
+    ownerID: localStorage.getItem('skillWalletID')
   };
-  await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/community`, {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/community`, {
     method: 'POST',
-    body: JSON.stringify(payload),
-    headers: {
-      'content-type': 'application/json',
-      Authorization: `Bearer ${didToken}`,
-    },
-  }).then(res => res.json());
+    body: JSON.stringify(payload)
+  });
+  const json = await res.json();
+  console.log(json);
 };

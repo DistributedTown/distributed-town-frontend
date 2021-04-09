@@ -6,22 +6,28 @@ import Blob from '../components/Blob';
 import Button from '../components/Button';
 import Card from '../components/Card';
 import Logo from '../components/Logo';
-import TextField from '../components/TextField';
-
-import { useMagicLinkLogin } from '../hooks/useMagicLinkLogin';
+import LoginModal from '../components/LoginModal';
+import { useState } from 'react';
 
 const Index = () => {
   // TODO: Loading while logging in to API after magic link
-  const [login] = useMagicLinkLogin();
+  const [showLoginPopUp, setShowLoginPopUp] = useState(false);
+
   const router = useRouter();
+  
 
-  const onLoginSubmit = async event => {
-    event.preventDefault();
-    const email = event.target.email.value;
-    await login(email);
-    await router.push('/skillwallet');
-  };
-
+  const onSkillWalletLogin = async () => {
+    if (window.ethereum) {
+      try {
+        if (!window.ethereum.selectedAddress)
+          await window.ethereum.enable();
+        router.push('/community');
+        return;
+      } catch (e) {
+        router.push('/')
+      }
+    }
+  }
   return (
     <div className="flex flex-col items-center flex-1 mx-auto lg:flex-row lg:min-h-screen">
       <Head>
@@ -34,7 +40,7 @@ const Index = () => {
         </h1>
         <Card className="flex flex-col p-4 mx-0 mb-4 space-y-4 sm:mx-8 sm:p-8">
           <Link href="/community/create">
-            <Button>
+            <Button disabled={true}>
               <a className="flex items-center justify-center space-x-4 text-xl">
                 <span>Create</span>
                 <FaPlus />
@@ -49,20 +55,18 @@ const Index = () => {
               </a>
             </Button>
           </Link>
-          {/* TODO: Don't show if logged in */}
-          <form
-            onSubmit={onLoginSubmit}
-            className="flex space-x-4 whitespace-nowrap"
-          >
-            <label>
-              <span className="mr-2 text-xl font-bold">Login</span>
-              <TextField
-                name="email"
-                type="email"
-                placeholder="yourmail@me.io"
-              />
-            </label>
-          </form>
+
+          <Button onClick={() => setShowLoginPopUp(true)} enable={false}>
+            <a className="flex items-center justify-center space-x-4 text-xl">
+              <span>Login</span>
+            </a>
+          </Button>
+
+          <LoginModal
+            open={showLoginPopUp}
+            onClose={() => { setShowLoginPopUp(false) }}
+            onSkillWalletLogin={onSkillWalletLogin}
+          />
         </Card>
       </div>
     </div>

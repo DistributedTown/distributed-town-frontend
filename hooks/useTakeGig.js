@@ -1,14 +1,11 @@
 import { useMutation } from 'react-query';
 import { acceptGig } from '../api/gigs';
-import { useMagic } from '../components/MagicStore';
 
 export const useTakeGig = () => {
-  const magic = useMagic();
 
   return useMutation(
     async id => {
-      const didToken = await magic.user.getIdToken();
-      await acceptGig(didToken, id);
+      await acceptGig(id);
     },
     { throwOnError: true },
   );
