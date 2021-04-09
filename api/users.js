@@ -15,3 +15,12 @@ export const getCommunityInfo = () => {
   })
     .then(res => res.json());
 };
+
+export const hasPendingAuthentication = async (address) => {
+  const response =  await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/skillWallet/hasPendingAuth?address=${address}`, {
+    method: 'GET',
+  });
+  const pendingAuths = await response.json();
+  console.log(pendingAuths);
+  return pendingAuths.hasPendingAuth;
+};
