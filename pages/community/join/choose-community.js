@@ -31,7 +31,9 @@ function ChooseCommunity() {
       await window.ethereum.enable();
     await joinCommunity(chosenCommunity);
     await router.push(
-      `/community/join/qr`,
+      `/community/join/qr?category=${encodeURIComponent(
+        category,
+      )}`,
     );
   };
 
