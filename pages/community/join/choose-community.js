@@ -5,6 +5,7 @@ import { useJoinCommunity } from '../../../hooks/useJoinCommunity';
 import CommunityCard from '../../../components/CommunityCard';
 import { useGetCommunities } from '../../../hooks/useGetCommunities';
 import Button from '../../../components/Button';
+import MyModal from '../../../components/MyModal';
 
 function ChooseCommunity() {
   const router = useRouter();
@@ -15,6 +16,9 @@ function ChooseCommunity() {
   const { refetch: getCommunities } = useGetCommunities({
     category: router.query.category,
   });
+  const [showModal, setShowModal] = useState(false);
+  const toggleModal = () => setShowModal(!showModal);
+  const modalText = 'Scan with your SkillWallet App to verify membership.'
 
   useEffect(() => {
     const { category } = router.query;
@@ -60,13 +64,14 @@ function ChooseCommunity() {
       <div className="flex justify-center w-full p-4 bg-white">
         <Button
           filled
-          onClick={handleJoinClick}
+          onClick={toggleModal}
           disabled={!chosenCommunity}
           loading={isJoining}
         >
           Join and get your credits!
         </Button>
       </div>
+      { showModal ? <MyModal toggleModal={toggleModal} modalText={modalText}/> : null}
     </div>
   );
 }

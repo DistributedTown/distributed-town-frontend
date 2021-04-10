@@ -16,7 +16,7 @@ const MyModal = (props, {
     <div id="myModal" style={{ display, position, zIndex, left, top, width, height, overflow, backgroundColor}}>
         <div style={{
               backgroundColor: 'rgba(105,105,105, 0.95)',
-              margin: '15% auto',
+              margin: '5% auto',
               padding:'20px',
               border: '1px solid #888',
               width: '60%' /* Could be more or less, depending on screen size */}}
