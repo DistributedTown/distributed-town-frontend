@@ -47,8 +47,14 @@ const Join = ({ skills = [] }) => {
           </div>
         </div>
       </div>
-      <button onClick={toggleModal}>Open Modal</button>
+      <div class="flex items-center justify-center">
+        <button 
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" 
+          onClick={toggleModal}>Scan QR-Code to Claim Your Membership!
+        </button>
+      </div>
       { showModal ? <MyModal toggleModal={toggleModal} modalText={modalText}/> : null}
+      
       {/* <RegistrationModal
         show={showRegistrationModal}
         loading={isLoading}

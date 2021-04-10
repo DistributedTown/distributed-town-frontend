@@ -19,9 +19,10 @@ const MyModal = (props, {
               margin: '15% auto',
               padding:'20px',
               border: '1px solid #888',
-              width: '60%' /* Could be more or less, depending on screen size */
-        }}>
-            <span class="close">&times;</span>
+              width: '60%' /* Could be more or less, depending on screen size */}}
+              className="flex-col justify-center"
+        >
+            {/* <span className="close">&times;</span> */}
             <QRCode
               value={`{
                 "address":"0xe5dfc64fad45122545b0a5b88726ff7858509600"
@@ -29,13 +30,22 @@ const MyModal = (props, {
                 "hash":"wnGO5OQLkAEJ"
               }`}
               logoImage="/isologo.svg"
-              logoWidth={60}
-              logoHeight={60}
-              bgColor="transparent"
-              size={180}
+              logoWidth={140}
+              logoHeight={140}
+              bgColor="gold"
+              size={420}
+              className="m-0"
             />
-            <p>{props.modalText}</p>
-            <button onClick={props.toggleModal}>Close</button>
+
+            <div className="w-80 m-0 bg-white m-auto">
+                <p className="">{props.modalText}</p>
+            </div>
+            <div className="m-auto">
+                <button 
+                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                    onClick={props.toggleModal}>Close
+                </button>
+                </div>
         </div>
     </div>
     )
