@@ -5,10 +5,14 @@ import { useRouter } from 'next/router';
 import Quote from '../../../components/Quote';
 import Logo from '../../../components/Logo';
 import Button from '../../../components/Button';
+import MyModal from '../../../components/MyModal';
 
 const Join = ({ skills = [] }) => {
 
   const [chosenSkill, setChosenSkill] = useState('');
+  const [showModal, setShowModal] = useState(false);
+  const toggleModal = () => setShowModal(!showModal);
+  const modalText = 'Scan with your SkillWallet App to verify membership.'
 
   const router = useRouter();
 
@@ -43,6 +47,14 @@ const Join = ({ skills = [] }) => {
           </div>
         </div>
       </div>
+      <div class="flex items-center justify-center">
+        <button 
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" 
+          onClick={toggleModal}>Scan QR-Code to Claim Your Membership!
+        </button>
+      </div>
+      { showModal ? <MyModal toggleModal={toggleModal} modalText={modalText}/> : null}
+      
       {/* <RegistrationModal
         show={showRegistrationModal}
         loading={isLoading}
@@ -54,15 +66,15 @@ const Join = ({ skills = [] }) => {
   );
 };
 
-export async function getServerSideProps() {
-  let skills = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/skill`, {
-    method: 'GET',
-  });
-  skills = await skills.json();
+// export async function getServerSideProps() {
+//   let skills = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/skill`, {
+//     method: 'GET',
+//   });
+//   skills = await skills.json();
 
-  return {
-    props: { skills }, // will be passed to the page component as props
-  };
-}
+//   return {
+//     props: { skills }, // will be passed to the page component as props
+//   };
+// }
 
 export default Join;
