@@ -27,12 +27,12 @@ function ChooseCommunity() {
   }, [router.query.category]);
 
   const handleJoinClick = async () => {
-    if (!window.ethereum.selectedAddress)
-      await window.ethereum.enable();
+    // if (!window.ethereum.selectedAddress)
+    await window.ethereum.enable();
     await joinCommunity(chosenCommunity);
     await router.push(
-      `/community/join/qr?category=${encodeURIComponent(
-        category,
+      `/community/join/qr?communityName=${encodeURIComponent(
+        chosenCommunity.name,
       )}`,
     );
   };

@@ -41,7 +41,7 @@ export const useJoinCommunity = () => {
 
     const credits = await join({
       communityAddress: community.address,
-      userAddress: '0xE5dFc64faD45122545B0A5B88726ff7858509600',
+      userAddress: window.ethereum.selectedAddress,
       url: url,
       skills: skillsFormated
     });

@@ -60,6 +60,10 @@ function QR() {
             />
           )}
         </div>
+        <div className="flex flex-col items-center justify-center p-8 bg-denim md:w-full">
+          <p className="text-white">Scan with your <a href="https://skillwallet.id"><u>SkillWallet App</u></a></p>
+          <p className="text-white">to verify membership</p>
+        </div>
       </div>
     </div>
   );
