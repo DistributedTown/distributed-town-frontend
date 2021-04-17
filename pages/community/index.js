@@ -29,7 +29,7 @@ function CommunityDashboard() {
                 </Button>
               </Link>
               <Link href="/community/projects">
-                <Button disabled>
+                <Button>
                   <a>Projects & Proposals</a>
                 </Button>
               </Link>
@@ -37,6 +37,12 @@ function CommunityDashboard() {
           </div>
           <CheckupCard />
         </div>
+        <div className="bg-white flex justify-center pt-1 pb-1">              
+              <Link href="./skillwallet" disabled>
+                <Button className="w-3/5">
+                  <a>Go To Skillwallet</a>
+                </Button>
+              </Link></div>
       </div>
     </Layout>
   );
