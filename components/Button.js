@@ -1,7 +1,8 @@
 import classNames from 'classnames';
 import { FaCircleNotch } from 'react-icons/fa';
+import { forwardRef } from 'react';
 
-function Button({
+const Button = forwardRef(({
   filled,
   color = 'denim',
   textColor = 'black',
@@ -11,7 +12,7 @@ function Button({
   loading,
   icon,
   ...rest
-}) {
+}, ref) => {
   // TODO: Refactor
   if (filled) {
     textColor = 'white';
@@ -40,7 +41,7 @@ function Button({
   );
 
   return (
-    <button className={classes} type="button" disabled={isDisabled} {...rest}>
+    <button ref={ref} className={classes} type="button" disabled={isDisabled} {...rest}>
       <div className="flex items-center justify-center space-x-2">
         {loading && (
           <FaCircleNotch
@@ -52,6 +53,6 @@ function Button({
       </div>
     </button>
   );
-}
+});
 
 export default Button;

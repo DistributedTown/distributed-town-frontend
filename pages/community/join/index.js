@@ -57,10 +57,13 @@ const Join = ({ skills = [] }) => {
 };
 
 export async function getServerSideProps() {
-  let skills = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/skill`, {
-    method: 'GET',
-  });
-  skills = await skills.json();
+  // TODO: replace mock data with backend call
+  // let skills = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/skill`, {
+  //   method: 'GET',
+  // });
+  // skills = await skills.json();
+  let skills = ['Management', 'Training & Sport', 'Network Design', 'Web Development', 'DeFi', 'Tokenomics', 'Painting', 'Consensus', 'Mobile Dev', 'Architecture',
+'Frontend Dev', 'Governance', 'Teaching', 'Game Theory', 'Video-Making', 'Photography', 'Smart Contracts', 'Gardening', 'Backend Dev', 'Householding', 'Legal', 'Blockchain', 'Community']
 
   return {
     props: { skills }, // will be passed to the page component as props

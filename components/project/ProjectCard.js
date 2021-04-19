@@ -1,6 +1,6 @@
-const ProjectCard = ({ key, project }) => {
+const ProjectCard = ({ project }) => {
   return (
-    <div key={key} className="border-2 border-blue-600 h-auto">
+    <div className="border-2 border-blue-600 h-auto">
       <div className="flex justify-between border-b-2 border-gray-400 p-2">
         <p>{project.title}</p>
       </div>

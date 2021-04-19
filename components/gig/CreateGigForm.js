@@ -57,7 +57,7 @@ const CreateGigForm = ({ isSubmitting, onSubmit }) => {
         <div className="flex flex-col">
           <div className="flex justify-between space-x-8">
             <label className="text-xl font-bold" htmlFor="title">
-              Title
+              Project Title
             </label>
             <p className="text-dove-gray">
               Hint: a short, clear title will catch contributors’ attention.
@@ -75,12 +75,12 @@ const CreateGigForm = ({ isSubmitting, onSubmit }) => {
         </div>
         <div className="flex flex-col">
           <div className="flex justify-between space-x-8">
-            <label className="text-xl font-bold" htmlFor="description">
-              Description
+            <label className="text-xl font-bold min-w-max" htmlFor="description">
+              Project Description
             </label>
-            <p className="text-dove-gray">
-              Hint: be as detailed as possible, and be nice - there are real
-              people on the other side ;)
+            <p className="text-dove-gray max-w-4xl">
+              Hint: whether you want to build a dApp, or launch a new Art event - your community can help to 
+              make it happen! Be clear in the description, and assign the right tasks!
             </p>
           </div>
           <TextField
@@ -133,9 +133,8 @@ const CreateGigForm = ({ isSubmitting, onSubmit }) => {
           <div className="flex flex-col flex-1 space-y-4">
             <h1 className="text-xl font-bold">Commitment</h1>
             <h2 className="text-dove-gray">
-              Hint: the effort needed for this task. This value
-              <br />
-              influences the DiTo reward.
+              Hint: the effort to complete this Project. This value influences the Funds needed 
+              in your Community Treasury!
             </h2>
             {/* TODO: Fix color */}
             <input
@@ -148,12 +147,12 @@ const CreateGigForm = ({ isSubmitting, onSubmit }) => {
             />
           </div>
           <div className="flex flex-col flex-1 space-y-4">
-            <h1 className="text-xl font-bold">Budget needed</h1>
+            <h1 className="text-xl font-bold">Funds needed</h1>
             <h2 className="text-dove-gray">
-              Hint: the amount of DiTo you offer.
+              Hint: the amount of funds needed for this project.
             </h2>
             <div className="flex flex-col">
-              <TextField value={budgetRequired} />
+              <TextField value={budgetRequired} name="fundsNeeded"/>
               <h2 className="text-right">DiTo</h2>
             </div>
           </div>

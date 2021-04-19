@@ -9,7 +9,7 @@ function CreateProject() {
   const [createGig, { isLoading: isSubmitting }] = useCreateGig();
 
   async function onSubmit(project) {
-    await createGig({ ...project, isProject: true });
+    // await createGig({ ...project, isProject: true });
     await router.push('/community/projects');
   }
 

@@ -22,7 +22,10 @@ export const community = {
     name: 'DiTo 23',
     members: 12, 
     scarcityScore: 72,
-    address: '0x..'
+    address: '0x..',
+    communityInfo: {
+        category: 'Blockchain'
+    }
 }
 
 export const postNewProject = {
