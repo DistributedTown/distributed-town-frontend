@@ -44,7 +44,7 @@ const Join = ({ skills = [] }) => {
           </div>
         </div>
       </div>
-      
+                
       {/* <RegistrationModal
         show={showRegistrationModal}
         loading={isLoading}

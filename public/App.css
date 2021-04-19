@@ -13,3 +13,11 @@ input::-webkit-inner-spin-button {
 input[type='number'] {
   -moz-appearance: textfield;
 }
+
+#react-qrcode-logo {
+  margin: 0 auto 25px auto;
+}
+
+#joinModalText {
+  width: 440px;
+}

@@ -9,15 +9,18 @@ import { getProjects } from '../../../api/gigs';
 import { useGetUserInfo } from '../../../hooks/useGetUserInfo';
 import Button from '../../../components/Button';
 import PageTitle from '../../../components/PageTitle';
+import {user as userInfo} from '../../../utils/mockData';
+import {getAllProjects as mockProjects} from '../../../utils/mockData';
 
 function Projects() {
-  const { data: userInfo } = useGetUserInfo();
+  // const { data: userInfo } = useGetUserInfo();
   const [projects, setProjects] = useState();
 
   useEffect(() => {
     (async () => {
-      const projectsResponse = await getProjects();
-      setProjects(projectsResponse);
+      // const projectsResponse = await getProjects();
+      // setProjects(projectsResponse);
+      setProjects(mockProjects.projects);
     })();
   }, []);
 
@@ -27,7 +30,18 @@ function Projects() {
   return (
     <Layout>
       <div className="grid gap-8 m-8">
-        <PageTitle>Open Projects</PageTitle>
+        <div className="flex justify-between items-center">
+          <PageTitle className="align-center">Open Projects</PageTitle>
+            <div>
+              <Link href="/community/projects/create">
+                <Button filled>
+                  <a className="flex items-center justify-center space-x-2">
+                    <p className="mb-2 text-2xl">Create new project</p>
+                  </a>
+                </Button>
+              </Link>
+            </div>
+        </div>
         <div className="grid items-baseline gap-12 mt-5 mb-40 lg:grid-cols-2 xl:grid-cols-3">
           {typeof projects === 'undefined' ? (
             <div>
@@ -41,15 +55,7 @@ function Projects() {
             })
           )}
         </div>
-        <Link href="/community/projects/create">
-          <Button filled>
-            <a className="flex items-center justify-center space-x-2">
-              <p className="mb-2 text-2xl">Create new project</p>
-              <FaPlusCircle />
-            </a>
-          </Button>
-        </Link>
-        <SkillsDisplay skills={userInfo.skills} />
+        <SkillsDisplay skills={userInfo.skillSet.skills} />
       </div>
     </Layout>
   );

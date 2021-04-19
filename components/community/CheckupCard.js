@@ -31,9 +31,9 @@ export default function CheckupCard() {
           </div>
           <div className="flex justify-between font-bold">
             <p>Scarcity score</p>
-            <p>
+            <div>
               <p>{!community ? 'Loading' : community.scarcityScore}</p>
-            </p>
+            </div>
           </div>
         </div>
       </Card>
