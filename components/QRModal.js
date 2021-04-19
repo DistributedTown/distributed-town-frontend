@@ -2,15 +2,15 @@ import React from 'react';
 import { QRCode } from 'react-qrcode-logo';
 
 const QRModal = (props, {
-    display = 'block', /* Hidden by default */
-    position = 'fixed', /* Stay in place */
-    zIndex = 1, /* Sit on top */
+    display = 'block',
+    position = 'fixed',
+    zIndex = 1,
     left = 0,
     top = 0,
-    width = '100%', /* Full width */
-    height = '100%', /* Full height */
-    overflow = 'auto', /* Enable scroll if needed */
-    backgroundColor = 'rgba(0,0,0,0.8)' /* Black w/ opacity */
+    width = '100%',
+    height = '100%',
+    overflow = 'auto',
+    backgroundColor = 'rgba(0,0,0,0.8)'
 }) => {
     return (
     <div id="qrModal" style={{ display, position, zIndex, left, top, width, height, overflow, backgroundColor}}>

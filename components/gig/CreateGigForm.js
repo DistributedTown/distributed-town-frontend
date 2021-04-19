@@ -46,6 +46,7 @@ const CreateGigForm = ({ isSubmitting, onSubmit }) => {
     <form
       className="mt-8"
       onSubmit={handleSubmit(data =>
+
         onSubmit({
           ...data,
           skills: selectedSkills.map(s => s.name),
