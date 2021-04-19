@@ -2,19 +2,23 @@ import { useState, useEffect, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { useGetSkills } from '../../hooks/useGetSkills';
 import { useGetCommunity } from '../../hooks/useGetCommunity';
+import {community as mockCommunity } from '../../utils/mockData';
 import Button from '../Button';
 import Card from '../Card';
 import TextField from '../TextField';
 
 const CreateGigForm = ({ isSubmitting, onSubmit }) => {
   const { register, handleSubmit, errors } = useForm();
-  const { data: community } = useGetCommunity();
+  // TODO: replace mock data with backend call
+  // const { data: community } = useGetCommunity();
+  const community = mockCommunity;
   const communityCategory = community && community.communityInfo.category;
 
   const [budgetRequired, setBudgetRequired] = useState(0);
   const [selectedSkills, setSelectedSkills] = useState([]);
   const [commitment, setCommitment] = useState(50);
 
+  // TODO: replace mock data with backend call
   const { data: skillTree, error } = useGetSkills(
     { category: communityCategory },
     { enabled: communityCategory },

@@ -13,11 +13,13 @@ import {user as userInfo} from '../../../utils/mockData';
 import {getAllProjects as mockProjects} from '../../../utils/mockData';
 
 function Projects() {
+  // TODO: replace mock data with backend call
   // const { data: userInfo } = useGetUserInfo();
   const [projects, setProjects] = useState();
 
   useEffect(() => {
     (async () => {
+      // TODO: replace mock data with backend call
       // const projectsResponse = await getProjects();
       // setProjects(projectsResponse);
       setProjects(mockProjects.projects);
