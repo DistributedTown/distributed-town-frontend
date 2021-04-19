@@ -1,8 +1,11 @@
 import { useGetCommunity } from '../../hooks/useGetCommunity';
+import { community as mockCommunity } from '../../utils/mockData';
 import Card from '../Card';
 
 export default function CheckupCard() {
-  const { data: community } = useGetCommunity();
+  // TODO: replace mock data with backend call
+  // const { data: community } = useGetCommunity();
+  const community = mockCommunity;
 
   return (
     <div

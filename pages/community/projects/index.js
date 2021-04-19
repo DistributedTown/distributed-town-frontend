@@ -13,11 +13,14 @@ import {user as userInfo} from '../../../utils/mockData';
 import {getAllProjects as mockProjects} from '../../../utils/mockData';
 
 function Projects() {
+  // TODO: replace mock data with backend call
   // const { data: userInfo } = useGetUserInfo();
   const [projects, setProjects] = useState();
+  let availableId = 9999999999;
 
   useEffect(() => {
     (async () => {
+      // TODO: replace mock data with backend call
       // const projectsResponse = await getProjects();
       // setProjects(projectsResponse);
       setProjects(mockProjects.projects);
@@ -51,6 +54,10 @@ function Projects() {
             <h2>There are no open projects.</h2>
           ) : (
             projects.map(project => {
+              if (!project._id) {
+                project._id = availableId;
+                availableId -= 1;
+              }
               return <ProjectCard key={project._id} project={project} />;
             })
           )}
