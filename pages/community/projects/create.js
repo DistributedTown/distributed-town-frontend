@@ -1,14 +1,15 @@
 import { useRouter } from 'next/router';
 import Layout from '../../../components/Layout';
 import CreateGigForm from '../../../components/gig/CreateGigForm';
-import { useCreateGig } from '../../../hooks/useCreateGig';
+import { useCreateProject } from '../../../hooks/useCreateProject';
 import PageTitle from '../../../components/PageTitle';
 import QRModal from '../../../components/QRModal';
 import { useState } from 'react';
 
+//todo: 6 skills tops
 function CreateProject() {
   const router = useRouter();
-  const [createGig, { isLoading: isSubmitting }] = useCreateGig();
+  const [createProject, { isLoading: isSubmitting }] = useCreateProject();
   const [showModal, setShowModal] = useState(false);
   const toggleModal = () => setShowModal(!showModal);
 
