@@ -2,12 +2,12 @@ import { useState, useEffect, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { useGetSkills } from '../../hooks/useGetSkills';
 import { useGetCommunity } from '../../hooks/useGetCommunity';
-import {community as mockCommunity } from '../../utils/mockData';
+import { community as mockCommunity } from '../../utils/mockData';
 import Button from '../Button';
 import Card from '../Card';
 import TextField from '../TextField';
 
-const CreateGigForm = ({ isSubmitting, onSubmit }) => {
+const CreateGigForm = ({ isSubmitting, onSubmit, isProject }) => {
   const { register, handleSubmit, errors } = useForm();
   // TODO: replace mock data with backend call
   // const { data: community } = useGetCommunity();
@@ -58,7 +58,7 @@ const CreateGigForm = ({ isSubmitting, onSubmit }) => {
         <div className="flex flex-col">
           <div className="flex justify-between space-x-8">
             <label className="text-xl font-bold" htmlFor="title">
-              Project Title
+              {isProject ? 'Project Title' : 'Gig Title'}
             </label>
             <p className="text-dove-gray">
               Hint: a short, clear title will catch contributors’ attention.
@@ -77,11 +77,13 @@ const CreateGigForm = ({ isSubmitting, onSubmit }) => {
         <div className="flex flex-col">
           <div className="flex justify-between space-x-8">
             <label className="text-xl font-bold min-w-max" htmlFor="description">
-              Project Description
+              {isProject ? 'Project Description' : 'Gig Description'}
             </label>
             <p className="text-dove-gray max-w-4xl">
-              Hint: whether you want to build a dApp, or launch a new Art event - your community can help to 
-              make it happen! Be clear in the description, and assign the right tasks!
+              {isProject
+                ? 'Hint: whether you want to build a dApp, or launch a new Art event - your community can help to make it happen! Be clear in the description, and assign the right tasks!'
+                : 'Hint: be as detailed as possible, and be nice - there are real people on the other side :)'
+              }
             </p>
           </div>
           <TextField
@@ -97,45 +99,50 @@ const CreateGigForm = ({ isSubmitting, onSubmit }) => {
           <div className="flex flex-col space-y-4">
             <h1 className="text-xl font-bold">Skills needed</h1>
             <h2 className="text-dove-gray">
-              Hint: If the gig requires many different skills, consider
-              <br />
-              breaking it down in 2+ gigs, or starting a new project.
+              {
+                isProject ?
+                  ['Hint: If the Project requires skills not available in the', <br />, 'community, just Send a Signal to attract more talent.']
+                  : ['Hint: If the gig requires many different skills, consider', <br />, 'breaking it down in 2+ gigs, or starting a new project.']
+              }
+
             </h2>
             <Card outlined>
               {error && <p>Couldn't fetch skills</p>}
               {skillTree
                 ? skillTree.categories.map(category => (
-                    <div>
-                      <div className="font-bold">{category.subCat}</div>
-                      <div className="pl-6">
-                        {category.skills.map(skill => (
-                          <label key={skill} className="flex items-center">
-                            <input
-                              type="checkbox"
-                              step="1"
-                              onChange={() => {
-                                toggleSkill({
-                                  name: skill,
-                                  credits: category.credits,
-                                });
-                              }}
-                            />
-                            <div className="flex flex-col pl-2">
-                              <p>{skill}</p>
-                            </div>
-                          </label>
-                        ))}
-                      </div>
+                  <div>
+                    <div className="font-bold">{category.subCat}</div>
+                    <div className="pl-6">
+                      {category.skills.map(skill => (
+                        <label key={skill} className="flex items-center">
+                          <input
+                            type="checkbox"
+                            step="1"
+                            onChange={() => {
+                              toggleSkill({
+                                name: skill,
+                                credits: category.credits,
+                              });
+                            }}
+                          />
+                          <div className="flex flex-col pl-2">
+                            <p>{skill}</p>
+                          </div>
+                        </label>
+                      ))}
                     </div>
-                  ))
+                  </div>
+                ))
                 : 'Loading skills'}
             </Card>
           </div>
           <div className="flex flex-col flex-1 space-y-4">
             <h1 className="text-xl font-bold">Commitment</h1>
             <h2 className="text-dove-gray">
-              Hint: the effort to complete this Project. This value influences the Funds needed 
-              in your Community Treasury!
+              {isProject 
+              ? 'Hint: the effort to complete this Project. This value influences the Funds needed in your Community Treasury!' 
+              : 'Hint: the effort needed for this task. This value influences the DiTo set as a reward for your gig!'
+            }
             </h2>
             {/* TODO: Fix color */}
             <input
@@ -148,18 +155,21 @@ const CreateGigForm = ({ isSubmitting, onSubmit }) => {
             />
           </div>
           <div className="flex flex-col flex-1 space-y-4">
-            <h1 className="text-xl font-bold">Funds needed</h1>
+            <h1 className="text-xl font-bold">{ isProject? 'Funds needed' : 'Budget needed'}</h1>
             <h2 className="text-dove-gray">
-              Hint: the amount of funds needed for this project.
+              { isProject 
+              ? 'Hint: the amount of funds needed for this project.' 
+              : 'Hint: the amount of DiTo you offer for this gig.'
+              }
             </h2>
             <div className="flex flex-col">
-              <TextField value={budgetRequired} name="fundsNeeded"/>
-              <h2 className="text-right">DiTo</h2>
+              <TextField value={budgetRequired} name="fundsNeeded" />
+              <h2 className="text-right">{ isProject ? 'DAI/USDC' : 'DiTo'}</h2>
             </div>
           </div>
         </div>
         <Button filled type="submit" loading={isSubmitting}>
-          Publish
+          { isProject ? 'Propose your Project!' : 'Scan QR-Code to Publish your Gig!'}
         </Button>
         {/* TODO: Display error */}
       </Card>
