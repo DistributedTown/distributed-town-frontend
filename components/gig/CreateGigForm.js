@@ -45,13 +45,20 @@ const CreateGigForm = ({ isSubmitting, onSubmit, isProject }) => {
   return (
     <form
       className="mt-8"
-      onSubmit={handleSubmit(data =>
-
-        onSubmit({
-          ...data,
-          skills: selectedSkills.map(s => s.name),
-          creditsOffered: parseInt(budgetRequired, 10),
-        }),
+      onSubmit={handleSubmit(data => {
+        if (isProject)
+          onSubmit({
+            ...data,
+            skills: selectedSkills.map(s => s.name),
+            budget: parseInt(budgetRequired),
+          })
+        else
+          onSubmit({
+            ...data,
+            skills: selectedSkills.map(s => s.name),
+            creditsOffered: parseInt(budgetRequired, 10),
+          })
+      },
       )}
     >
       <Card className="flex flex-col py-8 space-y-6">
@@ -139,10 +146,10 @@ const CreateGigForm = ({ isSubmitting, onSubmit, isProject }) => {
           <div className="flex flex-col flex-1 space-y-4">
             <h1 className="text-xl font-bold">Commitment</h1>
             <h2 className="text-dove-gray">
-              {isProject 
-              ? 'Hint: the effort to complete this Project. This value influences the Funds needed in your Community Treasury!' 
-              : 'Hint: the effort needed for this task. This value influences the DiTo set as a reward for your gig!'
-            }
+              {isProject
+                ? 'Hint: the effort to complete this Project. This value influences the Funds needed in your Community Treasury!'
+                : 'Hint: the effort needed for this task. This value influences the DiTo set as a reward for your gig!'
+              }
             </h2>
             {/* TODO: Fix color */}
             <input
@@ -155,21 +162,21 @@ const CreateGigForm = ({ isSubmitting, onSubmit, isProject }) => {
             />
           </div>
           <div className="flex flex-col flex-1 space-y-4">
-            <h1 className="text-xl font-bold">{ isProject? 'Funds needed' : 'Budget needed'}</h1>
+            <h1 className="text-xl font-bold">{isProject ? 'Funds needed' : 'Budget needed'}</h1>
             <h2 className="text-dove-gray">
-              { isProject 
-              ? 'Hint: the amount of funds needed for this project.' 
-              : 'Hint: the amount of DiTo you offer for this gig.'
+              {isProject
+                ? 'Hint: the amount of funds needed for this project.'
+                : 'Hint: the amount of DiTo you offer for this gig.'
               }
             </h2>
             <div className="flex flex-col">
               <TextField value={budgetRequired} name="fundsNeeded" />
-              <h2 className="text-right">{ isProject ? 'DAI/USDC' : 'DiTo'}</h2>
+              <h2 className="text-right">{isProject ? 'DAI/USDC' : 'DiTo'}</h2>
             </div>
           </div>
         </div>
         <Button filled type="submit" loading={isSubmitting}>
-          { isProject ? 'Propose your Project!' : 'Scan QR-Code to Publish your Gig!'}
+          {isProject ? 'Propose your Project!' : 'Scan QR-Code to Publish your Gig!'}
         </Button>
         {/* TODO: Display error */}
       </Card>

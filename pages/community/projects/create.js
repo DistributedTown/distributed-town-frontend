@@ -18,19 +18,17 @@ function CreateProject() {
     <a href="" className="underline text-blue-600 hover:text-blue-400 visited:text-purple-400" >SkillWallet App</a>, 
     ' to publish this project.'];
 
-    //TODO: replace mock data with backend call
-  // async function onSubmit(project) {
-    // await createGig({ ...project, isProject: true });
-  //   await router.push('/community/projects');
-  // }
-
+    async function onSubmit(project) {
+      await createProject(project);
+      await router.push('/community/projects');
+    }
   return (
     <Layout>
       <div className="w-full p-8 h-full overflow-scroll">
         <PageTitle>Create New Project</PageTitle>
         <CreateGigForm
           isSubmitting={isSubmitting}
-          onSubmit={toggleModal}
+          onSubmit={onSubmit}
           isProject
         />
       </div>
