@@ -10,7 +10,6 @@ import { useGetUserInfo } from '../../../hooks/useGetUserInfo';
 import Button from '../../../components/Button';
 import PageTitle from '../../../components/PageTitle';
 import {user as userInfo} from '../../../utils/mockData';
-import {getAllProjects as mockProjects} from '../../../utils/mockData';
 
 function Projects() {
   // TODO: replace mock data with backend call
@@ -21,9 +20,8 @@ function Projects() {
   useEffect(() => {
     (async () => {
       // TODO: replace mock data with backend call
-      // const projectsResponse = await getProjects();
-      // setProjects(projectsResponse);
-      setProjects(mockProjects.projects);
+      const projectsResponse = await getProjects();
+      setProjects(projectsResponse);
     })();
   }, []);
 

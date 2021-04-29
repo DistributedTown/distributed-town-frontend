@@ -50,7 +50,7 @@ const CreateGigForm = ({ isSubmitting, onSubmit, isProject }) => {
           onSubmit({
             ...data,
             skills: selectedSkills.map(s => s.name),
-            budget: parseInt(budgetRequired),
+            fundsNeeded: parseInt(budgetRequired),
           })
         else
           onSubmit({
