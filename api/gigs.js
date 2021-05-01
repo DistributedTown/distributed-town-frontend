@@ -10,7 +10,8 @@ export const getGigs = async (filter) => {
 
 export const getProjects = async () => {
   return fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/gig?isOpen=true&isProject=true`,
+    // TODO: pass community!
+    `${process.env.NEXT_PUBLIC_API_URL}/api/community/0xF0F8AEC4D3552a0BE4D797EA93aE20dB8F643b99/project`,
     {
       method: 'GET',
       headers: {

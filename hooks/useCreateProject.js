@@ -5,14 +5,13 @@ import { storeGigHash } from '../contracts/gigs';
 export const useCreateProject = () => {
 
   return useMutation(
-    async ({ title, description, skills, funds }) => {
+    async ({ url, template, communityAddress }) => {
       const projectData = {
-        title,
-        description,
-        skills,
-        funds
+        url,
+        template,
+        communityAddress,
       };
-      const result = await createProject(gigData);
+      const result = await createProject(projectData);
       storeGigHash(result.hash);
     },
     {
