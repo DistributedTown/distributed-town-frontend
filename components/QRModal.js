@@ -26,11 +26,7 @@ const QRModal = (props, {
             {/* <span className="close">&times;</span> */}
             <div className="mt-3 mb-3">
                 <QRCode
-                value={`{
-                    "address":"0xe5dfc64fad45122545b0a5b88726ff7858509600"
-                    "tokenId":0,
-                    "hash":"wnGO5OQLkAEJ"
-                }`}
+                value={JSON.stringify(props.qrCodeObj)}
                 logoImage="/isologo.svg"
                 logoWidth={140}
                 logoHeight={140}
@@ -47,7 +43,7 @@ const QRModal = (props, {
                     {/* DELETE THE BUTTON AFTER LONGPOLLING */}
                     <button 
                         className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                        onClick={props.toggleModal}>Close
+                        onClick={props.closeOnClick}>Close
                     </button>
                 </div>
             </div>

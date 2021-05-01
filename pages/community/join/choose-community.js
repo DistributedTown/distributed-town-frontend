@@ -6,21 +6,26 @@ import CommunityCard from '../../../components/CommunityCard';
 import { useGetCommunities } from '../../../hooks/useGetCommunities';
 import Button from '../../../components/Button';
 import QRModal from '../../../components/QRModal';
+import { hasPendingAuthentication } from '../../../api/users';
 
 function ChooseCommunity() {
   const router = useRouter();
   const [communities, setCommunities] = useState([]);
   const [chosenCommunity, setChosenCommunity] = useState(null);
   const [joinCommunity, { isLoading: isJoining }] = useJoinCommunity();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
   // TODO: Refactor
   const { refetch: getCommunities } = useGetCommunities({
     category: router.query.category,
   });
   const [showModal, setShowModal] = useState(false);
+  const [address, setAddress] = useState();
+
   const toggleModal = () => setShowModal(!showModal);
   const modalText = [
-    'Scan with your ', 
-    <a href="" className="underline text-blue-600 hover:text-blue-400 visited:text-purple-400" >SkillWallet App</a>, 
+    'Scan with your ',
+    <a href="" className="underline text-blue-600 hover:text-blue-400 visited:text-purple-400" >SkillWallet App</a>,
     ' to verify membership.'];
 
   useEffect(() => {
@@ -33,15 +38,47 @@ function ChooseCommunity() {
     })();
   }, [router.query.category]);
 
+  const longpoll = async () => {
+    if (!isAuthenticated) {
+      async function authenticationLongPoll(address, interval, pollAttemptsCount) {
+        const hasPendingAuths = await hasPendingAuthentication(address);
+        console.log(`poll ${pollAttemptsCount}`);
+        setIsAuthenticated(!hasPendingAuths);
+        if (hasPendingAuths && pollAttemptsCount > 0) {
+          setTimeout(() => {
+            authenticationLongPoll(address, interval, --pollAttemptsCount);
+          }, interval);
+        } else {
+          return;
+        }
+      }
+      await authenticationLongPoll(address, 3000, 20);
+    } else {
+      router.push(
+        `/community/join/completed?communityName=${encodeURIComponent(
+          chosenCommunity.name,
+        )}`,
+      );
+    }
+  }
+
+  const handleCloseModal = async () => {
+    const hasPendingAuths = await hasPendingAuthentication(address);
+    if (hasPendingAuths)
+      window.confirm('You have not authenticated and your skill wallet is not active');
+  }
+
   const handleJoinClick = async () => {
-    // if (!window.ethereum.selectedAddress)
-    await window.ethereum.enable();
+    if (!address) {
+      if (!window.ethereum.selectedAddress)
+        await window.ethereum.enable()
+      console.log(window.ethereum.selectedAddress);
+      setAddress(window.ethereum.selectedAddress)
+    }
     await joinCommunity(chosenCommunity);
-    await router.push(
-      `/community/join/qr?communityName=${encodeURIComponent(
-        chosenCommunity.name,
-      )}`,
-    );
+    toggleModal();
+    await longpoll();
+
   };
 
   return (
@@ -67,14 +104,19 @@ function ChooseCommunity() {
       <div className="flex justify-center w-full p-4 bg-white">
         <Button
           filled
-          onClick={toggleModal}
+          onClick={handleJoinClick}
           disabled={!chosenCommunity}
           loading={isJoining}
         >
           Join and get your credits!
         </Button>
       </div>
-      { showModal ? <QRModal toggleModal={toggleModal} modalText={modalText}/> : null}
+      { showModal ? <QRModal toggleModal={toggleModal} modalText={modalText} qrCodeObj={
+        {
+          address: address,
+          hash: "wnGO5OQLkAEJ"
+        }} closeOnClick={handleCloseModal} /> : null}
+
     </div>
   );
 }
