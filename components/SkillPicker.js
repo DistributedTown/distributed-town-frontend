@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import produce from 'immer';
 
 import SkillsCard from './SkillsCard';
@@ -92,6 +92,20 @@ export default function SkillPicker({
     onSubmit({ username, skills: getSelectedSkills(), category });
   };
 
+  const uploadedImage = useRef(null);
+  const handleImageUpload = e => {
+    const [file] = e.target.files;
+    if (file) {
+      const reader = new FileReader();
+      const {current} = uploadedImage;
+      current.file = file;
+      reader.onload = (e) => {
+          current.src = e.target.result;
+      }
+      reader.readAsDataURL(file);
+    }
+  };
+
   return (
     <div className="relative flex flex-col justify-between w-full h-screen">
       <div className="flex flex-col flex-1 md:flex-row">
@@ -113,6 +127,16 @@ export default function SkillPicker({
               This is the first step to join a global community of local people
               or the other way around :)
             </p>
+            <div style={{display: "flex", justifyContent: "space-between", marginBottom: "25px"}}>
+              <img href="" ref={uploadedImage} alt="User uploaded image" style={{width: "100px", height: "100px", marginRight: "10px", borderRadius: "30px"}}/>
+
+              <div>
+                <h4>Pick your avatar</h4>
+                <br/>
+                <p>that's how others will see you</p>
+                <input type="file" accept="image/*" onChange={handleImageUpload} multiple = "false" />
+              </div>
+            </div>
             <label className="flex flex-col">
               <strong>User Nickname </strong>
               <TextField
