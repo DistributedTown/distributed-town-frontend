@@ -39,14 +39,16 @@ export const useJoinCommunity = () => {
     const url = await pushJSONDocument(metadataJson)
     console.log(url);
 
-    const credits = await join({
+    const result = await join({
       communityAddress: community.address,
       userAddress: window.ethereum.selectedAddress,
       url: url,
       skills: skillsFormated
     });
-
-    localStorage.setItem('credits', credits.toString());
+    console.log(result);
+    localStorage.setItem('credits', result.credits.toString());
+    localStorage.setItem('tokenId', result.tokenId);
+    return result.tokenId;
   }
 
   return useMutation(joinCommunity, { throwOnError: true });

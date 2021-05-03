@@ -24,19 +24,19 @@ function CreateProject() {
     const metadataJson = {
       name: `DistributedTown's project`,
       description: "Distributed Town lets people organize in self-sovereign, autonomous communities with a common, mathematically proved system of accounting. It’s based on a non-speculative mutual credit system, and a universal-login based on Skills, rather than personal data.",
-      image: 'https://png.pngtree.com/png-clipart/20190619/original/pngtree-vector-avatar-icon-png-image_4017288.jpg',
+      image: 'https://hub.textile.io/ipfs/bafkreiaks3kjggtxqaj3ixk6ce2difaxj5r6lbemx5kcqdkdtub5vwv5mi',
       properties: {
         title: project.title,
         description: project.description,
-        skillsNeeded: project.skills,
-        fundsNeeded: project.fundsNeeded,
-        commitment: project.commitment
+        skillsNeeded: ['Backend', 'Smart Contracts', 'Network Design'],
+        fundsNeeded: 35000,
+        commitment: 10
       }
     }
     const url = await pushJSONDocument(metadataJson)
     console.log(url);
       // TODO: get community data
-      await createProject({url, template: 0, communityAddress: '0xF0F8AEC4D3552a0BE4D797EA93aE20dB8F643b99'});
+      // await createProject({url, template: 0, communityAddress: '0x15a783406848Eb80b558A6A56E46b8e63151De8b'});
       await router.push('/community/projects');
     }
   return (
