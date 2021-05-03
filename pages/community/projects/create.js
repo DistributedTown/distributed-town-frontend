@@ -5,6 +5,7 @@ import { useCreateProject } from '../../../hooks/useCreateProject';
 import PageTitle from '../../../components/PageTitle';
 import QRModal from '../../../components/QRModal';
 import { useState } from 'react';
+import { pushJSONDocument } from '../../../utils/textile.hub';
 
 //todo: 6 skills tops
 function CreateProject() {
@@ -18,19 +19,33 @@ function CreateProject() {
     <a href="" className="underline text-blue-600 hover:text-blue-400 visited:text-purple-400" >SkillWallet App</a>, 
     ' to publish this project.'];
 
-    //TODO: replace mock data with backend call
-  // async function onSubmit(project) {
-    // await createGig({ ...project, isProject: true });
-  //   await router.push('/community/projects');
-  // }
+    async function onSubmit(project) {
 
+    const metadataJson = {
+      name: `DistributedTown's project`,
+      description: "Distributed Town lets people organize in self-sovereign, autonomous communities with a common, mathematically proved system of accounting. It’s based on a non-speculative mutual credit system, and a universal-login based on Skills, rather than personal data.",
+      image: 'https://hub.textile.io/ipfs/bafkreiaks3kjggtxqaj3ixk6ce2difaxj5r6lbemx5kcqdkdtub5vwv5mi',
+      properties: {
+        title: project.title,
+        description: project.description,
+        skillsNeeded: ['Backend', 'Smart Contracts', 'Network Design'],
+        fundsNeeded: 35000,
+        commitment: 10
+      }
+    }
+    const url = await pushJSONDocument(metadataJson)
+    console.log(url);
+      // TODO: get community data
+      // await createProject({url, template: 0, communityAddress: '0x15a783406848Eb80b558A6A56E46b8e63151De8b'});
+      await router.push('/community/projects');
+    }
   return (
     <Layout>
       <div className="w-full p-8 h-full overflow-scroll">
         <PageTitle>Create New Project</PageTitle>
         <CreateGigForm
           isSubmitting={isSubmitting}
-          onSubmit={toggleModal}
+          onSubmit={onSubmit}
           isProject
         />
       </div>

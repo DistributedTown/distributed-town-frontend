@@ -1,7 +1,7 @@
 
 
-export const getUserInfo = () => {
-  return fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/skillWallet?address=${window.ethereum.selectedAddress}`, {
+export const getUserInfo = (tokenId) => {
+  return fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/skillWallet?tokenId=${tokenId}`, {
     method: 'GET',
   })
     .then(res => res.json());

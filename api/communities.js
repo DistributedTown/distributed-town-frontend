@@ -10,7 +10,8 @@ export const join = async (payload) => {
     body: JSON.stringify(payload),
   });
   const creditsJson = await credits.json();
-  return creditsJson.credits;
+  console.log(creditsJson);
+  return creditsJson;
 }
 
 
