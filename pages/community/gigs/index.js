@@ -11,7 +11,7 @@ import PageTitle from '../../../components/PageTitle';
 import { useGetGigs } from '../../../hooks/useGetGigs';
 
 function Gigs() {
-  const { data: userInfo } = useGetUserInfo(localStorage.getItem('tokenId'));;
+  const { data: userInfo } = useGetUserInfo(3);;
   const { data: gigs } = useGetGigs();
 
   return (
