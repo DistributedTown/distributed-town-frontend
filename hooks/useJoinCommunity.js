@@ -30,7 +30,7 @@ export const useJoinCommunity = () => {
     const metadataJson = {
       name: `${username}'s SkillWallet`,
       description: "Universal, self-sovereign IDs tied to skills & contributions rather than personal data.",
-      image: 'https://png.pngtree.com/png-clipart/20190619/original/pngtree-vector-avatar-icon-png-image_4017288.jpg',
+      image: 'https://hub.textile.io/ipfs/bafkreibib2tirwvh4zrpep2uph2cv3j7ynbf3vhyrbrymkmcoptkloiyqu',
       properties: {
         username,
         skills: skillsFormated.skills
