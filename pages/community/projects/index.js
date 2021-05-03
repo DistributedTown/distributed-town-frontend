@@ -13,7 +13,7 @@ import {user as userInfo} from '../../../utils/mockData';
 
 function Projects() {
   // TODO: replace mock data with backend call
-  // const { data: userInfo } = useGetUserInfo();
+  // const { data: userInfo } = useGetUserInfo(localStorage.getItem('tokenId'));;
   const [projects, setProjects] = useState();
   let availableId = 9999999999;
 

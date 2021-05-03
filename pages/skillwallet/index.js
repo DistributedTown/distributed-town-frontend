@@ -8,6 +8,7 @@ import { useGetUserInfo } from '../../hooks/useGetUserInfo';
 import Card from '../../components/Card';
 import Button from '../../components/Button';
 import PageTitle from '../../components/PageTitle';
+import { useEffect } from 'react';
 
 function PlaceholderLoading({
   className,
@@ -23,9 +24,12 @@ function PlaceholderLoading({
 }
 
 function SkillWallet() {
-  const { data: userInfo } = useGetUserInfo();
+  // const { data: userInfo } = useGetUserInfo(localStorage.getItem('tokenId'));;
   const pastGigs = [];
+  [theme, setTheme] = useState(localStorage.getItem('tokenId'));
+  useEffect( () => {
 
+  },[])
   return (
     <Layout>
       <div className="flex flex-col w-full h-full">
