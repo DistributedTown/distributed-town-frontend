@@ -8,10 +8,18 @@ import Card from '../components/Card';
 import Logo from '../components/Logo';
 import LoginModal from '../components/LoginModal';
 import { useState } from 'react';
+import QRModal from '../components/QRModal';
 
 const Index = () => {
   // TODO: Loading while logging in to API after magic link
   const [showLoginPopUp, setShowLoginPopUp] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const toggleModal = () => setShowModal(!showModal);
+
+  const modalText = [
+    'Scan with your ', 
+    <a href="" className="underline text-blue-600 hover:text-blue-400 visited:text-purple-400" >SkillWallet App</a>, 
+    ' to login to your community.'];
 
   const router = useRouter();
   
@@ -31,7 +39,7 @@ const Index = () => {
   return (
     <>
     <div className=" h-16 absolute z-10 w-full flex justify-end">
-      <Button onClick={() => router.push('/skillwallet')} enable={false} id="walletButton">
+      <Button onClick={() => toggleModal()} enable={false} id="walletButton">
         <a className="flex items-center justify-center space-x-4 text-l">
           <img className="w-6 h-6" src="/isologo.svg" />
           <span>Connect Wallet</span>
@@ -74,6 +82,7 @@ const Index = () => {
         </Card>
       </div>
     </div>
+    { showModal ? <QRModal toggleModal={toggleModal} modalText={modalText} closeOnClick={toggleModal}/> : null}
     </>
   );
 };
