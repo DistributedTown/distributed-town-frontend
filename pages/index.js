@@ -33,6 +33,7 @@ const Index = () => {
     <div className=" h-16 absolute z-10 w-full flex justify-end">
       <Button onClick={() => router.push('/skillwallet')} enable={false} id="walletButton">
         <a className="flex items-center justify-center space-x-4 text-l">
+          <img className="w-6 h-6" src="/isologo.svg" />
           <span>Connect Wallet</span>
         </a>
       </Button>
