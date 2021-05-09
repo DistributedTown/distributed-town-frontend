@@ -6,7 +6,7 @@ function PickSkills() {
   const router = useRouter();
   const { categorySkill } = router.query;
 
-  const onSubmit = async ({ username, skills, category }) => {
+  const onSubmit = async ({ username, skills, category, image }) => {
     localStorage.setItem('username', username);
     const skillNames = await getSkillDisplayNames();
     console.log(skillNames);
@@ -35,6 +35,7 @@ function PickSkills() {
     };
 
     localStorage.setItem('skills', JSON.stringify(formatedSkills));
+    localStorage.setItem('imageUrl', image);
 
     await router.push(
       `/community/join/choose-community?category=${encodeURIComponent(

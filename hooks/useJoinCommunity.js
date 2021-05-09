@@ -7,6 +7,7 @@ export const useJoinCommunity = () => {
   async function joinCommunity(community) {
 
     const skills = localStorage.getItem('skills');
+    const image = localStorage.getItem('imageUrl');
     const skillsJson = JSON.parse(skills);
     console.log(skillsJson)
     console.log(community.address)
@@ -30,7 +31,7 @@ export const useJoinCommunity = () => {
     const metadataJson = {
       name: `${username}'s SkillWallet`,
       description: "Universal, self-sovereign IDs tied to skills & contributions rather than personal data.",
-      image: 'https://hub.textile.io/ipfs/bafkreibib2tirwvh4zrpep2uph2cv3j7ynbf3vhyrbrymkmcoptkloiyqu',
+      image: image,
       properties: {
         username,
         skills: skillsFormated.skills

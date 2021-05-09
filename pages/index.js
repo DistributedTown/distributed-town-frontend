@@ -29,6 +29,14 @@ const Index = () => {
     }
   }
   return (
+    <>
+    <div className=" h-16 absolute z-10 w-full flex justify-end">
+      <Button onClick={() => router.push('/skillwallet')} enable={false} id="walletButton">
+        <a className="flex items-center justify-center space-x-4 text-l">
+          <span>Connect Wallet</span>
+        </a>
+      </Button>
+    </div>
     <div className="flex flex-col items-center flex-1 mx-auto lg:flex-row lg:min-h-screen">
       <Head>
         <title>Distributed Town</title>
@@ -39,28 +47,23 @@ const Index = () => {
           This is <span>Your Community</span>
         </h1>
         <Card className="flex flex-col p-4 mx-0 mb-4 space-y-4 sm:mx-8 sm:p-8">
-          <Link href="/community/create">
-            <Button disabled={true}>
+          <Link href="/community/create" >
+            <Button disabled={true} className="w-96 mt-8 mb-4">
               <a className="flex items-center justify-center space-x-4 text-xl">
                 <span>Create</span>
                 <FaPlus />
               </a>
             </Button>
           </Link>
+
           <Link href="/community/join">
-            <Button>
+            <Button id="joinButton">
               <a className="flex items-center justify-center space-x-4 text-xl">
                 <span>Join</span>
                 <FaUsers />
               </a>
             </Button>
           </Link>
-
-          <Button onClick={() => setShowLoginPopUp(true)} enable={false}>
-            <a className="flex items-center justify-center space-x-4 text-xl">
-              <span>Login</span>
-            </a>
-          </Button>
 
           <LoginModal
             open={showLoginPopUp}
@@ -70,6 +73,7 @@ const Index = () => {
         </Card>
       </div>
     </div>
+    </>
   );
 };
 

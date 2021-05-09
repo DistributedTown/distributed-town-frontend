@@ -25,3 +25,22 @@ input[type='number'] {
 #description {
   min-height: 250px;
 }
+
+#loginModal {
+  font-size: 40px;
+  width: 50%;
+  margin: 0 auto;
+  text-align: center;
+  font-weight: 300;
+}
+
+#joinButton {
+  margin-bottom: 16px !important;
+}
+
+#walletButton {
+  height: 40px;
+  min-width: 90px;
+  margin-right: 5%;
+  margin-top: 20px;
+}
