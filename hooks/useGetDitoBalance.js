@@ -7,7 +7,7 @@ import {
 } from '../contracts/community';
 
 export const useGetDitoBalance = () => {
-  const { data: userInfo } = useGetUserInfo();
+  const { data: userInfo } = useGetUserInfo(localStorage.getItem('tokenId'));
 
   const enabled = !!userInfo;
 

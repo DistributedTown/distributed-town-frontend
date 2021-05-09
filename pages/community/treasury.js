@@ -11,7 +11,7 @@ import { useGetUserInfo } from '../../hooks/useGetUserInfo';
 import { useGetCommunity } from '../../hooks/useGetCommunity';
 
 function CommunityTreasury() {
-  const { data: userInfo } = useGetUserInfo();
+  const { data: userInfo } = useGetUserInfo(3);;
 
   const { data: communityInfo } = useGetCommunity();
   const { register, handleSubmit, errors } = useForm();

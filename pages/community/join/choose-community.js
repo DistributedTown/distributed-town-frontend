@@ -14,6 +14,7 @@ function ChooseCommunity() {
   const [chosenCommunity, setChosenCommunity] = useState(null);
   const [joinCommunity, { isLoading: isJoining }] = useJoinCommunity();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [tokenId, setTokenId] = useState();
 
   // TODO: Refactor
   const { refetch: getCommunities } = useGetCommunities({
@@ -66,6 +67,12 @@ function ChooseCommunity() {
     const hasPendingAuths = await hasPendingAuthentication(address);
     if (hasPendingAuths)
       window.confirm('You have not authenticated and your skill wallet is not active');
+    else
+    router.push(
+      `/community/join/completed?communityName=${encodeURIComponent(
+        chosenCommunity.name,
+      )}`,
+    );
   }
 
   const handleJoinClick = async () => {
@@ -75,7 +82,9 @@ function ChooseCommunity() {
       console.log(window.ethereum.selectedAddress);
       setAddress(window.ethereum.selectedAddress)
     }
-    await joinCommunity(chosenCommunity);
+    const tokenId = await joinCommunity(chosenCommunity);
+    console.log(tokenId);
+    setTokenId(tokenId);
     toggleModal();
     await longpoll();
 
@@ -113,7 +122,7 @@ function ChooseCommunity() {
       </div>
       { showModal ? <QRModal toggleModal={toggleModal} modalText={modalText} qrCodeObj={
         {
-          address: address,
+          tokenId: tokenId,
           hash: "wnGO5OQLkAEJ"
         }} closeOnClick={handleCloseModal} /> : null}
 

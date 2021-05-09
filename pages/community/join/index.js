@@ -62,9 +62,22 @@ export async function getServerSideProps() {
   //   method: 'GET',
   // });
   // skills = await skills.json();
-  let skills = ['Management', 'Training & Sport', 'Network Design', 'Web Development', 'DeFi', 'Tokenomics', 'Painting', 'Consensus', 'Mobile Dev', 'Architecture',
-'Frontend Dev', 'Governance', 'Teaching', 'Game Theory', 'Video-Making', 'Photography', 'Smart Contracts', 'Gardening', 'Backend Dev', 'Householding', 'Legal', 'Blockchain', 'Community']
+  let skills = [
+    //Local
+    'Fun & Entertainment', 'Administration & Management', 'Community Life', 'Leadership & Public Speaking',
+    'Legal', 'Accounting', 'Art, Music & Creativity', 'Teaching',
+    'Company', 'Householding', 'Gardening', 'Cooking',
+    
+    //Art
+    'Performance & Theather', 'Project Management', 'Production', 'Gaming',
+    'Music', 'Painting', 'Photography', 'Video-making',
+    'Training & Sport', 'Hiking', 'Biking', 'Writing',
 
+    // Tech
+    'Network Design', 'Tokenomics', 'Game Theory', 'Governance & Consensus',
+    'Backend', 'Frontend', 'Web Dev', 'Mobile Dev',
+    'DeFi', 'Blockchain infrastructure', 'Architecture', 'Smart Contracts'
+]
   return {
     props: { skills }, // will be passed to the page component as props
   };

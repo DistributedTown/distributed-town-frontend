@@ -23,9 +23,8 @@ function PlaceholderLoading({
 }
 
 function SkillWallet() {
-  const { data: userInfo } = useGetUserInfo();
+  const { data: userInfo } = useGetUserInfo(3);
   const pastGigs = [];
-
   return (
     <Layout>
       <div className="flex flex-col w-full h-full">

@@ -30,7 +30,7 @@ export const useJoinCommunity = () => {
     const metadataJson = {
       name: `${username}'s SkillWallet`,
       description: "Universal, self-sovereign IDs tied to skills & contributions rather than personal data.",
-      image: 'https://png.pngtree.com/png-clipart/20190619/original/pngtree-vector-avatar-icon-png-image_4017288.jpg',
+      image: 'https://hub.textile.io/ipfs/bafkreibib2tirwvh4zrpep2uph2cv3j7ynbf3vhyrbrymkmcoptkloiyqu',
       properties: {
         username,
         skills: skillsFormated.skills
@@ -39,14 +39,16 @@ export const useJoinCommunity = () => {
     const url = await pushJSONDocument(metadataJson)
     console.log(url);
 
-    const credits = await join({
+    const result = await join({
       communityAddress: community.address,
       userAddress: window.ethereum.selectedAddress,
       url: url,
       skills: skillsFormated
     });
-
-    localStorage.setItem('credits', credits.toString());
+    console.log(result);
+    localStorage.setItem('credits', result.credits.toString());
+    localStorage.setItem('tokenId', result.tokenId);
+    return result.tokenId;
   }
 
   return useMutation(joinCommunity, { throwOnError: true });
