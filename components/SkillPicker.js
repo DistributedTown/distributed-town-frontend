@@ -8,6 +8,7 @@ import { getSkillTreeByCategory, getSkillTreeBySkill } from '../api/skills';
 import TextField from './TextField';
 import Card from './Card';
 import Logo from './Logo';
+import { pushImage } from '../utils/textile.hub';
 
 export default function SkillPicker({
   isSubmitting,
@@ -17,6 +18,7 @@ export default function SkillPicker({
 }) {
   const [skillTree, setSkillTree] = useState([]);
   const [username, setUsername] = useState('');
+  const [imageUrl, setImageUrl] = useState('');
   // TODO: Refactor
   // This is used to pass the category to the next page so we can get the correct list to choose from.
   const [category, setCategory] = useState('');
@@ -89,20 +91,23 @@ export default function SkillPicker({
   }
 
   const handleSubmit = async () => {
-    onSubmit({ username, skills: getSelectedSkills(), category });
+    onSubmit({ username, skills: getSelectedSkills(), category, image: imageUrl });
   };
 
   const uploadedImage = useRef(null);
-  const handleImageUpload = e => {
+  const handleImageUpload = async (e) => {
     const [file] = e.target.files;
     if (file) {
       const reader = new FileReader();
-      const {current} = uploadedImage;
+      const { current } = uploadedImage;
       current.file = file;
       reader.onload = (e) => {
-          current.src = e.target.result;
+        current.src = e.target.result;
+        const buf = Buffer.from(e.target.result);
+        pushImage(buf).then(url => setImageUrl(url));
+
       }
-      reader.readAsDataURL(file);
+      reader.readAsArrayBuffer(file);
     }
   };
 
@@ -127,14 +132,14 @@ export default function SkillPicker({
               This is the first step to join a global community of local people
               or the other way around :)
             </p>
-            <div style={{display: "flex", justifyContent: "space-between", marginBottom: "25px"}}>
-              <img href="" ref={uploadedImage} alt="User uploaded image" style={{width: "100px", height: "100px", marginRight: "10px", borderRadius: "30px"}}/>
+            <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "25px" }}>
+              <img href="" ref={uploadedImage} alt="User uploaded image" style={{ width: "100px", height: "100px", marginRight: "10px", borderRadius: "30px" }} />
 
               <div>
                 <h4>Pick your avatar</h4>
-                <br/>
+                <br />
                 <p>that's how others will see you</p>
-                <input type="file" accept="image/*" onChange={handleImageUpload} multiple = "false" />
+                <input type="file" accept="image/*" onChange={handleImageUpload} multiple="false" />
               </div>
             </div>
             <label className="flex flex-col">
