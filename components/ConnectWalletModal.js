@@ -3,24 +3,15 @@ import QRModal from '../components/QRModal';
 
 const ConnectWalletModal = (props) => {
     const [showQRModal, setShowQRModal] = useState(false);
-    // const toggleQRModal = () => setShowQRModal(!showQRModal);
 
     const showNewQRModal = () => {
-        
-        // props.toggleModal();
-        // const connectWallet = document.getElementById("topDiv");
-        // connectWallet.style.display = 'none';
         setShowQRModal(!showQRModal);
-
-        // console.log(showQRModal);
     };
 
     const closeQR = () => {
         setShowQRModal(!showQRModal);
         props.toggleModal();
     }
-
-    const hideQRModal = () => setShowQRModal(!showQRModal);
 
     const modalText = [
         'Scan with your ', 

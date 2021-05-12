@@ -79,7 +79,6 @@ const Index = () => {
       </div>
     </div>
     { showModal ? <ConnectWallet key={'connect'} toggleModal={toggleModal} /> : null}
-    {/* { showModal ? <QRModal toggleModal={toggleModal} modalText={modalText} closeOnClick={toggleModal}/> : null} */}
     </>
   );
 };
