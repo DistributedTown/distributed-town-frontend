@@ -4,7 +4,7 @@ import { QRCode } from 'react-qrcode-logo';
 const QRModal = (props, {
     display = 'block',
     position = 'fixed',
-    zIndex = 1,
+    zIndex = 2,
     left = 0,
     top = 0,
     width = '100%',
@@ -13,7 +13,7 @@ const QRModal = (props, {
     backgroundColor = 'rgba(0,0,0,0.8)'
 }) => {
     return (
-    <div id="qrModal" style={{ display, position, zIndex, left, top, width, height, overflow, backgroundColor}}>
+    <div style={{ display, position, zIndex, left, top, width, height, overflow, backgroundColor}}>
         <div style={{
               backgroundColor: 'rgba(105,105,105, 0.85)',
               margin: '5% auto',

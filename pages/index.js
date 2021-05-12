@@ -9,17 +9,13 @@ import Logo from '../components/Logo';
 import LoginModal from '../components/LoginModal';
 import { useState } from 'react';
 import QRModal from '../components/QRModal';
+import ConnectWallet from '../components/ConnectWalletModal';
 
 const Index = () => {
   // TODO: Loading while logging in to API after magic link
   const [showLoginPopUp, setShowLoginPopUp] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const toggleModal = () => setShowModal(!showModal);
-
-  const modalText = [
-    'Scan with your ', 
-    <a href="" className="underline text-blue-600 hover:text-blue-400 visited:text-purple-400" >SkillWallet App</a>, 
-    ' to login to your community.'];
 
   const router = useRouter();
   
@@ -82,7 +78,8 @@ const Index = () => {
         </Card>
       </div>
     </div>
-    { showModal ? <QRModal toggleModal={toggleModal} modalText={modalText} closeOnClick={toggleModal}/> : null}
+    { showModal ? <ConnectWallet key={'connect'} toggleModal={toggleModal} /> : null}
+    {/* { showModal ? <QRModal toggleModal={toggleModal} modalText={modalText} closeOnClick={toggleModal}/> : null} */}
     </>
   );
 };
