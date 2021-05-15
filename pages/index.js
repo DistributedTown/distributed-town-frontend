@@ -49,11 +49,11 @@ const Index = () => {
       <Info className="relative grid content-center w-full info lg:w-3/5 lg:h-full " />
       <div className="flex flex-col items-center justify-center h-full lg:w-2/5">
         <h1 className="m-8 text-4xl font-bold text-center">
-          This is <span>Your Community</span>
+          This is <span className="underline">your Community</span>
         </h1>
-        <Card className="flex flex-col p-4 mx-0 mb-4 space-y-4 sm:mx-8 sm:p-8">
+        <div className="flex flex-col p-4 mx-0 mb-4 space-y-4 sm:mx-8 sm:p-8">
           <Link href="/community/create" >
-            <Button disabled={true} className="w-96 mt-8 mb-4">
+            <Button disabled={true} className="w-96 mt-8 mb-4 h-16 rounded-full">
               <a className="flex items-center justify-center space-x-4 text-xl">
                 <span>Create</span>
                 <FaPlus />
@@ -62,7 +62,7 @@ const Index = () => {
           </Link>
 
           <Link href="/community/join">
-            <Button id="joinButton">
+            <Button id="joinButton" className="h-16 rounded-full">
               <a className="flex items-center justify-center space-x-4 text-xl">
                 <span>Join</span>
                 <FaUsers />
@@ -75,7 +75,7 @@ const Index = () => {
             onClose={() => { setShowLoginPopUp(false) }}
             onSkillWalletLogin={onSkillWalletLogin}
           />
-        </Card>
+        </div>
       </div>
     </div>
     { showModal ? <ConnectWallet key={'connect'} toggleModal={toggleModal} /> : null}
@@ -87,12 +87,12 @@ function Info({ className }) {
   return (
     <div className={className}>
       <LogoWithBlob />
-      <Card className="relative grid gap-8 mx-4 mb-4 text-center lg:w-1/2 lg:justify-self-center lg:align-self-center">
-        <p className="text-xl">
+      <Card className="relative grid gap-8 mx-4 mb-4 p-10 bg-gray-100 text-center lg:w-7/12 lg:justify-self-center lg:align-self-center border-2">
+        <p className="text-xl text-left">
           <strong>Distributed Town</strong> is a new financial infrastructure
           for public goods, designed for the real world.
         </p>
-        <p className="text-gray-700">
+        <p className="text-gray-700 text-left">
           It’s built upon mutual, collaborative economics between individuals
           and communities - and a universal identity management based on skills,
           rather than personal data.

@@ -18,7 +18,11 @@ const Join = ({ skills = [] }) => {
       <div>
         <Logo className="p-8 mx-auto sm:ml-0" />
         <div className="flex flex-col items-center w-full h-full px-4 space-y-8">
-          <Quote quote="Have you ever thought, 'I would like to contribute, but …'" />
+          <div className="border-2 border-denim rounded-xl text-2xl bg-white w-10/12 lg:w-8/12 text-center pt-2 pb-2"> 
+            Have you ever thought, 
+            <br />
+            'I would like to contribute, but …' 
+          </div>
           <p className="text-center text-gray-500">
             Distributed Town (DiTo) lets you <strong>create</strong> or{' '}
             <strong>join</strong> a community with one click.
@@ -26,7 +30,7 @@ const Join = ({ skills = [] }) => {
             No <strong>name</strong>, <strong>location</strong> or{' '}
             <strong>bank account</strong> necessary.
           </p>
-          <div className="flex flex-wrap justify-center py-8 text-center">
+          <div className="flex flex-wrap justify-center py-8 w-10/12 lg:w-8/12 text-center">
             {skills.map(skill => (
               <Button
                 key={skill}
