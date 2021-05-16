@@ -9,6 +9,7 @@ import TextField from './TextField';
 import Card from './Card';
 import Logo from './Logo';
 import { pushImage } from '../utils/textile.hub';
+import LogoWithBlob from './LogoWithBlob';
 
 export default function SkillPicker({
   isSubmitting,
@@ -113,6 +114,7 @@ export default function SkillPicker({
 
   return (
     <div className="relative flex flex-col justify-between w-full h-screen">
+      <LogoWithBlob />
       <div className="flex flex-col flex-1 md:flex-row">
         <div
           className="flex flex-col items-center justify-center w-1/2 w-full p-8 space-y-8 bg-center bg-cover"
@@ -124,14 +126,12 @@ export default function SkillPicker({
           <div className="grid md:absolute md:top-0 md:left-0">
             <Logo className={[{ 'p-8': false }, 'md:p-8 p-0']} />
           </div>
-          <Card className="flex flex-col items-center ">
-            <div className="mb-8 text-3xl font-bold text-center text-gray-900">
-              Welcome to Distributed Town!
+          <div className="flex flex-col items-center ">
+            <div className="mb-4 text-3xl font-bold text-center text-gray-900">
+              Welcome to <span className="underline">Distributed Town!</span>
             </div>
-            <p className="mb-6 text-base text-xl leading-8 text-center">
-              This is the first step to join a global community of local people
-              or the other way around :)
-            </p>
+            <h2 className="text-xl font-bold mb-16">Tell us about yourself:</h2>
+
             <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "25px" }}>
               <img href="" ref={uploadedImage} alt="User uploaded image" style={{ width: "100px", height: "100px", marginRight: "10px", borderRadius: "30px" }} />
 
@@ -152,10 +152,9 @@ export default function SkillPicker({
                 required
               />
             </label>
-          </Card>
+          </div>
         </div>
         <div className="flex flex-col justify-center flex-grow w-full h-full p-8 space-y-1 space-y-2 overflow-auto text-center align-center">
-          <h1 className="text-xl font-bold">Tell us about you!</h1>
           <p>
             Pick your Skills (<span>between 1 and 3</span>)
           </p>
