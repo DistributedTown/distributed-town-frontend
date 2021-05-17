@@ -1,6 +1,5 @@
 import { useMutation } from 'react-query';
 import { createGig } from '../api/gigs';
-import { storeGigHash } from '../contracts/gigs';
 
 export const useCreateGig = () => {
 
@@ -16,7 +15,6 @@ export const useCreateGig = () => {
 
       // TODO: Throw on !ok
       const result = await createGig(gigData);
-      storeGigHash(result.hash);
     },
     {
       throwOnError: true,
