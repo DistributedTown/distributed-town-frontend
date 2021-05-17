@@ -2,9 +2,10 @@ import { useState } from 'react';
 import Link from 'next/link';
 import RegistrationModal from '../../../components/RegistrationModal';
 import { useRouter } from 'next/router';
-import Quote from '../../../components/Quote';
 import Logo from '../../../components/Logo';
 import Button from '../../../components/Button';
+import Blob from '../../../components/Blob';
+import LogoWithBlob from '../../../components/LogoWithBlob';
 
 const Join = ({ skills = [] }) => {
 
@@ -15,6 +16,7 @@ const Join = ({ skills = [] }) => {
 
   return (
     <div className="w-full h-full">
+      <LogoWithBlob />
       <div>
         <Logo className="p-8 mx-auto sm:ml-0" />
         <div className="flex flex-col items-center w-full h-full px-4 space-y-8">

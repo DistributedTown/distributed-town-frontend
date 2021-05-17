@@ -2,13 +2,11 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { FaPlus, FaUsers } from 'react-icons/fa';
-import Blob from '../components/Blob';
+import LogoWithBlob from '../components/LogoWithBlob';
 import Button from '../components/Button';
 import Card from '../components/Card';
-import Logo from '../components/Logo';
 import LoginModal from '../components/LoginModal';
 import { useState } from 'react';
-import QRModal from '../components/QRModal';
 import ConnectWallet from '../components/ConnectWalletModal';
 
 const Index = () => {
@@ -105,23 +103,6 @@ function Info({ className }) {
           background-position: center;
         }
       `}</style>
-    </div>
-  );
-}
-
-function LogoWithBlob() {
-  return (
-    <div className="relative lg:absolute lg:overflow-hidden lg:h-96 w-72">
-      <Logo className="relative z-10 p-8" />
-      <Blob
-        className="absolute opacity-70"
-        style={{
-          top: '-130px',
-          left: '-70px',
-          filter: 'blur(3.5px)',
-          transform: 'scale(1.3)',
-        }}
-      />
     </div>
   );
 }
