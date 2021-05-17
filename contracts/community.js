@@ -51,7 +51,6 @@ export const createCommunity = async () => {
   return communityAddress;
 };
 
-
 export const joinCommunity = async (
   communityAddress,
   skillLevel1,
