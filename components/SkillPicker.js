@@ -212,19 +212,22 @@ export default function SkillPicker({
               })}
             </div>
           </Card>
-        </div>
-      </div>
-
-      <div className="flex items-center justify-center w-full p-4 bg-white">
-        <Button
+          <Button
           filled
+          id="joinCommunityButton"
+          className="rounded-2xl text-center"
           loading={isSubmitting}
           disabled={isDisabled}
           onClick={handleSubmit}
         >
-          Pick skills
+          Next: Join your first community
         </Button>
+        </div>
       </div>
+
+      {/* <div className="flex items-center justify-center w-full p-4 bg-white"> */}
+
+      {/* </div> */}
     </div>
   );
 }
