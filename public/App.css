@@ -65,3 +65,7 @@ input[type='number'] {
   width: 40%;
   border-radius: 25px;
 }
+
+#joinCommunityButton {
+  margin-top: 250px;
+}
