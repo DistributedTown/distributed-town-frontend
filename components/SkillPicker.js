@@ -1,8 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import produce from 'immer';
-
 import SkillsCard from './SkillsCard';
-
 import Button from './Button';
 import { getSkillTreeByCategory, getSkillTreeBySkill } from '../api/skills';
 import TextField from './TextField';
@@ -10,6 +8,7 @@ import Card from './Card';
 import Logo from './Logo';
 import { pushImage } from '../utils/textile.hub';
 import LogoWithBlob from './LogoWithBlob';
+import { MdPersonOutline } from 'react-icons/md';
 
 export default function SkillPicker({
   isSubmitting,
@@ -96,6 +95,7 @@ export default function SkillPicker({
   };
 
   const uploadedImage = useRef(null);
+  const imageUploader = useRef(null);
   const handleImageUpload = async (e) => {
     const [file] = e.target.files;
     if (file) {
@@ -109,6 +109,8 @@ export default function SkillPicker({
 
       }
       reader.readAsArrayBuffer(file);
+      const avatar = document.getElementById("avatarImg");
+      avatar.style.display = "block";
     }
   };
 
@@ -132,28 +134,45 @@ export default function SkillPicker({
             </div>
             <h2 className="text-xl font-bold mb-16">Tell us about yourself:</h2>
 
-            <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "25px" }}>
-              <img href="" ref={uploadedImage} alt="User uploaded image" style={{ width: "100px", height: "100px", marginRight: "10px", borderRadius: "30px" }} />
-
-              <div>
-                <h4>Pick your avatar</h4>
-                <br />
-                <p>that's how others will see you</p>
-                <input type="file" accept="image/*" onChange={handleImageUpload} multiple="false" />
-              </div>
-            </div>
+            <div>
             <label className="flex flex-col">
-              <strong>User Nickname </strong>
+              <strong className="underline mb-2">Nickname </strong>
               <TextField
                 id="nickname"
                 type="text"
                 value={username}
+                placeholder="How do you want your community to call you?"
+                color="black"
+                className="h-16 rounded-2xl mb-8"
                 onChange={e => setUsername(e.target.value)}
                 required
               />
             </label>
+
+              
+            <label classsName="flex flex-col">
+              <strong className="underline mb-2">Avatar</strong>
+              <Card className="h-24 border-2 rounded-2xl flex content-between h-20 items-center" color="black">
+                <input type="file" accept="image/*" onChange={handleImageUpload} ref={imageUploader} multiple="false" style={{display: "none"}}/>
+                <p className="break-words mr-24">A public image - that's how others will see you</p>
+                
+                {imageUrl ? null : <div className="flex flex-col items-center" style={{height: "90px", width: "120px"}} >
+                  <div className="rounded-full border-2 bg-white flex items-center justify-center" style={{height: "60px", width: "60px"}}>
+                    <MdPersonOutline size="2.5rem" onClick={() => imageUploader.current.click}/>
+                    
+                    
+                  </div>
+                  <p>.png or .jpg</p>
+                  </div> }
+                <img id="avatarImg" href="" ref={uploadedImage} src={imageUrl} alt="User uploaded image" style={{ width: "60px", height: "60px", borderRadius: "9999px", display: "none"}} />
+              </Card>
+            </label>
+              
+            </div>
+
           </div>
         </div>
+
         <div className="flex flex-col justify-center flex-grow w-full h-full p-8 space-y-1 space-y-2 overflow-auto text-center align-center">
           <p>
             Pick your Skills (<span>between 1 and 3</span>)
@@ -195,6 +214,7 @@ export default function SkillPicker({
           </Card>
         </div>
       </div>
+
       <div className="flex items-center justify-center w-full p-4 bg-white">
         <Button
           filled
