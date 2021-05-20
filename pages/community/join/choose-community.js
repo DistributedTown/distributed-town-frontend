@@ -122,8 +122,7 @@ function ChooseCommunity() {
       </div>
       { showModal ? <QRModal toggleModal={toggleModal} modalText={modalText} qrCodeObj={
         {
-          tokenId: tokenId,
-          hash: "wnGO5OQLkAEJ"
+          tokenId,
         }} closeOnClick={handleCloseModal} /> : null}
 
     </div>

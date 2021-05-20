@@ -6,77 +6,76 @@ import LogoWithBlob from '../components/LogoWithBlob';
 import Button from '../components/Button';
 import Card from '../components/Card';
 import LoginModal from '../components/LoginModal';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ConnectWallet from '../components/ConnectWalletModal';
+import { generateNonce } from '../api/users';
 
 const Index = () => {
   // TODO: Loading while logging in to API after magic link
   const [showLoginPopUp, setShowLoginPopUp] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const toggleModal = () => setShowModal(!showModal);
-
+  const [nonce, setNonce] = useState();
   const router = useRouter();
-  
 
   const onSkillWalletLogin = async () => {
-    if (window.ethereum) {
-      try {
-        if (!window.ethereum.selectedAddress)
-          await window.ethereum.enable();
-        router.push('/community');
-        return;
-      } catch (e) {
-        router.push('/')
-      }
+    try {
+      const nonce = await generateNonce(1, -1);
+      setNonce(nonce);
+      toggleModal();
+      router.push('/community');
+      return;
+    } catch (e) {
+      router.push('/')
     }
   }
   return (
     <>
-    <div className=" h-16 absolute z-10 w-full flex justify-end">
-      <Button onClick={() => toggleModal()} enable={false} id="walletButton">
-        <a className="flex items-center justify-center space-x-4 text-l">
-          <img className="w-6 h-6" src="/isologo.svg" />
-          <span>Connect Wallet</span>
-        </a>
-      </Button>
-    </div>
-    <div className="flex flex-col items-center flex-1 mx-auto lg:flex-row lg:min-h-screen">
-      <Head>
-        <title>Distributed Town</title>
-      </Head>
-      <Info className="relative grid content-center w-full info lg:w-3/5 lg:h-full " />
-      <div className="flex flex-col items-center justify-center h-full lg:w-2/5">
-        <h1 className="m-8 text-4xl font-bold text-center">
-          This is <span className="underline">your Community</span>
-        </h1>
-        <div className="flex flex-col p-4 mx-0 mb-4 space-y-4 sm:mx-8 sm:p-8">
-          <Link href="/community/create" >
-            <Button disabled={true} className="w-96 mt-8 mb-4 h-16 rounded-full">
-              <a className="flex items-center justify-center space-x-4 text-xl">
-                <span>Create</span>
-                <FaPlus />
-              </a>
-            </Button>
-          </Link>
+      <div className=" h-16 absolute z-10 w-full flex justify-end">
+        <Button onClick={toggleModal} enable={false} id="walletButton">
+          <a className="flex items-center justify-center space-x-4 text-l">
+            <img className="w-6 h-6" src="/isologo.svg" />
+            <span>Connect Wallet</span>
+          </a>
+        </Button>
+      </div>
+      <div className="flex flex-col items-center flex-1 mx-auto lg:flex-row lg:min-h-screen">
+        <Head>
+          <title>Distributed Town</title>
+        </Head>
+        <Info className="relative grid content-center w-full info lg:w-3/5 lg:h-full " />
+        <div className="flex flex-col items-center justify-center h-full lg:w-2/5">
+          <h1 className="m-8 text-4xl font-bold text-center">
+            This is <span className="underline">your Community</span>
+          </h1>
+          <div className="flex flex-col p-4 mx-0 mb-4 space-y-4 sm:mx-8 sm:p-8">
+            <Link href="/community/create" >
+              <Button disabled={true} className="w-96 mt-8 mb-4 h-16 rounded-full">
+                <a className="flex items-center justify-center space-x-4 text-xl">
+                  <span>Create</span>
+                  <FaPlus />
+                </a>
+              </Button>
+            </Link>
 
-          <Link href="/community/join">
-            <Button id="joinButton" className="h-16 rounded-full">
-              <a className="flex items-center justify-center space-x-4 text-xl">
-                <span>Join</span>
-                <FaUsers />
-              </a>
-            </Button>
-          </Link>
+            <Link href="/community/join">
+              <Button id="joinButton" className="h-16 rounded-full">
+                <a className="flex items-center justify-center space-x-4 text-xl">
+                  <span>Join</span>
+                  <FaUsers />
+                </a>
+              </Button>
+            </Link>
 
-          <LoginModal
-            open={showLoginPopUp}
-            onClose={() => { setShowLoginPopUp(false) }}
-            onSkillWalletLogin={onSkillWalletLogin}
-          />
+            <LoginModal
+              open={showLoginPopUp}
+              onClose={() => { setShowLoginPopUp(false) }}
+              onSkillWalletLogin={onSkillWalletLogin}
+            />
+          </div>
         </div>
       </div>
-    </div>
-    { showModal ? <ConnectWallet key={'connect'} toggleModal={toggleModal} /> : null}
+      { showModal ? <ConnectWallet key={'connect'} toggleModal={toggleModal} /> : null}
     </>
   );
 };
