@@ -62,14 +62,15 @@ export const useJoinCommunity = () => {
     const displayName3 = skillNames.indexOf(skillsFormated.skills[2].name);
     const totalDitos = '2222';
 
+    console.log('skillsFormated', skillsFormated);
     const tokenId = await joinCommunityContract(
       community.address,
       displayName1,
-      skillsFormated.skill[0].value,
+      skillsFormated.skills[0].value,
       displayName2,
-      skillsFormated.skill[2].value,
+      skillsFormated.skills[1].value,
       displayName3,
-      skillsFormated.skill[3].value,
+      skillsFormated.skills[2].value,
       url,
       totalDitos,
     );
