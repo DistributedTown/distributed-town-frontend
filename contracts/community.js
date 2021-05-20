@@ -1,8 +1,6 @@
-import { BigNumber, ethers } from 'ethers';
-import communityContractAbi from '../utils/communityContractAbi.json';
-import communitiesABI from '../utils/communitiesRegistryAbi.json';
-import ditoContractAbi from '../utils/ditoTokenContractAbi.json';
-import { pushJSONDocument } from '../utils/textile.hub';
+import { ethers } from 'ethers';
+import communityAbi from '../utils/communityContractAbi.json';
+import diToABI from '../utils/distributedTownAbi.json';
 
 export const getCommunityDitoTokensContract = async (
   communityContractAddress,
@@ -20,30 +18,6 @@ export const getCommunityDitoTokensContract = async (
   return ditoContractAddress;
 };
 
-export const getDitoContractUserBalance = async (
-  ditoContractAddress,
-) => {
-  const provider = new ethers.providers.Web3Provider(web3.currentProvider);
-  const signer = provider.getSigner();
-  // Get user's Ethereum public address
-  const address = await signer.getAddress();
-
-  console.log(ditoContractAddress);
-  const ditoContract = new ethers.Contract(
-    ditoContractAddress,
-    ditoContractAbi,
-    signer,
-  );
-
-  // Send transaction to smart contract to update message and wait to finish
-  const ditoBalance = await ditoContract.balanceOf(address);
-
-  let ditoBalanceStr = BigNumber.from(ditoBalance).toString();
-  ditoBalanceStr = ditoBalanceStr.slice(0, ditoBalanceStr.length - 18);
-
-  return ditoBalanceStr;
-};
-
 export const isLoggedIn = () => {
   return false;
 }
@@ -57,7 +31,7 @@ export const createCommunity = async () => {
   // call the smart contract to create community
   const contract = new ethers.Contract(
     process.env.NEXT_PUBLIC_COMMUNITIES_REGISTRY_ADDRESS,
-    communitiesABI,
+    diToABI,
     signer,
   );
 
@@ -75,4 +49,58 @@ export const createCommunity = async () => {
   }
   const communityAddress = communityCreatedEvent.args[0];
   return communityAddress;
+};
+
+export const joinCommunity = async (
+  communityAddress,
+  skillLevel1,
+  displayStringId1,
+  skillLevel2,
+  displayStringId2,
+  skillLevel3,
+  displayStringId3,
+  url,
+  credits
+) => {
+  try {
+    const provider = new ethers.providers.Web3Provider(web3.currentProvider);
+
+    const signer = provider.getSigner();
+    // TODO: Create contract should join the user automatically instead of needing to call join after that.
+    // call the smart contract to create community
+    const contract = new ethers.Contract(
+      communityAddress,
+      communityAbi,
+      signer,
+    );
+
+    const createTx = await contract.joinNewMember(
+      displayStringId1,
+      skillLevel1,
+      displayStringId2,
+      skillLevel2,
+      displayStringId3,
+      skillLevel3,
+      url,
+      credits,
+    );
+
+    const communityTransactionResult = await createTx.wait();
+    console.log(communityTransactionResult);
+    const { events } = communityTransactionResult;
+    const memberJoinedEvent = events.find(
+      e => e.event === 'MemberAdded',
+    );
+
+    if (!memberJoinedEvent) {
+      throw new Error('Something went wrong');
+    } else {
+      console.log('MemberAdded');
+      return memberJoinedEvent.args[1].toString();
+    }
+
+  } catch (err) {
+    console.log(err);
+    return;
+  }
 };

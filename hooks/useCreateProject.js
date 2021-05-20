@@ -1,6 +1,5 @@
 import { useMutation } from 'react-query';
 import { createProject } from '../api/projects';
-import { storeGigHash } from '../contracts/gigs';
 
 export const useCreateProject = () => {
 
@@ -12,7 +11,6 @@ export const useCreateProject = () => {
         communityAddress,
       };
       const result = await createProject(projectData);
-      storeGigHash(result.hash);
     },
     {
       throwOnError: true,
