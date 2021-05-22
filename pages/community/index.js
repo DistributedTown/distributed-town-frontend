@@ -2,6 +2,7 @@ import Link from 'next/link';
 
 import Layout from '../../components/Layout';
 import CheckupCard from '../../components/community/CheckupCard';
+import CommunitySummaryCard from '../../components/community/CommunitySummaryCard';
 import Button from '../../components/Button';
 import PageTitle from '../../components/PageTitle';
 
@@ -11,38 +12,43 @@ function CommunityDashboard() {
       <div className="flex flex-col h-full">
         <div className="flex flex-col flex-grow space-y-8 md:flex-row md:space-y-0">
           <div className="grid content-center p-8 md:w-3/5">
-            <PageTitle className="mt-12 text-center">
-              Community Dashboard
-            </PageTitle>
-            <h2 className="mt-10 text-xl font-bold text-center">
-              Administration
+            <h2 className="mt-12 text-lg text-center">
+              Welcome to your <strong className="underline">diTown Hall</strong>
             </h2>
-            <div className="flex flex-col mt-8 space-y-4">
+            <p className="italic mt-5 text-l text-center">
+              where everything happens
+            </p>
+            <div className="flex flex-col mt-16 space-y-4">
               <Link href="/community/gigs">
                 <Button>
                   <a>Open Gigs</a>
                 </Button>
               </Link>
-              <Link href="/community/treasury">
-                <Button disabled>
-                  <a>Community Treasury</a>
-                </Button>
-              </Link>
               <Link href="/community/projects">
                 <Button>
-                  <a>Projects & Proposals</a>
+                  <a>Projects</a>
+                </Button>
+              </Link>
+              <Link href="/community/treasury">
+                <Button disabled>
+                  <a>Treasury</a>
                 </Button>
               </Link>
             </div>
           </div>
-          <CheckupCard />
+          <div>
+
+          </div>
+          {/* <CheckupCard /> */}
+          <CommunitySummaryCard />
         </div>
-        <div className="bg-white flex justify-center pt-1 pb-1">              
+        {/* <div className="bg-white flex justify-center pt-1 pb-1">              
               <Link href="./skillwallet" disabled>
                 <Button className="w-3/5">
                   <a>Go To Skillwallet</a>
                 </Button>
-              </Link></div>
+              </Link>
+        </div> */}
       </div>
     </Layout>
   );
