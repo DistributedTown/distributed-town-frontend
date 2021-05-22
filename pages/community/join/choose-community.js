@@ -142,16 +142,16 @@ function ChooseCommunity() {
 
             <div className="mt-16 bg-white rounded-xl border-2 border-denim flex-col w-5/6">
               <div className="flex justify-around mt-8 mb-2">
-                <div>Graph is here</div>
-                <img alt="DiTo Token amount" />
+                <div>Skill & bar will go here</div>
+                <img src="/credits-blue.svg" className="w-20" />
               </div>
               <div className="flex justify-around mt-2 mb-2">
-                <div>Graph is here</div>
-                <img alt="DiTo Token amount" />
+                <div>Skill & bar will go here</div>
+                <img src="/credits-blue.svg" className="w-20" />
               </div>
               <div className="flex justify-around mt-2 mb-8">
-                <div>Graph is here</div>
-                <img alt="DiTo Token amount" />
+                <div>Skill & bar will go here</div>
+                <img src="/credits-blue.svg" className="w-20" />
               </div>
             </div>
           </div>

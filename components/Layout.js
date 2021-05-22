@@ -2,7 +2,7 @@ import { useState } from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import { FaBars, FaWallet, FaUsers, FaSignOutAlt } from 'react-icons/fa';
+import { FaBars, FaWallet, FaUsers, FaSignOutAlt, FaBell, FaCog } from 'react-icons/fa';
 
 const Layout = ({ children }) => {
   const router = useRouter();
@@ -14,11 +14,11 @@ const Layout = ({ children }) => {
   };
 
   const navItems = [
-    { href: '/skillwallet', text: 'Skill Wallet', icon: <FaWallet /> },
-    { href: '/community', text: 'Dashboard', icon: <FaUsers /> },
+    { href: '/skillwallet', text: 'SkillWallet', icon: <FaWallet /> },
+    { href: '/community', text: 'diTown Hall', icon: <FaUsers /> },
     // TODO: Implement
-    // { text: 'Notifications', icon: <FaBell /> },
-    // { text: 'Settings', icon: <FaCog /> },
+    { text: 'Notifications', icon: <FaBell /> },
+    { text: 'Settings', icon: <FaCog /> },
     {
       text: 'Logout',
       onClick: handleLogout,
