@@ -43,7 +43,7 @@ export default function WelcomeToCommunity({
           </Button>
         )}
         <Button filled onClick={() => router.push('/skillwallet')}>
-          Check your SkillWallet
+          Share & Invite new Members to your Community!
         </Button>
       </div>
       <InviteModal
