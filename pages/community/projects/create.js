@@ -40,7 +40,7 @@ function CreateProject() {
       await router.push('/community/projects');
     }
   return (
-    <Layout>
+    <Layout color="#146EAA">
       <div className="w-full p-8 h-full overflow-scroll">
         <PageTitle>Create New Project</PageTitle>
         <CreateGigForm

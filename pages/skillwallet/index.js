@@ -26,7 +26,7 @@ function SkillWallet() {
   const { data: userInfo } = useGetUserInfo(3);
   const pastGigs = [];
   return (
-    <Layout>
+    <Layout color="#146EAA">
       <div className="flex flex-col w-full h-full">
         {/* Layout */}
         <div className="grid gap-6 m-6 lg:grid-cols-2">

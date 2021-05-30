@@ -8,7 +8,7 @@ import PageTitle from '../../components/PageTitle';
 
 function CommunityDashboard() {
   return (
-    <Layout>
+    <Layout color="#146EAA">
       <div className="flex flex-col h-full">
         <div className="flex flex-col flex-grow space-y-8 md:flex-row md:space-y-0">
           <div className="grid content-center p-8 md:w-3/5">

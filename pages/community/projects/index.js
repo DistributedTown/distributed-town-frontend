@@ -29,7 +29,7 @@ function Projects() {
   if (!userInfo) return null;
 
   return (
-    <Layout>
+    <Layout color="#146EAA">
       <div className="grid gap-8 m-8">
         <div className="flex justify-between items-center">
           <PageTitle className="align-center">Open Projects</PageTitle>

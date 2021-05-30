@@ -25,7 +25,7 @@ function CreateGig() {
   }
 
   return (
-    <Layout>
+    <Layout color="#BD413B">
       <div className="h-screen p-8">
         <PageTitle>Create New Gig</PageTitle>
         <CreateGigForm isSubmitting={isSubmitting} onSubmit={onSubmit} />
