@@ -12,87 +12,41 @@ const CommunityTreasuryForm = ({
   onSubmit,
   stakingStage,
 }) => {
-  const [returns, setReturns] = useState(0);
+  const [weeks, setWeeks] = useState(0);
   return (
-    <form className="p-8 lg:mb-20" onSubmit={handleSubmit(onSubmit)}>
-      <Card className="flex flex-col mt-8">
-        <h1 className="flex font-bold justify-center">Add funds to Treasury</h1>
-        <div className="flex">
-          <div className="flex flex-col w-1/2 p-3">
-            <h2 htmlFor="currency" className="font-bold text-center mb-3">
-              Currency
-            </h2>
-            <div className="flex justify-around">
-              <div>
-                <input
-                  name="currency"
-                  type="radio"
-                  value="DAI"
-                  id="DAI"
-                  ref={register({ required: true })}
-                />
-                <label className="font-bold pl-3" htmlFor="DAI">
-                  DAI
-                </label>
-              </div>
-              <div>
-                <input
-                  name="currency"
-                  type="radio"
-                  value="USDC"
-                  id="USDC"
-                  ref={register({ required: true })}
-                />
-                <label className="font-bold pl-3" htmlFor="USDC">
-                  USDC
-                </label>
-              </div>
+    <form className=" lg:mb-20 w-9/12" onSubmit={handleSubmit(onSubmit)}>
+      <Card className="flex flex-col mt-8 border-2 border-denim">
+        <label className="flex font-bold text-xl underline mb-4 ">Asset & Amount</label>
+        <div className="flex-col mb-8">
+        
+          <div  className="border-2 border-denim rounded-xl flex justify-between text-center p-4 w-8/12 mb-4">
+            <div className="flex flex-col w-48">
+              <select
+                name="asset"
+                id="asset"
+                className="border-2 border-denim mb-2"
+                ref={register({ required: true })}
+                >
+                  <option value="USDC">USDC</option>
+                  <option value="DAI">DAI</option>
+                </select>
+              <label className="underline text-left" htmlFor="asset">
+                Balance: 
+              </label>
             </div>
-            {errors.currency && (
-              <p className="text-red-600">Please select stablecoin to stake</p>
+            {errors.asset && (
+              <p className="text-red-600">Please select an asset to stake</p>
             )}
-            <p className="mt-2 text-left text-sm text-dove-gray">
-              Stablecoins are not regular
-              <br />
-              crypto. They are "pegged" to <br />
-              Fiat (USD), so they are not
-              <br />
-              volatile (they are stable):
-              <br />1 DAI = 1 Dollar
-              <br />
-              1USDC = 1 Dollar
-              <br />
-            </p>
+            <div>0.0</div>
           </div>
-
-          <div className="flex flex-col w-1/2 p-3">
-            <h2 className="font-bold text-center mb-3">Community APY</h2>
-            <div className="mb-3 relative max-w-xl rounded-full h-8 border-2 border-denim overflow-hidden">
-              <div
-                id="bar"
-                className="font-bold text-white pr-2 text-right transition-all ease-out duration-1000 h-full bg-denim relative w-24"
-              >
-                {Math.round((apy + Number.EPSILON) * 1000) / 1000}%
-              </div>
-            </div>
-            <p className="text-sm text-dove-gray">
-              "Staking" is different from
-              <br />
-              "Donating" - basically your <br />
-              community is "looking" these
-              <br />
-              funds to provide liquidity. In
-              <br />
-              exchange, you all get a higher
-              <br />
-              interest return!
-              <br />
-            </p>
-          </div>
+          <p className="w-8/12">The amount of tokens you stake for your community. <strong className="italic">Stablecoins</strong> are non-volatile & "pegged"
+             to Fiat (USD): 1 DAI/USDC = 1 USD
+          </p>
         </div>
-        <div className="flex">
-          <div className="flex flex-col w-1/2 p-3">
-            <label className="font-bold text-center mb-3">Amount</label>
+
+        <div className="flex-col">
+          <div className="flex flex-col w-1/2 mb-8">
+            <label className="font-bold text-xl text-left mb-3 underline">Locking Period</label>
             <TextField
               type="number"
               className="text-center"
@@ -101,62 +55,56 @@ const CommunityTreasuryForm = ({
               min="1"
               ref={register({ required: true })}
               onChange={e => {
-                setReturns(e.target.value * (apy / 100));
+                setWeeks(e.target.value * (apy / 100));
               }}
             />
-            <p className="text-right text-sm">DAI/USDC</p>
+            <p className="text-right text-sm underline">Weeks</p>
             {errors.amount && (
               <p className="text-red-600">A value to stake is required</p>
             )}
             <p className="text-left text-dove-gray text-sm">
-              The amount of tokens you stake for your community
+              The longer you lock your assets, the higher the returns. No worries, if you need, 
+              you can withdraw at any time, just by paying a fee.
             </p>
-            {availableDAI && <p>Available DAI balance: {availableDAI}</p>}
+            <p>Available DAI balance: {availableDAI && {availableDAI}}</p>
           </div>
 
-          <div className="flex flex-col w-1/2 p-3">
-            <h2 className="text-center font-bold mb-3">Your return</h2>
-            <p className="text-left text-dove-gray">
-              Your intial investment plus
-            </p>
+          <div className="flex flex-col w-1/2">
+            <h3 className="text-left text-xl underline font-bold mb-3">diTown APY</h3>
             <div className="mb-3 relative max-w-xl rounded-full h-8 border-2 border-denim overflow-hidden">
               <div
                 id="bar"
                 className="font-bold text-white pr-2 text-right transition-all ease-out duration-1000 h-full bg-denim relative w-48"
               >
-                ${Math.round((returns + Number.EPSILON) * 100) / 100}
+                {Math.round((weeks + Number.EPSILON) * 100) / 100}%
               </div>
             </div>
             <p className="text-left text-sm text-dove-gray">
-              It is based on the size of your <br />
-              staking, and the amount of DiTo <br />
-              you own!
-              <br />
+              "<strong className="italic">Staking</strong>" is not "<strong className="italic">Donating</strong>" - your Treasury 
+              "<strong className="italic">locks</strong>" these funds to provide liquidity. 
+              This way you get a higher interest in return!
             </p>
           </div>
         </div>
-        <div className="flex w-full bg-white">
-          <Button
-            type="submit"
-            disabled={stakingStage > 0}
-            filled
-            textColor="white"
-            className="w-full text-xl"
-          >
-            {stakingStage === 0
-              ? 'Stake now!'
-              : stakingStage === 1
-              ? 'Approving DAI to stake with ... please wait '
-              : stakingStage === 2
-              ? 'Depositing DAI to community treasury ... please wait'
-              : stakingStage === 3
-              ? 'Investing DAI to community ... please wait'
-              : stakingStage === 4
-              ? 'Staking complete, please refresh page to see new values!'
-              : 'Error has occured while processing transaction, please refresh.'}
-          </Button>
-        </div>
       </Card>
+
+      <Button
+        type="submit"
+        disabled={stakingStage > 0}
+        className="w-full text-xl rounded-full mt-4 h-16"
+      >
+        {stakingStage === 0
+          ? 'Delegate & Stake'
+          : stakingStage === 1
+          ? 'Approving DAI to stake with ... please wait '
+          : stakingStage === 2
+          ? 'Depositing DAI to community treasury ... please wait'
+          : stakingStage === 3
+          ? 'Investing DAI to community ... please wait'
+          : stakingStage === 4
+          ? 'Staking complete, please refresh page to see new values!'
+          : 'Error has occured while processing transaction, please refresh.'}
+      </Button>
     </form>
   );
 };

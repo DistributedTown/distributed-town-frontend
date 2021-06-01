@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react';
 import { ethers } from 'ethers';
 import { useForm } from 'react-hook-form';
-import Layout from '../../components/Layout';
-import CommunityTreasuryForm from '../../components/treasury/CommunityTreasuryForm';
-import CheckupCard from '../../components/community/CheckupCard';
-import PageTitle from '../../components/PageTitle';
+import Layout from '../../../components/Layout';
+import CommunityTreasuryForm from '../../../components/treasury/CommunityTreasuryForm';
+import CheckupCard from '../../../components/community/CheckupCard';
+import PageTitle from '../../../components/PageTitle';
 
-import { useGetUserInfo } from '../../hooks/useGetUserInfo';
-import { useGetCommunity } from '../../hooks/useGetCommunity';
+import { useGetUserInfo } from '../../../hooks/useGetUserInfo';
+import { useGetCommunity } from '../../../hooks/useGetCommunity';
 
 function CommunityTreasury() {
   const { data: userInfo } = useGetUserInfo(3);;
@@ -52,9 +52,6 @@ function CommunityTreasury() {
     <Layout>
       <div className="flex flex-col lg:flex-row h-full">
         <div className="flex flex-col items-center w-full py-4">
-          <PageTitle className="mt-5 text-black text-center text-4xl">
-            Community Treasury
-          </PageTitle>
           <CommunityTreasuryForm
             register={register}
             errors={errors}

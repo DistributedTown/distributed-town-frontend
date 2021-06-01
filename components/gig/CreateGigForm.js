@@ -102,17 +102,57 @@ const CreateGigForm = ({ isSubmitting, onSubmit, isProject }) => {
             <span className="text-red-600">This field is required</span>
           )}
         </div>
-        <div className="flex flex-col space-y-4 lg:space-y-0 lg:space-x-4 lg:flex-row">
-          <div className="flex flex-col space-y-4">
-            <h1 className="text-xl font-bold">Skills needed</h1>
-            <h2 className="text-dove-gray">
-              {
-                isProject ?
-                  ['Hint: If the Project requires skills not available in the', <br />, 'community, just Send a Signal to attract more talent.']
-                  : ['Hint: If the gig requires many different skills, consider', <br />, 'breaking it down in 2+ gigs, or starting a new project.']
-              }
+        <div className="flex flex-col space-y-4 lg:space-y-0 lg:space-x-60 lg:flex-row">
+          <div className="flex flex-col flex-1 space-y-4">
+            <div className="flex justify-between">
+              <h1 className="text-xl font-bold w-5/12">Commitment</h1>
+              <h2 className="text-dove-gray w-7/12">
+                {isProject
+                  ? 'Hint: the effort to complete this Project. This value influences the Funds needed in your Community Treasury!'
+                  : 'Hint: the effort needed for this task. This value influences the DiTo set as a reward for your gig!'
+                }
+              </h2>
+            </div>
+            {/* TODO: Fix color */}
+            <input
+              id="commitment"
+              name="commitment"
+              type="range"
+              step="10"
+              value={commitment}
+              onChange={e => setCommitment(e.target.value)}
+            />
+          </div>
 
+          <div className="flex flex-col flex-1 space-y-4">
+            <div className="flex justify-between items-center">
+              <h1 className="text-xl font-bold">{isProject ? 'Funds needed' : 'Budget needed'}</h1>
+              <div className="flex items-end">
+                <TextField value={budgetRequired} name="fundsNeeded" className="w-6/12"/>
+                <h2 className="text-right">{isProject ? 'DAI/USDC' : 'DiTo'}</h2>
+              </div>
+            </div>
+            <h2 className="text-dove-gray">
+              {isProject
+                ? 'Hint: the amount of funds needed for this project.'
+                : 'Hint: the amount of DiTo you offer for this gig.'
+              }
             </h2>
+          </div>
+        </div>
+
+          <div className="flex flex-col space-y-4">
+            <div className="flex">
+              <h1 className="text-xl font-bold pr-8">Skills needed</h1>
+              <h2 className="text-dove-gray">
+                {
+                  isProject ?
+                    ['Hint: If the Project requires skills not available in the community, just Send a Signal to attract more talent.']
+                    : ['Hint: If the gig requires many different skills, consider breaking it down in 2+ gigs, or starting a new project.']
+                }
+
+              </h2>
+            </div>
             <Card outlined>
               {error && <p>Couldn't fetch skills</p>}
               {skillTree
@@ -143,38 +183,6 @@ const CreateGigForm = ({ isSubmitting, onSubmit, isProject }) => {
                 : 'Loading skills'}
             </Card>
           </div>
-          <div className="flex flex-col flex-1 space-y-4">
-            <h1 className="text-xl font-bold">Commitment</h1>
-            <h2 className="text-dove-gray">
-              {isProject
-                ? 'Hint: the effort to complete this Project. This value influences the Funds needed in your Community Treasury!'
-                : 'Hint: the effort needed for this task. This value influences the DiTo set as a reward for your gig!'
-              }
-            </h2>
-            {/* TODO: Fix color */}
-            <input
-              id="commitment"
-              name="commitment"
-              type="range"
-              step="10"
-              value={commitment}
-              onChange={e => setCommitment(e.target.value)}
-            />
-          </div>
-          <div className="flex flex-col flex-1 space-y-4">
-            <h1 className="text-xl font-bold">{isProject ? 'Funds needed' : 'Budget needed'}</h1>
-            <h2 className="text-dove-gray">
-              {isProject
-                ? 'Hint: the amount of funds needed for this project.'
-                : 'Hint: the amount of DiTo you offer for this gig.'
-              }
-            </h2>
-            <div className="flex flex-col">
-              <TextField value={budgetRequired} name="fundsNeeded" />
-              <h2 className="text-right">{isProject ? 'DAI/USDC' : 'DiTo'}</h2>
-            </div>
-          </div>
-        </div>
         <Button filled type="submit" loading={isSubmitting}>
           {isProject ? 'Propose your Project!' : 'Scan QR-Code to Publish your Gig!'}
         </Button>

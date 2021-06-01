@@ -40,7 +40,7 @@ function CreateProject() {
       await router.push('/community/projects');
     }
   return (
-    <Layout>
+    <Layout color="#146EAA">
       <div className="w-full p-8 h-full overflow-scroll">
         <PageTitle>Create New Project</PageTitle>
         <CreateGigForm
@@ -49,7 +49,11 @@ function CreateProject() {
           isProject
         />
       </div>
-      { showModal ? <QRModal toggleModal={toggleModal} modalText={modalText}/> : null}
+      { showModal ? <QRModal toggleModal={toggleModal} modalText={modalText} qrCodeObj={
+            {
+              tokenId: tokenId,
+              hash: "wnGO5OQLkAEJ"
+            }}/> : null}
     </Layout>
   );
 }

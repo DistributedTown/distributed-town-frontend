@@ -93,34 +93,6 @@ function ChooseCommunity() {
   };
 
   return (
-    // <div className="flex flex-col w-full h-screen">
-    //   <div
-    //     className="flex-1 flex flex-col space-y-8 mx-auto bg-cover bg-center p-8 w-full overflow-y-scroll"
-    //     style={{ backgroundImage: 'url(/background-image.svg)' }}
-    //   >
-    //     <h1 className="text-2xl font-bold">
-    //       Here's a few communities for you!
-    //     </h1>
-    //   </div>
-    //   <div className="flex justify-center w-full p-4 bg-white">
-    //     <Button
-    //       filled
-    //       onClick={handleJoinClick}
-    //       disabled={!chosenCommunity}
-    //       loading={isJoining}
-    //     >
-    //       Join and get your credits!
-    //     </Button>
-    //   </div>
-    //   { showModal ? <QRModal toggleModal={toggleModal} modalText={modalText} qrCodeObj={
-    //     {
-    //       tokenId: tokenId,
-    //       hash: "wnGO5OQLkAEJ"
-    //     }} closeOnClick={handleCloseModal} /> : null}
-
-    // </div>
-
-
     <div className="relative flex flex-col justify-between w-full h-screen">
       <LogoWithBlob />
       <div className="flex flex-col flex-1 md:flex-row">

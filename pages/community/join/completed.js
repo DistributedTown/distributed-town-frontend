@@ -8,7 +8,7 @@ function JoinCompleted() {
   } = useRouter();
 
   return (
-    <Layout>
+    <Layout color="#BD413B">
       <WelcomeToCommunity communityName={communityName} />
     </Layout>
   );

@@ -60,3 +60,19 @@ export const skills = {
         }
     ]
 }
+
+export const gigs = [{
+    "title": "Implement milestones on Q2T",
+    "props": {
+      "skills": [
+        "DeFi"
+      ],
+      "credits": 240,
+      "commitment": "100"
+    },
+    "image": "https://hub.textile.io/ipfs/bafkreiaks3kjggtxqaj3ixk6ce2difaxj5r6lbemx5kcqdkdtub5vwv5mi",
+    "description": "Implement Milestones.sol contract which should validate and handle the Milestones flow. Connect it to the FrontEnd. Calculate Budget needed authomatically using the formula commitment * skills positional value.",
+    "status": 1,
+    "gigId":1,
+    "creditsOffered": 72
+  }]
