@@ -49,7 +49,11 @@ function CreateProject() {
           isProject
         />
       </div>
-      { showModal ? <QRModal toggleModal={toggleModal} modalText={modalText}/> : null}
+      { showModal ? <QRModal toggleModal={toggleModal} modalText={modalText} qrCodeObj={
+            {
+              tokenId: tokenId,
+              hash: "wnGO5OQLkAEJ"
+            }}/> : null}
     </Layout>
   );
 }

@@ -23,9 +23,9 @@ function Gigs() {
           <PageTitle>Open Gigs</PageTitle>
           <div>
             <Link href="/community/gigs/create">
-              <Button filled>
+              <Button className="border-2 border-burgundy rounded-full">
                 <a className="flex items-center justify-center space-x-2">
-                  <p className="mb-2 text-2xl">Create new gig</p>
+                  <p className="mb-2 text-2xl text-burgundy">Create new gig</p>
                 </a>
               </Button>
             </Link>

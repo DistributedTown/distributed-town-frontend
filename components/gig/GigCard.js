@@ -7,7 +7,7 @@ const GigCard = ({ key, gig }) => {
   const [takeGig, { isLoading }] = useTakeGig();
 
   return (
-    <Card key={key} className="flex flex-col space-y-3">
+    <Card key={key} className="flex flex-col space-y-3 border-2 border-burgundy">
       <div className="flex justify-between items-center p-2">
         <img className="w-8 h-2 mr-4" src="/milestone-chain.png" />
         <p>{gig.title}</p>
@@ -29,6 +29,7 @@ const GigCard = ({ key, gig }) => {
       <Button
         type="button"
         loading={isLoading}
+        className="border-2 border-burgundy"
         onClick={() => takeGig(gig._id)}
       >
         Take Gig
