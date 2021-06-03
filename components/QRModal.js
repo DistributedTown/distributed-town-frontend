@@ -24,18 +24,20 @@ const QRModal = (props, {
               className="flex-col justify-center"
         >
             {/* <span className="close">&times;</span> */}
-            <div className="mt-3 mb-3">
+            <div className="flex-col mt-3 mb-3">
+                <div id="qrBackground" className="rounded-3xl w-8/12 pt-8 pb-4 mb-4 bg-grey-500 m-auto ">
                 <QRCode
                 value={JSON.stringify(props.qrCodeObj)}
-                logoImage="/isologo.svg"
+                logoImage="/dark-dito.svg"
                 logoWidth={140}
                 logoHeight={140}
-                bgColor="gold"
+                bgColor="#E9F2D5"
                 size={420}
                 className="m-auto mb-25"
                 />
+                </div>
 
-                <div id="joinModalText" className="m-0 bg-white m-auto text-center pt-1 pr-3 pl-3 pb-1">
+                <div id="joinModalText" className="m-0 bg-white m-auto text-center pt-1 pr-3 pl-3 pb-1 rounded-2xl text-xl">
                     <p className="">{props.modalText}</p>
                 </div>
                 

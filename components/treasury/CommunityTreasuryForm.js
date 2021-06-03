@@ -71,13 +71,13 @@ const CommunityTreasuryForm = ({
 
           <div className="flex flex-col w-1/2">
             <h3 className="text-left text-xl underline font-bold mb-3">diTown APY</h3>
-            <div className="mb-3 relative max-w-xl rounded-full h-8 border-2 border-denim overflow-hidden">
+            <div className="mb-3 relative max-w-xl rounded-full h-8 border-2 border-denim overflow-hidden  text-center flex">
               <div
                 id="bar"
-                className="font-bold text-white pr-2 text-right transition-all ease-out duration-1000 h-full bg-denim relative w-48"
+                className="font-bold text-white pr-2 text-right transition-all ease-out duration-1000 h-full bg-denim relative w-4"
               >
-                {Math.round((weeks + Number.EPSILON) * 100) / 100}%
               </div>
+              <p className="m-auto">{Math.round((weeks + Number.EPSILON) * 100) / 100}%</p>
             </div>
             <p className="text-left text-sm text-dove-gray">
               "<strong className="italic">Staking</strong>" is not "<strong className="italic">Donating</strong>" - your Treasury 

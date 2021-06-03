@@ -49,7 +49,7 @@ function CommunityTreasury() {
   if (!communityInfo) return null;
 
   return (
-    <Layout>
+    <Layout color="#146EAA">
       <div className="flex flex-col lg:flex-row h-full">
         <div className="flex flex-col items-center w-full py-4">
           <CommunityTreasuryForm
