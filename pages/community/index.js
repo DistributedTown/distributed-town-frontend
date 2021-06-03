@@ -30,7 +30,7 @@ function CommunityDashboard() {
                 </Button>
               </Link>
               <Link href="/community/treasury">
-                <Button disabled>
+                <Button>
                   <a>Treasury</a>
                 </Button>
               </Link>

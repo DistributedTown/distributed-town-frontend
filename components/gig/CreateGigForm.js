@@ -75,6 +75,7 @@ const CreateGigForm = ({ isSubmitting, onSubmit, isProject }) => {
           <TextField
             id="title"
             name="title"
+            color="burgundy"
             ref={register({ required: true })}
           />
           {errors.title && (
@@ -96,6 +97,7 @@ const CreateGigForm = ({ isSubmitting, onSubmit, isProject }) => {
           <TextField
             id="description"
             name="description"
+            color="burgundy"
             ref={register({ required: true })}
           />
           {errors.description && (
@@ -128,7 +130,7 @@ const CreateGigForm = ({ isSubmitting, onSubmit, isProject }) => {
             <div className="flex justify-between items-center">
               <h1 className="text-xl font-bold">{isProject ? 'Funds needed' : 'Budget needed'}</h1>
               <div className="flex items-end">
-                <TextField value={budgetRequired} name="fundsNeeded" className="w-6/12"/>
+                <TextField value={budgetRequired} name="fundsNeeded" className="w-6/12" color="burgundy"/>
                 <h2 className="text-right">{isProject ? 'DAI/USDC' : 'DiTo'}</h2>
               </div>
             </div>
@@ -183,7 +185,7 @@ const CreateGigForm = ({ isSubmitting, onSubmit, isProject }) => {
                 : 'Loading skills'}
             </Card>
           </div>
-        <Button filled type="submit" loading={isSubmitting}>
+        <Button filled type="submit" loading={isSubmitting} color="burgundy">
           {isProject ? 'Propose your Project!' : 'Scan QR-Code to Publish your Gig!'}
         </Button>
         {/* TODO: Display error */}

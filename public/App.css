@@ -70,6 +70,8 @@ input[type='number'] {
   margin-top: 250px;
 }
 
-/* #layoutButton0, #layoutButton1, #layoutButton2, #layoutButton3, #layoutButton4 {
-  border-color: red;
-} */
+#qrBackground {
+  display: inline-block;
+  background-color: #E9F2D5;
+  min-width: 440px;
+}
