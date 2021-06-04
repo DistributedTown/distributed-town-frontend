@@ -1,14 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import QRModal from '../components/QRModal';
 import { generateNonce } from '../api/users'
-
+import TorusModal from './TorusModal';
+    
 const ConnectWalletModal = (props) => {
     const [showQRModal, setShowQRModal] = useState(false);
+    const [showTorusModal, setShowTorusModal] = useState(false);
     const [nonce, setNonce] = useState();
 
     const showNewQRModal = () => {
         setShowQRModal(!showQRModal);
     };
+
+    const showNewTorusModal = () => {
+        setShowTorusModal(!showTorusModal)
+    }
 
     const closeQR = () => {
         setShowQRModal(!showQRModal);
@@ -44,6 +50,18 @@ const ConnectWalletModal = (props) => {
                             <img src="/qr-code.svg" className="w-4" />
                             <p className="px-2 text-xl">SkillWallet</p>
                         </button>
+                        <button
+                            onClick={() => showNewQRModal()}
+                            className="rounded-2xl bg-gray-50 px-10 py-3 w-48 flex justify-between items-center">
+                            <img src="/metamask.svg" className="w-4" />
+                            <p className="px-2 text-xl">Metamask</p>
+                        </button>
+                        <button
+                            onClick={() => showNewTorusModal()}
+                            className="rounded-2xl bg-gray-50 px-10 py-3 w-48 flex justify-between items-center">
+                            <img src="/torus.jpeg" className="w-4" />
+                            <p className="px-2 text-xl">Torus</p>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -56,6 +74,10 @@ const ConnectWalletModal = (props) => {
                     qrCodeObj={
                         { nonce }
                     } />
+                : null}
+
+            { showTorusModal
+                ? <TorusModal />
                 : null}
         </div>
     );
