@@ -8,7 +8,7 @@ import Button from '../../../components/Button';
 import QRModal from '../../../components/QRModal';
 import LogoWithBlob from '../../../components/LogoWithBlob';
 import Logo from '../../../components/Logo';
-import { hasPendingAuthentication } from '../../../api/users';
+import { hasPendingAuthentication, generateNonce } from '../../../api/users';
 
 function ChooseCommunity() {
   const router = useRouter();
@@ -17,6 +17,7 @@ function ChooseCommunity() {
   const [joinCommunity, { isLoading: isJoining }] = useJoinCommunity();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [tokenId, setTokenId] = useState();
+  const [nonce, setNonce] = useState();
 
   // TODO: Refactor
   const { refetch: getCommunities } = useGetCommunities({
@@ -87,6 +88,8 @@ function ChooseCommunity() {
     const tokenId = await joinCommunity(chosenCommunity);
     console.log(tokenId);
     setTokenId(tokenId);
+    const nonce = await generateNonce(1, tokenId);
+    setNonce(nonce);
     toggleModal();
     await longpoll();
 
@@ -155,11 +158,14 @@ function ChooseCommunity() {
               Scan QR-Code to Claim your Membership!
             </Button>
           </div>
-          { showModal ? <QRModal toggleModal={toggleModal} modalText={modalText} qrCodeObj={
+          { 
+            showModal ? <QRModal toggleModal={toggleModal} modalText={modalText} qrCodeObj={
             {
-              tokenId: tokenId,
-              hash: "wnGO5OQLkAEJ"
-            }} closeOnClick={handleCloseModal} /> : null}
+              tokenId,
+              nonce
+            }} closeOnClick={handleCloseModal} /> : null
+          }
+          {showModal ? console.log(tokenId, nonce) : null}
         </div>
       </div>
     </div>
