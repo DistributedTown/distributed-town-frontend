@@ -1,7 +1,7 @@
 
 
 export const getUserInfo = (tokenId) => {
-  return fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/skillWallet?tokenId=${tokenId}`, {
+  return fetch(`${process.env.NEXT_PUBLIC_SKILL_WALLET_API_URL}/api/skillWallet?tokenId=${tokenId}`, {
     method: 'GET',
   })
     .then(res => res.json());
@@ -17,7 +17,7 @@ export const getCommunityInfo = () => {
 };
 
 export const hasPendingAuthentication = async (address) => {
-  const response =  await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/skillWallet/hasPendingAuth?address=${address}`, {
+  const response =  await fetch(`${process.env.NEXT_PUBLIC_SKILL_WALLET_API_URL}/api/skillWallet/hasPendingAuth?address=${address}`, {
     method: 'GET',
   });
   const pendingAuths = await response.json();
@@ -26,7 +26,7 @@ export const hasPendingAuthentication = async (address) => {
 };
 
 export const generateNonce = async (action, tokenId) => {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/skillWallet/${tokenId}/nonces?action=${action}`, {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_SKILL_WALLET_API_URL}/api/skillWallet/${tokenId}/nonces?action=${action}`, {
     method: 'POST'
   });
   const nonce = await response.json();
