@@ -14,18 +14,19 @@
   },
   "dependencies": {
     "@hapi/iron": "^6.0.0",
-    "@zeit/next-css": "^1.0.1",
+    "@skill-wallet/auth": "^0.0.29-alpha",
     "@textile/hub": "6.1.2",
+    "@zeit/next-css": "^1.0.1",
     "autoprefixer": "^10.1.0",
     "classnames": "^2.2.6",
     "cookie": "^0.4.1",
+    "dag-jose": "^0.3.0",
+    "ethereumjs-util": "7.0.7",
     "ethers": "^5.0.17",
     "immer": "^8.0.0",
     "lodash": "^4.17.20",
     "multicodec": "0.5.6",
-    "dag-jose": "^0.3.0",
     "multiformats": "^3.0.3",
-    "uint8arrays": "^1.1.0",
     "next": "^10.0.6",
     "postcss": "^8.2.1",
     "query-string": "^6.13.7",
@@ -37,7 +38,7 @@
     "react-query": "^2.26.3",
     "react-transition-group": "^4.4.1",
     "swr": "^0.3.8",
-    "ethereumjs-util": "7.0.7"
+    "uint8arrays": "^1.1.0"
   },
   "devDependencies": {
     "babel-eslint": "^10.1.0",

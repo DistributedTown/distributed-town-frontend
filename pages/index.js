@@ -1,5 +1,6 @@
 import Head from 'next/head';
 import Link from 'next/link';
+import React from 'react';
 import { useRouter } from 'next/router';
 import { FaPlus, FaUsers } from 'react-icons/fa';
 import LogoWithBlob from '../components/LogoWithBlob';
@@ -7,17 +8,20 @@ import Button from '../components/Button';
 import Card from '../components/Card';
 import LoginModal from '../components/LoginModal';
 import { useEffect, useState } from 'react';
-import ConnectWallet from '../components/ConnectWalletModal';
 import { generateNonce } from '../api/users';
+import { defineCustomElements } from "@skill-wallet/auth/loader";
 
 const Index = () => {
   // TODO: Loading while logging in to API after magic link
-  const [showLoginPopUp, setShowLoginPopUp] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const toggleModal = () => setShowModal(!showModal);
   const [nonce, setNonce] = useState();
   const router = useRouter();
 
+  useEffect(() => {
+    defineCustomElements(window)
+  }, []);
+    
   const onSkillWalletLogin = async () => {
     try {
       const nonce = await generateNonce(1, -1);
@@ -32,12 +36,12 @@ const Index = () => {
   return (
     <>
       <div className=" h-16 absolute z-10 w-full flex justify-end">
-        <Button onClick={toggleModal} enable={false} id="walletButton">
-          <a className="flex items-center justify-center space-x-4 text-l">
-            <img className="w-6 h-6" src="/isologo.svg" />
-            <span>Connect Wallet</span>
-          </a>
-        </Button>
+        <skillwallet-auth 
+            id="walletButton" 
+            className="flex items-center justify-center space-x-4 text-l" 
+            partner-key="123"
+            // onClick={onSkillWalletLogin}
+          ></skillwallet-auth>
       </div>
       <div className="flex flex-col items-center flex-1 mx-auto lg:flex-row lg:min-h-screen">
         <Head>
@@ -66,16 +70,9 @@ const Index = () => {
                 </a>
               </Button>
             </Link>
-
-            <LoginModal
-              open={showLoginPopUp}
-              onClose={() => { setShowLoginPopUp(false) }}
-              onSkillWalletLogin={onSkillWalletLogin}
-            />
           </div>
         </div>
       </div>
-      { showModal ? <ConnectWallet key={'connect'} toggleModal={toggleModal} /> : null}
     </>
   );
 };
