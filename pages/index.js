@@ -39,7 +39,6 @@ const Index = () => {
         <skillwallet-auth 
             id="walletButton" 
             className="flex items-center justify-center space-x-4 text-l" 
-            partner-key="123"
             // onClick={onSkillWalletLogin}
           ></skillwallet-auth>
       </div>
