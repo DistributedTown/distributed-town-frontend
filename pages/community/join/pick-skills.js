@@ -1,12 +1,15 @@
 import { useRouter } from 'next/router';
+import { useState } from 'react';
 import SkillPicker from '../../../components/SkillPicker';
 import { getSkillDisplayNames } from '../../../api/skills'
 
 function PickSkills() {
   const router = useRouter();
   const { categorySkill } = router.query;
+  const [isLoading, setIsLoading] = useState(false);
 
   const onSubmit = async ({ username, skills, category, image }) => {
+    setIsLoading(true);
     localStorage.setItem('username', username);
     const skillNames = await getSkillDisplayNames();
     console.log(skillNames);
@@ -37,6 +40,7 @@ function PickSkills() {
     localStorage.setItem('skills', JSON.stringify(formatedSkills));
     localStorage.setItem('imageUrl', image);
 
+    setIsLoading(false);
     await router.push(
       `/community/join/choose-community?category=${encodeURIComponent(
         category,
@@ -45,11 +49,19 @@ function PickSkills() {
   };
 
   return (
+    <>
+    {isLoading ? 
+    <div className="item">
+    <h2>Loading</h2>  
+    <i className="loader two"></i>
+    </div> : <div></div>}
+    
     <SkillPicker
       isSubmitting={false}
       categorySkill={categorySkill}
       onSubmit={onSubmit}
     />
+    </>
   );
 }
 
