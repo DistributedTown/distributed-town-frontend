@@ -8,7 +8,7 @@ function SkillsCard({
   totalSelected,
 }) {
   return (
-    <Card className="px-2 py-2 text-xs">
+    <Card className="px-2 py-2 text-xs mb-8">
       <h2 className="text-center font-bold">{title}</h2>
       <div className="grid grid-cols-2">
         {skills.map((skill, i) => {

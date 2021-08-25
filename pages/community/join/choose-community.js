@@ -83,6 +83,7 @@ function ChooseCommunity() {
   }
 
   const handleJoinClick = async () => {
+    setIsLoading(true);
     if (!address) {
       if (!window.ethereum.selectedAddress)
         await window.ethereum.enable()
@@ -94,9 +95,9 @@ function ChooseCommunity() {
     setTokenId(tokenId);
     const nonce = await generateNonce(1, tokenId);
     setNonce(nonce);
+    setIsLoading(false);
     toggleModal();
     await longpoll();
-
   };
 
   return (
@@ -175,7 +176,7 @@ function ChooseCommunity() {
               filled
               onClick={handleJoinClick}
               disabled={!chosenCommunity}
-              loading={isJoining}
+              // loading={isJoining}
               className="mt-8 mb-16"
             >
               Scan QR-Code to Claim your Membership!

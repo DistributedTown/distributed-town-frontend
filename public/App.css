@@ -67,7 +67,9 @@ input[type='number'] {
 }
 
 #joinCommunityButton {
-  margin-top: 250px;
+  width: 60%;
+  margin: 0 auto;
+  /* margin-top: 10%; */
 }
 
 #qrBackground {
@@ -141,11 +143,17 @@ input[type='number'] {
 	border-radius: 4px;
   transition: opacity 0.4s ease;
   position: absolute;
-  left: 70px;
+  left: 50px;
   bottom: 10px;
   z-index: 1000;
 }
 
 .item h2 {
   margin-right: 45px;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+#joinCommunityText {
+  margin-top: -4rem !important;
 }

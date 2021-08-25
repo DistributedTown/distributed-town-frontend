@@ -15,7 +15,7 @@ function QR() {
           {(
             <QRCode
               value={`{
-                "address":"0xe5dfc64fad45122545b0a5b88726ff7858509600"
+                "address":"0xF89424a725298737086812173f0Dc7DfD221Dc60"
                 "tokenId":0,
                 "hash":"wnGO5OQLkAEJ"
               }`}
