@@ -7,7 +7,7 @@
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
     "dev": "next dev",
-    "build": "next build",
+    "build": "rm -rf out/ && rm -rf .next/ && next build && next export",
     "start": "next start",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build"
