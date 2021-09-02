@@ -1,6 +1,7 @@
 import { ethers } from 'ethers';
 import communityAbi from '../utils/communityContractAbi.json';
 import diToABI from '../utils/distributedTownAbi.json';
+import { toWei } from 'web3-utils';
 
 export const getCommunityDitoTokensContract = async (
   communityContractAddress,
@@ -82,7 +83,7 @@ export const joinCommunity = async (
       displayStringId3,
       skillLevel3,
       url,
-      credits,
+      toWei(credits.toString())
     );
     console.log(createTx);
     const communityTransactionResult = await createTx.wait();
