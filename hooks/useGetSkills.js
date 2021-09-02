@@ -2,6 +2,7 @@ import { useQuery } from 'react-query';
 import queryString from 'query-string';
 
 export const useGetSkills = ({ category, skill }, { enabled }) => {
+  console.log(category, skill);
   const qs = queryString.stringify({ category, skill });
   return useQuery(
     ['skillTree', qs],

@@ -1,11 +1,13 @@
 import Card from './Card';
 
-const SkillsDisplay = ({ skills = [] }) => {
+const SkillsDisplay = (
+  ) => {
+    const userInfo = JSON.parse(localStorage.getItem('userInfo'));
   return (
     <Card>
       <h2 className="text-2xl text-center text-bold">Your skills</h2>
       <div className="grid justify-center grid-cols-2 gap-6 p-2">
-        {skills.map((skill, i) => {
+        {userInfo.skills.map((skill, i) => {
           const barcss = `font-bold text-white pr-2 text-right transition-all ease-out duration-1000 h-full bg-denim relative`;
           return (
             <div key={i}>

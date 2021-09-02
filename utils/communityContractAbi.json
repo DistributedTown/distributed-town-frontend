@@ -10,6 +10,11 @@
         "internalType": "address",
         "name": "_addrProvider",
         "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_totalMembersAllowed",
+        "type": "uint256"
       }
     ],
     "stateMutability": "nonpayable",
@@ -126,6 +131,19 @@
   },
   {
     "inputs": [],
+    "name": "getMemberAddresses",
+    "outputs": [
+      {
+        "internalType": "address[]",
+        "name": "",
+        "type": "address[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "getMembers",
     "outputs": [
       {
@@ -167,6 +185,19 @@
       }
     ],
     "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getSkillWalletAddress",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -317,6 +348,25 @@
     "name": "leave",
     "outputs": [],
     "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "memberAddresses",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   },
   {

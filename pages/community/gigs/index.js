@@ -11,8 +11,8 @@ import { useGetUserInfo } from '../../../hooks/useGetUserInfo';
 import PageTitle from '../../../components/PageTitle';
 import { useGetGigs } from '../../../hooks/useGetGigs';
 
-function Gigs() {
-  const { data: userInfo } = useGetUserInfo(3);;
+function Gigs(props) {
+  // const { data } = mockUserInfo;
   // const { data: gigs } = useGetGigs();     // TODO: uncommment this before pushing
   const { gigs } = mockGigs;        // TODO: delete this before pushing
 
@@ -44,7 +44,7 @@ function Gigs() {
             })
           )}
         </div>
-        <SkillsDisplay skills={userInfo && userInfo.skillWallet} />
+        <SkillsDisplay />
       </div>
     </Layout>
   );

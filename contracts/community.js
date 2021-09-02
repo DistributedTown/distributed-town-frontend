@@ -64,8 +64,8 @@ export const joinCommunity = async (
 ) => {
   try {
     const provider = new ethers.providers.Web3Provider(web3.currentProvider);
-
     const signer = provider.getSigner();
+    
     // TODO: Create contract should join the user automatically instead of needing to call join after that.
     // call the smart contract to create community
     const contract = new ethers.Contract(
@@ -73,7 +73,7 @@ export const joinCommunity = async (
       communityAbi,
       signer,
     );
-
+      console.log(contract);
     const createTx = await contract.joinNewMember(
       displayStringId1,
       skillLevel1,
@@ -84,7 +84,7 @@ export const joinCommunity = async (
       url,
       credits,
     );
-
+    console.log(createTx);
     const communityTransactionResult = await createTx.wait();
     console.log(communityTransactionResult);
     const { events } = communityTransactionResult;

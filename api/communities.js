@@ -1,4 +1,6 @@
 import queryString from 'query-string';
+import { ethers } from 'ethers';
+import communityAbi from '../utils/communityContractAbi.json';
 
 export const join = async (payload) => {
   console.log(payload);
@@ -50,3 +52,24 @@ export const createCommunity = async (community) => {
   const json = await res.json();
   console.log(json);
 };
+
+export const getCommunityGigsAddress = async (communityAddress) => {
+  try {
+    const provider = new ethers.providers.Web3Provider(web3.currentProvider);
+    const signer = provider.getSigner();
+    
+    const contract = new ethers.Contract(
+      communityAddress,
+      communityAbi,
+      signer,
+    );
+    console.log(contract);
+    const gigsAddress = await contract.gigsAddr();
+    console.log(gigsAddress);
+    
+    return gigsAddress
+  } catch (err) {
+    console.log(err);
+    return;
+  }
+}

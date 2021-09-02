@@ -1,5 +1,5 @@
 import { useMutation } from 'react-query';
-import { createGig } from '../api/gigs';
+// import { createGig } from '../api/gigs';
 
 export const useCreateGig = () => {
 
@@ -14,7 +14,7 @@ export const useCreateGig = () => {
       };
 
       // TODO: Throw on !ok
-      const result = await createGig(gigData);
+      // const result = await createGig(gigData);
     },
     {
       throwOnError: true,
