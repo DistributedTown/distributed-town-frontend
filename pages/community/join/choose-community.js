@@ -18,6 +18,7 @@ function ChooseCommunity() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [tokenId, setTokenId] = useState();
   const [nonce, setNonce] = useState();
+  const [isLoading, setIsLoading] = useState(false);
 
   // TODO: Refactor
   const { refetch: getCommunities } = useGetCommunities({
@@ -33,6 +34,7 @@ function ChooseCommunity() {
     ' to verify membership.'];
 
   useEffect(() => {
+    setIsLoading(true);
     const { category } = router.query;
     if (!category) return;
 
@@ -40,6 +42,7 @@ function ChooseCommunity() {
       const comms = await getCommunities({ category });
       setCommunities(comms || []);
     })();
+    setIsLoading(false);
   }, [router.query.category]);
 
   const longpoll = async () => {
@@ -79,6 +82,7 @@ function ChooseCommunity() {
   }
 
   const handleJoinClick = async () => {
+    setIsLoading(true);
     if (!address) {
       if (!window.ethereum.selectedAddress)
         await window.ethereum.enable()
@@ -90,6 +94,7 @@ function ChooseCommunity() {
     setTokenId(tokenId);
     const nonce = await generateNonce(1, tokenId);
     setNonce(nonce);
+    setIsLoading(false);
     toggleModal();
     await longpoll();
 
@@ -97,6 +102,11 @@ function ChooseCommunity() {
 
   return (
     <div className="relative flex flex-col justify-between w-full h-screen">
+      {isLoading ? 
+        <div id="item">
+        <h2>Loading</h2>  
+        <i id="loader"></i>
+        </div> : <div></div>}
       <LogoWithBlob />
       <div className="flex flex-col flex-1 md:flex-row">
         <div

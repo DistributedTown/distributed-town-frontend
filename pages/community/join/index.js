@@ -11,11 +11,17 @@ const Join = ({ skills = [] }) => {
 
   const [chosenSkill, setChosenSkill] = useState('');
   const showRegistrationModal = !!chosenSkill;
+  const [isLoading, setIsLoading] = useState(false);
 
   const router = useRouter();
 
   return (
     <div className="w-full h-full">
+    {isLoading ? 
+        <div id="item">
+        <h2>Loading</h2>  
+        <i id="loader"></i>
+        </div> : <div></div>}
       <LogoWithBlob />
       <div>
         <Logo className="p-8 mx-auto sm:ml-0" />
@@ -37,6 +43,7 @@ const Join = ({ skills = [] }) => {
               <Button
                 key={skill}
                 onClick={async () => {
+                  setIsLoading(true);
                   setChosenSkill(skill);
                   await router.push(
                     `/community/join/pick-skills?categorySkill=${skill}`,

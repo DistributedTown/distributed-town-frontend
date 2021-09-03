@@ -54,7 +54,6 @@ const CreateGigForm = ({ isSubmitting, onSubmit, isProject }) => {
     }
   }
 
-  //called & calculated when a skill selection changes (or commitment changes). sent to final Submit contract call.
   useEffect(() => {
     const totalCredits = selectedSkills
       .map(s => s.credits)
@@ -63,16 +62,41 @@ const CreateGigForm = ({ isSubmitting, onSubmit, isProject }) => {
     setBudgetRequired(budget);
   }, [commitment, selectedSkills]);
 
-// called when a new skill selected
-  const toggleSkill = skill => {
+  const toggleSkill = (skill) => {
     setSelectedSkills(prev => {
-      // remove skill from selectedSkills if user toggles skill "off"
       if (prev.find(s => s.name === skill.name)) {
         return prev.filter(s => s.name !== skill.name);
       }
       return [...prev, skill];
     });
+    isOneCategorySelected();
   };
+
+  const isOneCategorySelected = () => {
+    const categories = community.skills.categories.map((c) => {
+      return c.skills;
+    })
+    let catCount = 0;
+
+    categories.forEach(category => {
+      let increment = 0;
+      selectedSkills.forEach(skill => {
+        if (category.includes(skill.name)) {
+          increment = 1;
+          return;
+        }
+      })
+      catCount += increment;
+    })
+
+    if (selectedSkills.length >  4) {
+      return false;
+    } else if (catCount > 1) {
+      return false;
+    } else {
+      return true;
+    }
+  }
 
   const isFormValid = (errors) => {
     // setSubmitButtonClass(Object.keys(errors).length === 0 && !isLoading ? 'integrate-deploy' : 'integrate-deploy deploy-disabled')
@@ -80,23 +104,13 @@ const CreateGigForm = ({ isSubmitting, onSubmit, isProject }) => {
 }
 
   return (
-    // <form
-    //   
-      // onSubmit={handleSubmit(data => {
-
-      //     onSubmit({
-      //       ...data,
-      //       skills: selectedSkills.map(s => s.name),
-      //       creditsOffered: parseInt(budgetRequired, 10),
-      //     })
-      // }
-    // >
     <>
     <Formik
         initialValues={{
             title: '',
             description: '',
-            commitment: 50
+            commitment: 50,
+            categories: ''
         }}
 
         validate={(values) => {
@@ -107,6 +121,9 @@ const CreateGigForm = ({ isSubmitting, onSubmit, isProject }) => {
             }
             if (!values.description) {
               errors.description = "Required"
+            }
+            if (!isOneCategorySelected()) {
+              errors.categories = "Must select skills from just one category"
             }
 
             return errors;
@@ -230,44 +247,47 @@ const CreateGigForm = ({ isSubmitting, onSubmit, isProject }) => {
             <div className="flex">
               <h1 className="text-xl font-bold pr-8">Skills needed</h1>
               <h2 className="text-dove-gray">
-                {
-                  isProject ?
+                { isProject ?
                     ['Hint: If the Project requires skills not available in the community, just Send a Signal to attract more talent.']
                     : ['Hint: If the gig requires many different skills, consider breaking it down in 2+ gigs, or starting a new project.']
                 }
-
               </h2>
             </div>
-            <Card outlined>
-              {/* {error && <p>Couldn't fetch skills</p>} */}
-              {userInfo && community
-                ? community.skills.categories.map((category, i) => (
-                  <div
-                  key={i}>
-                    <div className="font-bold">{category.subCat}</div>
-                    <div className="pl-6">
-                      {category.skills.map(skill => (
-                        <label key={skill} className="flex items-center">
-                          <input
-                            type="checkbox"
-                            step="1"
-                            onChange={() => {
-                              toggleSkill({
-                                name: skill,
-                                credits: category.credits,
-                              });
-                            }}
-                          />
-                          <div className="flex flex-col pl-2">
-                            <p>{skill}</p>
-                          </div>
-                        </label>
-                    ))}
+              <Card outlined id="categories" name="categories">
+                {/* {error && <p>Couldn't fetch skills</p>} */}
+                <div className="flex justify-between pr-16 pl-16">
+                {userInfo && community
+                  ? community.skills.categories.map((category, i) => (
+                    <div
+                    key={i}>
+                      <div className="font-bold">{category.subCat}</div>
+                      <div className="pl-6">
+                        {category.skills.map(skill => (
+                          <label key={skill} className="flex items-center">
+                            <input
+                              type="checkbox"
+                              step="1"
+                              onChange={() => {
+                                toggleSkill({
+                                  name: skill,
+                                  credits: category.credits,
+                                });
+                              }}
+                            />
+                            <div className="flex flex-col pl-2">
+                              <p>{skill}</p>
+                            </div>
+                          </label>
+                      ))}
+                      </div>
                     </div>
+                  ))
+                  : 'Loading skills'}
                   </div>
-                ))
-                : 'Loading skills'}
-            </Card>
+              </Card>
+              {errors.categories && (
+            <span className="text-red-600">Must select skills from only one category</span>
+          )}
           </div>
         <Button filled type="submit" color="burgundy" // id="disabled"
          disabled={isFormValid(errors) || isLoading}>

@@ -10,7 +10,8 @@ import { getUserInfo } from '../../api/users';
 function CommunityDashboard() {
   useEffect( () => {
     const getInfo = async () => {
-      const info = await getUserInfo(3);
+      //TODO: this shouldn't be hard-coded
+      const info = await getUserInfo(6);
       localStorage.setItem('userInfo', JSON.stringify(info));
       return info;
     }

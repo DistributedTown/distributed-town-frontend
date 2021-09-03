@@ -85,6 +85,7 @@ input[type='number'] {
 	--size-bar: 0.4vmin;
 	--size-square: 3vmin;
 	
+  z-index: 10000;
 	display: block;
 	position: relative;
 	width: 50%;
@@ -144,6 +145,7 @@ input[type='number'] {
 } */
 
 #item	{
+  z-index: 10000;
 	display: flex;
 	place-items: center;
 	border-radius: 4px;
