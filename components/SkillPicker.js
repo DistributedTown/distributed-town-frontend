@@ -135,7 +135,7 @@ export default function SkillPicker({
           <div className="grid md:absolute md:top-0 md:left-0">
             <Logo className={[{ 'p-8': false }, 'md:p-8 p-0']} />
           </div>
-          <div className="flex flex-col items-center ">
+          <div className="flex flex-col items-center" id="joinCommunityText">
             <div className="mb-4 text-3xl font-bold text-center text-gray-900">
               Welcome to <span className="underline">Distributed Town!</span>
             </div>
@@ -157,7 +157,7 @@ export default function SkillPicker({
             </label>
 
               
-            <label classsName="flex flex-col">
+            <label className="flex flex-col">
               <strong className="underline mb-2">Avatar</strong>
               <Card className="h-24 border-2 rounded-2xl flex content-between h-20 items-center" color="black">
                 <input type="file" accept="image/*" onChange={handleImageUpload} ref={imageUploader} multiple="false" style={{display: "none"}}/>
@@ -180,11 +180,11 @@ export default function SkillPicker({
           </div>
         </div>
 
-        <div className="flex flex-col justify-center flex-grow w-full h-full p-8 space-y-1 space-y-2 overflow-auto text-center align-center">
+        <div className="flex flex-col w-full p-8  overflow-auto text-center align-center">
           <p>
             Pick your Skills (<span>between 1 and 3</span>)
           </p>
-          <p>Select what you’re the best at, and receive Credits for it.</p>
+          <p className="mb-8">Select what you’re the best at, and receive Credits for it.</p>
           {skillTree.map((category, i) => {
             return (
               <SkillsCard
@@ -203,7 +203,7 @@ export default function SkillPicker({
           })}
           <Card
             filled
-            className="flex flex-row items-center justify-between h-24"
+            className="flex flex-row items-center justify-between h-24 mb-16"
           >
             <p className="flex items-center justify-center w-1/2">
               Your selection
@@ -231,10 +231,6 @@ export default function SkillPicker({
         </Button>
         </div>
       </div>
-
-      {/* <div className="flex items-center justify-center w-full p-4 bg-white"> */}
-
-      {/* </div> */}
     </div>
   );
 }

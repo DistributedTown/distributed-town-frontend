@@ -41,6 +41,7 @@ function ChooseCommunity() {
     (async () => {
       const comms = await getCommunities({ category });
       setCommunities(comms || []);
+      setIsLoading(false);
     })();
     setIsLoading(false);
   }, [router.query.category]);
@@ -97,7 +98,6 @@ function ChooseCommunity() {
     setIsLoading(false);
     toggleModal();
     await longpoll();
-
   };
 
   return (
@@ -142,13 +142,16 @@ function ChooseCommunity() {
           </div>
         </div>
 
-        <div className="flex flex-col justify-center flex-grow w-7/12 h-full p-8 space-y-1 space-y-2 overflow-auto text-center align-center">
-          <p>
+      <div className="flex flex-col w-7/12">
+          <p className="text-center mt-8">
             <b>Here's a few diTown Communities for you</b> (based on your <b>Skills</b>)
           </p>
-          <p>Select the one <b className="underline">that inspires you the most</b> - and <b className="underline">start adding Value</b> to it</p>
-          <div className="flex flex-col justify-center w-full p-4 ">
-            <div className="flex flex-col">
+          <p className="text-center">Select the one <b className="underline">that inspires you the most</b> - and <b className="underline">start adding Value</b> to it 🙌🏻</p>
+
+        <div className="flex flex-col  w-full h-full p-8  overflow-scroll text-center ">
+
+          <div className="flex flex-col justify-center w-full p-4 items-center">
+            <div className="flex flex-col max-h-44">
             {communities.map((community, i) => (
               <CommunityCard
                 key={i}
@@ -158,15 +161,7 @@ function ChooseCommunity() {
               />
             ))}
           </div>
-            <Button
-              filled
-              onClick={handleJoinClick}
-              disabled={!chosenCommunity}
-              loading={isJoining}
-              className="mt-8"
-            >
-              Scan QR-Code to Claim your Membership!
-            </Button>
+
           </div>
           { 
             showModal ? <QRModal toggleModal={toggleModal} modalText={modalText} qrCodeObj={
@@ -176,6 +171,16 @@ function ChooseCommunity() {
             }} closeOnClick={handleCloseModal} /> : null
           }
           {showModal ? console.log(tokenId, nonce) : null}
+        </div>
+        <Button
+              filled
+              onClick={handleJoinClick}
+              disabled={!chosenCommunity}
+              // loading={isJoining}
+              className="mt-8 mb-16"
+            >
+              Scan QR-Code to Claim your Membership!
+            </Button>
         </div>
       </div>
     </div>

@@ -35,16 +35,16 @@ function CommunityDashboard() {
                   <a>Open Gigs</a>
                 </Button>
               </Link>
-              <Link href="/community/projects">
-                <Button>
+              {/* <Link href="/community/projects"> */}
+                <Button disabled={true}>
                   <a>Projects</a>
                 </Button>
-              </Link>
-              <Link href="/community/treasury">
-                <Button>
+              {/* </Link> */}
+              {/* <Link href="/community/treasury"> */}
+                <Button disabled={true}>
                   <a>Treasury</a>
                 </Button>
-              </Link>
+              {/* </Link> */}
             </div>
           </div>
           <div>
