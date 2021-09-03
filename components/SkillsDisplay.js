@@ -4,7 +4,7 @@ import Card from './Card';
 const SkillsDisplay = () => {
     let userInfo = {};
     useState(() => {
-      if (typeof window !== "undefined") {
+      if (typeof window !== "undefined" && localStorage.getItem("userInfo")) {
         userInfo  = JSON.parse(localStorage.getItem('userInfo'));
       }
     }, []);
