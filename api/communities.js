@@ -63,9 +63,8 @@ export const getCommunityGigsAddress = async (communityAddress) => {
       communityAbi,
       signer,
     );
-    console.log(contract);
+    
     const gigsAddress = await contract.gigsAddr();
-    console.log(gigsAddress);
     
     return gigsAddress
   } catch (err) {

@@ -1,8 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
-import { useGetSkills } from '../../hooks/useGetSkills';
-import { useGetCommunity } from '../../hooks/useGetCommunity';
-import { community as mockCommunity } from '../../utils/mockData';
 import { Form, Input } from "formik-antd";
 import { Formik, ErrorMessage } from "formik";
 import Button from '../Button';
@@ -18,20 +15,9 @@ const CreateGigForm = ({ isSubmitting, onSubmit, isProject }) => {
   const [community, setCommunity] = useState(null);
   const [userInfo, setUserInfo] = useState(null);
   const [gigsAddress, setGigsAddress] = useState(null);
-  // TODO: replace mock data with backend call
-  // const { data: community } = useGetCommunity();
-  // const community = mockCommunity;
-  // const communityCategory = community && community.communityInfo.category;
-
   const [budgetRequired, setBudgetRequired] = useState(0);
   const [selectedSkills, setSelectedSkills] = useState([]);
   const [commitment, setCommitment] = useState(50);
-
-  // TODO: replace mock data with backend call
-  // const { data: skillTree, error } = useGetSkills(
-  //   { category: communityCategory },
-  //   { enabled: communityCategory },
-  // );
 
   useEffect(() => {
     const s = JSON.parse(localStorage.getItem('userInfo'));
@@ -124,6 +110,9 @@ const CreateGigForm = ({ isSubmitting, onSubmit, isProject }) => {
             }
             if (!isOneCategorySelected()) {
               errors.categories = "Must select skills from just one category"
+            }
+            if (selectedSkills.length === 0) {
+              errors.categories = "Please select one or more skills"
             }
 
             return errors;
@@ -253,6 +242,9 @@ const CreateGigForm = ({ isSubmitting, onSubmit, isProject }) => {
                 }
               </h2>
             </div>
+            {errors.categories && (
+            <span className="text-red-600">{errors.categories}</span>
+          )}
               <Card outlined id="categories" name="categories">
                 {/* {error && <p>Couldn't fetch skills</p>} */}
                 <div className="flex justify-between pr-16 pl-16">
@@ -285,11 +277,8 @@ const CreateGigForm = ({ isSubmitting, onSubmit, isProject }) => {
                   : 'Loading skills'}
                   </div>
               </Card>
-              {errors.categories && (
-            <span className="text-red-600">Must select skills from only one category</span>
-          )}
           </div>
-        <Button filled type="submit" color="burgundy" // id="disabled"
+        <Button filled type="submit" color="burgundy"
          disabled={isFormValid(errors) || isLoading}>
           {isProject ? 'Propose your Project!' : 'Scan QR-Code to Publish your Gig!'}
         </Button>
