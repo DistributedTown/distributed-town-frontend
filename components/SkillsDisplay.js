@@ -1,8 +1,12 @@
+import { useState } from 'react';
 import Card from './Card';
 
-const SkillsDisplay = (
-  ) => {
-    const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+const SkillsDisplay = () => {
+    let userInfo = {};
+    useState(() => {
+      userInfo  = JSON.parse(localStorage.getItem('userInfo'));
+    }, []);
+      
   return (
     <Card>
       <h2 className="text-2xl text-center text-bold">Your skills</h2>
