@@ -1090,10 +1090,10 @@
   dependencies:
     "@sinonjs/commons" "^1.7.0"
 
-"@skill-wallet/auth@^0.0.29-alpha":
-  "integrity" "sha512-gdu05fAeBXN+ckSyeQ44em5NR2fps86Cca3HF19xNAuPkRxW/hfDxqmSAhuZxAOicNxu8yxYzSkw7XqPN5huMg=="
-  "resolved" "https://registry.npmjs.org/@skill-wallet/auth/-/auth-0.0.29-alpha.tgz"
-  "version" "0.0.29-alpha"
+"@skill-wallet/auth@^0.0.43-alpha":
+  "integrity" "sha512-V+vd41fpU6yibPKBtgLuryYlirCSTgbkJEzhpYt5vjkBdV6p/y1WjCezhhaDia5xE/Nzy8fAZA/LQDjQthyR9A=="
+  "resolved" "https://registry.npmjs.org/@skill-wallet/auth/-/auth-0.0.43-alpha.tgz"
+  "version" "0.0.43-alpha"
   dependencies:
     "@stencil/core" "2.6.0"
     "@textile/hub" "^6.2.0"
@@ -1104,6 +1104,7 @@
     "qrcode-react" "^0.1.16"
     "qrcode.react" "^1.0.1"
     "react-qrcode-logo" "^2.4.0"
+    "requirejs" "^2.3.6"
     "sass" "^1.35.2"
     "web3" "^1.4.0"
 
@@ -8793,6 +8794,11 @@
   "integrity" "sha1-jGStX9MNqxyXbiNE/+f3kqam30I="
   "resolved" "https://registry.npmjs.org/require-directory/-/require-directory-2.1.1.tgz"
   "version" "2.1.1"
+
+"requirejs@^2.3.6":
+  "integrity" "sha512-ipEzlWQe6RK3jkzikgCupiTbTvm4S0/CAU5GlgptkN5SO6F3u0UD0K18wy6ErDqiCyP4J4YYe1HuAShvsxePLg=="
+  "resolved" "https://registry.npmjs.org/requirejs/-/requirejs-2.3.6.tgz"
+  "version" "2.3.6"
 
 "resize-observer-polyfill@^1.5.0", "resize-observer-polyfill@^1.5.1":
   "integrity" "sha512-LwZrotdHOo12nQuZlHEmtuXdqGoOD0OhaxopaNFxWzInpEgaLWoVuAMbTzixuosCx2nEG58ngzW3vxdWoxIgdg=="
