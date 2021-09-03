@@ -43,7 +43,7 @@ function ChooseCommunity() {
       setCommunities(comms || []);
       setIsLoading(false);
     })();
-    
+    setIsLoading(false);
   }, [router.query.category]);
 
   const longpoll = async () => {
@@ -102,11 +102,11 @@ function ChooseCommunity() {
 
   return (
     <div className="relative flex flex-col justify-between w-full h-screen">
-          {isLoading ? 
-            <div className="item">
-            <h2>Loading</h2>  
-            <i className="loader two"></i>
-            </div> : <div></div>}
+      {isLoading ? 
+        <div id="item">
+        <h2>Loading</h2>  
+        <i id="loader"></i>
+        </div> : <div></div>}
       <LogoWithBlob />
       <div className="flex flex-col flex-1 md:flex-row">
         <div

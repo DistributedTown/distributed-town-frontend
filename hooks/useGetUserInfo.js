@@ -4,6 +4,6 @@ import { getUserInfo } from '../api/users';
 export const useGetUserInfo = (tokenId) => {
 
   return useQuery('user', async (tokenId) => {
-    return getUserInfo();
+    return getUserInfo(tokenId);
   });
 };

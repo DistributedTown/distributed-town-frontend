@@ -3,11 +3,15 @@ import Button from '../Button';
 import { useTakeGig } from '../../hooks/useTakeGig';
 // import milestoneChain from "../../public/milestone-chain.png";
 
-const GigCard = ({ key, gig }) => {
+const GigCard = ({ 
+  // key, 
+  gig }) => {
   const [takeGig, { isLoading }] = useTakeGig();
 
   return (
-    <Card key={key} className="flex flex-col space-y-3 border-2 border-burgundy">
+    <Card 
+    // key={key} 
+    className="flex flex-col space-y-3 border-2 border-burgundy">
       <div className="flex justify-between items-center p-2">
         <img className="w-8 h-2 mr-4" src="/milestone-chain.png" />
         <p>{gig.title}</p>
@@ -17,7 +21,9 @@ const GigCard = ({ key, gig }) => {
         <p>Skills needed: </p>
         <ul>
           {gig.props.skills.map((skill, j) => (
-            <li key={j} className="list-disc list-inside">
+            <li 
+            key={j} 
+            className="list-disc list-inside">
               {skill}
             </li>
           ))}

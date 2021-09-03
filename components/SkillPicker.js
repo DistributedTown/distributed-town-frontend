@@ -19,6 +19,7 @@ export default function SkillPicker({
   const [skillTree, setSkillTree] = useState([]);
   const [username, setUsername] = useState('');
   const [imageUrl, setImageUrl] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   // TODO: Refactor
   // This is used to pass the category to the next page so we can get the correct list to choose from.
   const [category, setCategory] = useState('');
@@ -91,6 +92,7 @@ export default function SkillPicker({
   }
 
   const handleSubmit = async () => {
+    setIsLoading(true);
     onSubmit({ username, skills: getSelectedSkills(), category, image: imageUrl });
   };
 
@@ -116,6 +118,11 @@ export default function SkillPicker({
 
   return (
     <div className="relative flex flex-col justify-between w-full h-screen">
+      {isLoading ? 
+        <div id="item">
+        <h2>Loading</h2>  
+        <i id="loader"></i>
+        </div> : <div></div>}
       <LogoWithBlob />
       <div className="flex flex-col flex-1 md:flex-row">
         <div

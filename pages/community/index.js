@@ -1,12 +1,23 @@
 import Link from 'next/link';
-
+import { useContext, useState, useEffect } from 'react';
 import Layout from '../../components/Layout';
 import CheckupCard from '../../components/community/CheckupCard';
 import CommunitySummaryCard from '../../components/community/CommunitySummaryCard';
 import Button from '../../components/Button';
 import PageTitle from '../../components/PageTitle';
+import { getUserInfo } from '../../api/users';
 
 function CommunityDashboard() {
+  useEffect( () => {
+    const getInfo = async () => {
+      //TODO: this shouldn't be hard-coded
+      const info = await getUserInfo(6);
+      localStorage.setItem('userInfo', JSON.stringify(info));
+      return info;
+    }
+    getInfo();
+  }, []);
+
   return (
     <Layout color="#146EAA">
       <div className="flex flex-col h-full">

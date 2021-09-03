@@ -32,7 +32,7 @@ function CreateGig() {
       </div>
       { showModal ? <QRModal toggleModal={toggleModal} modalText={modalText} qrCodeObj={
             {
-              tokenId: tokenId,
+              tokenId: '123',
               hash: "wnGO5OQLkAEJ"
             }}/> : null}
     </Layout>

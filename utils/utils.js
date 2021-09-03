@@ -1,0 +1,45 @@
+import { BN } from 'bn.js';
+import { ethers } from 'ethers';
+import { toWei } from 'web3-utils';
+import gigsABI from './gigsABI.json';
+import { pushJSONDocument } from './textile.hub';
+
+export const createGig = async (formikValues, user, gigsAddress, budget) => {
+  try {
+    console.log(formikValues, user);
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const signer = provider.getSigner();
+
+    const contract = new ethers.Contract(
+      gigsAddress,
+      gigsABI,
+      signer,
+    );
+
+    const metadataJson = {
+      title: formikValues.title,
+      description: formikValues.description,
+      image: user.imageUrl,
+      props: {
+        skills: user.skills,
+        commitment: formikValues.commitment,
+        credits: user.diToCredits
+      }
+    }
+    console.log(metadataJson);
+
+    const url = await pushJSONDocument(metadataJson);
+
+    console.log(url);
+
+
+    const credits = toWei(budget.toString(), 'ether');
+    const gig = await contract.createGig(credits, url);
+    console.log(gig);
+    return gig;
+
+  } catch (err) {
+    console.log(err);
+    return;
+  }
+}
