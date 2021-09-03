@@ -6,41 +6,40 @@ import { FaPlus, FaUsers } from 'react-icons/fa';
 import LogoWithBlob from '../components/LogoWithBlob';
 import Button from '../components/Button';
 import Card from '../components/Card';
-import LoginModal from '../components/LoginModal';
 import { useEffect, useState } from 'react';
 import { generateNonce } from '../api/users';
 import { defineCustomElements } from "@skill-wallet/auth/loader";
 
 const Index = () => {
   // TODO: Loading while logging in to API after magic link
-  const [showModal, setShowModal] = useState(false);
-  const toggleModal = () => setShowModal(!showModal);
   const [nonce, setNonce] = useState();
   const router = useRouter();
 
   useEffect(() => {
-    defineCustomElements(window)
+    defineCustomElements(window);
+    window.addEventListener('onSkillwalletLogin', () => {
+      onSkillWalletLogin();
+    });
   }, []);
     
   const onSkillWalletLogin = async () => {
     try {
       const nonce = await generateNonce(1, -1);
       setNonce(nonce);
-      toggleModal();
       router.push('/community');
       return;
     } catch (e) {
       router.push('/')
     }
   }
+
   return (
     <>
       <div className=" h-16 absolute z-10 w-full flex justify-end">
         <skillwallet-auth 
             id="walletButton" 
             className="flex items-center justify-center space-x-4 text-l" 
-            partner-key="6a918cdf9ae3d32131c779c22ae30290a2e729c3"
-            // onClick={onSkillWalletLogin}
+            partner-key="c1a69a207a6cb441014afea7f7c8abdde1d2abe9"
           ></skillwallet-auth>
       </div>
       <div className="flex flex-col items-center flex-1 mx-auto lg:flex-row lg:min-h-screen">
