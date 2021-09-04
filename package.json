@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "@hapi/iron": "^6.0.0",
-    "@skill-wallet/auth": "^0.0.43-alpha",
+    "@skill-wallet/auth": "^0.0.29-alpha",
     "@textile/hub": "6.1.2",
     "@zeit/next-css": "^1.0.1",
     "antd":"4.16.13",
