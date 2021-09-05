@@ -1,10 +1,11 @@
-const assetPrefix = process.env.NODE_ENV === "production" 
-    ? "https://cdn.mydomain.com" 
-    : "";
+// TODO: Mike - breaking the prod build, no idea what's that, look into it.
+// const assetPrefix = process.env.NODE_ENV === "production" 
+//     ? "https://cdn.mydomain.com" 
+//     : "";
 
 module.exports = {
   reactStrictMode: true,
-  assetPrefix: assetPrefix,
+  assetPrefix: './',
   distDir: 'out',
   images: {
     loader: "imgix",
