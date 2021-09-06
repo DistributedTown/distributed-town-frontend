@@ -1,17 +1,39 @@
 import Card from '../Card';
 import Button from '../Button';
-import { useTakeGig } from '../../hooks/useTakeGig';
 // import milestoneChain from "../../public/milestone-chain.png";
+import { useState, useEffect, useMemo } from 'react';
+import { getCommunityById, getCommunityGigsAddress } from '../../api/communities';
+import { takeGig } from '../../utils/utils';
 
-const GigCard = ({ 
-  // key, 
+const GigCard = ({
   gig }) => {
-  const [takeGig, { isLoading }] = useTakeGig();
+  const [gigsAddress, setGigsAddress] = useState(null);
+  const [userInfo, setUserInfo] = useState(null);
+  const [community, setCommunity] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    const s = JSON.parse(localStorage.getItem('userInfo'));
+    setUserInfo(s);
+    getCommunityAndGigs(s);
+  }, []);
+
+  const getCommunityAndGigs = async (userInfo) => {
+    if (!community) {
+      setIsLoading(true);
+      const comm = await getCommunityById(userInfo.currentCommunity.address);
+      console.log('community: ', comm);
+      setCommunity(comm);
+      const gigsAddress = await getCommunityGigsAddress(comm.address);
+      setIsLoading(false);
+      setGigsAddress(gigsAddress);
+    }
+  }
 
   return (
-    <Card 
-    // key={key} 
-    className="flex flex-col space-y-3 border-2 border-burgundy">
+    <Card
+      // key={key} 
+      className="flex flex-col space-y-3 border-2 border-burgundy">
       <div className="flex justify-between items-center p-2">
         <img className="w-8 h-2 mr-4" src="/milestone-chain.png" />
         <p>{gig.title}</p>
@@ -21,9 +43,9 @@ const GigCard = ({
         <p>Skills needed: </p>
         <ul>
           {gig.props.skills.map((skill, j) => (
-            <li 
-            key={j} 
-            className="list-disc list-inside">
+            <li
+              key={j}
+              className="list-disc list-inside">
               {skill}
             </li>
           ))}
@@ -36,7 +58,7 @@ const GigCard = ({
         type="button"
         loading={isLoading}
         className="border-2 border-burgundy"
-        onClick={() => takeGig(gig._id)}
+        onClick={() => takeGig(gigsAddress, gig.gigId)}
       >
         Take Gig
       </Button>

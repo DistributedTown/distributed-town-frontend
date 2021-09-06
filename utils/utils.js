@@ -43,3 +43,34 @@ export const createGig = async (formikValues, user, gigsAddress, budget) => {
     return;
   }
 }
+
+export const takeGig = async (gigsAddress, gigID) => {
+  console.log(gigsAddress);
+  console.log(gigID);
+  try {
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const signer = provider.getSigner();
+
+    const contract = new ethers.Contract(
+      gigsAddress,
+      gigsABI,
+      signer,
+    );
+
+    const takeTx = await contract.takeGig(gigID);
+    console.log(takeTx);
+    const takeTxnResult = await takeTx.wait();
+    const { events } = takeTxnResult;
+    const gigTakenEvent = events.find(
+      e => e.event === 'GigTaken',
+    );
+
+    if (!gigTakenEvent) {
+      throw new Error('Something went wrong');
+    }
+    return;
+  } catch (err) {
+    console.log(err);
+    return;
+  }
+}
