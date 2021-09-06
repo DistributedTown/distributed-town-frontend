@@ -5,15 +5,23 @@ import CheckupCard from '../../components/community/CheckupCard';
 import CommunitySummaryCard from '../../components/community/CommunitySummaryCard';
 import Button from '../../components/Button';
 import PageTitle from '../../components/PageTitle';
-import { getUserInfo } from '../../api/users';
-
+import { getCommunityInfo, getUserInfo } from '../../api/users';
+import { useRouter } from 'next/router';
 function CommunityDashboard() {
-  useEffect( () => {
+  const router = useRouter();
+  useEffect(() => {
     const getInfo = async () => {
       //TODO: this shouldn't be hard-coded
-      const info = await getUserInfo(6);
-      localStorage.setItem('userInfo', JSON.stringify(info));
-      return info;
+      const skillWallet = JSON.parse(localStorage.getItem('skillWallet'));
+
+      if (!skillWallet || !skillWallet.tokenId) {
+        router.push(`/`);
+      } else {
+        const info = await getUserInfo(skillWallet.tokenId);
+        localStorage.setItem('userInfo', JSON.stringify(info));
+        const community = await getCommunityInfo(skillWallet.currentCommunity.address);
+        localStorage.setItem('community', JSON.stringify(community));
+      }
     }
     getInfo();
   }, []);
@@ -36,14 +44,14 @@ function CommunityDashboard() {
                 </Button>
               </Link>
               {/* <Link href="/community/projects"> */}
-                <Button disabled={true}>
-                  <a>Projects</a>
-                </Button>
+              <Button disabled={true}>
+                <a>Projects</a>
+              </Button>
               {/* </Link> */}
               {/* <Link href="/community/treasury"> */}
-                <Button disabled={true}>
-                  <a>Treasury</a>
-                </Button>
+              <Button disabled={true}>
+                <a>Treasury</a>
+              </Button>
               {/* </Link> */}
             </div>
           </div>

@@ -8,9 +8,8 @@ export const getUserInfo = (tokenId) => {
 };
 
 
-
-export const getCommunityInfo = () => {
-  return fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/skillWallet/community?address=${window.ethereum.selectedAddress}`, {
+export const getCommunityInfo = (address) => {
+  return fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/community/${address}`, {
     method: 'GET',
   })
     .then(res => res.json());
