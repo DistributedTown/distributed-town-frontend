@@ -1090,10 +1090,10 @@
   dependencies:
     "@sinonjs/commons" "^1.7.0"
 
-"@skill-wallet/auth@^0.0.43-alpha":
-  version "0.0.43-alpha"
-  resolved "https://registry.npmjs.org/@skill-wallet/auth/-/auth-0.0.43-alpha.tgz"
-  integrity sha512-V+vd41fpU6yibPKBtgLuryYlirCSTgbkJEzhpYt5vjkBdV6p/y1WjCezhhaDia5xE/Nzy8fAZA/LQDjQthyR9A==
+"@skill-wallet/auth@^0.0.46-alpha":
+  version "0.0.46-alpha"
+  resolved "https://registry.yarnpkg.com/@skill-wallet/auth/-/auth-0.0.46-alpha.tgz#3d6ffce008334c248ac7c81c5b6ed757359e3c3f"
+  integrity sha512-IObMzLiAqpV6cTo3GGkt/ne/JdU+xbOo7QbzcseBi6i0Sj2zniUlJIyQ/w/ZLCp6NAkTxGvnLvD6soGFZD7zzQ==
   dependencies:
     "@stencil/core" "2.6.0"
     "@textile/hub" "^6.2.0"
