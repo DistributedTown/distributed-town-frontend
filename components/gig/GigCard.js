@@ -2,8 +2,9 @@ import Card from '../Card';
 import Button from '../Button';
 // import milestoneChain from "../../public/milestone-chain.png";
 import { useState, useEffect, useMemo } from 'react';
-import { getCommunityById, getCommunityGigsAddress } from '../../api/communities';
-import { takeGig } from '../../utils/utils';
+import { getCommunityById } from '../../api/communities';
+import { getCommunityGigsAddress } from '../../contracts/community'
+import { takeGig } from '../../contracts/gigs'
 
 const GigCard = ({
   gig }) => {

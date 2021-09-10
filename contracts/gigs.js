@@ -1,8 +1,7 @@
-import { BN } from 'bn.js';
 import { ethers } from 'ethers';
 import { toWei } from 'web3-utils';
-import gigsABI from './gigsABI.json';
-import { pushJSONDocument } from './textile.hub';
+import gigsABI from './abis/gigsABI.json';
+import { pushJSONDocument } from '../utils/textile.hub'
 
 export const createGig = async (formikValues, user, gigsAddress, budget) => {
   try {
