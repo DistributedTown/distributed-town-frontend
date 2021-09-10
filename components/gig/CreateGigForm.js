@@ -6,8 +6,9 @@ import Button from '../Button';
 import Card from '../Card';
 import TextArea from '../TextArea';
 import TextField from '../TextField';
-import { createGig } from '../../utils/utils';
-import { getCommunityById, getCommunityGigsAddress } from '../../api/communities';
+import { createGig } from '../../contracts/gigs'
+import { getCommunityById } from '../../api/communities';
+import { getCommunityGigsAddress } from '../../contracts/community'
 
 const CreateGigForm = ({ isSubmitting, onSubmit, isProject }) => {
   const { register,  errors } = useForm();

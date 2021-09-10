@@ -1,7 +1,6 @@
 import Card from './Card';
 
 function CommunityCard({ onSelectCommunity, selected, community}) {
-  console.log(community);
   return (
     <Card
       className="flex flex-col space-y-4 cursor-pointer border-2 rounded-3xl border-denim mb-4 max-w-3xl"
