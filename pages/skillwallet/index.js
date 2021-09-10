@@ -59,7 +59,7 @@ function SkillWallet() {
               </Card>
               <div className="flex items-center justify-center space-x-4">
                 <p className="text-xl font-bold ">Your community:</p>
-                <Link href="community">
+                <Link href="community" as="diHall">
                   <Button filled textColor="white">
                     {userInfo ? (
                       <a>{userInfo.currentCommunity.name}</a>
@@ -73,7 +73,7 @@ function SkillWallet() {
                 <FaQrcode size="3rem" />
                 <p className="text-center">
                   Show your{' '}
-                  <Link href="/skillwallet/qr">
+                  <Link href="/skillwallet/qr" as="/qr">
                     <a className="text-denim">Wallet's QR-Code</a>
                   </Link>
                   <br />
@@ -97,7 +97,7 @@ function SkillWallet() {
             <h1 className="mb-6 text-xl text-center text-black">Badges</h1>
             <p className="pr-4 mb-8 text-sm text-center">
               Badges will appear here once you validate your skills. Check the{' '}
-              <Link href="/community/gigs">
+              <Link href="/community/gigs" as="/community/gigs">
                 <a className="text-denim">Open Gigs</a>
               </Link>{' '}
               and validate your Skills now!

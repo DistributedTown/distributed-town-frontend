@@ -5,7 +5,7 @@
 
 module.exports = {
   reactStrictMode: true,
-  assetPrefix: './',
+  assetPrefix: '',
   distDir: 'out',
   images: {
     loader: "imgix",

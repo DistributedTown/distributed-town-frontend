@@ -38,7 +38,7 @@ function CommunityDashboard() {
               where everything happens
             </p>
             <div className="flex flex-col mt-16 space-y-4">
-              <Link href="/community/gigs">
+              <Link href="/community/gigs" acs="/community/gigs">
                 <Button>
                   <a>Open Gigs</a>
                 </Button>

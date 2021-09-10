@@ -15,6 +15,11 @@
         "internalType": "uint256",
         "name": "_totalMembersAllowed",
         "type": "uint256"
+      },
+      {
+        "internalType": "bool",
+        "name": "_claimableSkillWallets",
+        "type": "bool"
       }
     ],
     "stateMutability": "nonpayable",
@@ -291,36 +296,6 @@
   },
   {
     "inputs": [
-      {
-        "internalType": "uint64",
-        "name": "displayStringId1",
-        "type": "uint64"
-      },
-      {
-        "internalType": "uint8",
-        "name": "level1",
-        "type": "uint8"
-      },
-      {
-        "internalType": "uint64",
-        "name": "displayStringId2",
-        "type": "uint64"
-      },
-      {
-        "internalType": "uint8",
-        "name": "level2",
-        "type": "uint8"
-      },
-      {
-        "internalType": "uint64",
-        "name": "displayStringId3",
-        "type": "uint64"
-      },
-      {
-        "internalType": "uint8",
-        "name": "level3",
-        "type": "uint8"
-      },
       {
         "internalType": "string",
         "name": "uri",
