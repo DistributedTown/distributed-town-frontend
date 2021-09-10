@@ -34,7 +34,7 @@ function Projects() {
         <div className="flex justify-between items-center">
           <PageTitle className="align-center">Open Projects</PageTitle>
             <div>
-              <Link href="/community/projects/create">
+              <Link href="/community/projects/create" as="/community/project">
                 <Button filled>
                   <a className="flex items-center justify-center space-x-2">
                     <p className="mb-2 text-2xl">Create new project</p>

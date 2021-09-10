@@ -52,7 +52,7 @@ const Index = () => {
             This is <span className="underline">your Community</span>
           </h1>
           <div className="flex flex-col p-4 mx-0 mb-4 space-y-4 sm:mx-8 sm:p-8">
-            <Link href="/community/create" >
+            <Link href="/community/create"  as="/community/create">
               <Button disabled={true} className="w-96 mt-8 mb-4 h-16 rounded-full">
                 <a className="flex items-center justify-center space-x-4 text-xl">
                   <span>Create</span>
@@ -61,7 +61,7 @@ const Index = () => {
               </Button>
             </Link>
 
-            <Link href="/community/join">
+            <Link href="/community/join" as="/community/join">
               <Button id="joinButton" className="h-16 rounded-full">
                 <a className="flex items-center justify-center space-x-4 text-xl">
                   <span>Join</span>

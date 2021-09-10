@@ -54,12 +54,6 @@ export const createCommunity = async () => {
 
 export const joinCommunity = async (
   communityAddress,
-  skillLevel1,
-  displayStringId1,
-  skillLevel2,
-  displayStringId2,
-  skillLevel3,
-  displayStringId3,
   url,
   credits
 ) => {
@@ -76,12 +70,6 @@ export const joinCommunity = async (
     );
       console.log(contract);
     const createTx = await contract.joinNewMember(
-      displayStringId1,
-      skillLevel1,
-      displayStringId2,
-      skillLevel2,
-      displayStringId3,
-      skillLevel3,
       url,
       toWei(credits.toString())
     );

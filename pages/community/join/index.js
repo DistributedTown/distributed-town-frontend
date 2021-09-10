@@ -17,19 +17,19 @@ const Join = ({ skills = [] }) => {
 
   return (
     <div className="w-full h-full">
-    {isLoading ? 
+      {isLoading ?
         <div id="item">
-        <h2>Loading</h2>  
-        <i id="loader"></i>
+          <h2>Loading</h2>
+          <i id="loader"></i>
         </div> : <div></div>}
       <LogoWithBlob />
       <div>
         <Logo className="p-8 mx-auto sm:ml-0" />
         <div className="flex flex-col items-center w-full h-full px-4 space-y-8">
-          <div className="border-2 border-denim rounded-xl text-2xl bg-white w-10/12 lg:w-8/12 text-center pt-2 pb-2"> 
-            Have you ever thought, 
+          <div className="border-2 border-denim rounded-xl text-2xl bg-white w-10/12 lg:w-8/12 text-center pt-2 pb-2">
+            Have you ever thought,
             <br />
-            'I would like to contribute, but …' 
+            'I would like to contribute, but …'
           </div>
           <p className="text-center text-gray-500">
             Distributed Town (DiTo) lets you <strong>create</strong> or{' '}
@@ -57,7 +57,7 @@ const Join = ({ skills = [] }) => {
           </div>
         </div>
       </div>
-                
+
       {/* <RegistrationModal
         show={showRegistrationModal}
         loading={isLoading}
@@ -80,7 +80,7 @@ export async function getServerSideProps() {
     'Fun & Entertainment', 'Administration & Management', 'Community Life', 'Leadership & Public Speaking',
     'Legal', 'Accounting', 'Art, Music & Creativity', 'Teaching',
     'Company', 'Householding', 'Gardening', 'Cooking',
-    
+
     //Art
     'Performance & Theather', 'Project Management', 'Production', 'Gaming',
     'Music', 'Painting', 'Photography', 'Video-making',
@@ -90,7 +90,7 @@ export async function getServerSideProps() {
     'Network Design', 'Tokenomics', 'Game Theory', 'Governance & Consensus',
     'Backend', 'Frontend', 'Web Dev', 'Mobile Dev',
     'DeFi', 'Blockchain infrastructure', 'Architecture', 'Smart Contracts'
-]
+  ]
   return {
     props: { skills }, // will be passed to the page component as props
   };
