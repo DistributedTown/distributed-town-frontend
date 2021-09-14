@@ -10,6 +10,7 @@ import LogoWithBlob from '../../../components/LogoWithBlob';
 import Logo from '../../../components/Logo';
 import { hasPendingAuthentication, generateNonce } from '../../../api/users';
 import { claim } from '../../../contracts/skillwallet';
+import { changeNetwork } from '../../../utils/metamask.utils';
 
 function ChooseCommunity() {
   const router = useRouter();
@@ -85,19 +86,20 @@ function ChooseCommunity() {
 
   const handleJoinClick = async () => {
     setIsLoading(true);
-    if (!address) {
-      if (!window.ethereum.selectedAddress)
-        await window.ethereum.enable()
+    await changeNetwork();
+  
+    if (!window.ethereum.selectedAddress) {
+      await window.ethereum.enable()
       console.log(window.ethereum.selectedAddress);
       setAddress(window.ethereum.selectedAddress)
     }
-    // const tokenId = await joinCommunity(chosenCommunity);
-    const tokenId = 15;
+    console.log('changing network')
+    console.log('network changed');
+    console.log(chosenCommunity)
+
+    const tokenId = await joinCommunity(chosenCommunity);
     if (tokenId) {
-      console.log('to be claimed');
       await claim(chosenCommunity.address)
-      console.log('claimed')
-      console.log(tokenId);
       setTokenId(tokenId);
       const nonce = await generateNonce(1, tokenId);
       setNonce(nonce);
