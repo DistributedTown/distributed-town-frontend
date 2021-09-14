@@ -121,7 +121,7 @@ const CreateGigForm = ({ isSubmitting, onSubmit, isProject }) => {
 
         onSubmit={async (values) => {
           setIsLoading(true);
-          await createGig(values, userInfo, gigsAddress, budgetRequired);
+          await createGig(values, selectedSkills, community.image, gigsAddress, budgetRequired);
           setIsLoading(false);
         }}>
           {({

@@ -3,9 +3,8 @@ import { toWei } from 'web3-utils';
 import gigsABI from './abis/gigsABI.json';
 import { pushJSONDocument } from '../utils/textile.hub'
 
-export const createGig = async (formikValues, user, gigsAddress, budget) => {
+export const createGig = async (formikValues, skills, image, gigsAddress, budget) => {
   try {
-    console.log(formikValues, user);
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     const signer = provider.getSigner();
 
@@ -18,14 +17,14 @@ export const createGig = async (formikValues, user, gigsAddress, budget) => {
     const metadataJson = {
       title: formikValues.title,
       description: formikValues.description,
-      image: user.imageUrl,
+      image: image,
       props: {
-        skills: user.skills,
+        skills: skills,
         commitment: formikValues.commitment,
-        credits: user.diToCredits
+        credits: budget
       }
     }
-    console.log(metadataJson);
+
 
     const url = await pushJSONDocument(metadataJson);
 
