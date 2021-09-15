@@ -19,7 +19,7 @@ function CommunityDashboard() {
       } else {
         const info = await getUserInfo(skillWallet.tokenId);
         localStorage.setItem('userInfo', JSON.stringify(info));
-        const community = await getCommunityInfo(skillWallet.currentCommunity.address);
+        const community = await getCommunityInfo(skillWallet.community);
         localStorage.setItem('community', JSON.stringify(community));
       }
     }
