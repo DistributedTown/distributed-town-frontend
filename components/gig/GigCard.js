@@ -59,6 +59,7 @@ const GigCard = ({
         type="button"
         loading={isLoading}
         className="border-2 border-burgundy"
+        disabled={!gig.taker && gig.creator !== window.ethereum.selectedAddress}
         onClick={() => takeGig(gigsAddress, gig.id)}
       >
         Take Gig
