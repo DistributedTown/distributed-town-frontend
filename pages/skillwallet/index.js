@@ -24,11 +24,16 @@ function PlaceholderLoading({
 
 function SkillWallet() {
   const pastGigs = [];
-  const [userInfo, setUserInfo] = useState(null);
+  const [skillWallet, setSkillWallet] = useState(null);
+  const [community, setCommunity] = useState(null);
 
   useEffect(() => {
-    const info = localStorage.getItem('skillWallet');
-    setUserInfo(JSON.parse(info));
+      const sw = JSON.parse(localStorage.getItem('skillWallet'));
+      const com = JSON.parse(localStorage.getItem('community'));
+      
+      setCommunity(com);
+      setSkillWallet(sw);
+
   }, [])
 
   return (
@@ -41,16 +46,16 @@ function SkillWallet() {
             <PageTitle>Skill Wallet</PageTitle>
           </div>
 
-          {userInfo ? (
+          {skillWallet ? (
             < Card className="flex flex-col content-between row-span-2 space-y-10">
               <Card filled color="black" className="flex space-x-6 text-white">
                 <div className="flex items-center justify-center w-24 h-24 bg-white rounded-full text-denim">
-                  <img src={userInfo.imageUrl} size="4.5rem" />
+                  <img src={skillWallet.imageUrl} size="4.5rem" />
                 </div>
                 <div className="flex flex-col justify-center space-y-2">
                   <h3 className="font-bold text-white">
-                    {userInfo ? (
-                      userInfo.nickname
+                    {skillWallet ? (
+                      skillWallet.nickname
                     ) : (
                       <PlaceholderLoading color="white" width="10rem" />
                     )}
@@ -61,8 +66,8 @@ function SkillWallet() {
                 <p className="text-xl font-bold ">Your community:</p>
                 <Link href="community" as="diHall">
                   <Button filled textColor="white">
-                    {userInfo ? (
-                      <a>{userInfo.currentCommunity.name}</a>
+                    {community ? (
+                      <a>{community.name}</a>
                     ) : (
                       <a></a>
                     )}
@@ -84,8 +89,8 @@ function SkillWallet() {
                 <p className="row-span-2 text-xl">Your credits:</p>
                 <img src="dito-tokens.svg" />
                 <h2 className="p-3 font-bold">
-                  {userInfo
-                    ? `${userInfo.diToCredits} DiTo`
+                  {skillWallet
+                    ? `${2060} DiTo`
                     : 'Loading dito balance...'}
                 </h2>
               </div>

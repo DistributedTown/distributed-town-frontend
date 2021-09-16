@@ -1,19 +1,12 @@
 import { useState } from 'react';
 import Card from './Card';
 
-const SkillsDisplay = () => {
-    let userInfo = {};
-    useState(() => {
-      if (typeof window !== "undefined" && localStorage.getItem("userInfo")) {
-        userInfo  = JSON.parse(localStorage.getItem('userInfo'));
-      }
-    }, []);
-      
+const SkillsDisplay = (props) => {
   return (
     <Card>
       <h2 className="text-2xl text-center text-bold">Your skills</h2>
       <div className="grid justify-center grid-cols-2 gap-6 p-2">
-        {userInfo.skills ? userInfo.skills.map((skill, i) => {
+        {props.skills ? props.skills.map((skill, i) => {
           const barcss = `font-bold text-white pr-2 text-right transition-all ease-out duration-1000 h-full bg-denim relative`;
           return (
             <div key={i}>

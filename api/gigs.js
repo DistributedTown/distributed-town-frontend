@@ -1,6 +1,5 @@
-export const getGigs = async (filter) => {
-  const queryParams = filter.isOpen != null ? `?isOpen=${filter.isOpen}` : '';
-  return fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/gig${queryParams}`, {
+export const getGigs = async (communityAddress) => {
+  return fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/community/${communityAddress}/gigs`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
