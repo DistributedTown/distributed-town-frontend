@@ -51,7 +51,7 @@ const Layout = (props, { children }) => {
               showNav ? 'h-auto' : 'h-0'
             } md:relative md:h-full md:w-60 md:bg-white md:text-denim shadow`}
           >
-          <div className="relative lg:absolute lg:overflow-hidden lg:h-96 w-72">
+          <div className="relative lg:absolute lg:overflow-hidden lg:h-96 w-72 z-0">
           <Blob
           className="absolute opacity-70"
           color={props.color}
@@ -70,7 +70,7 @@ const Layout = (props, { children }) => {
                 type="button"
                 key={ni.text}
                 id={`layoutButton${id}`}
-                className={`m-1 px-4 w-10/12 py-1 mb-4 text-center tracking-widest rounded-full border-2 
+                className={`m-1 z-50 px-4 w-10/12 py-1 mb-4 text-center tracking-widest rounded-full border-2 
                           ${props.color === "#BD413B" ? "border-burgundy md:text-burgundy" : "border-denim text-denim"}
                             border-${props.color === "#BD413B" ? "burgundy" : "denim"} 
                             ${router.pathname === ni.href

@@ -160,7 +160,7 @@ export default function SkillPicker({
             <label className="flex flex-col">
               <strong className="underline mb-2">Avatar</strong>
               <Card className="h-24 border-2 rounded-2xl flex content-between h-20 items-center" color="black">
-                <input type="file" accept="image/*" onChange={handleImageUpload} ref={imageUploader} multiple="false" style={{display: "none"}}/>
+                <input type="file" accept="image/*" onChange={handleImageUpload} ref={imageUploader} multiple={false} style={{display: "none"}}/>
                 <p className="break-words mr-24">A public image - that's how others will see you</p>
                 
                 {imageUrl ? null : <div className="flex flex-col items-center" style={{height: "90px", width: "120px"}} >
