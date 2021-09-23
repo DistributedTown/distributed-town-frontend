@@ -5,18 +5,29 @@ import CheckupCard from '../../components/community/CheckupCard';
 import CommunitySummaryCard from '../../components/community/CommunitySummaryCard';
 import Button from '../../components/Button';
 import PageTitle from '../../components/PageTitle';
-import { getUserInfo } from '../../api/users';
-
+import { getCommunityInfo, getUserInfo } from '../../api/users';
+import { useRouter } from 'next/router';
 function CommunityDashboard() {
-  useEffect( () => {
+  const router = useRouter();
+
+  const [community, setCommunity] = useState(undefined);
+  useEffect(() => {
     const getInfo = async () => {
       //TODO: this shouldn't be hard-coded
-      const info = await getUserInfo(6);
-      localStorage.setItem('userInfo', JSON.stringify(info));
-      return info;
+      const skillWallet = JSON.parse(localStorage.getItem('skillWallet'));
+
+      console.log(skillWallet);
+      if (!skillWallet || !skillWallet.tokenId) {
+        localStorage.removeItem('skillWallet');
+        router.push(`/`);
+      } else if (!community) {
+        const com = await getCommunityInfo(skillWallet.community);
+        localStorage.setItem('community', JSON.stringify(com));
+        setCommunity(com)
+      }
     }
     getInfo();
-  }, []);
+  }, [community]);
 
   return (
     <Layout color="#146EAA">
@@ -30,20 +41,20 @@ function CommunityDashboard() {
               where everything happens
             </p>
             <div className="flex flex-col mt-16 space-y-4">
-              <Link href="/community/gigs">
+              <Link href="/community/gigs" acs="/community/gigs">
                 <Button>
                   <a>Open Gigs</a>
                 </Button>
               </Link>
               {/* <Link href="/community/projects"> */}
-                <Button disabled={true}>
-                  <a>Projects</a>
-                </Button>
+              <Button disabled={true}>
+                <a>Projects</a>
+              </Button>
               {/* </Link> */}
               {/* <Link href="/community/treasury"> */}
-                <Button disabled={true}>
-                  <a>Treasury</a>
-                </Button>
+              <Button disabled={true}>
+                <a>Treasury</a>
+              </Button>
               {/* </Link> */}
             </div>
           </div>
@@ -51,7 +62,7 @@ function CommunityDashboard() {
 
           </div>
           {/* <CheckupCard /> */}
-          <CommunitySummaryCard />
+          <CommunitySummaryCard community={community}/>
         </div>
         {/* <div className="bg-white flex justify-center pt-1 pb-1">              
               <Link href="./skillwallet" disabled>

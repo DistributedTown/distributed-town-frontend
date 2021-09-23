@@ -12,6 +12,7 @@ const Layout = (props, { children }) => {
 
   const handleLogout = async () => {
     // TODO logout
+    localStorage.clear();
     router.push('/');
   };
 

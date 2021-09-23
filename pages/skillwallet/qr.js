@@ -2,10 +2,6 @@ import { QRCode } from 'react-qrcode-logo';
 import Card from '../../components/Card';
 
 function QR() {
-  // const { data: userInfo } = useGetUserInfo(localStorage.getItem('tokenId'));;
-  // const { data: skillWallet } = useGetSkillWallet();
-  // const { data: ditoBalance } = useGetDitoBalance();
-  // const { data: community } = useGetCommunity();
 
   return (
     <div className="flex flex-col w-full h-screen md:flex-row">

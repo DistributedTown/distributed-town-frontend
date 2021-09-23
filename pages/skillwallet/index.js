@@ -4,10 +4,10 @@ import classNames from 'classnames';
 import { FaQrcode, FaUser } from 'react-icons/fa';
 
 import Layout from '../../components/Layout';
-import { useGetUserInfo } from '../../hooks/useGetUserInfo';
 import Card from '../../components/Card';
 import Button from '../../components/Button';
 import PageTitle from '../../components/PageTitle';
+import { useEffect, useState } from 'react';
 
 function PlaceholderLoading({
   className,
@@ -23,8 +23,19 @@ function PlaceholderLoading({
 }
 
 function SkillWallet() {
-  const { data: userInfo } = useGetUserInfo(3);
   const pastGigs = [];
+  const [skillWallet, setSkillWallet] = useState(null);
+  const [community, setCommunity] = useState(null);
+
+  useEffect(() => {
+      const sw = JSON.parse(localStorage.getItem('skillWallet'));
+      const com = JSON.parse(localStorage.getItem('community'));
+      
+      setCommunity(com);
+      setSkillWallet(sw);
+
+  }, [])
+
   return (
     <Layout color="#146EAA">
       <div className="flex flex-col w-full h-full">
@@ -35,65 +46,63 @@ function SkillWallet() {
             <PageTitle>Skill Wallet</PageTitle>
           </div>
 
-          {/*  WALLET CARD  */}
-          <Card className="flex flex-col content-between row-span-2 space-y-10">
-            {/* PROFILE */}
-            <Card filled color="black" className="flex space-x-6 text-white">
-              <div className="flex items-center justify-center w-24 h-24 bg-white rounded-full text-denim">
-                <FaUser size="4.5rem" />
+          {skillWallet ? (
+            < Card className="flex flex-col content-between row-span-2 space-y-10">
+              <Card filled color="black" className="flex space-x-6 text-white">
+                <div className="flex items-center justify-center w-24 h-24 bg-white rounded-full text-denim">
+                  <img src={skillWallet.imageUrl} size="4.5rem" />
+                </div>
+                <div className="flex flex-col justify-center space-y-2">
+                  <h3 className="font-bold text-white">
+                    {skillWallet ? (
+                      skillWallet.nickname
+                    ) : (
+                      <PlaceholderLoading color="white" width="10rem" />
+                    )}
+                  </h3>
+                </div>
+              </Card>
+              <div className="flex items-center justify-center space-x-4">
+                <p className="text-xl font-bold ">Your community:</p>
+                <Link href="community" as="diHall">
+                  <Button filled textColor="white">
+                    {community ? (
+                      <a>{community.name}</a>
+                    ) : (
+                      <a></a>
+                    )}
+                  </Button>
+                </Link>
               </div>
-              <div className="flex flex-col justify-center space-y-2">
-                <h3 className="font-bold text-white">
-                  {userInfo ? (
-                    userInfo.nickname
-                  ) : (
-                    <PlaceholderLoading color="white" width="10rem" />
-                  )}
-                </h3>
+              <div className="flex items-center justify-center space-x-6">
+                <FaQrcode size="3rem" />
+                <p className="text-center">
+                  Show your{' '}
+                  <Link href="/skillwallet/qr" as="/qr">
+                    <a className="text-denim">Wallet's QR-Code</a>
+                  </Link>
+                  <br />
+                  to help a different community.
+                </p>
+              </div>
+              <div className="grid grid-cols-2 mx-auto place-items-center">
+                <p className="row-span-2 text-xl">Your credits:</p>
+                <img src="dito-tokens.svg" />
+                <h2 className="p-3 font-bold">
+                  {skillWallet
+                    ? `${2060} DiTo`
+                    : 'Loading dito balance...'}
+                </h2>
               </div>
             </Card>
-            {/*  <!--COMMUNITIES--> */}
-            <div className="flex items-center justify-center space-x-4">
-              <p className="text-xl font-bold ">Your community:</p>
-              <Link href="community">
-                <Button filled textColor="white">
-                {userInfo && userInfo.currentCommunity ? (
-                  <a>{userInfo.currentCommunity.name}</a>
-                  ) : (
-                    <a></a>
-                  )}
-                </Button>
-              </Link>
-            </div>
-            {/*  <!--QR-CODE--> */}
-            <div className="flex items-center justify-center space-x-6">
-              <FaQrcode size="3rem" />
-              <p className="text-center">
-                Show your{' '}
-                <Link href="/skillwallet/qr">
-                  <a className="text-denim">Wallet's QR-Code</a>
-                </Link>
-                <br />
-                to help a different community.
-              </p>
-            </div>
-            {/*  <!--BALANCE--> */}
-            <div className="grid grid-cols-2 mx-auto place-items-center">
-              <p className="row-span-2 text-xl">Your credits:</p>
-              <img src="dito-tokens.svg" />
-              <h2 className="p-3 font-bold">
-                {userInfo
-                  ? `${userInfo.diToCredits} DiTo`
-                  : 'Loading dito balance...'}
-              </h2>
-            </div>
-          </Card>
+          )
+            : undefined}
           {/*  <!--BADGES --> */}
           <Card>
             <h1 className="mb-6 text-xl text-center text-black">Badges</h1>
             <p className="pr-4 mb-8 text-sm text-center">
               Badges will appear here once you validate your skills. Check the{' '}
-              <Link href="/community/gigs">
+              <Link href="/community/gigs" as="/community/gigs">
                 <a className="text-denim">Open Gigs</a>
               </Link>{' '}
               and validate your Skills now!
@@ -160,7 +169,7 @@ function SkillWallet() {
           </Card>
         </div>
       </div>
-    </Layout>
+    </Layout >
   );
 }
 

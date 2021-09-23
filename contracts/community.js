@@ -1,6 +1,5 @@
 import { ethers } from 'ethers';
-import communityAbi from '../utils/communityContractAbi.json';
-import diToABI from '../utils/distributedTownAbi.json';
+import communityAbi from './abis/communityContractAbi.json';
 import { toWei } from 'web3-utils';
 
 export const getCommunityDitoTokensContract = async (
@@ -23,43 +22,8 @@ export const isLoggedIn = () => {
   return false;
 }
 
-
-export const createCommunity = async () => {
-  const provider = new ethers.providers.Web3Provider(web3.currentProvider);
-
-  const signer = provider.getSigner();
-  // TODO: Create contract should join the user automatically instead of needing to call join after that.
-  // call the smart contract to create community
-  const contract = new ethers.Contract(
-    process.env.NEXT_PUBLIC_COMMUNITIES_REGISTRY_ADDRESS,
-    diToABI,
-    signer,
-  );
-
-  const createTx = await contract.createCommunity();
-
-  // Wait for transaction to finish
-  const communityTransactionResult = await createTx.wait();
-  const { events } = communityTransactionResult;
-  const communityCreatedEvent = events.find(
-    e => e.event === 'CommunityCreated',
-  );
-
-  if (!communityCreatedEvent) {
-    throw new Error('Something went wrong');
-  }
-  const communityAddress = communityCreatedEvent.args[0];
-  return communityAddress;
-};
-
 export const joinCommunity = async (
   communityAddress,
-  skillLevel1,
-  displayStringId1,
-  skillLevel2,
-  displayStringId2,
-  skillLevel3,
-  displayStringId3,
   url,
   credits
 ) => {
@@ -74,14 +38,7 @@ export const joinCommunity = async (
       communityAbi,
       signer,
     );
-      console.log(contract);
     const createTx = await contract.joinNewMember(
-      displayStringId1,
-      skillLevel1,
-      displayStringId2,
-      skillLevel2,
-      displayStringId3,
-      skillLevel3,
       url,
       toWei(credits.toString())
     );
@@ -105,3 +62,48 @@ export const joinCommunity = async (
     return;
   }
 };
+
+
+export const getCommunityGigsAddress = async (communityAddress) => {
+  try {
+    const provider = new ethers.providers.Web3Provider(web3.currentProvider);
+    const signer = provider.getSigner();
+    
+    const contract = new ethers.Contract(
+      communityAddress,
+      communityAbi,
+      signer,
+    );
+    
+    const gigsAddress = await contract.gigsAddr();
+    
+    return gigsAddress
+  } catch (err) {
+    console.log(err);
+    return;
+  }
+}
+
+export const getSkillWalletAddress = async (communityAddress) => {
+  // try {
+  //   const provider = new ethers.providers.Web3Provider(web3.currentProvider);
+  //   const signer = provider.getSigner();
+    
+  //   console.log('communityAddress', communityAddress);
+  //   const contract = new ethers.Contract(
+  //     communityAddress,
+  //     communityAbi,
+  //     signer,
+  //   );
+    
+  //   const skillWalletAddress = await contract.getSkillWalletAddress();
+  //   console.log(skillWalletAddress);
+  //   return skillWalletAddress
+  // } catch (err) {
+  //   console.log(err);
+  //   return;
+  // }
+
+  // TODO: remove and uncomment the code for fetching it when the contracts are redeployed. (there was a bug!)
+  return '0x1e79bE396CE37F7eB43aF0Ef0ffb3124F3fD23eF';
+}

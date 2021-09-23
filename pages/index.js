@@ -6,13 +6,11 @@ import { FaPlus, FaUsers } from 'react-icons/fa';
 import LogoWithBlob from '../components/LogoWithBlob';
 import Button from '../components/Button';
 import Card from '../components/Card';
-import { useEffect, useState } from 'react';
-import { generateNonce } from '../api/users';
+import { useEffect } from 'react';
 import { defineCustomElements } from "@skill-wallet/auth/loader";
 
 const Index = () => {
   // TODO: Loading while logging in to API after magic link
-  const [nonce, setNonce] = useState();
   const router = useRouter();
 
   useEffect(() => {
@@ -24,8 +22,6 @@ const Index = () => {
     
   const onSkillWalletLogin = async () => {
     try {
-      const nonce = await generateNonce(1, -1);
-      setNonce(nonce);
       router.push('/community');
       return;
     } catch (e) {
@@ -39,7 +35,6 @@ const Index = () => {
         <skillwallet-auth 
             id="walletButton" 
             className="flex items-center justify-center space-x-4 text-l" 
-            partner-key="c1a69a207a6cb441014afea7f7c8abdde1d2abe9"
           ></skillwallet-auth>
       </div>
       <div className="flex flex-col items-center flex-1 mx-auto lg:flex-row lg:min-h-screen">
@@ -52,7 +47,7 @@ const Index = () => {
             This is <span className="underline">your Community</span>
           </h1>
           <div className="flex flex-col p-4 mx-0 mb-4 space-y-4 sm:mx-8 sm:p-8">
-            <Link href="/community/create" >
+            <Link href="/community/create"  as="/community/create">
               <Button disabled={true} className="w-96 mt-8 mb-4 h-16 rounded-full">
                 <a className="flex items-center justify-center space-x-4 text-xl">
                   <span>Create</span>
@@ -61,7 +56,7 @@ const Index = () => {
               </Button>
             </Link>
 
-            <Link href="/community/join">
+            <Link href="/community/join" as="/community/join">
               <Button id="joinButton" className="h-16 rounded-full">
                 <a className="flex items-center justify-center space-x-4 text-xl">
                   <span>Join</span>

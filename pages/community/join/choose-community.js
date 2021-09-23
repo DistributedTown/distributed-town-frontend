@@ -9,6 +9,8 @@ import QRModal from '../../../components/QRModal';
 import LogoWithBlob from '../../../components/LogoWithBlob';
 import Logo from '../../../components/Logo';
 import { hasPendingAuthentication, generateNonce } from '../../../api/users';
+import { claim } from '../../../contracts/skillwallet';
+import { changeNetwork } from '../../../utils/metamask.utils';
 
 function ChooseCommunity() {
   const router = useRouter();
@@ -75,37 +77,47 @@ function ChooseCommunity() {
     if (hasPendingAuths)
       window.confirm('You have not authenticated and your skill wallet is not active');
     else
-    router.push(
-      `/community/join/completed?communityName=${encodeURIComponent(
-        chosenCommunity.name,
-      )}`,
-    );
+      router.push(
+        `/community/join/completed?communityName=${encodeURIComponent(
+          chosenCommunity.name,
+        )}`,
+      );
   }
 
   const handleJoinClick = async () => {
     setIsLoading(true);
-    if (!address) {
-      if (!window.ethereum.selectedAddress)
-        await window.ethereum.enable()
+    await changeNetwork();
+  
+    if (!window.ethereum.selectedAddress) {
+      await window.ethereum.enable()
       console.log(window.ethereum.selectedAddress);
       setAddress(window.ethereum.selectedAddress)
     }
+    console.log('changing network')
+    console.log('network changed');
+    console.log(chosenCommunity)
+
     const tokenId = await joinCommunity(chosenCommunity);
-    console.log(tokenId);
-    setTokenId(tokenId);
-    const nonce = await generateNonce(1, tokenId);
-    setNonce(nonce);
-    setIsLoading(false);
-    toggleModal();
-    await longpoll();
+    if (tokenId) {
+      await claim(chosenCommunity.address)
+      setTokenId(tokenId);
+      const nonce = await generateNonce(1, tokenId);
+      setNonce(nonce);
+      setIsLoading(false);
+      toggleModal();
+      await longpoll();
+    } else {
+      // TODO: better error handlings
+      alert('Something went wrong! Please try again!');
+    }
   };
 
   return (
     <div className="relative flex flex-col justify-between w-full h-screen">
-      {isLoading ? 
+      {isLoading ?
         <div id="item">
-        <h2>Loading</h2>  
-        <i id="loader"></i>
+          <h2>Loading</h2>
+          <i id="loader"></i>
         </div> : <div></div>}
       <LogoWithBlob />
       <div className="flex flex-col flex-1 md:flex-row">
@@ -142,49 +154,49 @@ function ChooseCommunity() {
           </div>
         </div>
 
-      <div className="flex flex-col w-7/12">
+        <div className="flex flex-col w-7/12">
           <p className="text-center mt-8">
             <b>Here's a few diTown Communities for you</b> (based on your <b>Skills</b>)
           </p>
           <p className="text-center">Select the one <b className="underline">that inspires you the most</b> - and <b className="underline">start adding Value</b> to it 🙌🏻</p>
 
-        <div className="flex flex-col  w-full h-full p-8  overflow-scroll text-center ">
+          <div className="flex flex-col  w-full h-full p-8  overflow-scroll text-center ">
 
-          <div className="flex flex-col justify-center w-full p-4 items-center">
-            <div className="flex flex-col max-h-44">
-            {communities.map((community, i) => (
-              <CommunityCard
-                key={i}
-                community={community}
-                selected={community === chosenCommunity}
-                onSelectCommunity={() => setChosenCommunity(community)}
-              />
-            ))}
-          </div>
+            <div className="flex flex-col justify-center w-full p-4 items-center">
+              <div className="flex flex-col max-h-44">
+                {communities.map((community, i) => (
+                  <CommunityCard
+                    key={i}
+                    community={community}
+                    selected={community === chosenCommunity}
+                    onSelectCommunity={() => setChosenCommunity(community)}
+                  />
+                ))}
+              </div>
 
-          </div>
-          { 
-            showModal ? <QRModal toggleModal={toggleModal} modalText={modalText} qrCodeObj={
+            </div>
             {
-              tokenId,
-              nonce
-            }} closeOnClick={handleCloseModal} /> : null
-          }
-          {showModal ? console.log(tokenId, nonce) : null}
-        </div>
-        <Button
-              filled
-              onClick={handleJoinClick}
-              disabled={!chosenCommunity}
-              // loading={isJoining}
-              className="mt-8 mb-16"
-            >
-              Scan QR-Code to Claim your Membership!
-            </Button>
+              showModal ? <QRModal toggleModal={toggleModal} modalText={modalText} qrCodeObj={
+                {
+                  tokenId,
+                  nonce
+                }} closeOnClick={handleCloseModal} /> : null
+            }
+            {showModal ? console.log(tokenId, nonce) : null}
+          </div>
+          <Button
+            filled
+            onClick={handleJoinClick}
+            disabled={!chosenCommunity}
+            // loading={isJoining}
+            className="mt-8 mb-16"
+          >
+            Scan QR-Code to Claim your Membership!
+          </Button>
         </div>
       </div>
     </div>
-  
+
   );
 }
 

@@ -6,32 +6,33 @@ import Button from '../Button';
 import Card from '../Card';
 import TextArea from '../TextArea';
 import TextField from '../TextField';
-import { createGig } from '../../utils/utils';
-import { getCommunityById, getCommunityGigsAddress } from '../../api/communities';
+import { createGig } from '../../contracts/gigs'
+import { getCommunityById } from '../../api/communities';
+import { getCommunityGigsAddress } from '../../contracts/community'
 
 const CreateGigForm = ({ isSubmitting, onSubmit, isProject }) => {
   const { register,  errors } = useForm();
   const [isLoading, setIsLoading] = useState(false);
   const [community, setCommunity] = useState(null);
-  const [userInfo, setUserInfo] = useState(null);
+  const [skillWallet, setSkillWallet] = useState(null);
   const [gigsAddress, setGigsAddress] = useState(null);
   const [budgetRequired, setBudgetRequired] = useState(0);
   const [selectedSkills, setSelectedSkills] = useState([]);
   const [commitment, setCommitment] = useState(50);
 
   useEffect(() => {
-    const s = JSON.parse(localStorage.getItem('userInfo'));
-    setUserInfo(s);    
+    const s = JSON.parse(localStorage.getItem('skillWallet'));
+    setSkillWallet(s);    
   }, []);
 
   useEffect(() => {
     getCommunityAndGigs();
-  }, [userInfo]);
+  }, [skillWallet]);
 
   const getCommunityAndGigs = async () => {
-    if (userInfo && !community) {
+    if (skillWallet && !community) {
       setIsLoading(true);
-      const comm = await getCommunityById(userInfo.currentCommunity.address);
+      const comm = await getCommunityById(skillWallet.community);
       console.log('community: ', comm);
       setCommunity(comm);
       const gigsAddress = await getCommunityGigsAddress(comm.address);
@@ -120,7 +121,7 @@ const CreateGigForm = ({ isSubmitting, onSubmit, isProject }) => {
 
         onSubmit={async (values) => {
           setIsLoading(true);
-          await createGig(values, userInfo, gigsAddress, budgetRequired);
+          await createGig(values, selectedSkills, community.image, gigsAddress, budgetRequired);
           setIsLoading(false);
         }}>
           {({
@@ -248,7 +249,7 @@ const CreateGigForm = ({ isSubmitting, onSubmit, isProject }) => {
               <Card outlined id="categories" name="categories">
                 {/* {error && <p>Couldn't fetch skills</p>} */}
                 <div className="flex justify-between pr-16 pl-16">
-                {userInfo && community
+                {skillWallet && community
                   ? community.skills.categories.map((category, i) => (
                     <div
                     key={i}>
